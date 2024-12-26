@@ -18,7 +18,7 @@
             </button>
 
             <div class="navbar-brand flex-grow-1 text-center mx-auto">
-                <a class="navbar-brand" href="#" style="margin:0 0 0 100px">SHOOTS</a>
+                <a class="navbar-brand" th:href="@{/main}" style="margin:0 0 0 100px">SHOOTS</a>
             </div>
 
             <ul class="navbar-nav ms-auto">
@@ -38,7 +38,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p>Try scrolling the rest of the page to see this option in action.</p>
+            <p><a th:href="@{/location}">Location</a></p>
+            <p><a th:href="@{/match/list}">Match</a></p>
+            <p>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" id="offcanvasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Community
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="offcanvasDropdown">
+                        <li><a class="dropdown-item" href="#">자유게시판</a></li>
+                        <li><a class="dropdown-item" href="#">중고게시판</a></li>
+                    </ul>
+                </div>
+            </p>
+            <p><a href="#">Notice</a></p>
+            <p><a href="#">Faq</a></p>
+            <p><a href="#">Inquiry</a></p>
         </div>
     </div>
 </body>
