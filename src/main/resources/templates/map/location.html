@@ -4,8 +4,93 @@
     <th:block th:replace="~{fragments/header :: header}" />
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/location.css}" rel="stylesheet">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ffe9766c0e4889a023162555b8e1a61&libraries=services"></script>
 </head>
 <body>
-    location page
+
+    <div class="mapDiv">
+        <div id="map"></div>
+    </div>
+
+    <div class="zoomD">
+        <img th:src="@{/img/zoomIn.png}" onclick="zoomIn()">
+        <img th:src="@{/img/zoomOut.png}" onclick="zoomOut()">
+    </div>
+
+
+    <script type="text/javascript">
+
+        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+        var container = document.getElementById('map');
+        var options = {
+            center: new kakao.maps.LatLng(37.570791, 126.997383),
+            level: 8
+        };
+
+        var map = new kakao.maps.Map(container, options);
+
+        // 지도 마커 표시
+        var markerPosition  = new kakao.maps.LatLng(37.570791, 126.997383);
+
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        marker.setMap(map);
+
+        var ps = new kakao.maps.services.Places();
+        ps.keywordSearch('풋살', placesSearchCB);
+
+        function placesSearchCB (data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                // LatLngBounds 객체에 좌표를 추가
+                var bounds = new kakao.maps.LatLngBounds();
+
+                for (var i=0; i<data.length; i++) {
+                    displayMarker(data[i]);
+                    bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                }
+
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+                //map.setBounds(bounds);
+                map.setLevel(8);
+            }
+        }
+
+        function displayMarker(place) {
+
+            // 마커를 생성하고 지도에 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x)
+            });
+
+            // 마커에 클릭이벤트를 등록합니다
+            kakao.maps.event.addListener(marker, 'click', function() {
+                // 마커를 클릭하면 장소명이 인포윈도우에 표출
+                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+                infowindow.open(map, marker);
+            });
+        }
+
+
+        // 지도 zoom in / out
+        function zoomIn() {
+            var level = map.getLevel();
+            map.setLevel(level - 1);
+        }
+
+        function zoomOut() {
+            var level = map.getLevel();
+            map.setLevel(level + 1);
+        }
+
+        // 지도 마커 제거
+        // marker.setMap(null);
+    </script>
 </body>
 </html>
