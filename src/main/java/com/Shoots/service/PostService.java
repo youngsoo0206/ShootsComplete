@@ -11,10 +11,11 @@ import java.util.Random;
 public interface PostService {
 
     //글의 갯수 구하기
-    public int getListCount();
+    public int getListCount(String category);
 
     // 글 목록 보기
-    public List<Post> getPostList(int page, int limit);
+    public List<Post> getPostList(int page, int limit, String category);
+
 
 
     default public String saveUploadFile(MultipartFile uploadfile, String saveFolder) throws Exception {
