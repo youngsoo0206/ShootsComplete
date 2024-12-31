@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL 맵퍼 파일은 xml이기 때문에 제일 먼저 xml 선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- Mapper 인터페이스의 패키지명과 이름을 namespace로 설정합니다. -->
+<mapper namespace="com.Shoots.mybatis.mapper.PostMapper">
+<!--
+    1. 태그에 id속성은 Mapper인터페이스에 사용된 메서드명과 동일 하게 작성됩니다.
+    2. resultType속성은 Mapper인터페이스에 사용된 메서드의 반환 타입을 작성해줍니다.
+-->
+
+    <select id="getListCount" resultType="int">
+        select count(*) from post
+    </select>
+
+
+
+    <!-- 문법 오류
+    where rnum >= #{start}
+    ==> 해결법
+       ① where rnum &gt;= #{start}
+       ② where rnum <![CDATA[   >=   ]]> #{start}
+
+    ==> 설명
+    ① HTML 문서는 '<', '>' 와 같은 마크업 문자들을 파싱해서 읽어들이는 구조입니다.
+        그래서 마크업 문자들을 작다(<), 크다(>)로 사용하기 위해서
+        '&lt;', '&gt;' 등의 escape 문자열(escape character)을 이용해야 합니다.
+
+    < : &lt;
+    > : &gt;
+
+    ② CDATA(Character DATA) XML 파서가 분석하지 않는 문자 데이터를 의미합니다.
+        사용하는 방법은 <![CDATA[ 와 ]]> 사이에 문자들을 넣으면 됩니다.
+    -->
+    <select id="getPostList" resultType="post">
+        select *
+        from (
+        SELECT ROWNUM rnum, post_idx, writer, category, title, content, post_file, price, register_date, readcount, user_idx
+        from(
+        SELECT p.*, r.user_idx
+        FROM post p
+        INNER JOIN regular_user r ON p.writer = r.idx
+        WHERE p.category = #{category}
+        ORDER BY p.register_date DESC
+        )
+        where rownum &gt;= #{start}
+        ) where rnum &lt;= #{end}
+
+    </select>
+
+
+
+
+
+
+
+
+</mapper>

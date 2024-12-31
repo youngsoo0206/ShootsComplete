@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>게시판</title>
+	<th:block th:replace="~{board/header :: headerFragment}"/>
+ <style>
+select.form-control {
+	width: auto;
+	margin-bottom: 2em;
+	display: inline-block
+}
+.rows {
+	text-align: right;
+}
+.gray {
+	color: gray;
+}
+	body > div > table > thead > tr:nth-child(2) > th:nth-child(1){width:8%}
+	body > div > table > thead > tr:nth-child(2) > th:nth-child(2){width:50%}
+	body > div > table > thead > tr:nth-child(2) > th:nth-child(3){width:14%}
+	body > div > table > thead > tr:nth-child(2) > th:nth-child(4){width:17%}
+	body > div > table > thead > tr:nth-child(2) > th:nth-child(5){width:11%}
+ </style>
+ <script th:src="@{/js/list.js}"></script>
+</head>
+<body>
+ <div class="container">
+     <!-- 카테고리 선택 탭 -->
+     <ul class="nav nav-tabs" id="categoryTab" role="tablist">
+         <li class="nav-item">
+             <a class="nav-link active" id="tabA" data-toggle="tab" href="#A" role="tab" onclick="switchCategory('A')">자유 게시판</a>
+         </li>
+         <li class="nav-item">
+             <a class="nav-link" id="tabB" data-toggle="tab" href="#B" role="tab" onclick="switchCategory('B')">중고 게시판</a>
+         </li>
+     </ul>
+  <!-- 게시글이 있는 경우 -->
+  <th:block th:if="${listcount > 0 }">
+   <div class="rows">
+    <span>줄보기</span>
+    <select class="form-control" id="viewcount">
+    	<option value="1">1</option>
+    	<option value="3">3</option>
+    	<option value="5">5</option>
+    	<option value="7">7</option>
+    	<option value="10" selected>10</option>
+    </select>
+   </div>
+   <table class="table table-striped">
+    <thead>
+     <tr>
+      <th colspan="3">MVC 게시판 - list</th>
+      <th colspan="2">
+      	<span>글 개수 : [[${listcount}]]</span>
+      </th>
+     </tr>
+
+     <tr>
+     	<th><div>번호</div></th>
+     	<th><div>제목</div></th>
+     	<th><div>작성자</div></th>
+     	<th><div>날짜</div></th>
+     	<th><div>조회수</div></th>
+     </tr>
+    </thead>
+    <tbody>
+	<th:block th:with="num=${listcount - (page -1)*limit}">
+	<th:block th:each="b, iterStat : ${boardlist}">
+	<tr>
+		<td><span th:text="${num - (iterStat.index )}"></span></td>
+		<td>
+			<div>
+				<th:block th:each="i : ${#numbers.sequence (1, b.BOARD_RE_LEV * 2, 1)}">&nbsp;</th:block>
+				<img th:src="@{/image/line.gif}" th:if="${b.BOARD_RE_LEV != 0}" />
+				<a th:href="@{'detail?num=' + ${b.BOARD_NUM}}">
+					<span th:text="${b.BOARD_SUBJECT}"></span>
+					<span class="gray" th:text="'[' + ${b.cnt} + ']'"></span>
+				</a>
+			</div>
+		</td>
+		<td><div th:text="${b.BOARD_NAME}"></div></td>
+		<td><div th:text="${b.BOARD_DATE}"></div></td>
+		<td><div th:text="${b.BOARD_READCOUNT}"></div></td>
+	</tr>
+  </th:block>
+ </th:block>
+    </tbody>
+   </table>
+
+      <th:block th:replace="~{fragments/paging :: paging('list', '')}"/>
+      </th:block>
+
+      <!-- 게시글이 없는 경우 -->
+      <div th:if="${listcount == 0}">
+          <font size="5">등록된 글이 없습니다.</font>
+      </div>
+
+      <button type="button" class="btn btn-info float-right">글 쓰 기 </button>
+ </div>
+</body>
+</html>
