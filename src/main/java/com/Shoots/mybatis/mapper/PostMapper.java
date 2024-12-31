@@ -13,9 +13,9 @@ import java.util.List;
 public interface PostMapper {
 
     // 글의 갯수 구하기
-    public int getListCount();
+    public int getListCount(String category);
 
-    public List<Post> getPostList(HashMap<String, Integer> map);
+    public List<Post> getPostList(HashMap<String, Object> map);
 
     // 글 등록하기
     public void insertPost(Post post);
