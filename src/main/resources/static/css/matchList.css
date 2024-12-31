@@ -7,3 +7,48 @@ nav.navbar {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.btnD {text-align: center; margin-top: 30px}
+button {font-size: 15px}
+
+.custom-btn {
+    width: 110px;
+    height: 35px;
+    border: 2px solid #65a30d;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.btn-15 {
+    background: #65a30d;
+    color: white;
+    z-index: 1;
+    border-radius: 20px;
+}
+.btn-15:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+.btn-15:hover {
+    color: #65a30d;
+}
+.btn-15:hover:after {
+    left: 0;
+    width: 100%;
+}
+
+.btn-15:active {
+    top: 2px;
+}

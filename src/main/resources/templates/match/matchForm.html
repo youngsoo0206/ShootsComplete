@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/matchForm.css}" rel="stylesheet">
+    <script th:src="@{/js/matchForm.js}"></script>
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{/match/add}" method="post" enctype="multipart/form-data" name="matchForm">
+            <div class="form-group">
+                <div class="divF">
+                    <span> 매칭 날짜 </span>
+                    <input name="MATCH_DATE" id="MATCH_DATE" type="date" maxlength="100"
+                           class="form-control">
+                </div>
+                <div class="divF">
+                    <span> 매칭 시간 </span>
+                    <select class="form-control" name="MATCH_TIME" id="MATCH_TIME" required>
+                        <option value="" disabled selected> 시간을 선택해주세요 </option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <div class="divF">
+                    <span> 최소 인원 </span>
+                    <input type = "number" class = "form-control playerMm" id = "PLAYER_MIN" name = "PLAYER_MIN" placeholder = "최소 인원" min = "4" max = "20" required>
+                </div>
+                <div class="divF">
+                    <span> 최대 인원 </span>
+                    <input type = "number" class = "form-control playerMm" id = "PLAYER_MAX" name = "PLAYER_MAX" placeholder = "최대 인원" min = "4" max = "20" required>
+                </div>
+                <div class="divF">
+                    <span> 가격 </span>
+                    <input type = "number" class="form-control" id = "PRICE" name = "PRICE" min = "1000" max="50000" step="1000" placeholder = "1인 가격">
+                </div>
+            </div>
+            <hr>
+        </form>
+    </div>
+</body>
+</html>
