@@ -4,9 +4,10 @@ import com.Shoots.domain.Faq;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface FaqMapper {
-    public List<Faq> getFaqList();
+    public List<Faq> getFaqList(); //faqList 가져오기
+
+    public int getListCount(); //faqList 갯수 확인
 }
