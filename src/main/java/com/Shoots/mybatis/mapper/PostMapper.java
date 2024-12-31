@@ -27,4 +27,14 @@ public interface PostMapper {
     public Post isPostWriter(HashMap<String, Object> map);
 
     Post getDetail(int num);
+
+    // 글 수정
+    public int boardModify(Post modifypost);
+
+    // 글 삭제
+    public int boardDelete(Post post);
+
+    public List<String> getDeleteFileList();
+
+    public void deleteFileList(String filename);
 }

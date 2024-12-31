@@ -81,5 +81,34 @@ public class PostController {
 
 
 
+    //글쓰기
+    @GetMapping(value = "/write")// /board/write
+    public String postWrite() {
+        return "post/post_write";
+    }
+
+
+    /*
+    스프링 컨테이너는 매개변수Board객체를 생성하고 Board객체의 setter 메서드들을 호출하여
+    사용자 입력값을 설정합니다.
+    매개변수의 이름과 setter의 property가 일치하면 됩니다.
+    */
+    @PostMapping("/add")
+    public String add(Post post, HttpServletRequest request)
+            throws Exception {
+
+        //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
+        MultipartFile uploadfile = post.getUploadfile();
+
+        if (!uploadfile.isEmpty()) {
+            String fileDBName = postService.saveUploadFile(uploadfile, saveFolder);
+            post.setPost_file(fileDBName); //바뀐 파일명으로 저장
+        }
+
+        postService.insertPost(post); // 저장메서드 호출
+        logger.info(post.toString()); //selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
+        return "redirect:list";
+    }
+
 
 }

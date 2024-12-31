@@ -1,0 +1,33 @@
+h1 {
+    font-size: 1.5em;
+    text-align: center;
+    color: green;
+}
+
+.btnc{
+	color : green;
+    background-color: #fff;
+    border-color: green;
+    border-radius : 20px; 
+    width : 80px; 
+	height : 35px;
+}
+
+.btnr{
+	color: #fff;
+    background-color: green;
+    border-color: green;
+    border-radius : 20px; 
+	border : 1px solid #408080;
+	width : 80px; 
+	height : 35px;
+}
+
+
+
+/* Radio 버튼과 Checkbox의 체크된 상태에서 내부 색상을 초록색으로 변경 */
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+    accent-color: green; /* 초록색으로 변경 */
+}
+

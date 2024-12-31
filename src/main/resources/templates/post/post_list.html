@@ -5,9 +5,9 @@
     <th:block th:replace="fragments/header :: header"></th:block>
     <meta charset="UTF-8">
     <title>게시판</title>
-    <script th:src="@{/js/list.js}"></script>
+    <script th:src="@{/js/postList.js}"></script>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/list.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/postList.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <body>
@@ -58,29 +58,13 @@
     </div>
 </div>
 
-<!-- 페이징 -->
-<div class="center-block">
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a th:href="|javascript:go(${page - 1})|"
-               class="page-link" th:classappend="${page <= 1} ? 'gray'"> &lt;&lt; </a>
-        </li>
-        <th:block th:each="a : ${#numbers.sequence(startpage, endpage)}">
-            <li class="page-item" th:classappend="${a == page} ? 'active'">
-                <a th:href="|javascript:go(${a})|" class="page-link" th:text="${a}"></a>
-            </li>
-        </th:block>
-        <li class="page-item">
-            <a th:href="|javascript:go(${page + 1})|"
-               class="page-link" th:classappend="${page >= maxpage} ? 'gray'"> &gt;&gt; </a>
-        </li>
-    </ul>
-</div>
+<th:block th:replace="~{fragments/paging :: paging('list', '')}"/>
 
 <!-- 글 작성 버튼 -->
 <div class="bD">
-    <button type="button" class="btnw" th:if="${idx == null}" th:onclick="postWriteN()">글 작성</button>
-    <button type="button" class="btn btn-info btnw" th:if="${idx != null}" th:onclick="postWrite()">글 작성</button>
+<!--    <button type="button" class="btnw" th:if="${idx == null}" th:onclick="postWriteN()">글 작성</button>-->
+<!--    <button type="button" class="btn btn-info btnw" th:if="${idx != null}" th:onclick="postWrite()">글 작성</button>-->
+    <button type="button" class="btn btn-info btnw"  th:onclick="postWrite()">글 작성</button>
 </div>
 
 </body>

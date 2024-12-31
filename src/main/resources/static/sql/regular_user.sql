@@ -12,3 +12,6 @@ CREATE TABLE regular_user (
                               register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 가입일
                               role VARCHAR(10) NOT NULL DEFAULT 'common' -- 역할
 );
+
+INSERT INTO regular_user (user_idx, password, name, jumin, gender, tel, email, nickname, user_file)
+VALUES ('testuser', 'password123', '홍길동', 123456789, 1, '010-1234-5678', 'testuser@example.com', '홍길동', 'profile.jpg');

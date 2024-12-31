@@ -19,6 +19,8 @@ public class Post {
     private int commentCount;  // 댓글 수 추가
     private String user_file;
 
+    private MultipartFile uploadfile;
+
 
     public int getPost_idx() {
         return post_idx;
@@ -139,4 +141,15 @@ public class Post {
     public void setUser_file(String user_file) {
         this.user_file = user_file;
     }
+
+
+    public MultipartFile getUploadfile() {
+        return uploadfile;
+    }
+
+    public void setUploadfile(MultipartFile uploadfile) {
+        this.uploadfile = uploadfile;
+    }
+
+
 }

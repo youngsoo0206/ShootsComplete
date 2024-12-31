@@ -110,4 +110,18 @@ public class PostServiceImpl implements PostService {
     public void setReadCountUpdate(int num) {
         dao.setReadCountUpdate(num);
     }
+
+    @Override
+    public Post getDetail(int num) {
+        dao.getDetail(num);
+        return dao.getDetail(num);
+    }
+
+
+    public boolean isPostWriter(int num) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("num", num);
+        Post result = dao.isPostWriter(map);
+        return result != null; // result가 null이면 false, null이 아니면 true 리턴합니다.
+    }
 }
