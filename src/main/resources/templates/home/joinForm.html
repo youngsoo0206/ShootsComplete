@@ -2,9 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원가입 페이지</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <script>
+        $(function(){
+            $(document).on('click', '.BusinessJoinBtn', function () {  //회원가입 페이지에서 기업 버튼 누르면 기업회원가입 페이지로 변경
+                $.ajax({
+                    url: 'businessJoinForm',
+                    method: 'GET',
+                    success: function(response) {
+                        $("#replaceJoinContent").html(response);
+                    },
+                    error: function() {
+                        alert("기업회원가입 페이지 불러오는 ajax 오류임 - 스크립트");
+                    }
+                });
+            }); //회원가입 - 기업가입 버튼 변경 끝
+
+
+            $(document).on('click', '.RegularJoinBtn', function () { //회원가입 페이지에서 개인 버튼 누르면 기업회원가입 페이지로 변경
+                $.ajax({
+                    url: 'regularJoinForm',
+                    method: 'GET',
+                    success: function(response) {
+                        $("#replaceJoinContent").html(response);
+                    },
+                    error: function() {
+                        alert("개인회원가입 페이지 불러오는 ajax 오류임 - 스크립트");
+                    }
+                });
+            }); //회원가입 - 개인가입 버튼 변경 끝
+
+
+        });
+    </script>
+
 </head>
 <body>
+
+<div id="replaceJoinContent">
+<th:block th:replace="~{fragments/regularJoinForm}"/>
+</div>
 
 </body>
 </html>
