@@ -46,6 +46,28 @@
 
 
 
+    <insert id="insertBoard">
+        <!-- 먼저 post_id (또는 BOARD_NUM)를 자동 증가 방식으로 가져옵니다 -->
+        <selectKey resultType="int" order="BEFORE" keyProperty="post_idx">
+            select nvl(max(post_idx), 0) + 1 from post
+        </selectKey>
+
+        <!-- 실제 insert 문 -->
+        insert into post
+        (post_idx, writer, category, title, content,
+        post_file, price, register_date, readcount)
+        values
+        (#{post_idx}, #{writer}, #{category}, #{title}, #{content},
+        #{post_file}, #{price}, current_timestamp, #{readcount})
+    </insert>
+
+
+
+    <update id="setReadCountUpdate">
+        update post
+        set READCOUNT = READCOUNT + 1
+        where POST_IDX = #{post_idx}
+    </update>
 
 
 

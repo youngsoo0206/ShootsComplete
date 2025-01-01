@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS regular_user;
 CREATE TABLE regular_user
 (
@@ -37,7 +36,7 @@ VALUES
     ('test7', 'a1', '강김임최', '980919', 2, '01098723231', 'uiasdf@naver.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),
     ('test8', 'a1', '강김임', '910203', 1, '01083848181', 'opghjk@naver.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),
     ('Admin', 'a1', '관리자', '990101', 1, '01074839283', 'admin@gmail.com', NULL, NULL, CURRENT_TIMESTAMP, 'admin');
-
+    
 -- 모든 사용자의 비밀번호를 'a1'로 업데이트
 UPDATE regular_user
 SET password = 'a1';
@@ -47,3 +46,4 @@ SELECT *
 FROM regular_user u
          JOIN payment p ON u.idx = p.buyer
 WHERE p.match_id = 31 AND p.status = 'SUCCESS';
+

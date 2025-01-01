@@ -10,3 +10,7 @@ CREATE TABLE post (
                       readcount INT DEFAULT 0, -- 조회수
                       CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
+
+
+INSERT INTO post (writer, category, title, content, price, readcount)
+VALUES (1, 'A', '테스트 게시글 제목', '이것은 테스트 게시글 내용입니다.', 100.00, 0);

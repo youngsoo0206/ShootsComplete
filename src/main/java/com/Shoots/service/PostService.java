@@ -83,4 +83,8 @@ public interface PostService {
 
     void setReadCountUpdate(int num);
 
+    Post getDetail(int num);
+
+    boolean isPostWriter(int postNum);
+
 }
