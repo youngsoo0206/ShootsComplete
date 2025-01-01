@@ -6,6 +6,7 @@ public class Faq {
     private String title;
     private String content;
     private String faq_file;
+    private String faq_original;
     private String register_date;
     private String name;
 
@@ -63,5 +64,13 @@ public class Faq {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFaq_original() {
+        return faq_original;
+    }
+
+    public void setFaq_original(String faq_original) {
+        this.faq_original = faq_original;
     }
 }

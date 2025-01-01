@@ -11,4 +11,8 @@
         order by faq_idx
     </select>
 
+    <select id="getListCount">
+        select count(*) from faq
+    </select>
+
 </mapper>
