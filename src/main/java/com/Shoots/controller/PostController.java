@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(value="/post")
 public class PostController {
 
-    @Value("${my.savefolder}")
+    //@Value("${my.savefolder}")
     private String saveFolder;
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);

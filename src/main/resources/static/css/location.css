@@ -8,9 +8,14 @@ nav.navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.mapDiv {display: flex; justify-content: center; align-items: center}
-#map {width: 800px; height : 500px; margin-top: 100px}
+.header {height: 56px}
+.titleD {text-align: center; margin-top: 30px}
+.titleS {font-size: 14px}
+h4 {margin-bottom: 12px}
 
-.zoomD {display: flex; justify-content: center; align-items: center; margin-top: 10px; gap: 10px}
+.mapDiv {display: flex; justify-content: center; align-items: center; margin-top: 30px}
+#map {width: 800px; height : 500px}
+
+.zoomD {display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px}
 
 .zoomD img {width: 35px; cursor: pointer}
