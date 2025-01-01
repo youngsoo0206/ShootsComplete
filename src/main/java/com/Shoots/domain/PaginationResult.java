@@ -57,6 +57,4 @@ public class PaginationResult {
             this.endpage = maxpage;
         }
     }
-
-
 }

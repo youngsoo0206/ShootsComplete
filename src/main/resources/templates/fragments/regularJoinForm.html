@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="regularJoinForm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+
+<form name="joinForm" method="post" th:action="@{/joinProcess}" >
+    <h1>회원가입 페이지</h1>
+    <hr>
+    <b>아이디</b>
+    <input type="text" placeholder="아이디를 입력해 주세요." name="id" maxLength="30" required>
+    <span id="id-message"></span>
+
+    <b>비밀번호</b>
+    <input type="password" placeholder="비밀번호를 입력해 주세요." name="password" required>
+
+    <b>이름</b>
+    <input type="text" placeholder="이름을 입력해 주세요." maxLength="20" name="name" required>
+
+    <b>주민등록번호</b>
+    <input type="text" placeholder="생년월일을 설정해 주세요." maxLength="6" name="jumin" required>
+
+
+    <b>이메일 주소</b>
+    <input type="text" name="email" placeholder="Enter email" maxLength="30" required>
+    <span id="email-message"></span>
+    <div class="clearfix">
+        <button type="submit" class="submitbtn">회원가입</button>
+        <button type="reset" class="cancelbtn">다시작성</button>
+    </div>
+</form>
+
+
+</body>
+</th:block>
+</html>

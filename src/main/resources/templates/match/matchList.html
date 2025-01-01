@@ -4,8 +4,46 @@
     <th:block th:replace="~{fragments/header :: header}" />
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/matchList.css}" rel="stylesheet">
+    <script th:src="@{/js/matchList.js}"></script>
 </head>
 <body>
-    matchList
+    <div class="container">
+        <th:blovk th:if="${listcount > 0}">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> 날짜 </th>
+                        <th> 시간 </th>
+                        <th> 장소 </th>
+                        <th> 성별 </th>
+                        <th> 참여인원 </th>
+                        <th> 신청현황 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:bolck th:with="num=${listcount - (page - 1) * limit}">
+                    <th:block th:each="match : ${matchList}">
+                        <tr>
+                            <td><div th:text="${match.MATCH_DATE}"></div></td>
+                            <td><div th:text="${match.MATCH_TIME}"></div></td>
+                            <td><div th:text="${match.WRITER}"></div></td>
+                            <td><div th:text="${match.PLAYER_GENDER}"></div></td>
+                            <td><div th:text="${match.PLAYER_MAX}"></div></td>
+                            <td><div>마감</div></td>
+                        </tr>
+                    </th:block>
+                    </th:bolck>
+                </tbody>
+            </table>
+        </th:blovk>
+
+        <div th:if="${listcount == 0}">
+            <p style="text-align: center; margin-top:100px; font-size: 18px;">등록된 글이 없습니다.</p>
+        </div>
+        <div class="btnD">
+            <button class="custom-btn btn-15" id="matchForm">매칭 글 작성</button>
+        </div>
+    </div>
 </body>
 </html>

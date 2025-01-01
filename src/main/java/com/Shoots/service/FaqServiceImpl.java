@@ -18,4 +18,9 @@ public class FaqServiceImpl implements FaqService{
     public List<Faq> getFaqList() {
         return dao.getFaqList();
     }
+
+    @Override
+    public int getListCount() {
+        return dao.getListCount();
+    }
 }

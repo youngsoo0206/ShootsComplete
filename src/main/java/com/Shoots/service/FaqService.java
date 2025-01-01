@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FaqService {
     public List<Faq> getFaqList();
+
+    public int getListCount();
 }
