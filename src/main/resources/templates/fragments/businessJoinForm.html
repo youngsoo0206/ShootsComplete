@@ -2,12 +2,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="businessJoinForm">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    </head>
+    <body>
+    <button type="button" class="RegularJoinBtn">개인</button>
+    <button type="button" class="BusinessJoinBtn">기업</button>
 
-</body>
+    <form name="businessJoinProcess" method="post" th:action="@{/businessJoinProcess}">
+        <h1>기업회원 가입 페이지</h1>
+        <hr>
+        <b>아이디</b>
+        <input type="text" placeholder="아이디를 입력해 주세요." name="id" maxLength="30" required>
+        <span id="id-message"></span>
+        <br>
+
+        <b>비밀번호</b>
+        <input type="password" placeholder="비밀번호를 입력해 주세요." name="password" required>
+        <br>
+
+        <b>기업명</b>
+        <input type="text" placeholder="기업의 이름을 입력해 주세요." maxLength="20" name="business-name" required>
+        <br>
+
+        <b>사업자번호</b>
+        <input type="number" placeholder="사업자번호를 입력해 주세요." maxLength="10" name="business-number" required>
+        <br>
+
+        <b>대표전화번호</b>
+        <input type="number" placeholder="기업의 대표 전화번호를 입력해 주세요." maxLength="18" name="tel" required>
+        <br>
+
+
+        <b>이메일 주소</b>
+        <input type="text" name="email" placeholder="Email을 입력해 주세요." maxLength="30" required>
+        <span id="email-message"></span>
+        <br>
+
+
+        <b>우편번호</b>
+        <input type="text" placeholder="우편번호를 입력해 주세요." name="post" required>
+        <br>
+
+        <b>상세주소</b>
+        <input type="text" placeholder="기업의 상세주소를 입력해 주세요." maxLength="40" name="address" required>
+        <br>
+
+        <div class="clearfix">
+            <button type="submit" class="submitbtn">회원가입</button>
+            <button type="reset" class="cancelbtn">다시작성</button>
+        </div>
+    </form>
+
+
+    </body>
 </th:block>
 </html>
