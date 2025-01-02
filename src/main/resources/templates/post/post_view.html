@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<th:block th:replace="fragments/header :: header"></th:block>
+	<meta charset="UTF-8">
+	<title>Post - View</title>
+	<script th:src="@{/js/postView.js}"></script>
+	<script th:src="@{/js/jquery-3.7.1.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/postView.css}" type="text/css">
+</head>
+<body>
+
+<input type="hidden" id="loginid" th:value="${id}" name="loginid"> <!-- 로그인한 유저의 id값 -->
+<input type="hidden" id="user_file" th:value="${user_file}" name="user_file">
+
+<input type="hidden" th:value="${postdata.post_idx}" id="post_idx" name="post_idx">
+
+<div class="container">
+	<!-- 게시글 정보 -->
+	<table class="table">
+		<tr>
+			<td colspan="2">
+				<div class="title" th:text="${postdata.title}"></div>
+				<th:block th:if="${postdata.user_file}">
+					<img th:src="@{${contextPath}/userupload/${postdata.user_file}}" alt="profile picture" style="height:25px; width:25px; border: 1px solid #ccc; border-radius: 50%;">
+				</th:block>
+				<th:block th:unless="${postdata.user_file}">
+					<img src="{{contextPath}}/img/info.png" alt="default profile" style="height:25px; width:25px;">
+				</th:block>
+				<span class="user_id" th:text="${postdata.user_id}"></span>
+				<span class="register_date" style="margin-left: 30px;" th:text="${postdata.register_date}"></span>
+				<span class="readcount" style="margin-left: 30px;">조회수&nbsp; <span th:text="${postdata.readcount}"></span></span>
+
+				<div style="float:right">
+<!--					<th:block th:include="report/postReport :: report"></th:block>-->
+				</div>
+			</td>
+		</tr>
+
+		<th:block th:if="${postdata.post_file}">
+			<tr>
+				<td>
+					<img th:src="@{${contextPath}/postupload/${postdata.post_file}}" style="width: 300px">
+					<br>
+					<a th:href="@{${contextPath}/down?filename=${postdata.post_file}}" th:text="${postdata.post_file}"></a>
+				</td>
+			</tr>
+		</th:block>
+
+		<tr>
+			<td style="padding-right: 0px">
+				<div class="contentD">
+					<pre th:text="${postdata.content}"></pre>
+				</div>
+			</td>
+		</tr>
+
+		<th:block th:if="${postdata.category == 'B'}">
+			<tr>
+				<td>가격: &nbsp; <span th:text="${postdata.price}"></span>원</td>
+			</tr>
+		</th:block>
+
+		<tr>
+			<td colspan="2" class="center">
+				<!-- 수정, 삭제 버튼은 로그인한 유저의 아이디 = 글 작성자일 때 혹은 id가 관리자일 때만 보이게 함 -->
+				<th:block th:if="${postdata.writer == idx or id == 'admin'}">
+					<a th:href="@{modify?num=${postdata.post_idx}}">
+						<button class="modifyBtn">수정</button>
+					</a>
+					<button class="deleteBtn" id="delete-post-btn">삭제</button>
+				</th:block>
+				<a th:href="@{list}">
+					<button class="listBtn">목록</button>
+				</a>
+			</td>
+		</tr>
+	</table>
+
+	<!-- 댓글창 -->
+	<div class="comment-area">
+		<div class="comment-head">
+			<h3 class="comment-count">댓글 <sup id="count"></sup></h3>
+			<div class="comment-order">
+				<ul class="comment-order-list"></ul>
+			</div>
+		</div>
+
+		<ul class="comment-list"></ul>
+		<div class="comment-write">
+			<div class="comment-write-area">
+				<b class="comment-write-area-name" th:text="${id}"></b>
+				<span class="comment-write-area-count">0/200</span>
+				<textarea placeholder="댓글을 남겨보세요" rows="1" class="comment-write-area-text" maxlength="200"></textarea>
+			</div>
+			<div class="register-box">
+				<div class="button btn-cancel">취소</div>
+				<div class="button btn-register">등록</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- 모달창 시작-->
+<div class="modal c-report-modal fade" style="display:none">
+	<div class="modal-dialog" role="document" style="position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 750px;">
+		<div class="modal-content">
+			<form action="${contextPath}/report/add" method="post" name="reportform" id="reportform">
+				<p class="reportT">댓글 신고</p>
+				<input type="hidden" name="report_type" class="report_type" value="B">
+				<input type="hidden" name="reporter" class="reporter" th:value="${idx}">
+				<input type="hidden" name="target" class="target" value="">
+				<input type="hidden" name="report_ref_id" class="report_ref_id" value="">
+				<input type="hidden" name="post_idx" class="post_idx" th:value="${postdata.post_idx}">
+
+				<p class="reportR">
+					<span class="redColor">★&nbsp;</span>신고사유
+				</p>
+
+				<div id="title">
+					<select name="title" required>
+						<option disabled selected hidden>신고 사유를 선택해 주세요</option>
+						<option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 댓글</option>
+						<option value="갈등 조장하는 댓글">갈등 조장하는 댓글</option>
+						<option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
+						<option value="도배 목적의 댓글">도배 목적의 댓글</option>
+						<option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 댓글</option>
+						<option value="직접 입력">직접 입력</option>
+					</select>
+				</div>
+
+				<div id="content">
+					<textarea placeholder="내용을 작성해 주세요." maxlength="300" name="content" required></textarea>
+				</div>
+
+				<div id="reportbutton">
+					<button class="reportBtn">신고하기</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- 모달창 끝 -->
+
+<script>
+	$(function(){
+		$('#delete-post-btn').click(function(){
+			if (confirm("게시글을 삭제하시겠습니까?")) {
+				$.ajax({
+					type: "POST",
+					url: "delete?num=${postdata.post_idx}",
+					success: function(response) {
+						alert("삭제되었습니다.");
+						location.href = "../post/list";
+					},
+					error: function() {
+						alert("삭제 실패. 다시 시도해주세요.");
+					}
+				});
+			}
+		});
+	});
+
+	const contextPath = /*[[${pageContext.request.contextPath}]]*/ "";
+	const role = /*[[${role}]]*/ "";
+</script>
+
+</body>
+</html>

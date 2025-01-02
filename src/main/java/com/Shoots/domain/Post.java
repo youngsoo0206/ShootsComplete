@@ -12,7 +12,7 @@ public class Post {
     private int price;
     private String register_date;
     private int readcount;
-    private String user_idx;
+    private String user_id;
     private int idx;
     private int comment_idx;
     private int comment_ref_idx;
@@ -94,12 +94,12 @@ public class Post {
         this.readcount = readcount;
     }
 
-    public String getUser_idx() {
-        return user_idx;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setUser_idx(String user_idx) {
-        this.user_idx = user_idx;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public int getIdx() {

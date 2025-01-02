@@ -29,10 +29,10 @@ public interface PostMapper {
     Post getDetail(int num);
 
     // 글 수정
-    public int boardModify(Post modifypost);
+    public int postModify(Post modifypost);
 
     // 글 삭제
-    public int boardDelete(Post post);
+    public int postDelete(Post post);
 
     public List<String> getDeleteFileList();
 
