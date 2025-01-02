@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,13 @@ public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private final RegularUserService regularUserService;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public LoginController(RegularUserService regularUserService) {
+
+    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder) {
         this.regularUserService = regularUserService;
+        this.passwordEncoder = passwordEncoder;
     }
-
 
     @GetMapping(value = "/login")
     public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
@@ -43,6 +47,12 @@ public class LoginController {
         }
 
         return mv;
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 
 
@@ -67,10 +77,11 @@ public class LoginController {
 
         ModelAndView mv = new ModelAndView();
         response.setContentType("text/html;charset=UTF-8");
+
         //비밀번호 암호화 추가
-//        String encPassword = passwordEncoder.encode(user.getPassword());
-//        logger.info(encPassword);
-//        user.setPassword(encPassword);
+        String encPassword = passwordEncoder.encode(user.getPassword());
+        logger.info(encPassword);
+        user.setPassword(encPassword);
 
         int result = regularUserService.insert(user);
         PrintWriter out = response.getWriter();
@@ -96,13 +107,32 @@ public class LoginController {
         return regularUserService.selectById(id);
     }
 
-    @PostMapping(value = "/loginProcess")
-    public String loginProcess(String id, String password, RedirectAttributes rattr, HttpSession session,
-                               HttpServletResponse response) {
-        int result = regularUserService.selectByIdPassword(id, password);
-
-        return null;
-    }
+//    @PostMapping(value = "/loginProcess")
+//    public String loginProcess(String id, String password, RedirectAttributes rattr, HttpSession session,
+//                               HttpServletResponse response) throws IOException {
+//        PrintWriter out = response.getWriter();
+//
+//        int result = regularUserService.selectByIdPassword(id, password);
+//
+//        if (result == 1) { //로그인 성공
+//            RegularUser loginUser = regularUserService.selectWithId(id);
+//            session.setAttribute("id", id);
+//            session.setAttribute("user_id", loginUser.getUser_id());
+//            session.setAttribute("role", loginUser.getRole());
+//            logger.info("role이랑 user_id는? : " + loginUser.getRole() + loginUser.getUser_id());
+////            return "redirect:/main";  //LoginSuccessHandler 에서 경로를 처리하기 때문에 필요 없음.
+//        } else if (result == 0) {
+//            out.println("<script type='text/javascript'>");
+//            out.println("alert('비밀번호가 일치하지 않습니다.');");
+//            out.println("</script>");
+//        }  else if (result == -1) {
+//            out.println("<script type='text/javascript'>");
+//            out.println("alert('아이디가 일치하지 않습니다.');");
+//            out.println("</script>");
+//        }
+//
+//        return null;
+//    } //loginProces 끝
 
 
 

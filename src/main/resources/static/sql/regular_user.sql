@@ -3,7 +3,7 @@ CREATE TABLE regular_user
 (
     idx           INT AUTO_INCREMENT PRIMARY KEY,
     user_id       VARCHAR(30)                  NOT NULL,
-    password      VARCHAR(20)                  NOT NULL,
+    password      VARCHAR(100)                  NOT NULL,
     name          VARCHAR(20)                  NOT NULL,
     jumin         VARCHAR(9)                   NOT NULL,
     gender        TINYINT                      NOT NULL,

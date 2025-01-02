@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS business_user;
 CREATE TABLE business_user(
     business_idx    INT AUTO_INCREMENT PRIMARY KEY,
     business_id     VARCHAR(30)  NOT NULL,
-    password        VARCHAR(20)  NOT NULL,
+    password        VARCHAR(100)  NOT NULL,
     business_name   VARCHAR(100) NOT NULL,
     business_number varchar(10)       NOT NULL,
     tel             VARCHAR(15)  NOT NULL,
@@ -14,7 +14,8 @@ CREATE TABLE business_user(
     description     TEXT,
     business_file   VARCHAR(50),
     register_date   TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
-    login_status    VARCHAR(9) DEFAULT 'pending'
+    login_status    VARCHAR(9) DEFAULT 'pending',
+    role          VARCHAR(10) DEFAULT 'common' NOT NULL
 );
 
 -- DROP SEQUENCE과 관련된 코드
