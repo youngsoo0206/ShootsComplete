@@ -1,5 +1,7 @@
 @charset "UTF-8";
-
+h1{
+    text-align: center;
+}
 .accordion {
     background: white;
     color: #444;
@@ -25,7 +27,7 @@
 
 .accordion:hover {color: white; background: #059669; border: 1.5px solid #059669;  opacity: 0.7;}
 
-.accordion-body{
+.panel{
 	border-radius : 30px;
 	padding: 0 18px;
   	max-height: 0;
