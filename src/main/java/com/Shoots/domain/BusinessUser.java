@@ -14,6 +14,15 @@ public class BusinessUser {
     private String business_file;
     private String register_date;
     private String login_status;
+    private String role = "common";
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public int getBusiness_idx() {
         return business_idx;

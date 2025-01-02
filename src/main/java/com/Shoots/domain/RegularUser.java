@@ -1,6 +1,17 @@
 package com.Shoots.domain;
 
-public class RegularUser {
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class RegularUser implements UserDetails {
+
     private int idx;
     private String user_id;
     private String password;
@@ -12,8 +23,42 @@ public class RegularUser {
     private String nickname;
     private String user_file;
     private String register_date;
-    private String role;
+    private String role = "common";
     private int matchId;
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        list.add(new SimpleGrantedAuthority(this.getRole()));
+        return list;
+    }
+
+    @Override
+    public String getUsername() {
+        return user_id;
+    }
+
 
     public int getIdx() {
         return idx;
@@ -104,7 +149,7 @@ public class RegularUser {
     }
 
     public String getRole() {
-        return role;
+      return role;
     }
 
     public void setRole(String role) {

@@ -23,8 +23,15 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <div th:if="${session.id == null}">
                     <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
+                    </div>
+                    <div th:if="${session.id != null}">
+                    <a class="nav-link active" aria-current="page" th:href="@{/#}">[[${session.id}]]님</a>
+                    </div>
                 </li>
+                <h1>
+                </h1>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">로그아웃</a>
                 </li>

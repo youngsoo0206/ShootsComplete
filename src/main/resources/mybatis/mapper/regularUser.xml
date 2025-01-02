@@ -5,7 +5,11 @@
 <mapper namespace="com.Shoots.mybatis.mapper.RegularUserMapper">
 
     <select id="selectById" resultType="regularuser">
-        select * from regular_user where id = #{id}
+        select * from regular_user where user_id = #{id}
+    </select>
+
+    <select id="selectWithId" resultType="regularuser">
+        select * from regular_user where user_id = #{id}
     </select>
 
 
