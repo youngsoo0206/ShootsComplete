@@ -1,5 +1,5 @@
 function populateTimeOptions() {
-    var select = document.getElementById('MATCH_TIME');
+    var select = document.getElementById('match_time');
     for (var hour = 9; hour < 24; hour++) {
         for (var minute of [0, 30]) {
             var hourFormatted = hour.toString().padStart(2, '0');
@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
     populateTimeOptions();
 
     document.matchForm.onsubmit = function(event) {
-        var playerMin = parseInt(document.getElementById('PLAYER_MIN').value);
-        var playerMax = parseInt(document.getElementById('PLAYER_MAX').value);
-        var price = parseInt(document.getElementById('PRICE').value);
+        var playerMin = parseInt(document.getElementById('player_min').value);
+        var playerMax = parseInt(document.getElementById('player_max').value);
+        var price = parseInt(document.getElementById('price').value);
 
         if (playerMin > playerMax) {
             alert('최소 인원은 최대 인원보다 클 수 없습니다.');
@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    $('.backBtn').click(function() {
-        location.href = "../matchs/list";
+    $('.btn-list').click(function(event) {
+        event.preventDefault();
+        location.href = "../match/list";
     });
 });

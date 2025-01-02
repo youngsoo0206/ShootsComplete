@@ -14,4 +14,44 @@
         ORDER BY MATCH_DATE DESC, MATCH_TIME DESC
             LIMIT #{limit} OFFSET #{offset};
     </select>
+
+    <insert id="insertMatch">
+        INSERT INTO MATCH_POST (
+            WRITER,
+            MATCH_DATE,
+            MATCH_TIME,
+            PLAYER_MAX,
+            PLAYER_MIN,
+            PLAYER_GENDER,
+            MATCH_LEVEL,
+            TEAM_STYLE,
+            PRICE,
+            REGISTER_DATE
+        ) VALUES (
+                     #{writer},
+                     #{match_date},
+                     #{match_time},
+                     #{player_max},
+                     #{player_min},
+                     #{player_gender},
+                     #{match_level},
+                     #{team_style},
+                     #{price},
+                     CURRENT_TIMESTAMP
+                 );
+    </insert>
+
+    <select id="getDetail" resultType="match">
+        select * from MATCH_POST where MATCH_IDX = #{match_idx}
+    </select>
+
+    <update id="updateMatch">
+        update MATCH_POST set MATCH_DATE = #{match_date}, MATCH_TIME = #{match_time}, MATCH_LEVEL = #{match_level}, TEAM_STYLE = #{team_style},
+                              PLAYER_MIN = #{player_min},  PLAYER_MAX = #{player_max},  PLAYER_GENDER = #{player_gender}, PRICE = #{price}
+        where MATCH_IDX = #{match_idx}
+    </update>
+
+    <delete id="deleteMatch">
+        delete from MATCH_POST where MATCH_IDX = #{match_idx}
+    </delete>
 </mapper>

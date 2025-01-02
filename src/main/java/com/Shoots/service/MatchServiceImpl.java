@@ -18,7 +18,7 @@ public class MatchServiceImpl implements MatchService{
 
     @Override
     public void insertMatch(Match match) {
-
+        dao.insertMatch(match);
     }
 
     @Override
@@ -37,5 +37,20 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public int getListCount() {
         return dao.getListCount();
+    }
+
+    @Override
+    public Match getDetail(int matchIdx) {
+        return dao.getDetail(matchIdx);
+    }
+
+    @Override
+    public int updateMatch(Match match) {
+        return dao.updateMatch(match);
+    }
+
+    @Override
+    public int deleteMatch(int matchIdx) {
+        return dao.deleteMatch(matchIdx);
     }
 }

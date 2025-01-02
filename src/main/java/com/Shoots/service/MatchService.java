@@ -9,4 +9,10 @@ public interface MatchService {
     public List<Match> getMatchList(int page, int limit);
 
     int getListCount();
+
+    Match getDetail(int matchIdx);
+
+    int updateMatch(Match match);
+
+    int deleteMatch(int matchIdx);
 }
