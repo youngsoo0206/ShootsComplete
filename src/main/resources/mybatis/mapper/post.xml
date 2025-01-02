@@ -36,17 +36,17 @@
         사용하는 방법은 <![CDATA[ 와 ]]> 사이에 문자들을 넣으면 됩니다.
     -->
     <select id="getPostList" resultType="post">
-        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_idx
+        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount
         FROM post p
-                 INNER JOIN regular_user r ON p.writer = r.idx
         WHERE p.category = #{category}
         ORDER BY p.register_date DESC
-            LIMIT #{start}, #{end}  -- MySQL의 LIMIT과 OFFSET 사용
+            LIMIT #{start}, #{end}
     </select>
 
 
 
-    <insert id="insertBoard">
+
+    <insert id="insertPost">
         <!-- 먼저 post_id (또는 BOARD_NUM)를 자동 증가 방식으로 가져옵니다 -->
         <selectKey resultType="int" order="BEFORE" keyProperty="post_idx">
             select nvl(max(post_idx), 0) + 1 from post
@@ -72,6 +72,56 @@
 
 
 
+    <select id="getDetail" resultType="Post">
+        select * from(
+                         select p.*, r.user_id, r.idx, r.user_file
+                         from post p
+                                  join regular_user r
+                                       on p.writer = r.idx
+                         order by post_idx desc
+                     )
+        where post_idx = #{post_idx}
+    </select>
+
+
+
+    <select id="isPostWriter" resultType="Post">
+        select writer
+        from post
+        where post_idx=#{post_idx}
+--         and writer=#{idx}
+    </select>
+
+
+
+    <update id="postModify">
+        update post
+        set title=#{title},
+            content=#{content},
+            price=#{price},
+            post_file=#{post_file}
+        where post_idx = #{post_idx}
+    </update>
+
+
+    <delete id="boardDelete">
+        delete from post
+        where post_idx=#{post_idx}
+    </delete>
+
+
+
+
+
+    <select id="getDeleteFileList" resultType="String">
+        select post_file from delete_file
+    </select>
+
+
+    <delete id="deleteFileList">
+        delete delete_file
+        where post_file=#{file_name}
+    </delete>
 
 
 </mapper>

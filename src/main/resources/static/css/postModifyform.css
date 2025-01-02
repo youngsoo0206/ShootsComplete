@@ -1,0 +1,33 @@
+img {
+    width: 20px;
+}
+
+
+h1{
+	font-size:1.5em; 
+	text-align:center; 
+	color:green
+ }
+ 
+ 
+ /*수정 제출 버튼*/
+.btnc{
+	color : green;
+    background-color: #fff;
+    border-color: green;
+    border-radius : 20px; 
+    width : 80px; 
+	height : 35px;
+}
+
+ /*취소 버튼*/
+.btnr{
+	color: #fff;
+    background-color: green;
+    border-color: green;
+    border-radius : 20px; 
+	border : 1px solid #408080;
+	width : 80px; 
+	height : 35px;
+}
+ 

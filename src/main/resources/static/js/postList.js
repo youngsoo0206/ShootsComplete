@@ -52,14 +52,26 @@ function ajax(sdata) {
     console.log(sdata);
 
     isRequestInProgress = true;
+    // let token = $("meta[name='_csrf']").attr("content");
+    // let header = $("meta[name='_csrf_header']").attr("content");
 
     $.ajax({
+
         data: sdata,
         url: "/Shoots/post/list/ajax",  // URL은 Spring Boot 컨텍스트 경로에 맞게 수정 필요
         dataType: "json",
         cache: false,
+        // beforeSend : function(xhr)
+        // {   //데이터를 전송하기 전에 헤더에 csrf값을 설정합니다.
+        //     xhr.setRequestHeader(header, token);
+        // },
         success: function(data) {
             console.log(data);
+
+
+            // 기존 tbody 내용 제거
+            $("table tbody").remove();
+
             if (data.listcount > 0) {
                 $("thead").show();
                 updatePostList(data); // 게시글 목록 업데이트
@@ -88,13 +100,18 @@ function ajax(sdata) {
 function updatePostList(data) {
     var category = data.category;
     var postList = data.postlist;
+
+    //num 추가 @@@@
+    let num = data.listcount - (data.page - 1) * data.limit;
+
     var tableBody = $('#' + (category === 'A' ? 'postListA' : 'postListB'));
     tableBody.empty();  // 기존 내용 비우기
 
     // 새로 받은 게시글 목록을 테이블에 추가
     postList.forEach(function(post) {
         var row = $('<tr>');
-        row.append('<td>' + post.post_idx + '</td>');
+        //row.append('<td>' + post.post_idx + '</td>');
+        row.append('<td>' + num-- + '</td>'); // num으로 대체 @@@@
 
         // 중고게시판(카테고리B)의 경우 -> 파일첨부(미리보기),가격 추가
         if (category === 'B') {
@@ -142,6 +159,13 @@ $(document).ready(function() {
 
 // 카테고리 변경 시 게시글 목록을 비동기적으로 불러오는 함수
 function switchCategory(category) {
+
+    // 기존 활성화 상태 초기화
+    $(".nav-link").removeClass("active");
+
+    // 클릭된 탭에 활성화 상태 추가
+    $(`#tab${category}`).addClass("active");
+
     $.ajax({
         url: '/Shoots/post/list/ajax',
         type: 'GET',

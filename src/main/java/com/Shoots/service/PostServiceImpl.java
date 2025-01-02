@@ -113,7 +113,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getDetail(int num) {
-        dao.getDetail(num);
         return dao.getDetail(num);
     }
 
@@ -124,4 +123,31 @@ public class PostServiceImpl implements PostService {
         Post result = dao.isPostWriter(map);
         return result != null; // result가 null이면 false, null이 아니면 true 리턴합니다.
     }
+
+    @Override
+    public int postModify(Post modifypost) {
+        return dao.postModify(modifypost);
+    }
+
+
+    @Override
+    public int postDelete(int num) {
+        int result = 0;
+        Post post = dao.getDetail(num);
+        if(post != null) {
+            result = dao.postDelete(post);
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> getDeleteFileList() {
+        return dao.getDeleteFileList();
+    }
+
+    @Override
+    public void deleteFileList(String filename) {
+        dao.deleteFileList(filename);
+    }
+
 }
