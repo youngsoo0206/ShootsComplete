@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Shoots.mybatis.mapper.NoticeMapper">
+
+    <sql id="search_">
+        <if test="search_word != null">
+            like #{search_word}
+        </if>
+    </sql>
+
+    <select id="getSearchListCount">
+        select count(*)
+        from notice
+        <include refid="search_" />
+    </select>
+
+    <select id="getNoticeList">
+        select *
+        from (select rownum rnum, b.*
+              from (select * from notice n
+                             join regular_user u
+                             on n.writer = u.idx
+                             <include refid="search_" />
+                             order by n.notice_idx) b
+              where rownum &lt; = #{end})
+        where rnum &gt;= #{start} and rnum &lt;=#{end}
+    </select>
+
+    <select id="getDetail">
+        select *
+        from notice
+        where notice_idx=#{id}
+    </select>
+
+    <update id="setReadCountUpdate">
+        update notice set readcount = readcount + 1
+        where notice_idx = #{id}
+    </update>
+
+
+
+</mapper>
