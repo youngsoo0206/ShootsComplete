@@ -10,4 +10,12 @@ import java.util.List;
 public interface MatchMapper {
     public int getListCount();
     List<Match> getMatchList(HashMap<String, Integer> map);
+
+    void insertMatch(Match match);
+
+    Match getDetail(int matchIdx);
+
+    int updateMatch(Match match);
+
+    int deleteMatch(int matchIdx);
 }

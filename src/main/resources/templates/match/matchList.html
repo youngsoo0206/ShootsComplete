@@ -13,10 +13,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th> 날짜 </th>
-                        <th> 시간 </th>
+                        <th> 매칭 날짜 </th>
+                        <th> 매칭 시간 </th>
                         <th> 장소 </th>
-                        <th> 성별 </th>
+                        <th> 플레이어 성별 </th>
                         <th> 참여인원 </th>
                         <th> 신청현황 </th>
                     </tr>
@@ -25,12 +25,21 @@
                     <th:bolck th:with="num=${listcount - (page - 1) * limit}">
                     <th:block th:each="match : ${matchList}">
                         <tr>
-                            <td><div th:text="${match.MATCH_DATE}"></div></td>
-                            <td><div th:text="${match.MATCH_TIME}"></div></td>
-                            <td><div th:text="${match.WRITER}"></div></td>
-                            <td><div th:text="${match.PLAYER_GENDER}"></div></td>
-                            <td><div th:text="${match.PLAYER_MAX}"></div></td>
-                            <td><div>마감</div></td>
+                            <td><div th:text="${match.formattedDate}"></div></td>
+                            <td><div th:text="${match.match_time}"></div></td>
+                            <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}"><div th:text="${match.writer}"></div></a></td>
+                            <td>
+                                <div th:switch="${match.player_gender}">
+                                    <span th:case="'f'">여자</span>
+                                    <span th:case="'m'">남자</span>
+                                    <span th:case="a">남녀무관</span>
+                                </div>
+                            </td>
+                            <td><span th:text="${match.player_min}"></span>인 ~ <span th:text="${match.player_max}"></span>인</td>
+                            <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
+                            </td>
+<!--                            <td><button type="button" class="custom-btnS btn-5">마감임박</button></td>-->
                         </tr>
                     </th:block>
                     </th:bolck>
