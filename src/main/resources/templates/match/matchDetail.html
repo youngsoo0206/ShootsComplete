@@ -6,9 +6,12 @@
     <title>Title</title>
     <link th:href="@{/css/matchDetail.css}" rel="stylesheet">
     <script th:src="@{/js/matchDetail.js}"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script th:src="@{/js/Payment.js}"></script>
 </head>
 <body>
     <div class="container">
+        <input type="hidden" th:text="${match.match_idx}">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -86,7 +89,8 @@
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button class="button button--moema button--text-upper button--size-s">신청하기</button>
+                    <button id="paymentButton" class="button button--moema button--text-upper button--size-s" onclick="requestPayment()"
+                            th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}">신청하기</button>
                     <p class="btn-status"> 현재 자리 남았습니다 </p>
                 </div>
             </div>
@@ -102,5 +106,41 @@
             </form>
         </div>
     </div>
+    <script>
+        function requestPayment() {
+            const IMP = window.IMP; // 생략 가능: CDN으로 불러온 IMP 객체
+            IMP.init("imp35523152"); // 포트원 콘솔에서 발급받은 가맹점 식별코드로 변경
+
+            var merchant_uid = 'merchant_' + new Date().getTime();
+
+            const matchIdx = document.getElementById('paymentButton').getAttribute('data-matchIdx');
+            const price = document.getElementById('paymentButton').getAttribute('data-price');
+
+            IMP.request_pay(
+                {
+                    channelKey: "channel-key-7cf4f649-e97f-4e5f-906e-30ec63d4f44c", // 콘솔 내 채널키
+                    pay_method: "card", // 결제 수단 (예: 카드)
+                    merchant_uid: merchant_uid, // 고유 주문번호 (동적으로 생성)
+                    name: matchIdx + ' 번 매치 - 플레이어 신청',
+                    amount: price, // 결제 금액
+                    buyer_email: "test@portone.io", // 구매자 이메일
+                    buyer_name: "홍길동", // 구매자 이름
+                    buyer_tel: "010-1234-5678", // 구매자 전화번호
+                    language: "ko", // 결제창 언어 (한국어: 'ko', 영문: 'en')
+                },
+                function (rsp) {
+                    if (rsp.success) {
+                        // 결제 성공 처리
+                        alert("결제가 성공적으로 완료되었습니다.");
+                        console.log(rsp); // 성공 결과 확인 (예: 결제 고유 ID, 주문번호 등)
+                    } else {
+                        // 결제 실패 처리
+                        alert(`결제에 실패하였습니다. 에러 메시지: ${rsp.error_msg}`);
+                        console.log(rsp); // 실패 결과 확인 (예: 에러 코드, 메시지 등)
+                    }
+                }
+            );
+        }
+    </script>
 </body>
 </html>
