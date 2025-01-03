@@ -1,5 +1,7 @@
 package com.Shoots.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Faq {
     private int faq_idx;
     private int writer;
@@ -9,6 +11,16 @@ public class Faq {
     private String faq_original;
     private String register_date;
     private String name;
+
+    private MultipartFile uploadfile;
+
+    public MultipartFile getUploadfile() {
+        return uploadfile;
+    }
+
+    public void setUploadfile(MultipartFile uploadfile) {
+        this.uploadfile = uploadfile;
+    }
 
     public int getFaq_idx() {
         return faq_idx;

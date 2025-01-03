@@ -6,6 +6,7 @@
 
     <sql id="search_">
         <if test="search_word != null">
+            where title
             like #{search_word}
         </if>
     </sql>
@@ -17,20 +18,21 @@
     </select>
 
     <select id="getNoticeList">
-        select *
-        from (select rownum rnum, b.*
-              from (select * from notice n
-                             join regular_user u
-                             on n.writer = u.idx
-                             <include refid="search_" />
-                             order by n.notice_idx) b
-              where rownum &lt; = #{end})
-        where rnum &gt;= #{start} and rnum &lt;=#{end}
+        SELECT *
+        FROM (
+        SELECT @rownum := @rownum + 1 AS rnum, n.*, u.name
+        FROM notice n
+        JOIN regular_user u ON n.writer = u.idx
+        <include refid="search_" />
+        ORDER BY n.notice_idx
+        ) p
+
     </select>
+<!--WHERE rnum &gt;= #{start} AND rnum &lt;= #{end} -->
 
     <select id="getDetail">
         select *
-        from notice
+        from notice n join regular_user u on n.writer = u.idx
         where notice_idx=#{id}
     </select>
 
