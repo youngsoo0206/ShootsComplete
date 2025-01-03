@@ -1,7 +1,7 @@
 package com.Shoots.controller;
 
+import com.Shoots.domain.BusinessUser;
 import com.Shoots.domain.RegularUser;
-import com.Shoots.security.CustomUserDetailsService;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 public class HomeController {
     private static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @GetMapping("/mainBefore")
+    @GetMapping("/mainBeforeRegular")
     public String home(@AuthenticationPrincipal RegularUser regularUser, HttpSession session) {
         if (regularUser != null) {
             logger.info(regularUser.getRole());
@@ -23,6 +23,19 @@ public class HomeController {
         }
         return "redirect:/main";
     }
+
+    @GetMapping("/mainBeforeBusiness")
+    public String home(@AuthenticationPrincipal BusinessUser businessUser, HttpSession session) {
+        if (businessUser != null) {
+            logger.info(businessUser.getRole());
+            session.setAttribute("idx", businessUser.getBusiness_idx());
+            session.setAttribute("business_id", businessUser.getBusiness_id());
+            session.setAttribute("business_number", businessUser.getBusiness_number());
+            session.setAttribute("role", businessUser.getRole());
+        }
+        return "redirect:/main";
+    }
+
 
     @GetMapping(value = "/main")
     public String main() {

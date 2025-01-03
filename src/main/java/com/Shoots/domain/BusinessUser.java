@@ -1,6 +1,14 @@
 package com.Shoots.domain;
 
-public class BusinessUser {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class BusinessUser implements UserDetails {
     private int business_idx;
     private String business_id;
     private String password;
@@ -14,7 +22,41 @@ public class BusinessUser {
     private String business_file;
     private String register_date;
     private String login_status;
-    private String role = "common";
+    private String role = "business";
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        list.add(new SimpleGrantedAuthority(this.getRole()));
+        return list;
+    }
+
+    @Override
+    public String getUsername() {
+        return business_id;
+    }
 
     public String getRole() {
         return role;

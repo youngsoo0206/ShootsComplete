@@ -22,13 +22,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         logger.info("로그인 성공 : LoginSuccessHandler");
+        logger.info(authentication.getName());
 
-        HttpSession session = request.getSession();
-        //CustomUserDetailsService 에다가 session으로 뽑아올 정보들을 필드로 등록하고 getter,setter 만든 뒤 여기다 지정
-
-
-
-        String url = request.getContextPath()+"/mainBefore";
+        String url = request.getContextPath()+"/mainBeforeRegular";
         response.sendRedirect(url);
     }
 }

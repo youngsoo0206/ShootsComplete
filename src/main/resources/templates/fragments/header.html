@@ -22,6 +22,10 @@
             </div>
 
             <ul class="navbar-nav ms-auto">
+                <h1>세션 실험
+                id = [[${session.id}]];;
+                    role = [[${session.role}]];;
+                </h1>
                 <li class="nav-item">
                     <div th:if="${session.id == null}">
                     <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
@@ -30,8 +34,6 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/#}">[[${session.id}]]님</a>
                     </div>
                 </li>
-                <h1>
-                </h1>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">로그아웃</a>
                 </li>
