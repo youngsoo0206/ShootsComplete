@@ -25,7 +25,7 @@ import java.util.Map;
 @RequestMapping(value="/post")
 public class PostController {
 
-    //@Value("${my.savefolder}")
+    @Value("${my.savefolder}")
     private String saveFolder;
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -134,9 +134,8 @@ public class PostController {
         if (!uploadfile.isEmpty()) {
             String fileDBName = postService.saveUploadFile(uploadfile, saveFolder);
             post.setPost_file(fileDBName); //바뀐 파일명으로 저장
+            post.setPost_original(uploadfile.getOriginalFilename()); // 원래 파일명 저장
         }
-
-
 
         // 카테고리 처리
         if ("B".equals(post.getCategory())) {
@@ -145,12 +144,7 @@ public class PostController {
             post.setPrice(0); // 기타 카테고리는 가격을 0으로 설정
         }
 
-
-
-
-
         postService.insertPost(post); // 저장메서드 호출
-
         logger.info("Post added: " + post.toString()); //selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
         return "redirect:list";
     }
@@ -231,8 +225,7 @@ public class PostController {
             HttpServletRequest request,
             RedirectAttributes rattr
     ) throws Exception {
-        boolean usercheck =
-                postService.isPostWriter(postdata.getPost_idx());
+        boolean usercheck = postService.isPostWriter(postdata.getPost_idx());
 
         String url="";
         // 비밀번호가 다른 경우
@@ -248,7 +241,7 @@ public class PostController {
 
         if (check != null && !check.equals("")) { //기존파일 그대로 사용하는 경우
             logger.info("기존파일 그대로 사용합니다.");
-            postdata.setPost_file(check);
+            postdata.setPost_original(check);
             //<input type="hidden" name="BOARD_FILE" value="${boarddata.BOARD_FILE}">
             //위 문장 때문에 board.setBOARD_FILE()값은 자동 저장됩니다.
         } else {
@@ -260,12 +253,13 @@ public class PostController {
                 logger.info("파일 변경되었습니다.");
                 String fileDBName = postService.saveUploadFile(uploadfile, saveFolder);
                 postdata.setPost_file(fileDBName);
-                postdata.setPost_file(uploadfile.getOriginalFilename());
+                postdata.setPost_original(uploadfile.getOriginalFilename());
             } else { // 기존 파일이 없는데 파일 선택하지 않은 경우 또는 기존 파일이 있었는데 삭제한 경우
                 logger.info("선택 파일 없습니다.");
                 //<input type="hidden" name="BOARD_FILE" value="${boarddata.BOARD_FILE}">
                 //위 태그에 값이 있다면 ""로 값을 변경합니다.
                 postdata.setPost_file(""); // ""로 초기화 합니다.
+                postdata.setPost_original(""); // ""로 초기화 합니다.
             } //else end
         } //else end
 

@@ -9,17 +9,28 @@ public class Post {
     private String title;
     private String content;
     private String post_file;
-    private int price;
+    private Integer price;
     private String register_date;
     private int readcount;
     private String user_id;
     private int idx;
     private int comment_idx;
-    private int comment_ref_idx;
+    private int comment_ref_id;
     private int commentCount;  // 댓글 수 추가
     private String user_file;
-
+    private String post_original;
     private MultipartFile uploadfile;
+
+
+    public String getPost_original() {
+        return post_original;
+    }
+
+    public void setPost_original(String post_original) {
+        this.post_original = post_original;
+    }
+
+
 
 
     public int getPost_idx() {
@@ -70,11 +81,11 @@ public class Post {
         this.post_file = post_file;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -118,12 +129,12 @@ public class Post {
         this.comment_idx = comment_idx;
     }
 
-    public int getComment_ref_idx() {
-        return comment_ref_idx;
+    public int getComment_ref_id() {
+        return comment_ref_id;
     }
 
-    public void setComment_ref_idx(int comment_ref_idx) {
-        this.comment_ref_idx = comment_ref_idx;
+    public void setComment_ref_id(int comment_ref_id) {
+        this.comment_ref_id = comment_ref_id;
     }
 
     public int getCommentCount() {

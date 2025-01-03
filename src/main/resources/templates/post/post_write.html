@@ -21,12 +21,12 @@
 		<h1>게시판 글쓰기</h1>
 
 		<div class="form-group">
-			<input type="radio" name="category" id="A" value="A" required><span>자유게시판</span>
-			<input type="radio" name="category" id="B" value="B" required><span>중고게시판</span>
+			<input type="radio" name="category" id="A" th:value="${A}" required><span>자유게시판</span>
+			<input type="radio" name="category" id="B" th:value="${B}" required><span>중고게시판</span>
 		</div>
 
 		<!-- 작성자 -->
-		<input name="writer" id="writer" value="${idx}" type="hidden" class="form-control" readOnly>
+		<input name="writer" id="writer" th:value="${session.idx}" type="hidden" class="form-control" readOnly>
 
 		<div class="form-group">
 			<label for="title">제목</label>
