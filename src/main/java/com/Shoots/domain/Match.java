@@ -26,6 +26,8 @@ public class Match {
     private String formattedDate;
     private String formattedTime;
 
+    private int playerCount;
+
 
     public String getFormattedDate() {
         return formattedDate;
