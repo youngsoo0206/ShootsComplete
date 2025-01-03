@@ -197,5 +197,5 @@ function postWrite() {
 // 로그인이 필요한 경우 글쓰기 버튼 클릭 시
 function postWriteN() {
     alert("로그인 후 이용 가능합니다.");
-    location.href = "../user/login";
+    location.href = "../login";
 }

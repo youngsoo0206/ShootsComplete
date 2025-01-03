@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- 공통 상단 레이아웃 포함 -->
-    <th:block th:replace="fragments/header :: header"></th:block>
+    <th:block th:replace="~{fragments/header :: header}"/>
     <meta charset="UTF-8">
     <title>게시판</title>
     <script th:src="@{/js/postList.js}"></script>
@@ -11,6 +11,8 @@
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <body>
+<h1>잘뜸</h1>
+<h1>[[${session.idx}]]</h1>
 <div class="container">
     <!-- 카테고리 선택 탭 -->
     <ul class="nav nav-tabs" id="categoryTab" role="tablist">
@@ -62,9 +64,9 @@
 
 <!-- 글 작성 버튼 -->
 <div class="bD">
-<!--    <button type="button" class="btnw" th:if="${idx == null}" th:onclick="postWriteN()">글 작성</button>-->
-<!--    <button type="button" class="btn btn-info btnw" th:if="${idx != null}" th:onclick="postWrite()">글 작성</button>-->
-    <button type="button" class="btn btn-info btnw"  th:onclick="postWrite()">글 작성</button>
+        <button type="button" class="btnw" th:if="${session.idx == null}" th:onclick="postWriteN()">글 작성</button>
+        <button type="button" class="btn btn-info btnw" th:if="${session.idx != null}" th:onclick="postWrite()">글 작성</button>
+<!--    <button type="button" class="btn btn-info btnw"  th:onclick="postWrite()">글 작성</button>-->
 </div>
 
 </body>

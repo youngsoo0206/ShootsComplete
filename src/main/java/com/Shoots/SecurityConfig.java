@@ -1,7 +1,6 @@
 package com.Shoots;
 
 
-import com.Shoots.mybatis.mapper.RegularUserMapper;
 import com.Shoots.security.CustomAccessDeniedHandler;
 import com.Shoots.security.CustomUserDetailsService;
 import com.Shoots.security.LoginFailHandler;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -70,15 +68,28 @@ public class SecurityConfig {
 //                .tokenRepository(tokenRepository()));
 
 
+//        http.authorizeHttpRequests( //권한주는 방법, 밑에 보고 참조해서 다시 만들기
+//                (au)->au
+//                        .requestMatchers("/member/list","/member/info","/member/delete")
+//                        .hasAuthority("ROLE_ADMIN")
+//                        .requestMatchers("/member/update")
+//                        .hasAnyAuthority("ROLE_ADMIN","ROLE_MEMBER")
+//                        .requestMatchers("/board/**","/comment/**")
+//                        .hasAnyAuthority("ROLE_ADMIN","ROLE_MEMBER")
+//                        .requestMatchers("/**").permitAll()
+//        );
+
+
         http.authorizeHttpRequests(
                 (au)->au
                         .requestMatchers("/member/list","/member/info","/member/delete")
-                        .hasAuthority("ROLE_ADMIN")
+                        .hasAuthority("admin")
                         .requestMatchers("/member/update")
-                        .hasAnyAuthority("ROLE_ADMIN","ROLE_MEMBER")
+                        .hasAnyAuthority("admin", "common")
                         .requestMatchers("/board/**","/comment/**")
-                        .hasAnyAuthority("ROLE_ADMIN","ROLE_MEMBER")
+                        .hasAnyAuthority("admin", "common")
                         .requestMatchers("/**").permitAll()
+
         );
 
         http.exceptionHandling((ex)->ex.accessDeniedHandler(customAccessDeniedHandler));

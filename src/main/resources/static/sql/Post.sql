@@ -17,3 +17,4 @@ VALUES (1, 'A', '테스트 게시글 제목', '이것은 테스트 게시글 내
 
 
 drop table post;
+
