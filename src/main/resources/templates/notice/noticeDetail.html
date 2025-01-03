@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <style>
+        table caption {
+            caption-side: top;
+            font-size : 25px;
+            font-weight: bold;
+            color : black;
+        }
+    </style>
+</head>
+<body>
+    <table class="table">
+        <caption>[[${noticedata.title}]]</caption>
+        <tr>
+            <td>작성자 : [[${noticedata.name}]]</td>
+            <td>작성일 : [[${noticedata.register_date.substring(0, 10)}]]</td>
+            <td>조회수 : [[${noticedata.readcount}]]</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding-right: 0">
+                <textarea class="form-control" rows="10" readonly>[[${noticedata.content}]]</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><div>첨부 파일</div></td>
+            <td th:if="${not #strings.isEmpty(noticedata.notice_file)}">
+                <img th:src="@{/img/down.png}" width="10px">
+                <form method="post" th:action="@{down}" style="height:0">
+                    <input type="hidden" th:value="${noticedata.notice_file}" th:name="filename">
+                    <input type="hidden" th:value="${noticedata.notice_original}" th:name="original">
+                    <input type="submit" th:value="${noticedata.notice_original}">
+                </form>
+            </td>
+            <td th:if="${#strings.isEmpty(noticedata.notice_file)}"></td>
+        </tr>
+        <tr>
+            <td colspan="3"><a href="list">목록</a></td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -59,7 +59,7 @@ public class NoticeController {
         return mv;
     }
 
-    @GetMapping(value="detail")
+    @GetMapping(value="/detail")
     public ModelAndView Detail(
             int id,
             ModelAndView mv,
@@ -76,7 +76,7 @@ public class NoticeController {
         }
 
         Notice notice = noticeService.getDetail(id);
-        if(notice != null){
+        if(notice == null){
             logger.info("상세보기 실패");
             //mv.setViewName("error/error");
             //mv.addObject("url", request.getRequestURL());
@@ -84,7 +84,7 @@ public class NoticeController {
         } else{
             logger.info("상세보기 성공");
 
-            mv.setViewName("notice/noticeList");
+            mv.setViewName("notice/noticeDetail");
             mv.addObject("noticedata", notice);
 
         }

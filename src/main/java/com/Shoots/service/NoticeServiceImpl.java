@@ -3,10 +3,13 @@ package com.Shoots.service;
 import com.Shoots.domain.Notice;
 import com.Shoots.mybatis.mapper.NoticeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -50,4 +53,5 @@ public class NoticeServiceImpl implements NoticeService {
     public void setReadCountUpdate(int id) {
         dao.setReadCountUpdate(id);
     }
+
 }
