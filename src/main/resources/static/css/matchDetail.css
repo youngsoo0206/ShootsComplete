@@ -47,8 +47,7 @@ nav.navbar {
 
 a {text-decoration: none}
 
-/* 신청하기 btn */
-
+/* 신청, 환불 공통 btn */
 .btn-div {width: 100%; height: 100px; text-align: center}
 .btn-status {font-size: 13px; margin-top : 15px}
 
@@ -80,47 +79,6 @@ a {text-decoration: none}
     font-size: 15px;
 }
 
-.button--moema {
-    border-radius: 50px;
-    background: #115ffc;
-    color: #fff;
-    -webkit-transition: background-color 0.3s, color 0.3s;
-    transition: background-color 0.3s, color 0.3s;
-}
-.button--moema.button--inverted {
-    background: #ECEFF1;
-    color: #37474f;
-}
-.button--moema::before {
-    content: '';
-    position: absolute;
-    top: -13px;
-    left: -13px;
-    bottom: -13px;
-    right: -13px;
-    background: inherit;
-    border-radius: 50px;
-    z-index: -1;
-    opacity: 0.4;
-    -webkit-transform: scale3d(0.8, 0.5, 1);
-    transform: scale3d(0.8, 0.5, 1);
-}
-.button--moema:hover {
-    -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
-    transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
-    color: #ECEFF1;
-    background-color: #0147d5;
-    -webkit-animation: anim-moema-1 0.3s forwards;
-    animation: anim-moema-1 0.3s forwards;
-}
-.button--moema.button--inverted:hover {
-    color: #206afc;
-    background-color: #ECEFF1;
-}
-.button--moema:hover::before {
-    -webkit-animation: anim-moema-2 0.3s 0.3s forwards;
-    animation: anim-moema-2 0.3s 0.3s forwards;
-}
 @-webkit-keyframes anim-moema-1 {
     60% {
         -webkit-transform: scale3d(0.8, 0.8, 1);
@@ -163,6 +121,95 @@ a {text-decoration: none}
         transform: scale3d(1, 1, 1);
     }
 }
+
+
+/* 신청하기 btn */
+.button--payment {
+    border-radius: 50px;
+    background: #115ffc;
+    color: #fff;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+}
+.button--payment.button--inverted {
+    background: #ECEFF1;
+    color: #37474f;
+}
+.button--payment::before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    bottom: -13px;
+    right: -13px;
+    background: inherit;
+    border-radius: 50px;
+    z-index: -1;
+    opacity: 0.4;
+    -webkit-transform: scale3d(0.8, 0.5, 1);
+    transform: scale3d(0.8, 0.5, 1);
+}
+.button--payment:hover {
+    -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    color: #ECEFF1;
+    background-color: #0147d5;
+    -webkit-animation: anim-moema-1 0.3s forwards;
+    animation: anim-moema-1 0.3s forwards;
+}
+.button--payment.button--inverted:hover {
+    color: #206afc;
+    background-color: #ECEFF1;
+}
+.button--payment:hover::before {
+    -webkit-animation: anim-moema-2 0.3s 0.3s forwards;
+    animation: anim-moema-2 0.3s 0.3s forwards;
+}
+
+/* 환불 btn */
+.button--refund {
+    border-radius: 50px;
+    background: #da0130;
+    color: #fff;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+}
+.button--refund.button--inverted {
+    background: #ECEFF1;
+    color: #4e3636;
+}
+.button--refund::before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    bottom: -13px;
+    right: -13px;
+    background: inherit;
+    border-radius: 50px;
+    z-index: -1;
+    opacity: 0.4;
+    -webkit-transform: scale3d(0.8, 0.5, 1);
+    transform: scale3d(0.8, 0.5, 1);
+}
+.button--refund:hover {
+    -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    color: #ECEFF1;
+    background-color: #da0130;
+    -webkit-animation: anim-moema-1 0.3s forwards;
+    animation: anim-moema-1 0.3s forwards;
+}
+.button--refund.button--inverted:hover {
+    color: #da0130;
+    background-color: #ECEFF1;
+}
+.button--refund:hover::before {
+    -webkit-animation: anim-moema-2 0.3s 0.3s forwards;
+    animation: anim-moema-2 0.3s 0.3s forwards;
+}
+
+
 
 
 

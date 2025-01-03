@@ -35,7 +35,15 @@
                                     <span th:case="a">남녀무관</span>
                                 </div>
                             </td>
-                            <td><span th:text="${match.player_min}"></span>인 ~ <span th:text="${match.player_max}"></span>인</td>
+                            <td th:if="${match.playerCount > 0}">
+                                <b th:text="${match.playerCount}" style="color: #115ffc"></b> / <span th:text="${match.player_max}"></span>인
+                            </td>
+                            <td th:if="${match.playerCount == 0}">
+                                <span th:text="${match.player_max}"></span>인
+                            </td>
+                            <td th:if="${match.playerCount == match.player_max}">
+                                <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
+                            </td>
                             <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
                             </td>
