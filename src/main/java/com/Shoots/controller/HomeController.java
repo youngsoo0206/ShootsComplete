@@ -13,29 +13,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 public class HomeController {
     private static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @GetMapping("/mainBeforeRegular")
-    public String home(@AuthenticationPrincipal RegularUser regularUser, HttpSession session) {
-        if (regularUser != null) {
-            logger.info(regularUser.getRole());
-            session.setAttribute("idx", regularUser.getIdx());
-            session.setAttribute("id", regularUser.getUser_id());
-            session.setAttribute("role", regularUser.getRole());
+    @GetMapping("/mainBefore") //로그인이 성공하면 main 주소로 가기 전 로그인 유저 타입을 확인하는 경로
+    public String home(@AuthenticationPrincipal Object principal, HttpSession session) {
+        if (principal instanceof RegularUser) {
+            RegularUser regularUser = (RegularUser) principal;
+        } else if (principal instanceof BusinessUser) {
+            BusinessUser businessUser = (BusinessUser) principal;
         }
         return "redirect:/main";
     }
-
-    @GetMapping("/mainBeforeBusiness")
-    public String home(@AuthenticationPrincipal BusinessUser businessUser, HttpSession session) {
-        if (businessUser != null) {
-            logger.info(businessUser.getRole());
-            session.setAttribute("idx", businessUser.getBusiness_idx());
-            session.setAttribute("business_id", businessUser.getBusiness_id());
-            session.setAttribute("business_number", businessUser.getBusiness_number());
-            session.setAttribute("role", businessUser.getRole());
-        }
-        return "redirect:/main";
-    }
-
 
     @GetMapping(value = "/main")
     public String main() {

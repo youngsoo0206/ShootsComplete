@@ -54,7 +54,7 @@ public class BusinessUserSecurityConfig {
         http.securityMatcher("/businessLoginProcess/**")
                 .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
-                        .loginPage("/business-login")
+                        .loginPage("/login")
                         .loginProcessingUrl("/businessLoginProcess")
                         .usernameParameter("business_id")
                         .passwordParameter("password")
