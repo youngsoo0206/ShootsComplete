@@ -109,7 +109,7 @@
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button id="paymentButton" th:if="${session.role == 'common' && !hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
+                    <button id="paymentButton" th:if="${!hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
                     </button>
                     <button id="refundButton" th:if="${session.role == 'common' && hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
