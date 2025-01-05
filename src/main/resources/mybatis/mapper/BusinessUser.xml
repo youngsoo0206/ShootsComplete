@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Shoots.mybatis.mapper.BusinessUserMapper">
+
+    <select id="selectById" resultType="businessuser">
+        select * from business_user where business_id = #{id}
+    </select>
+
+    <select id="selectWithId" resultType="businessuser">
+        select * from business_user where business_id = #{id}
+    </select>
+
+
+    <insert id="insert">
+        insert into business_user (business_id, password, business_name, business_number,
+                                   tel, email, post, address)
+        values (#{business_id}, #{password}, #{business_name}, #{business_number},
+                #{tel}, #{email}, #{post}, #{address}
+                )
+    </insert>
+
+
+</mapper>

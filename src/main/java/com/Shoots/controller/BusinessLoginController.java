@@ -1,6 +1,8 @@
 package com.Shoots.controller;
 
+import com.Shoots.domain.BusinessUser;
 import com.Shoots.domain.RegularUser;
+import com.Shoots.service.BusinessUserService;
 import com.Shoots.service.RegularUserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,11 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,53 +25,25 @@ import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
-public class LoginController {
+public class BusinessLoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-    private final RegularUserService regularUserService;
+    private static final Logger logger = LoggerFactory.getLogger(BusinessLoginController.class);
+    private final BusinessUserService businessUserService;
     private BCryptPasswordEncoder passwordEncoder;
 
 
-    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder) {
-        this.regularUserService = regularUserService;
+    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder) {
+        this.businessUserService = businessUserService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping(value = "/login")
-    public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                              HttpSession session, Principal userPrincipal) {
-        if (readCookie != null) {
-            logger.info("저장된 아이디 : " + userPrincipal.getName());
-            mv.setViewName("redirect:/main");
-        } else {
-            mv.setViewName("home/loginForm");
-            mv.addObject("loginResult", session.getAttribute("loginfail"));
-            session.removeAttribute("loginfail");
-        }
-
-        return mv;
+    @GetMapping("/businessJoinForm")
+    public String getBusinessJoinForm(Model model) {
+        return "fragments/businessJoinForm";
     }
 
-    @GetMapping(value = "/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-
-        return "redirect:/login";
-    }
-
-
-    @GetMapping(value = "/join")
-    public String join() {
-        return "home/joinForm";
-    }
-
-    @GetMapping("/regularJoinForm")
-    public String getRegularJoinForm(Model model) {
-        return "fragments/regularJoinForm";
-    }
-
-    @PostMapping(value = "/regularJoinProcess")
-    public String regularJoinProcess(RegularUser user, RedirectAttributes rattr,
+    @PostMapping(value = "/businessJoinProcess")
+    public String businessJoinProcess(BusinessUser user, RedirectAttributes rattr,
                                      Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         ModelAndView mv = new ModelAndView();
@@ -78,28 +54,28 @@ public class LoginController {
         logger.info(encPassword);
         user.setPassword(encPassword);
 
-        int result = regularUserService.insert(user);
+        int result = businessUserService.insert(user);
         PrintWriter out = response.getWriter();
 
         //삽입 성공하면?
         if (result == 1) {
             out.println("<script type='text/javascript'>");
-            out.println("alert('회원가입에 성공했습니다!');");
+            out.println("alert('기업회원가입에 성공하셨습니다!');");
             out.println("window.location.href='/Shoots/login';");
             out.println("</script>");
             return null;
         } else { //db에  insert 실패하면?
             out.println("<script type='text/javascript'>");
-            out.println("alert('회원가입에 실패했습니다.');");
+            out.println("alert('기업회원가입에 실패했습니다.');");
             out.println("</script>");
             return null;
         }
-    } //regularJoinProcess 끝
+    } //BusinessJoinProcess 끝
 
     @ResponseBody
-    @GetMapping(value = "/idcheck")
-    public int idcheck(String id) {
-        return regularUserService.selectById(id);
+    @GetMapping(value = "/business_idcheck")
+    public int business_idcheck(String id) {
+        return businessUserService.selectById(id);
     }
 
 //    @PostMapping(value = "/loginProcess")

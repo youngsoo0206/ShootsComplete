@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomUserDetailsService implements UserDetailsService {
-    private static Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
+public class RegularUserDetailsService implements UserDetailsService {
+    private static Logger logger = LoggerFactory.getLogger(RegularUserDetailsService.class);
     private RegularUserMapper regularUserMapper;
 
-    public CustomUserDetailsService(RegularUserMapper regularUserMapper) {
+    public RegularUserDetailsService(RegularUserMapper regularUserMapper) {
         this.regularUserMapper = regularUserMapper;
     }
 
