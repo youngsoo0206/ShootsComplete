@@ -86,9 +86,9 @@ public class MatchController {
     }
 
     @GetMapping("/detail")
-    public ModelAndView matchDetail(@AuthenticationPrincipal RegularUser regularUser, HttpSession session, int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView matchDetail(HttpSession session, int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
 
-        session.setAttribute("idx", regularUser.getIdx());
+        Integer idx = (Integer) session.getAttribute("idx");
 
         Match match = matchService. getDetail(match_idx);
 
@@ -101,11 +101,15 @@ public class MatchController {
         String formattedTime = match.getMatch_time().format(formatterT);
         match.setFormattedTime(formattedTime);
 
-        boolean hasPaid = paymentService.hasPaidForMatch(regularUser.getIdx(), match_idx);
         int playerCount = paymentService.getPlayerCount(match_idx);
-
-        logger.info(">>>>>>>>>>>>>>>>> hasPaid >> " + hasPaid);
         logger.info(">>>>>>>>>>>>>>>>> playerCount >> " + playerCount);
+
+        boolean hasPaid = false;
+
+        if (idx != null) {
+            hasPaid = paymentService.hasPaidForMatch(idx, match_idx);
+            logger.info(">>>>>>>>>>>>>>>>> hasPaid >> " + hasPaid);
+        }
 
         if (match == null) {
             logger.info("상세보기 실패");
