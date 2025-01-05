@@ -27,7 +27,7 @@
                         <tr>
                             <td><div th:text="${match.formattedDate}"></div></td>
                             <td><div th:text="${match.match_time}"></div></td>
-                            <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}"><div th:text="${match.writer}"></div></a></td>
+                            <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}"><div th:text="${match.business_name}"></div></a></td>
                             <td>
                                 <div th:switch="${match.player_gender}">
                                     <span th:case="'f'">여자</span>

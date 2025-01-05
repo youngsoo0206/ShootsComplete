@@ -8,8 +8,8 @@
     <script th:src="@{/js/matchDetail.js}"></script>
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script th:src="@{/js/Payment.js}"></script>
-    <meta th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!--    <meta th:name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>-->
 </head>
 <body>
     <div class="container">
@@ -104,27 +104,30 @@
             </div>
             <div class="div2">
                 <div><span th:text="${match.formattedDate}"></span>&nbsp;<span th:text="${match.formattedTime}"></span></div>
-                <div class="place"><span>장소 어쩌구 저쩌구</span></div>
-                <div class="address"><span>주소 어쩌구 저쩌구 클릭하면 이동</span></div>
+                <div class="place"><span th:text="${match.business_name}"></span></div>
+                <div class="address"><span th:text="${match.address}"></span></div>
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button id="paymentButton" th:if="${!hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
+                    <button id="paymentButton" th:if="${session.role == 'common' && !hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
                     </button>
-                    <button id="refundButton" th:if="${hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
+                    <button id="refundButton" th:if="${session.role == 'common' && hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청취소
                     </button>
-                    <p class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
+                    <button th:if="${session.role == 'business'}" class="button button--refund button--text-upper button--size-s">신청불가
+                    </button>
+                    <p th:if="${session.role == 'common'}" class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
+                    <p th:if="${session.role == 'business'}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
                 </div>
             </div>
         </div>
         <div class="div-btn">
             <button class="custom-btn btn-15 btn-list" onclick="matchList()">목록보기</button>
-            <a th:href="@{'updateForm?match_idx=' + ${match.match_idx}}">
+            <a th:if="${session.role == 'business' && session.idx == match.writer}" th:href="@{'updateForm?match_idx=' + ${match.match_idx}}">
                 <button class="custom-btn btn-15 btn-update">수정하기</button>
             </a>
-            <form th:action="@{/match/delete}" method="post" id="deleteForm">
+            <form th:if="${session.role == 'business' && session.idx == match.writer}" th:action="@{/match/delete}" method="post" id="deleteForm">
                 <input type="hidden" name="match_idx" th:value="${match.match_idx}">
                 <button type="submit" class="custom-btn btn-15 btn-delete">삭제하기</button>
             </form>
@@ -137,14 +140,19 @@
 
             var merchant_uid = 'merchant_' + new Date().getTime();
 
-            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            // const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            // const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
             const matchIdx = document.getElementById('paymentButton').getAttribute('data-matchIdx');
             const sellerIdx = document.getElementById('paymentButton').getAttribute('data-seller');
             const buyerIdx = document.getElementById('paymentButton').getAttribute('data-buyer');
-
             const price = document.getElementById('paymentButton').getAttribute('data-price');
+
+            if (!buyerIdx) {
+                alert("매칭신청은 로그인 후 이용 가능합니다.");
+                window.location.href = "/Shoots/login";
+                return;
+            }
 
             IMP.request_pay(
                 {
@@ -175,7 +183,7 @@
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
-                                [csrfHeader]: csrfToken
+                                // [csrfHeader]: csrfToken
                             },
                             body: JSON.stringify({
                                 imp_uid: response.imp_uid, // 아임포트 고유 UID

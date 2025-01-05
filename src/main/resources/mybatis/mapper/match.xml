@@ -9,10 +9,15 @@
     </select>
 
     <select id="getMatchList" parameterType="map" resultType="Match">
-        SELECT *
-        FROM MATCH_POST
-        ORDER BY MATCH_DATE DESC, MATCH_TIME DESC
-            LIMIT #{limit} OFFSET #{offset};
+        SELECT mp.*, b.business_name
+        FROM MATCH_POST mp
+            LEFT JOIN BUSINESS_USER b
+            ON mp.writer = b.business_idx
+        ORDER BY
+            mp.MATCH_DATE DESC,
+            mp.MATCH_TIME DESC
+            LIMIT
+            #{limit} OFFSET #{offset};
     </select>
 
     <insert id="insertMatch">
@@ -42,7 +47,12 @@
     </insert>
 
     <select id="getDetail" resultType="match">
-        select * from MATCH_POST where MATCH_IDX = #{match_idx}
+        SELECT mp.*, b.business_name, b.address
+        FROM MATCH_POST mp
+            LEFT JOIN BUSINESS_USER b
+            ON mp.writer = b.business_idx
+        WHERE
+            mp.MATCH_IDX = #{match_idx};
     </select>
 
     <update id="updateMatch">
