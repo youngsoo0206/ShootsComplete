@@ -4,8 +4,9 @@ CREATE TABLE post (
                       category CHAR(1) NOT NULL CHECK (category IN ('A', 'B')), -- 글 종류
                       title VARCHAR(100) NOT NULL, -- 제목
                       content TEXT NOT NULL, -- 내용
-                      post_file VARCHAR(50), -- 첨부파일
-                      price INT, -- 가격
+                      post_file VARCHAR(50), -- 첨부파일 실제저장된파일이름
+                      post_original VARCHAR(50), -- 첨부파일 첨부될 파일 명
+                      price INTEGER, -- 가격
                       register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 등록일
                       readcount INT DEFAULT 0, -- 조회수
                       CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE

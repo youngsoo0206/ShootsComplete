@@ -39,66 +39,30 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public String saveUploadFile(MultipartFile uploadfile, String saveFolder) throws Exception {
-        String originalFilename = uploadfile.getOriginalFilename();
-        String fileDBName = fileDBName(originalFilename, saveFolder);
-
-        // 파일 저장
-        uploadfile.transferTo(new java.io.File(saveFolder + fileDBName));
-        return fileDBName;
+        return PostService.super.saveUploadFile(uploadfile, saveFolder);
     }
 
     @Override
-    public String fileDBName(String fileName, String saveFolder) {
-        String dateFolder = createFolderByDate(saveFolder);
-        String fileExtension = getFileExtension(fileName);
-        String refileName = generateUniqueFileName(fileExtension);
-        return java.io.File.separator + dateFolder + java.io.File.separator + refileName;
+    public String fileDBName(String fileName, String saveFolder) {return PostService.super.fileDBName(fileName, saveFolder);
     }
 
     @Override
-    public int[] getCurrentDate() {
-        java.time.LocalDate now = java.time.LocalDate.now();
-        int year = now.getYear();
-        int month = now.getMonthValue();
-        int date = now.getDayOfMonth();
-
-        return new int[]{year, month, date};
+    public int[] getCurrentDate() {return PostService.super.getCurrentDate();
     }
 
     @Override
     public String createFolderByDate(String baseFolder) {
-        int[] currentDate = getCurrentDate();
-        int year = currentDate[0];
-        int month = currentDate[1];
-        int date = currentDate[2];
-
-        String dateFolder = year + "-" + month + "-" + date;
-        String fullFolderPath = baseFolder + java.io.File.separator + dateFolder;
-        java.io.File path = new java.io.File(fullFolderPath);
-
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-        return dateFolder;
+        return PostService.super.createFolderByDate(baseFolder);
     }
 
     @Override
     public String getFileExtension(String fileName) {
-        int index = fileName.lastIndexOf(".");
-        return (index > 0) ? fileName.substring(index + 1) : "";
+        return PostService.super.getFileExtension(fileName);
     }
 
     @Override
     public String generateUniqueFileName(String fileExtension) {
-        int[] currentDate = getCurrentDate();
-        int year = currentDate[0];
-        int month = currentDate[1];
-        int date = currentDate[2];
-
-        Random r = new Random();
-        int random = r.nextInt(100000000);
-
-        return "bbs" + year + month + date + random + "." + fileExtension;
+        return PostService.super.generateUniqueFileName(fileExtension);
     }
 
     @Override
@@ -120,6 +84,7 @@ public class PostServiceImpl implements PostService {
     public boolean isPostWriter(int num) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("num", num);
+        //map.put("post_idx", post_idx);
         Post result = dao.isPostWriter(map);
         return result != null; // result가 null이면 false, null이 아니면 true 리턴합니다.
     }

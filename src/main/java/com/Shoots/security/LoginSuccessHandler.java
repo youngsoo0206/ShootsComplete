@@ -1,5 +1,7 @@
 package com.Shoots.security;
 
+import com.Shoots.domain.BusinessUser;
+import com.Shoots.domain.RegularUser;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,14 +22,25 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        Object principal = authentication.getPrincipal();
 
-        logger.info("로그인 성공 : LoginSuccessHandler");
+        if (principal instanceof RegularUser) {
+            RegularUser regularUser = (RegularUser) principal;
+            HttpSession session = request.getSession();
+            logger.info("Regular User: {}", regularUser.getRole());
+            session.setAttribute("idx", regularUser.getIdx());
+            session.setAttribute("id", regularUser.getUser_id());
+            session.setAttribute("role", regularUser.getRole());
+        } else if (principal instanceof BusinessUser) {
+            BusinessUser businessUser = (BusinessUser) principal;
+            HttpSession session = request.getSession();
+            logger.info("Business User: {}", businessUser.getRole());
+            session.setAttribute("idx", businessUser.getBusiness_idx());
+            session.setAttribute("id", businessUser.getBusiness_id());
+            session.setAttribute("role", businessUser.getRole());
+        }
 
-        HttpSession session = request.getSession();
-        //CustomUserDetailsService 에다가 session으로 뽑아올 정보들을 필드로 등록하고 getter,setter 만든 뒤 여기다 지정
-
-
-
+        // 로그인 성공 후 redirect
         String url = request.getContextPath()+"/mainBefore";
         response.sendRedirect(url);
     }

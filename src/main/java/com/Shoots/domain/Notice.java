@@ -6,9 +6,18 @@ public class Notice {
     private String title;
     private String content;
     private String notice_file;
+    private String notice_original;
     private String register_date;
     private int readcount;
     private String name;
+
+    public String getNotice_original() {
+        return notice_original;
+    }
+
+    public void setNotice_original(String notice_original) {
+        this.notice_original = notice_original;
+    }
 
     public int getNotice_idx() {
         return notice_idx;

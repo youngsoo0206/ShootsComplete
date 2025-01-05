@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ 관리</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+</head>
+<body>
+    <table class="table" th:if="${listcount > 0}">
+        <caption>FAQ</caption>
+        <thead>
+            <tr>
+                <td>작성자</td>
+                <td>제목</td>
+                <td>등록일</td>
+                <td>수정</td>
+                <td>삭제</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:block th:each="f, interStat :${list}">
+                <td th:text="${f.name}"></td>
+                <td><a th:href="@{faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
+                <td th:text="${f.register_date.substring(0, 10)}"></td>
+                <td><a th:href="@{faqUpdate(id=${f.faq_idx})}">수정</a></td>
+                <td><a th:href="@{faqDelete(id=${f.faq_idx})}">삭제</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <th:block th:if="${listcount == 0}">
+        <h1>등록된 FAQ가 없습니다.</h1>
+    </th:block>
+
+    <div>
+        <a th:href="@{faqWrite}" type="button">글쓰기</a>
+    </div>
+
+</body>
+</html>

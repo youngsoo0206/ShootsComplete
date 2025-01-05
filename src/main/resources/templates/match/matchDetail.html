@@ -6,9 +6,14 @@
     <title>Title</title>
     <link th:href="@{/css/matchDetail.css}" rel="stylesheet">
     <script th:src="@{/js/matchDetail.js}"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script th:src="@{/js/Payment.js}"></script>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
     <div class="container">
+        <input type="hidden" th:text="${match.match_idx}">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -33,9 +38,26 @@
         <div class="div0">
             <div class="div1">
                 <div class="div-player">
-                    <th:block th:each="i : ${#numbers.sequence(0, match.player_max - 1)}">
-                        <img th:src="@{/img/player_icon1.png}" width="30px">
-                    </th:block>
+                    <div th:if="${playerCount > 0}">
+                        <span th:if="${playerCount < match.player_min}">
+                            <span th:each="i : ${#numbers.sequence(0, playerCount - 1)}">
+                                <img th:src="@{/img/player_icon2.png}" width="30px" />
+                            </span>
+                        </span>
+                        <span th:if="${playerCount >= match.player_min}">
+                            <span th:each="i : ${#numbers.sequence(0, playerCount - 1)}">
+                                <img th:src="@{/img/player_icon3.png}" width="30px" />
+                            </span>
+                        </span>
+                        <span th:each="i : ${#numbers.sequence(playerCount, match.player_max - 1)}">
+                            <img th:src="@{/img/player_icon1.png}" width="30px" />
+                        </span>
+                    </div>
+                    <div th:if="${playerCount == 0}">
+                        <span th:each="i : ${#numbers.sequence(0, match.player_max - 1)}">
+                            <img th:src="@{/img/player_icon1.png}" width="30px" />
+                        </span>
+                    </div>
                 </div>
                 <hr>
                 <div>
@@ -77,6 +99,7 @@
                 <hr>
                 <div>
                     <h5> 구장 정보 </h5>
+                    <div th:text="${session.idx}"></div>
                 </div>
             </div>
             <div class="div2">
@@ -86,8 +109,13 @@
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button class="button button--moema button--text-upper button--size-s">신청하기</button>
-                    <p class="btn-status"> 현재 자리 남았습니다 </p>
+                    <button id="paymentButton" th:if="${!hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
+                            th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
+                    </button>
+                    <button id="refundButton" th:if="${hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
+                            th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청취소
+                    </button>
+                    <p class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
                 </div>
             </div>
         </div>
@@ -102,5 +130,83 @@
             </form>
         </div>
     </div>
+    <script>
+        function requestPayment() {
+            const IMP = window.IMP; // 생략 가능: CDN으로 불러온 IMP 객체
+            IMP.init("imp35523152"); // 포트원 콘솔에서 발급받은 가맹점 식별코드로 변경
+
+            var merchant_uid = 'merchant_' + new Date().getTime();
+
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+            const matchIdx = document.getElementById('paymentButton').getAttribute('data-matchIdx');
+            const sellerIdx = document.getElementById('paymentButton').getAttribute('data-seller');
+            const buyerIdx = document.getElementById('paymentButton').getAttribute('data-buyer');
+
+            const price = document.getElementById('paymentButton').getAttribute('data-price');
+
+            IMP.request_pay(
+                {
+                    channelKey: "channel-key-7cf4f649-e97f-4e5f-906e-30ec63d4f44c", // 콘솔 내 채널키
+                    pay_method: "card", // 결제 수단 (예: 카드)
+                    merchant_uid: merchant_uid, // 고유 주문번호 (동적으로 생성)
+                    name: matchIdx + ' 번 매치-플레이어 신청',
+                    amount: price, // 결제 금액
+                    buyer_email: "shk7357@naver.com", // 구매자 이메일
+                    buyer_name: "강성현", // 구매자 이름
+                    buyer_tel: "010-9711-7305", // 구매자 전화번호
+                    language: "ko", // 결제창 언어 (한국어: 'ko', 영문: 'en')
+                },
+
+                async (response) => {
+                    if (response.error_code != null) {
+                        // 결제 실패 처리
+                        return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+                    }
+
+                    // 결제 성공 처리
+                    alert("결제가 성공적으로 완료되었습니다.");
+                    console.log("결제 성공 응답 데이터:", response);
+
+                    // 서버에 결제 데이터 전달
+                    try {
+                        const notified = await fetch("/Shoots/payment/add", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                [csrfHeader]: csrfToken
+                            },
+                            body: JSON.stringify({
+                                imp_uid: response.imp_uid, // 아임포트 고유 UID
+                                merchant_uid: response.merchant_uid, // 주문 고유번호
+                                match_idx: matchIdx,
+                                seller_idx: sellerIdx,
+                                buyer_idx: buyerIdx,
+                                payment_amount: price,
+                            }),
+                        });
+
+                         if (notified.ok) {
+                                const result = await notified.json();
+                                console.log("서버 응답 데이터:", result);
+
+                                if (result.success) {
+                                    alert("결제 데이터가 성공적으로 서버에 저장되었습니다.");
+                                } else {
+                                    alert(`서버 처리 중 오류가 발생했습니다: ${result.message}`);
+                                }
+                            } else {
+                                console.error("서버 응답 오류:", notified.status);
+                                alert("결제 데이터 저장 중 오류가 발생했습니다.");
+                            }
+                        } catch (error) {
+                        console.error("결제 데이터 전송 중 오류:", error);
+                        alert("결제 처리 중 오류가 발생했습니다.");
+                    }
+                }
+            );
+        }
+    </script>
 </body>
 </html>

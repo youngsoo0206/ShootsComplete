@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +51,7 @@ public class LoginController {
     @GetMapping(value = "/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+
         return "redirect:/login";
     }
 
@@ -64,11 +64,6 @@ public class LoginController {
     @GetMapping("/regularJoinForm")
     public String getRegularJoinForm(Model model) {
         return "fragments/regularJoinForm";
-    }
-
-    @GetMapping("/businessJoinForm")
-    public String getBusinessJoinForm(Model model) {
-        return "fragments/businessJoinForm";
     }
 
     @PostMapping(value = "/regularJoinProcess")
@@ -89,7 +84,7 @@ public class LoginController {
         //삽입 성공하면?
         if (result == 1) {
             out.println("<script type='text/javascript'>");
-            out.println("alert('회원가입에 성공하였습니다!');");
+            out.println("alert('회원가입에 성공했습니다!');");
             out.println("window.location.href='/Shoots/login';");
             out.println("</script>");
             return null;
@@ -134,6 +129,4 @@ public class LoginController {
 //        return null;
 //    } //loginProces 끝
 
-
-
-    }
+}

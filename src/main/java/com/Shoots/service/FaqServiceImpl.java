@@ -23,4 +23,25 @@ public class FaqServiceImpl implements FaqService{
     public int getListCount() {
         return dao.getListCount();
     }
+
+    @Override
+    public Faq faqDetail(int id) {
+        return dao.detailFaq(id);
+    }
+
+    @Override
+    public void insertFaq(Faq faq) {
+        dao.insertFaq(faq);
+    }
+
+    @Override
+    public int updateFaq(Faq faq) {
+        return dao.updateFaq(faq);
+    }
+
+
+    @Override
+    public void deleteFaq(int id) {
+        dao.deleteFaq(id);
+    }
 }

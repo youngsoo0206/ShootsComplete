@@ -15,4 +15,23 @@
         select count(*) from faq
     </select>
 
+    <select id="detailFaq">
+        select * from faq where faq_idx=#{id}
+    </select>
+
+    <insert id="insertFaq">
+        insert into faq(writer, title, content, notice_file, notice_original, register_date, readcount)
+        values
+            (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp, 0)
+    </insert>
+
+    <delete id="deleteFaq">
+        delete from faq where faq_idx=#{id}
+    </delete>
+
+    <update id="updateFaq">
+        update faq set title=#{title}, content=#{content}, faq_file=#{faq_file}, faq_original=#{faq_original}
+        where faq_idx=#{faq_idx}
+    </update>
+
 </mapper>

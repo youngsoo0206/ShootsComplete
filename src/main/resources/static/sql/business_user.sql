@@ -15,7 +15,7 @@ CREATE TABLE business_user(
     business_file   VARCHAR(50),
     register_date   TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
     login_status    VARCHAR(9) DEFAULT 'pending',
-    role          VARCHAR(10) DEFAULT 'common' NOT NULL
+    role          VARCHAR(10) DEFAULT 'business' NOT NULL
 );
 
 -- DROP SEQUENCE과 관련된 코드

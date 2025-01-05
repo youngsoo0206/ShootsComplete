@@ -47,3 +47,4 @@ FROM regular_user u
          JOIN payment p ON u.idx = p.buyer
 WHERE p.match_id = 31 AND p.status = 'SUCCESS';
 
+select * from regular_user;

@@ -2,11 +2,14 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.Match;
 import com.Shoots.domain.PaginationResult;
+import com.Shoots.domain.RegularUser;
 import com.Shoots.service.MatchService;
+import com.Shoots.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +27,13 @@ import java.util.List;
 public class MatchController {
 
     private MatchService matchService;
+    private PaymentService paymentService;
     private static final Logger logger = LoggerFactory.getLogger(MatchController.class);
 
 
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, PaymentService paymentService) {
         this.matchService = matchService;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/list")
@@ -43,10 +48,13 @@ public class MatchController {
 
         PaginationResult result = new PaginationResult(page, limit, listCount);
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 
         for (Match match : list) {
+
+            int playerCount = paymentService.getPlayerCount(match.getMatch_idx());
+            match.setPlayerCount(playerCount);
+
             String formattedDate = match.getMatch_date().format(formatter);
             match.setFormattedDate(formattedDate);
         }
@@ -78,7 +86,9 @@ public class MatchController {
     }
 
     @GetMapping("/detail")
-    public ModelAndView matchDetail(int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
+    public ModelAndView matchDetail(@AuthenticationPrincipal RegularUser regularUser, HttpSession session, int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
+
+        session.setAttribute("idx", regularUser.getIdx());
 
         Match match = matchService. getDetail(match_idx);
 
@@ -91,6 +101,11 @@ public class MatchController {
         String formattedTime = match.getMatch_time().format(formatterT);
         match.setFormattedTime(formattedTime);
 
+        boolean hasPaid = paymentService.hasPaidForMatch(regularUser.getIdx(), match_idx);
+        int playerCount = paymentService.getPlayerCount(match_idx);
+
+        logger.info(">>>>>>>>>>>>>>>>> hasPaid >> " + hasPaid);
+        logger.info(">>>>>>>>>>>>>>>>> playerCount >> " + playerCount);
 
         if (match == null) {
             logger.info("상세보기 실패");
@@ -103,6 +118,8 @@ public class MatchController {
 
             modelAndView.setViewName("match/matchDetail");
             modelAndView.addObject("match", match);
+            modelAndView.addObject("hasPaid", hasPaid);
+            modelAndView.addObject("playerCount", playerCount);
         }
         return modelAndView;
     }

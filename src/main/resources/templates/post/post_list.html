@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- 공통 상단 레이아웃 포함 -->
-    <th:block th:replace="fragments/header :: header"></th:block>
+    <th:block th:replace="~{fragments/header :: header}"/>
     <meta charset="UTF-8">
     <title>게시판</title>
     <script th:src="@{/js/postList.js}"></script>
@@ -15,10 +15,10 @@
     <!-- 카테고리 선택 탭 -->
     <ul class="nav nav-tabs" id="categoryTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="tabA" data-toggle="tab" href="#A" role="tab" th:onclick="|switchCategory('A')|">자유 게시판</a>
+            <a class="nav-link active" id="tabA" data-toggle="tab" href="#A" role="tab" onclick="switchCategory('A')">자유 게시판</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="tabB" data-toggle="tab" href="#B" role="tab" th:onclick="|switchCategory('B')|">중고 게시판</a>
+            <a class="nav-link" id="tabB" data-toggle="tab" href="#B" role="tab" onclick="switchCategory('B')">중고 게시판</a>
         </li>
     </ul>
 
@@ -36,7 +36,7 @@
                     <th>조회수</th>
                 </tr>
                 </thead>
-                <tbody id="postListA"></tbody>
+                <tbody></tbody>
             </table>
         </div>
         <div class="tab-pane fade" id="B" role="tabpanel">
@@ -44,27 +44,50 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>글번호</th>
-                    <th>미리보기</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>조회수</th>
                 </tr>
                 </thead>
-                <tbody id="postListB"></tbody>
+                <tbody></tbody>
             </table>
+
         </div>
     </div>
 </div>
-
 <th:block th:replace="~{fragments/paging :: paging('list', '')}"/>
+
+<!--&lt;!&ndash; 페이징 &ndash;&gt;-->
+<!--<div class="center-block">-->
+<!--    <ul class="pagination justify-content-center">-->
+<!--        <li class="page-item">-->
+<!--            <a href="javascript:go([[${page - 1}]])"-->
+<!--               class="page-link" th:classappend="${page <= 1} ? 'gray' : ''">-->
+<!--                &lt;&lt;-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        <th:block th:each="a : ${#numbers.sequence(startpage, endpage)}">-->
+<!--            <li class="page-item" th:classappend="${a == page} ? 'active' : ''">-->
+<!--                <a href="javascript:go([[${a}]])"-->
+<!--                   class="page-link" th:text="${a}"></a>-->
+<!--            </li>-->
+<!--        </th:block>-->
+<!--        <li class="page-item">-->
+<!--            <a href="javascript:go([[${page + 1}]])"-->
+<!--               class="page-link" th:classappend="${page >= maxpage} ? 'gray' : ''">-->
+<!--                &gt;&gt;-->
+<!--            </a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+<!--&lt;!&ndash; 페이징 끝 &ndash;&gt;-->
+
 
 <!-- 글 작성 버튼 -->
 <div class="bD">
-<!--    <button type="button" class="btnw" th:if="${idx == null}" th:onclick="postWriteN()">글 작성</button>-->
-<!--    <button type="button" class="btn btn-info btnw" th:if="${idx != null}" th:onclick="postWrite()">글 작성</button>-->
-    <button type="button" class="btn btn-info btnw"  th:onclick="postWrite()">글 작성</button>
+    <th:block th:if="${session.idx == null}">
+        <button type="button" class="btnw" onclick="postWriteN()">글 작성</button>
+    </th:block>
+    <th:block th:if="${session.idx != null}">
+        <button type="button" class="btn btn-info btnw" onclick="postWrite()">글 작성</button>
+    </th:block>
 </div>
 
 </body>
