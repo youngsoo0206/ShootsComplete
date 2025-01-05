@@ -27,6 +27,8 @@ public class Match {
     private String formattedTime;
 
     private int playerCount;
+    private String business_name;
+    private String address;
 
 
     public String getFormattedDate() {
