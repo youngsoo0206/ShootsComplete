@@ -45,12 +45,14 @@
                             </span>
                         </span>
                         <span th:if="${playerCount >= match.player_min}">
-                            <span th:each="i : ${#numgit bers.sequence(0, playerCount - 1)}">
+                            <span th:each="i : ${#numbers.sequence(0, playerCount - 1)}">
                                 <img th:src="@{/img/player_icon3.png}" width="30px" />
                             </span>
                         </span>
-                        <span th:each="i : ${#numbers.sequence(playerCount, match.player_max - 1)}">
-                            <img th:src="@{/img/player_icon1.png}" width="30px" />
+                        <span th:if="${playerCount < match.player_max}">
+                            <span th:each="i : ${#numbers.sequence(playerCount, match.player_max - 1)}">
+                                <img th:src="@{/img/player_icon1.png}" width="30px" />
+                            </span>
                         </span>
                     </div>
                     <div th:if="${playerCount == 0}">
@@ -109,22 +111,30 @@
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button id="paymentButton" th:if="${(session.role == 'common' or session.idx == null) && !hasPaid}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
+                    <button id="paymentButton" th:if="${(session.role == 'common' or session.idx == null) && !hasPaid &&  match.isMatchPast() == false && playerCount != match.player_max}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
                     </button>
-                    <button id="refundButton" th:if="${session.role == 'common' && hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
+                    <button id="refundButton" th:if="${session.role == 'common' && hasPaid && match.isMatchPast() == false}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청취소
                     </button>
-                    <button th:if="${session.role == 'business'}" class="button button--refund button--text-upper button--size-s">신청불가
+                    <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="limitedMatch()">마감
                     </button>
-                    <p th:if="${session.role == 'common' || session.idx == null}" class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
+                    <button th:if="${session.role == 'business'}" class="button button--no button--text-upper button--size-s">신청불가
+                    </button>
+                    <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == true && playerCount < match.player_min}" class="button button--no button--text-upper button--size-s" onclick="closedMatch()">마감
+                    </button>
+                    <button th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == true && playerCount >= match.player_min}" class="button button--confirm button--text-upper button--size-s" onclick="closedMatch()">매칭확정
+                    </button>
+                    <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount < match.player_max}" class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
+                    <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max}" class="btn-status"> * 신청인원이 꽉 찼습니다 * </p>
+                    <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == true}" class="btn-status"> * 마감된 매칭입니다 * </p>
                     <p th:if="${session.role == 'business'}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
                 </div>
             </div>
         </div>
         <div class="div-btn">
             <button class="custom-btn btn-15 btn-list" onclick="matchList()">목록보기</button>
-            <a th:if="${session.role == 'business' && session.idx == match.writer}" th:href="@{'updateForm?match_idx=' + ${match.match_idx}}">
+            <a th:if="${(session.role == 'business' && session.idx == match.writer) && match.isMatchPast() == false}" th:href="@{'updateForm?match_idx=' + ${match.match_idx}}">
                 <button class="custom-btn btn-15 btn-update">수정하기</button>
             </a>
             <form th:if="${session.role == 'business' && session.idx == match.writer}" th:action="@{/match/delete}" method="post" id="deleteForm">
@@ -200,13 +210,14 @@
                                 console.log("서버 응답 데이터:", result);
 
                                 if (result.success) {
-                                    alert("결제 데이터가 성공적으로 서버에 저장되었습니다.");
+                                    console.log("결제 데이터가 성공적으로 서버에 저장되었습니다.");
+                                    window.location.reload();
                                 } else {
-                                    alert(`서버 처리 중 오류가 발생했습니다: ${result.message}`);
+                                    console.log(`서버 처리 중 오류가 발생했습니다: ${result.message}`);
                                 }
                             } else {
                                 console.error("서버 응답 오류:", notified.status);
-                                alert("결제 데이터 저장 중 오류가 발생했습니다.");
+                             console.log("결제 데이터 저장 중 오류가 발생했습니다.");
                             }
                         } catch (error) {
                         console.error("결제 데이터 전송 중 오류:", error);
@@ -214,6 +225,14 @@
                     }
                 }
             );
+        }
+
+        function closedMatch(){
+            alert("마감된 매칭입니다");
+        }
+
+        function limitedMatch(){
+            alert("신청인원이 다 찼습니다");
         }
     </script>
 </body>
