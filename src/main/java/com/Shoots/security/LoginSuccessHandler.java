@@ -23,6 +23,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Object principal = authentication.getPrincipal();
+        String url = "";
 
         if (principal instanceof RegularUser) {
             RegularUser regularUser = (RegularUser) principal;
@@ -31,6 +32,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("idx", regularUser.getIdx());
             session.setAttribute("id", regularUser.getUser_id());
             session.setAttribute("role", regularUser.getRole());
+            url = request.getContextPath()+"/mainBefore";
+
         } else if (principal instanceof BusinessUser) {
             BusinessUser businessUser = (BusinessUser) principal;
             HttpSession session = request.getSession();
@@ -39,10 +42,16 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("id", businessUser.getBusiness_id());
             session.setAttribute("role", businessUser.getRole());
             session.setAttribute("businessAccess", businessUser.getLogin_status());
+
+            if (businessUser.getLogin_status().equals("access")) {
+                url = request.getContextPath() + "/business/dashboard";
+            } else {
+                url = request.getContextPath() + "/mainBefore";
+            }
+            
         }
 
         // 로그인 성공 후 redirect
-        String url = request.getContextPath()+"/mainBefore";
         response.sendRedirect(url);
     }
 }
