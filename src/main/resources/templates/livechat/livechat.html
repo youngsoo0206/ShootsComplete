@@ -2,12 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html>
+
 <head>
     <th:block th:replace="~{fragments/header :: header}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link th:href="@{/css/livechat.css}" rel="stylesheet">
     <title>Spring Boot WebSocket Chat Application </title>
-
+    <style>
+        nav.navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <noscript>
@@ -53,5 +64,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script th:src="@{/js/livechat.js}"></script>
+
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>
