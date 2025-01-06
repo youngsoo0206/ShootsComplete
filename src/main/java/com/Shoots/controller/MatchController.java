@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -38,13 +38,17 @@ public class MatchController {
 
     @GetMapping("/list")
     public ModelAndView matchList(@RequestParam(defaultValue = "1") int page,
+                                  @RequestParam(required = false) String filter,
+                                  @RequestParam(required = false) String gender,
+                                  @RequestParam(required = false) String level,
                                   ModelAndView modelAndView, HttpSession session) {
 
         session.setAttribute("refer", "list");
         int limit = 10;
         int listCount = matchService.getListCount();
 
-        List<Match> list = matchService.getMatchList(page, limit);
+        List<Match> list = matchService.getMatchList(filter, gender, level, page, limit);
+
 
         PaginationResult result = new PaginationResult(page, limit, listCount);
 
@@ -57,7 +61,25 @@ public class MatchController {
 
             String formattedDate = match.getMatch_date().format(formatter);
             match.setFormattedDate(formattedDate);
+
+            String a = match.getMatch_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ' ' + match.getMatch_time();
+
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime matchDateTime = LocalDateTime.parse(a, formatter1);
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            LocalDateTime twoHoursBeforeMatch = matchDateTime.minusHours(2);
+
+            boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
+            match.setMatchPast(isMatchPast);
+
+            System.out.println("isMatchPast ============= " + match.isMatchPast());
         }
+
+        logger.info(">>>>>>>>>>>>>>> Filter value: {}", filter);
+        logger.info(">>>>>>>>>>>>>>> Gender value: {}", gender);
+        logger.info(">>>>>>>>>>>>>>> Level value: {}", level);
 
         modelAndView.setViewName("match/matchList");
         modelAndView.addObject("page", page);
@@ -95,15 +117,33 @@ public class MatchController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("HH시 mm분");
 
+        // 날짜 포맷
         String formattedDate = match.getMatch_date().format(formatter);
         match.setFormattedDate(formattedDate);
 
+        // 시간 포맷
         String formattedTime = match.getMatch_time().format(formatterT);
         match.setFormattedTime(formattedTime);
 
+        // isMatchPast
+        String a = match.getMatch_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ' ' + match.getMatch_time();
+
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime matchDateTime = LocalDateTime.parse(a, formatter1);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime twoHoursBeforeMatch = matchDateTime.minusHours(2);
+
+        boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
+        match.setMatchPast(isMatchPast);
+
+        System.out.println("isMatchPast ============= " + match.isMatchPast());
+
+        // 신청 플레이어 수
         int playerCount = paymentService.getPlayerCount(match_idx);
         logger.info(">>>>>>>>>>>>>>>>> playerCount >> " + playerCount);
 
+        // 신청 여부
         boolean hasPaid = false;
 
         if (idx != null) {

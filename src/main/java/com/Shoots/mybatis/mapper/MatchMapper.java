@@ -9,7 +9,8 @@ import java.util.List;
 @Mapper
 public interface MatchMapper {
     public int getListCount();
-    List<Match> getMatchList(HashMap<String, Integer> map);
+
+    List<Match> getMatchList(HashMap<String, Object> map);
 
     void insertMatch(Match match);
 

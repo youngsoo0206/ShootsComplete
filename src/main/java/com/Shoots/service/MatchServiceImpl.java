@@ -22,14 +22,19 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<Match> getMatchList(int page, int limit) {
+    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit) {
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
 
         int offset = (page - 1) * limit;
 
+        map.put("filter", (filter != null && !filter.isEmpty()) ? filter : null);
+        map.put("gender", gender);
+        map.put("level", level);
+
         map.put("limit", limit);
         map.put("offset", offset);
+
 
         return dao.getMatchList(map);
     }
