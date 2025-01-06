@@ -26,8 +26,7 @@ SELECT * FROM business_user;
 
 -- UPDATE 문
 UPDATE business_user
-SET login_status = 'approved'
-WHERE business_id = 'aa';
+SET login_status = 'access';
 
 -- INSERT 문
 INSERT INTO business_user (business_idx, business_id, password, business_name, business_number, tel, email, post,

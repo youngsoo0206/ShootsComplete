@@ -78,4 +78,9 @@ public class MatchServiceImpl implements MatchService{
 
         return dao.getMatchListById(map);
     }
+
+    @Override
+    public int getListCountById(Integer idx) {
+        return dao.getListCountById(idx);
+    }
 }

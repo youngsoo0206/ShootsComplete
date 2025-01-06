@@ -21,4 +21,6 @@ public interface MatchMapper {
     int deleteMatch(int matchIdx);
 
     List<Match> getMatchListById(HashMap<String, Object> map);
+
+    int getListCountById(Integer idx);
 }

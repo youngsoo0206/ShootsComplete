@@ -54,7 +54,7 @@ public class BusinessController {
         session.setAttribute("refer", "list");
 
         int limit = 10;
-        int listCount = matchService.getListCount();
+        int listCount = matchService.getListCountById(idx);
 
         List<Match> list = matchService.getMatchListById(idx, filter, gender, level, page, limit);
 

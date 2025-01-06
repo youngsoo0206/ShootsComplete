@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th= "http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -110,11 +111,12 @@
                 </tbody>
             </table>
         </th:block>
+
+        <th:block th:if="${listcount == 0}">
+            <div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>
+        </th:block>
     </div>
 
-    <div th:if="${listcount == 0}">
-        <p style="text-align: center; margin-top:100px; font-size: 18px;">등록된 글이 없습니다.</p>
-    </div>
     <div class="btnD" th:if="${session.role == 'business'}">
         <button class="custom-btn btn-15" id="matchForm">매칭 글 작성</button>
     </div>
