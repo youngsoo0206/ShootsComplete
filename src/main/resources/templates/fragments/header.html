@@ -27,10 +27,6 @@
             <div class="navbar-brand flex-grow-1 text-center mx-auto">
                 <a class="navbar-brand" th:href="@{/main}" style="margin:0 0 0 100px">SHOOTS</a>
             </div>
-
-            <h1>
-                [[${session.businessAccess}]]
-            </h1>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <div th:if="${session.id == null}">
