@@ -18,4 +18,6 @@ public interface MatchMapper {
     int updateMatch(Match match);
 
     int deleteMatch(int matchIdx);
+
+    List<Match> getMatchListById(HashMap<String, Object> map);
 }
