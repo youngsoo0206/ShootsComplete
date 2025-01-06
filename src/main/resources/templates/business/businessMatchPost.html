@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <th:blovk th:if="${listcount > 0}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th> 매칭 날짜 </th>
+                <th> 매칭 시간 </th>
+                <th> 장소 </th>
+                <th> 플레이어 성별 </th>
+                <th> 참여인원 </th>
+                <th> 신청현황 </th>
+                <th> 수정 / 삭제 </th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:bolck th:with="num=${listcount - (page - 1) * limit}">
+                <th:block th:each="match : ${matchList}">
+                    <tr>
+                        <td><div th:text="${match.formattedDate}"></div></td>
+                        <td><div th:text="${match.match_time}"></div></td>
+                        <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}"><div th:text="${match.business_name}"></div></a></td>
+                        <td>
+                            <div th:switch="${match.player_gender}">
+                                <span th:case="'f'">여자</span>
+                                <span th:case="'m'">남자</span>
+                                <span th:case="a">남녀무관</span>
+                            </div>
+                        </td>
+                        <td th:if="${match.playerCount > 0}">
+                            <b th:text="${match.playerCount}" style="color: #115ffc"></b> / <span th:text="${match.player_max}"></span>인
+                        </td>
+                        <td th:if="${match.playerCount == 0}">
+                            <span th:text="${match.player_max}"></span>인
+                        </td>
+                        <td th:if="${match.playerCount == match.player_max}">
+                            <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
+                        </td>
+                        <td><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
+                        </td>
+                        <td>
+                            <a><button type="button" class="custom-btnS btn-5 ">수정</button></a>
+                            <a><button type="button" class="custom-btnS btn-5 ">삭제</button></a>
+                        </td>
+                    </tr>
+                </th:block>
+            </th:bolck>
+            </tbody>
+        </table>
+    </th:blovk>
+
+    <div th:if="${listcount == 0}">
+        <p style="text-align: center; margin-top:100px; font-size: 18px;">등록된 글이 없습니다.</p>
+    </div>
+    <div class="btnD">
+        <button class="custom-btn btn-15" id="matchForm">매칭 글 작성</button>
+    </div>
+</div>
+</body>
+</html>

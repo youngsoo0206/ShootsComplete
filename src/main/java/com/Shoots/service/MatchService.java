@@ -15,4 +15,6 @@ public interface MatchService {
     int updateMatch(Match match);
 
     int deleteMatch(int matchIdx);
+
+    List<Match> getMatchListById(Integer idx, int page, int limit);
 }

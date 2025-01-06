@@ -20,6 +20,19 @@
             #{limit} OFFSET #{offset};
     </select>
 
+    <select id="getMatchListById" parameterType="map" resultType="Match">
+        SELECT mp.*, b.business_name
+        FROM MATCH_POST mp
+            LEFT JOIN BUSINESS_USER b
+            ON mp.writer = b.business_idx
+        WHERE mp.writer = #{idx}
+        ORDER BY
+            mp.MATCH_DATE DESC,
+            mp.MATCH_TIME DESC
+            LIMIT
+            #{limit} OFFSET #{offset};
+    </select>
+
     <insert id="insertMatch">
         INSERT INTO MATCH_POST (
             WRITER,

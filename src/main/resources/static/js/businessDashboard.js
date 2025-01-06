@@ -14,13 +14,12 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
-
     $('#postButton').on('click', function (e) {
         e.preventDefault(); // 기본 링크 동작 막기
 
         // AJAX 요청
         $.ajax({
-            url: '/business/post', // 서버에서 제공하는 businessPost.html 경로
+            url: '/Shoots/business/post', // 서버에서 제공하는 businessPost.html 경로
             method: 'GET',
             success: function (data) {
                 // 성공적으로 로드된 HTML을 #layoutSidenav_content 영역에 삽입
@@ -33,3 +32,4 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 });
+

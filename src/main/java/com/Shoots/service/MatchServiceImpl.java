@@ -53,4 +53,18 @@ public class MatchServiceImpl implements MatchService{
     public int deleteMatch(int matchIdx) {
         return dao.deleteMatch(matchIdx);
     }
+
+    @Override
+    public List<Match> getMatchListById(Integer idx, int page, int limit) {
+
+        int offset = (page - 1) * limit;
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("idx", idx);
+        map.put("limit", limit);
+        map.put("offset", offset);
+
+        return dao.getMatchListById(map);
+    }
 }
