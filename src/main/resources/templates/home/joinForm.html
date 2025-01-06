@@ -18,7 +18,7 @@
 
                     $.ajax({  //로그인 버튼으로 폼이 바뀔때 이벤트도 바뀌므로 제출 누를때 joinProcess도 ajax로 가져옴
                         url: $(this).attr('action'), // form의 action 속성에서 URL 가져오기
-                        method: 'POST', // POST 방식 지정
+                        method: 'POST',
                         data: $(this).serialize(), // form 데이터를 직렬화하여 전송
                         success: function (response) {
                             alert("회원가입에 성공하셨습니다!");
@@ -38,7 +38,7 @@
 
                     $.ajax({  //로그인 버튼으로 폼이 바뀔때 이벤트도 바뀌므로 제출 누를때 joinProcess도 ajax로 가져옴
                         url: $(this).attr('action'), // form의 action 속성에서 URL 가져오기
-                        method: 'POST', // POST 방식 지정
+                        method: 'POST',
                         data: $(this).serialize(), // form 데이터를 직렬화하여 전송
                         success: function (response) {
                             alert("기업 회원가입에 성공하셨습니다!");

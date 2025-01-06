@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 public class LoginFailHandler implements AuthenticationFailureHandler {
@@ -22,10 +23,12 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
+
         logger.info(exception.getMessage());
         logger.info("로그인 실패");
-        //session.setAttribute("loginfail","loginFailMsg");
-        session.setAttribute("loginfail","입력하신 아이디나 비밀번호를 확인해 주세요");
+        session.setAttribute("loginResult", "로그인에 실패했습니다. 아이디나 비밀번호를 확인해 주세요");
+        logger.info(session.getAttribute("loginResult").toString());
+
         String url = request.getContextPath() + "/login";
         response.sendRedirect(url);
     }
