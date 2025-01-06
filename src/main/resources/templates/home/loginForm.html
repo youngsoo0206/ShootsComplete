@@ -124,6 +124,27 @@
 
         div.input-field {margin-top: 30px}
     </style>
+
+    <!-- 로그인 실패시 띄울 alert창 -->
+    <script th:if="${loginResult != null}" th:inline="javascript">
+        alert(/*[[${loginResult}]]*/);
+    </script>
+
+    <script>
+        $("form[action='businessLoginProcess']").on('submit', function (e) {
+          const BA = document.getElementById("BA").getAttribute("data-toggle");
+            if (BA == 'pending') {
+                alert("떴냐");
+                e.defaultPrevented;
+            }
+        })
+    </script>
+
+
+    <script th:if="${businessAccess == 'pending'}" th:inline="javascript">
+        alert(/*[[${loginResult}]]*/);
+    </script>
+
 </head>
 <body>
 <div class="login-container">

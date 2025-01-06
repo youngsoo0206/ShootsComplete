@@ -78,31 +78,5 @@ public class BusinessLoginController {
         return businessUserService.selectById(id);
     }
 
-//    @PostMapping(value = "/loginProcess")
-//    public String loginProcess(String id, String password, RedirectAttributes rattr, HttpSession session,
-//                               HttpServletResponse response) throws IOException {
-//        PrintWriter out = response.getWriter();
-//
-//        int result = regularUserService.selectByIdPassword(id, password);
-//
-//        if (result == 1) { //로그인 성공
-//            RegularUser loginUser = regularUserService.selectWithId(id);
-//            session.setAttribute("id", id);
-//            session.setAttribute("user_id", loginUser.getUser_id());
-//            session.setAttribute("role", loginUser.getRole());
-//            logger.info("role이랑 user_id는? : " + loginUser.getRole() + loginUser.getUser_id());
-////            return "redirect:/main";  //LoginSuccessHandler 에서 경로를 처리하기 때문에 필요 없음.
-//        } else if (result == 0) {
-//            out.println("<script type='text/javascript'>");
-//            out.println("alert('비밀번호가 일치하지 않습니다.');");
-//            out.println("</script>");
-//        }  else if (result == -1) {
-//            out.println("<script type='text/javascript'>");
-//            out.println("alert('아이디가 일치하지 않습니다.');");
-//            out.println("</script>");
-//        }
-//
-//        return null;
-//    } //loginProces 끝
 
 }

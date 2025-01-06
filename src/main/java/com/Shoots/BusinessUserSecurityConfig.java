@@ -61,6 +61,12 @@ public class BusinessUserSecurityConfig {
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailHandler)
                 )
+                .logout(lo -> lo
+                        .logoutSuccessUrl("/login")
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("remember-me", "JSESSION_ID")
+                )
                 .authorizeHttpRequests(au -> au
                         .requestMatchers("/business/**").hasAuthority("business")
                         .requestMatchers("/**").permitAll()

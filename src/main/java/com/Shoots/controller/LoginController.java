@@ -36,13 +36,14 @@ public class LoginController {
     @GetMapping(value = "/login")
     public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
                               HttpSession session, Principal userPrincipal) {
+
         if (readCookie != null) {
             logger.info("저장된 아이디 : " + userPrincipal.getName());
             mv.setViewName("redirect:/main");
         } else {
             mv.setViewName("home/loginForm");
-            mv.addObject("loginResult", session.getAttribute("loginfail"));
-            session.removeAttribute("loginfail");
+            mv.addObject("loginResult", session.getAttribute("loginResult"));
+            session.removeAttribute("loginResult");
         }
 
         return mv;
