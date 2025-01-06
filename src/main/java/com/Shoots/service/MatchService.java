@@ -16,5 +16,5 @@ public interface MatchService {
 
     int deleteMatch(int matchIdx);
 
-    List<Match> getMatchListById(Integer idx, int page, int limit);
+    List<Match> getMatchListById(Integer idx, String filter, String gender, String level, int page, int limit);
 }

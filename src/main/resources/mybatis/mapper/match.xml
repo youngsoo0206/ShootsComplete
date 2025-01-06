@@ -34,7 +34,18 @@
         FROM MATCH_POST mp
             LEFT JOIN BUSINESS_USER b
             ON mp.writer = b.business_idx
-        WHERE mp.writer = #{idx}
+        <where>
+            mp.writer = #{idx}
+            <if test="filter != null and filter == 'today'">
+                AND mp.MATCH_DATE = CURDATE()
+            </if>
+            <if test="gender != null">
+                AND mp.player_gender = #{gender}
+            </if>
+            <if test="level != null">
+                AND mp.MATCH_LEVEL = #{level}
+            </if>
+        </where>
         ORDER BY
             mp.MATCH_DATE DESC,
             mp.MATCH_TIME DESC

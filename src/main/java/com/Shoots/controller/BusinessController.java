@@ -44,6 +44,9 @@ public class BusinessController {
 
     @GetMapping("/post")
     public ModelAndView businessPost(@RequestParam(defaultValue = "1") int page,
+                                     @RequestParam(required = false) String filter,
+                                     @RequestParam(required = false) String gender,
+                                     @RequestParam(required = false) String level,
                                ModelAndView modelAndView, HttpSession session) {
 
         Integer idx = (Integer) session.getAttribute("idx");
@@ -53,7 +56,7 @@ public class BusinessController {
         int limit = 10;
         int listCount = matchService.getListCount();
 
-        List<Match> list = matchService.getMatchListById(idx, page, limit);
+        List<Match> list = matchService.getMatchListById(idx, filter, gender, level, page, limit);
 
         PaginationResult result = new PaginationResult(page, limit, listCount);
 
