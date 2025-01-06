@@ -30,6 +30,8 @@ public class Match {
     private String business_name;
     private String address;
 
+    private boolean matchPast;
+
 
     public String getFormattedDate() {
         return formattedDate;

@@ -1,6 +1,6 @@
 $(function () {
     $("#matchForm").click(function () {
-        location.href = "write";
+        location.href = "../match/write";
     })
 
     $(".today").click(function () {
@@ -8,7 +8,7 @@ $(function () {
         $("#player_gender").val('');
         $("#match_level").val('');
 
-        fetch('/Shoots/match/list?filter=today')
+        fetch('/Shoots/business/post?filter=today')
             .then(response => response.text())
             .then(data => {
 
@@ -39,7 +39,7 @@ $(function () {
         $("#player_gender").val('');
         $("#match_level").val('');
 
-        fetch('/Shoots/match/list')  // 전체 리스트를 가져오는 요청
+        fetch('/Shoots/business/post')  // 전체 리스트를 가져오는 요청
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
@@ -65,7 +65,7 @@ $(function () {
         const gender = $("#player_gender").val()
         $("#match_level").val('');
 
-        fetch(`/Shoots/match/list?gender=${gender}`)
+        fetch(`/Shoots/business/post?gender=${gender}`)
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
@@ -98,7 +98,7 @@ $(function () {
         const level = $("#match_level").val()
         $("#player_gender").val('');
 
-        fetch(`/Shoots/match/list?level=${level}`)
+        fetch(`/Shoots/business/post?level=${level}`)
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
@@ -127,6 +127,16 @@ $(function () {
             .catch(error => {
                 console.error('Error loading filtered matches:', error);
             });
+    });
+
+    $('.btn-delete').click(function(event) {
+        event.preventDefault();
+        const userConfirmed = confirm("매칭글을 삭제하시겠습니까?");
+
+        if (userConfirmed) {
+            alert("매칭글이 삭제되었습니다");
+            $(this).closest("form").submit();
+        }
     });
 
 });
