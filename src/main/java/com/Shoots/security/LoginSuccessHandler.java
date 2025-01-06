@@ -38,6 +38,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("idx", businessUser.getBusiness_idx());
             session.setAttribute("id", businessUser.getBusiness_id());
             session.setAttribute("role", businessUser.getRole());
+            session.setAttribute("businessAccess", businessUser.getLogin_status());
         }
 
         // 로그인 성공 후 redirect
