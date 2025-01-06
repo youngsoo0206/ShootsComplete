@@ -39,7 +39,7 @@ public class BusinessController {
 
     @GetMapping("/dashboard")
     public String businessDashboard() {
-        return "business/dashboard";
+        return "business/businessDashboard";
     }
 
     @GetMapping("/post")
