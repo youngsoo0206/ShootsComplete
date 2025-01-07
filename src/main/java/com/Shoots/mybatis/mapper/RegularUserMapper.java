@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RegularUserMapper {
     public RegularUser selectById(String id);
     public int insert(RegularUser user);
+    public RegularUser selectByEmail(String email);
+    public RegularUser findIdWithEmail(String email);
 }

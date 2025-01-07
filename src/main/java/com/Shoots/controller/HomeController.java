@@ -32,7 +32,7 @@ public class HomeController {
 
             PrintWriter out = response.getWriter();
             out.println("<script type='text/javascript'>");
-            out.println("if(confirm('미승인된 기업입니다')){");
+            out.println("if(confirm('미승인 상태입니다. 관리자의 승인을 기다려주세요.')){");
             out.println("location.href='/Shoots/logout';");
             out.println("} else { location.href='/Shoots/logout'; }");
             out.println("</script>");
@@ -46,4 +46,7 @@ public class HomeController {
     public String main() {
         return "home/home";
     }
+
+
+
 }

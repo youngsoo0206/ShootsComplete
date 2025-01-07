@@ -57,6 +57,28 @@
             #{limit} OFFSET #{offset};
     </select>
 
+    <select id="getMatchListByIdForSales" parameterType="map" resultType="Match">
+        SELECT * FROM MATCH_POST
+        <where>
+            WRITER = #{idx}
+            <if test="month != null">
+                AND MONTH(MATCH_DATE) = #{month}
+            </if>
+            <if test="year != null">
+                AND YEAR(MATCH_DATE) = #{year}
+            </if>
+            <if test="gender != null">
+                AND PLAYER_GENDER = #{gender}
+            </if>
+            <if test="level != null">
+                AND MATCH_LEVEL = #{level}
+            </if>
+        </where>
+        ORDER BY
+        MATCH_DATE DESC,
+        MATCH_TIME DESC
+    </select>
+
     <insert id="insertMatch">
         INSERT INTO MATCH_POST (
             WRITER,

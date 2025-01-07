@@ -1,9 +1,11 @@
 package com.Shoots.service;
 
 import com.Shoots.domain.Payment;
-import com.Shoots.mybatis.mapper.MatchMapper;
 import com.Shoots.mybatis.mapper.PaymentMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -27,5 +29,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public int getPlayerCount(int match_idx) {
         return dao.getPlayerCount(match_idx);
+    }
+
+    @Override
+    public List<Map<String, Object>> getPaymentListById(Integer idx) {
+        return dao.getPaymentListById(idx);
     }
 }

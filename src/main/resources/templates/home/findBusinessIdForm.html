@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/header :: header}"/>
+    <meta charset="UTF-8">
+    <title>아이디 찾기</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <span>가입하실때 사용하신 기업의 이메일을 적어주세요.</span>
+    <br>
+    <br>
+    <br>
+
+    <form th:action="@{/findBusinessIdProcess}" method="post">
+        <b>이메일 주소</b>
+        <input type="text" name="email" placeholder="이메일을 입력해 주세요." maxLength="30" required>
+        <span id="email-message"></span>
+        <button type="submit">검색</button>
+    </form>
+</div>
+
+
+</body>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</html>
