@@ -49,7 +49,12 @@ public class PostController {
             HttpSession session) {
 
         session.setAttribute("referer", "list");
+
         int limit = 10; // 한 화면에 출력할 로우 갯수
+
+        // 페이지와 limit 값이 제대로 설정되었는지 확인
+        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
+        int end = limit; // 끝 값은 limit과 동일
 
         int listcount = postService.getListCount(category); // 총 리스트 수를 받아옴
         List<Post> list = postService.getPostList(page, limit, category); // 리스트를 받아옴
@@ -76,6 +81,11 @@ public class PostController {
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "A") String category // 기본값 추가
     ) {
+
+        // 페이지와 limit 값이 제대로 설정되었는지 확인
+        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
+        int end = limit; // 끝 값은 limit과 동일
+
         int listcount = postService.getListCount(category);
         List<Post> list = postService.getPostList(page, limit, category);
 
@@ -131,20 +141,30 @@ public class PostController {
         //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
         MultipartFile uploadfile = post.getUploadfile();
 
-        if (!uploadfile.isEmpty()) {
+        if (uploadfile != null && !uploadfile.isEmpty()) {
             String fileDBName = postService.saveUploadFile(uploadfile, saveFolder);
             post.setPost_file(fileDBName); //바뀐 파일명으로 저장
             post.setPost_original(uploadfile.getOriginalFilename()); // 원래 파일명 저장
         }
 
+        if (post.getCategory() == null) {
+            post.setCategory("A"); // 기본값 설정
+        }
+
+        if (post.getPrice() == null) {
+            post.setPrice(0); // 기본값 설정
+        }
+
+
         // 카테고리 처리
         if ("B".equals(post.getCategory())) {
-            post.setPrice(post.getPrice()); // 가격이 입력되었을 경우 설정
+            //post.setPrice(post.getPrice()); // 가격이 입력되었을 경우 유지
         } else {
             post.setPrice(0); // 기타 카테고리는 가격을 0으로 설정
         }
 
         postService.insertPost(post); // 저장메서드 호출
+
         logger.info("Post added: " + post.toString()); //selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
         return "redirect:list";
     }
@@ -171,7 +191,6 @@ public class PostController {
             session.removeAttribute("referer");
 
         }
-
 
         Post post = postService.getDetail(num);
         //board=null; //error 페이지 이동 확인하고자 임의로 지정합니다.
