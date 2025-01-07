@@ -83,4 +83,18 @@ public class MatchServiceImpl implements MatchService{
     public int getListCountById(Integer idx) {
         return dao.getListCountById(idx);
     }
+
+    @Override
+    public List<Match> getMatchListByIdForSales(Integer idx, String month, String year, String gender, String level) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("idx", idx);
+        map.put("month", month);
+        map.put("year", year);
+        map.put("gender", gender);
+        map.put("level", level);
+
+        return dao.getMatchListByIdForSales(map);
+    }
 }

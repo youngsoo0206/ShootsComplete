@@ -19,4 +19,7 @@ public interface MatchService {
     List<Match> getMatchListById(Integer idx, String filter, String gender, String level, int page, int limit);
 
     int getListCountById(Integer idx);
+
+    List<Match> getMatchListByIdForSales(Integer idx, String month, String year, String gender, String level);
+
 }
