@@ -16,6 +16,7 @@
 
 <input type="hidden" th:value="${postdata.post_idx}" id="post_idx" name="post_idx">
 
+
 <div class="container">
 	<!-- 게시글 정보 -->
 	<table class="table">
@@ -23,10 +24,10 @@
 			<td colspan="2">
 				<div class="title" th:text="${postdata.title}"></div>
 				<th:block th:if="${postdata.user_file}">
-					<img th:src="@{${contextPath}/userupload/${postdata.user_file}}" alt="profile picture" style="height:25px; width:25px; border: 1px solid #ccc; border-radius: 50%;">
+					<img th:src="@{/userupload/${postdata.user_file}}" alt="profile picture" style="height:25px; width:25px; border: 1px solid #ccc; border-radius: 50%;">
 				</th:block>
 				<th:block th:unless="${postdata.user_file}">
-					<img src="{{contextPath}}/img/info.png" alt="default profile" style="height:25px; width:25px;">
+					<img th:src="@{${contextPath}/img/info.png}" alt="default profile" style="height:25px; width:25px;">
 				</th:block>
 				<span class="user_id" th:text="${postdata.user_id}"></span>
 				<span class="register_date" style="margin-left: 30px;" th:text="${postdata.register_date}"></span>
@@ -41,9 +42,9 @@
 		<th:block th:if="${postdata.post_file}">
 			<tr>
 				<td>
-					<img th:src="@{${contextPath}/postupload/${postdata.post_file}}" style="width: 300px">
+					<img th:src="@{postupload/${postdata.post_file}}" style="width: 300px">
 					<br>
-					<a th:href="@{${contextPath}/down?filename=${postdata.post_file}}" th:text="${postdata.post_file}"></a>
+					<a th:href="@{down?filename=${postdata.post_file}}" th:text="${postdata.post_file}"></a>
 				</td>
 			</tr>
 		</th:block>
@@ -65,8 +66,9 @@
 		<tr>
 			<td colspan="2" class="center">
 				<!-- 수정, 삭제 버튼은 로그인한 유저의 아이디 = 글 작성자일 때 혹은 id가 관리자일 때만 보이게 함 -->
-				<th:block th:if="${postdata.writer == idx or id == 'admin'}">
-					<a th:href="@{modify?num=${postdata.post_idx}}">
+				<th:block th:if="${postdata.writer == session.idx or id == 'admin'}">
+				<a th:href="@{/post/modifyView(num=${postdata.post_idx})}">
+		<!--	<a th:href="@{modify?num=${postdata.post_idx}}">	-->
 						<button class="modifyBtn">수정</button>
 					</a>
 					<button class="deleteBtn" id="delete-post-btn">삭제</button>
@@ -90,7 +92,7 @@
 		<ul class="comment-list"></ul>
 		<div class="comment-write">
 			<div class="comment-write-area">
-				<b class="comment-write-area-name" th:text="${id}"></b>
+				<b class="comment-write-area-name" th:text="${session.idx}"></b>
 				<span class="comment-write-area-count">0/200</span>
 				<textarea placeholder="댓글을 남겨보세요" rows="1" class="comment-write-area-text" maxlength="200"></textarea>
 			</div>
@@ -110,7 +112,7 @@
 			<form action="${contextPath}/report/add" method="post" name="reportform" id="reportform">
 				<p class="reportT">댓글 신고</p>
 				<input type="hidden" name="report_type" class="report_type" value="B">
-				<input type="hidden" name="reporter" class="reporter" th:value="${idx}">
+				<input type="hidden" name="reporter" class="reporter" th:value="${session.idx}">
 				<input type="hidden" name="target" class="target" value="">
 				<input type="hidden" name="report_ref_id" class="report_ref_id" value="">
 				<input type="hidden" name="post_idx" class="post_idx" th:value="${postdata.post_idx}">
@@ -163,7 +165,8 @@
 		});
 	});
 
-	const contextPath = /*[[${pageContext.request.contextPath}]]*/ "";
+
+	const contextPath = /*[(${contextPath})]*/ "";
 	const role = /*[[${role}]]*/ "";
 </script>
 

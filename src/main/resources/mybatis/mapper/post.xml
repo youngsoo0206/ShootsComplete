@@ -35,32 +35,42 @@
     ② CDATA(Character DATA) XML 파서가 분석하지 않는 문자 데이터를 의미합니다.
         사용하는 방법은 <![CDATA[ 와 ]]> 사이에 문자들을 넣으면 됩니다.
     -->
-    <select id="getPostList" resultType="post">
-        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
-        FROM post p
-                 INNER JOIN regular_user r ON p.writer = r.idx
-        WHERE p.category = #{category}
-        ORDER BY p.register_date DESC
-            LIMIT #{start}, #{end}
-    </select>
+
+
+
+<!--    <select id="getPostList" resultType="post">-->
+<!--        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id-->
+<!--        FROM post p-->
+<!--                 INNER JOIN regular_user r ON p.writer = r.idx-->
+<!--        WHERE p.category = #{category}-->
+<!--        ORDER BY p.register_date DESC-->
+<!--    </select>-->
+
+
+        <select id="getPostList" resultType="post">
+            SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
+            FROM post p
+                     INNER JOIN regular_user r ON p.writer = r.idx
+            WHERE p.category = #{category}
+            ORDER BY p.register_date DESC
+                LIMIT #{start}, #{end}
+        </select>
 
 
 
 
-    <insert id="insertPost">
-        <!-- 먼저 post_id (또는 BOARD_NUM)를 자동 증가 방식으로 가져옵니다 -->
-        <selectKey resultType="int" order="BEFORE" keyProperty="post_idx">
-            select nvl(max(post_idx), 0) + 1 from post
-        </selectKey>
 
-        <!-- 실제 insert 문 -->
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_idx">
         insert into post
-        (post_idx, writer, category, title, content,
-        post_file, price, register_date, readcount)
+        (writer, category, title, content,
+         post_file, post_original, price, register_date, readcount)
         values
-        (#{post_idx}, #{writer}, #{category}, #{title}, #{content},
-        #{post_file}, #{price}, current_timestamp, #{readcount})
+            (#{writer}, #{category}, #{title}, #{content},
+             #{post_file}, #{post_original}, #{price}, current_timestamp, #{readcount})
     </insert>
+
+
+
 
 
 
@@ -80,7 +90,7 @@
                                   join regular_user r
                                        on p.writer = r.idx
                          order by post_idx desc
-                     )
+                     ) subquery
         where post_idx = #{post_idx}
     </select>
 
@@ -100,7 +110,8 @@
         set title=#{title},
             content=#{content},
             price=#{price},
-            post_file=#{post_file}
+            post_file=#{post_file},
+            post_original=#{post_original}
         where post_idx = #{post_idx}
     </update>
 
