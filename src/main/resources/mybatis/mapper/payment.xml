@@ -26,4 +26,25 @@
     <select id="getPlayerCount" resultType="int">
         select COUNT(*) from PAYMENT where match_idx = #{match_idx}
     </select>
+
+    <select id="getPaymentListById" resultMap="PaymentUserMap">
+        select p.*, r.*
+        from PAYMENT p
+                 left join regular_user r on p.buyer_idx = r.idx
+        where p.seller_idx = #{idx}
+    </select>
+
+    <resultMap id="PaymentUserMap" type="java.util.HashMap">
+        <result property="payment.match_idx" column="p.MATCH_IDX"/>
+        <result property="payment.payment_method" column="p.PAYMENT_METHOD"/>
+        <result property="payment.payment_amount" column="p.PAYMENT_AMOUNT"/>
+        <result property="payment.payment_date" column="p.PAYMENT_DATE"/>
+
+        <result property="regularUser.user_id" column="r.user_id"/>
+        <result property="regularUser.name" column="r.name"/>
+        <result property="regularUser.jumin" column="r.jumin"/>
+        <result property="regularUser.gender" column="r.gender"/>
+        <result property="regularUser.tel" column="r.tel"/>
+        <result property="regularUser.email" column="r.email"/>
+    </resultMap>
 </mapper>

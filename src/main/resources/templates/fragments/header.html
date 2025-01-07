@@ -33,7 +33,8 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
                     </div>
                     <div th:if="${session.id != null}">
-                    <a class="nav-link active" aria-current="page" th:href="@{/#}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess}" th:href="@{/business/dashboard}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null}" th:href="@{/}">[[${session.id}]]님</a>
                     </div>
                 </li>
                 <div th:if="${session.id != null}">

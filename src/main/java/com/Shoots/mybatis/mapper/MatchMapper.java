@@ -23,4 +23,6 @@ public interface MatchMapper {
     List<Match> getMatchListById(HashMap<String, Object> map);
 
     int getListCountById(Integer idx);
+
+    List<Match> getMatchListByIdForSales(HashMap<String, Object> map);
 }
