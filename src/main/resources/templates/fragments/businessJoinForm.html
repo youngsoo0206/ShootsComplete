@@ -39,17 +39,18 @@
 
 
         <b>이메일 주소</b>
-        <input type="text" name="email" placeholder="이메일을 입력해 주세요." maxLength="30" required>
+        <input type="text" id="business_email" name="email" placeholder="이메일을 입력해 주세요." maxLength="30" required>
         <span id="email-message"></span>
         <br>
 
 
         <b>우편번호</b>
-        <input type="text" placeholder="우편번호를 입력해 주세요." name="post" maxLength="7" required>
+        <input type="text" placeholder="우편번호를 입력해 주세요." id="post" name="post" maxLength="6" required>
+        <input type="button" value="우편검색" id="postcode">
         <br>
 
         <b>상세주소</b>
-        <textarea placeholder="기업의 상세주소를 입력해 주세요." name="address" maxLength="100" required></textarea>
+        <textarea placeholder="기업의 상세주소를 입력해 주세요." id ="address" name="address" maxLength="100" required></textarea>
         <br>
 
         <div class="clearfix">

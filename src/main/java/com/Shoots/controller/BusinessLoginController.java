@@ -1,9 +1,9 @@
 package com.Shoots.controller;
 
 import com.Shoots.domain.BusinessUser;
-import com.Shoots.domain.RegularUser;
+import com.Shoots.domain.MailVO;
 import com.Shoots.service.BusinessUserService;
-import com.Shoots.service.RegularUserService;
+import com.Shoots.task.SendMail;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,11 +30,14 @@ public class BusinessLoginController {
     private static final Logger logger = LoggerFactory.getLogger(BusinessLoginController.class);
     private final BusinessUserService businessUserService;
     private BCryptPasswordEncoder passwordEncoder;
+    private SendMail sendMail;
 
 
-    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder) {
+
+    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail) {
         this.businessUserService = businessUserService;
         this.passwordEncoder = passwordEncoder;
+        this.sendMail = sendMail;
     }
 
     @GetMapping("/businessJoinForm")
@@ -78,5 +81,49 @@ public class BusinessLoginController {
         return businessUserService.selectById(id);
     }
 
+    @ResponseBody
+    @GetMapping(value = "/business_emailcheck")
+    public int business_emailcheck(String email) {
+        return businessUserService.selectByEmail(email);
+    }
+
+    @GetMapping(value = "/findBusinessId")
+    public String findId() {
+        return "home/findBusinessIdForm";
+    }
+
+
+    @PostMapping(value = "/findBusinessIdProcess")
+    public String findBusinessIdProcess(String email, HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/html; charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+
+        BusinessUser user = businessUserService.findIdWithEmail(email);
+
+
+        if (user == null) {
+            out.println("<script type='text/javascript'>");
+            out.println("alert('일치하는 이메일이 없습니다. 이메일을 확인해 주세요.')");
+            out.println("location.href='/Shoots/findRegularId';");
+            out.println("</script>");
+            out.flush();
+        } else {
+            MailVO vo = new MailVO();
+            vo.setTo(user.getEmail());
+            vo.setSubject("Shoots에서 회원님의 기업 아이디를 전달해 드립니다.");
+            vo.setText("회원님의 기업 아이디입니다 : " + user.getBusiness_id());
+            sendMail.sendMail(vo);
+
+            out.println("<script type='text/javascript'>");
+            out.println("alert('이메일로 회원님의 기업 아이디를 전달했습니다.')");
+            out.println("location.href='/Shoots/login';");
+            out.println("</script>");
+            out.flush();
+        }
+        return null;
+
+    }
 
 }
