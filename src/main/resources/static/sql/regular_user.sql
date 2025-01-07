@@ -48,3 +48,8 @@ FROM regular_user u
 WHERE p.match_id = 31 AND p.status = 'SUCCESS';
 
 select * from regular_user;
+
+-- 아이디 찾을때 이메일을 적고, 해당 이메일 주소가 있으면 해당 id를 뽑아내도록 함.
+select user_id from regular_user
+where email = '1@1.111'
+and tel = '1';

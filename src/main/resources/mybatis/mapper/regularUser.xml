@@ -20,5 +20,13 @@
                 )
     </insert>
 
+    <select id="selectByEmail" resultType="regularuser">
+        select * from regular_user where email = #{email}
+    </select>
+
+    <select id="findIdWithEmail" resultType="regularuser">
+        select * from regular_user where email = #{email}
+    </select>
+
 
 </mapper>

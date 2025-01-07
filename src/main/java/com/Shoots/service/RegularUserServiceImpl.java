@@ -60,4 +60,15 @@ public class RegularUserServiceImpl implements RegularUserService {
         return regularUserMapper.insert(user);
     }
 
+    @Override
+    public int selectByEmail(String email) {
+        RegularUser user = regularUserMapper.selectByEmail(email);
+        return (user == null) ? -1 : 1;//-1은 아이디가 존재x, 1은 아이디가 존재o
+    }
+
+    @Override
+    public RegularUser findIdWithEmail(String email) {
+        RegularUser user = regularUserMapper.findIdWithEmail(email);
+        return user;
+    }
 }

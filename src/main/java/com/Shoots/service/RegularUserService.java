@@ -7,5 +7,6 @@ public interface RegularUserService {
     public RegularUser selectWithId(String id);
     public int selectByIdPassword(String id, String password);
     public int insert(RegularUser user);
-
+    public int selectByEmail(String email);
+    public RegularUser findIdWithEmail(String email);
 }

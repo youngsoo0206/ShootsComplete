@@ -130,21 +130,6 @@
         alert(/*[[${loginResult}]]*/);
     </script>
 
-    <script>
-        $("form[action='businessLoginProcess']").on('submit', function (e) {
-          const BA = document.getElementById("BA").getAttribute("data-toggle");
-            if (BA == 'pending') {
-                alert("떴냐");
-                e.defaultPrevented;
-            }
-        })
-    </script>
-
-
-    <script th:if="${businessAccess == 'pending'}" th:inline="javascript">
-        alert(/*[[${loginResult}]]*/);
-    </script>
-
 </head>
 <body>
 <div class="login-container">
@@ -177,7 +162,7 @@
                 </div>
                 <div class="forgot-password">
                     <a th:href="@{/main}">홈으로 되돌아가기</a> &nbsp; <span style="color: dimgray">|</span> &nbsp;
-                    <a th:href="@{/forgot-password}">아이디 / 비밀번호 찾기</a>
+                    <a th:href="@{/findRegularId}">아이디 / 비밀번호 찾기</a>
                 </div>
             </form>
         </div>
@@ -199,7 +184,7 @@
                 </div>
                 <div class="forgot-password">
                     <a th:href="@{/main}">홈으로 되돌아가기</a> &nbsp; <span style="color: dimgray">|</span> &nbsp;
-                    <a th:href="@{/forgot-password-business}">아이디 / 비밀번호 찾기</a>
+                    <a th:href="@{/findBusinessId}">아이디 / 비밀번호 찾기</a>
                 </div>
             </form>
         </div>

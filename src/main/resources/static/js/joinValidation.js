@@ -29,7 +29,7 @@ $(function(){
             }
         });//아이디중복검사 : 개인회원 ajax 끝
 
-        $.ajax({  //아이디 중복검사 : 개인회원
+        $.ajax({  //아이디 중복검사 : 기업회원
             url	: "business_idcheck",
             data : {"id" : id},
             success	: function(resp){
@@ -45,23 +45,73 @@ $(function(){
 
     })//id keyup 끝
 
-    $("input[name=email]").on('keyup',function(){
+    $("#regular_email").on('keyup',function(){ //개인회원의 이메일 형식, 고유성 검사
         //[A-Za-z0-9_]와 동일한 것이 \w입니다.
         //+는 1회 이상 반복을 의미하고 {1,}와 동일합니다.
         //\w+ 는 [A-Za-z0-9_]를 1개이상 사용하라는 의미입니다.
         const pattern = /^\w+@\w+[.][A-Za-z0-9]{3}$/;
-        const email_value = $(this).val();
+        const email = $(this).val();
 
-        if(!pattern.test(email_value)){
+        if(!pattern.test(email)){
             $("#email-message").css('color','red')
                 .html("올바른 이메일을 작성해 주세요.");
             checkemail=false;
-        }else{
-            $("#email-message").css('color','green')
+        }else { //이메일 형식이 올바를 시, 이메일 중복체크
+            $("#email-message").css('color', 'green')
                 .html("이메일이 형식에 맞습니다.");
-            checkemail=true;
+            checkemail = true;
+
+            $.ajax({  //이메일 중복검사 : 개인회원
+                url: "emailcheck",
+                data: {"email": email},
+                success: function (resp) {
+                    if (resp == "-1") {//db에 해당 id가 없는 경우
+                        $("#email-message").css('color', 'green').html("사용 가능한 이메일 입니다.");
+                        checkemail = true;
+                    } else {//db에 해당 id가 있는 경우(1)
+                        $("#email-message").css('color', 'blue').html("사용중인 이메일 입니다.");
+                        checkemail = false;
+                    }
+                }
+            });//이메일 중복검사 ajax 끝
+
         }
-    })//email keyup 이벤트 처리 끝
+    })//개인회원 email keyup 이벤트 처리 끝
+
+
+    $("#business_email").on('keyup',function(){ //기업회원의 이메일 형식, 고유성 검사
+        //[A-Za-z0-9_]와 동일한 것이 \w입니다.
+        //+는 1회 이상 반복을 의미하고 {1,}와 동일합니다.
+        //\w+ 는 [A-Za-z0-9_]를 1개이상 사용하라는 의미입니다.
+        const pattern = /^\w+@\w+[.][A-Za-z0-9]{3}$/;
+        const email = $(this).val();
+
+        if(!pattern.test(email)){
+            $("#email-message").css('color','red')
+                .html("올바른 이메일을 작성해 주세요.");
+            checkemail=false;
+        }else { //이메일 형식이 올바를 시, 기업회원 이메일 중복체크
+            $("#email-message").css('color', 'green')
+                .html("이메일이 형식에 맞습니다.");
+            checkemail = true;
+
+            $.ajax({  //이메일 중복검사
+                url: "business_emailcheck",
+                data: {"email": email},
+                success: function (resp) {
+                    if (resp == "-1") {//db에 해당 id가 없는 경우
+                        $("#email-message").css('color', 'green').html("사용 가능한 이메일 입니다.");
+                        checkemail = true;
+                    } else {//db에 해당 id가 있는 경우(1)
+                        $("#email-message").css('color', 'blue').html("사용중인 이메일 입니다.");
+                        checkemail = false;
+                    }
+                }
+            });//이메일 중복검사 ajax 끝
+
+        }
+    })//기업회원 email keyup 이벤트 처리 끝
+
 
     //개인회원가입 버튼 제출시 유효성 검사
     $('form[name="regularJoinProcess"]').off('submit').submit(function(){

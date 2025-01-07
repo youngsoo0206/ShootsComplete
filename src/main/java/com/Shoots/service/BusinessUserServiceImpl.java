@@ -1,6 +1,7 @@
 package com.Shoots.service;
 
 import com.Shoots.domain.BusinessUser;
+import com.Shoots.domain.RegularUser;
 import com.Shoots.mybatis.mapper.BusinessUserMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,15 @@ public class BusinessUserServiceImpl implements BusinessUserService {
         return businessUserMapper.insert(user);
     }
 
+    @Override
+    public int selectByEmail(String email) {
+        BusinessUser user = businessUserMapper.selectByEmail(email);
+        return (user == null) ? -1 : 1;//-1은 아이디가 존재x, 1은 아이디가 존재o
+    }
+
+    @Override
+    public BusinessUser findIdWithEmail(String email) {
+        BusinessUser user = businessUserMapper.findIdWithEmail(email);
+        return user;
+    }
 }

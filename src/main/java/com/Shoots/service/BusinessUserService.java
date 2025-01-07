@@ -7,5 +7,8 @@ public interface BusinessUserService {
     public BusinessUser selectWithId(String id);
     public int selectByIdPassword(String id, String password);
     public int insert(BusinessUser user);
+    public int selectByEmail(String email);
+    public BusinessUser findIdWithEmail(String email);
+
 
 }

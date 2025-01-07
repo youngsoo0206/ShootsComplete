@@ -1,7 +1,9 @@
 package com.Shoots.controller;
 
+import com.Shoots.domain.MailVO;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.RegularUserService;
+import com.Shoots.task.SendMail;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,11 +28,13 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private final RegularUserService regularUserService;
     private BCryptPasswordEncoder passwordEncoder;
+    private SendMail sendMail;
 
 
-    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder) {
+    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail) {
         this.regularUserService = regularUserService;
         this.passwordEncoder = passwordEncoder;
+        this.sendMail = sendMail;
     }
 
     @GetMapping(value = "/login")
@@ -69,9 +73,8 @@ public class LoginController {
 
     @PostMapping(value = "/regularJoinProcess")
     public String regularJoinProcess(RegularUser user, RedirectAttributes rattr,
-                                     Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        ModelAndView mv = new ModelAndView();
         response.setContentType("text/html;charset=UTF-8");
 
         //비밀번호 암호화 추가
@@ -103,31 +106,49 @@ public class LoginController {
         return regularUserService.selectById(id);
     }
 
-//    @PostMapping(value = "/loginProcess")
-//    public String loginProcess(String id, String password, RedirectAttributes rattr, HttpSession session,
-//                               HttpServletResponse response) throws IOException {
-//        PrintWriter out = response.getWriter();
-//
-//        int result = regularUserService.selectByIdPassword(id, password);
-//
-//        if (result == 1) { //로그인 성공
-//            RegularUser loginUser = regularUserService.selectWithId(id);
-//            session.setAttribute("id", id);
-//            session.setAttribute("user_id", loginUser.getUser_id());
-//            session.setAttribute("role", loginUser.getRole());
-//            logger.info("role이랑 user_id는? : " + loginUser.getRole() + loginUser.getUser_id());
-////            return "redirect:/main";  //LoginSuccessHandler 에서 경로를 처리하기 때문에 필요 없음.
-//        } else if (result == 0) {
-//            out.println("<script type='text/javascript'>");
-//            out.println("alert('비밀번호가 일치하지 않습니다.');");
-//            out.println("</script>");
-//        }  else if (result == -1) {
-//            out.println("<script type='text/javascript'>");
-//            out.println("alert('아이디가 일치하지 않습니다.');");
-//            out.println("</script>");
-//        }
-//
-//        return null;
-//    } //loginProces 끝
+
+    @ResponseBody
+    @GetMapping(value = "/emailcheck")
+    public int emailcheck(String email) {
+        return regularUserService.selectByEmail(email);
+    }
+
+    @GetMapping(value = "/findRegularId")
+    public String findId() {
+        return "home/findRegularIdForm";
+    }
+
+    @PostMapping(value = "/findRegularIdProcess")
+    public String findRegularIdProcess(String email, HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/html; charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+
+        RegularUser user = regularUserService.findIdWithEmail(email);
+
+
+        if (user == null) {
+            out.println("<script type='text/javascript'>");
+            out.println("alert('일치하는 이메일이 없습니다. 이메일을 확인해 주세요.')");
+            out.println("location.href='/Shoots/findRegularId';");
+            out.println("</script>");
+            out.flush();
+        } else {
+            MailVO vo = new MailVO();
+            vo.setTo(user.getEmail());
+            vo.setSubject("Shoots에서 회원님의 아이디를 전달해 드립니다.");
+            vo.setText("회원님의 아이디입니다 : " + user.getUser_id());
+            sendMail.sendMail(vo);
+
+            out.println("<script type='text/javascript'>");
+            out.println("alert('이메일로 회원님의 아이디를 전달했습니다.')");
+            out.println("location.href='/Shoots/login';");
+            out.println("</script>");
+            out.flush();
+        }
+        return null;
+
+    }
 
 }

@@ -8,4 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BusinessUserMapper {
     public BusinessUser selectById(String id);
     public int insert(BusinessUser user);
+    public BusinessUser selectByEmail(String email);
+    public BusinessUser findIdWithEmail(String email);
+
 }
