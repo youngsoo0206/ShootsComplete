@@ -55,7 +55,8 @@ $("form[name=writeform]").submit(function(event) {
 			if (response.success) {
 				// 성공적으로 게시글이 등록되었으면 리스트 페이지로 리다이렉트
 				alert("게시글이 등록되었습니다.");
-				location.href = "list"; //리스트 페이지로 이동
+				// location.href = "list"; //리스트 페이지로 이동
+
 			} else {
 				alert("게시글 등록에 실패했습니다. 다시 시도해 주세요.");
 			}

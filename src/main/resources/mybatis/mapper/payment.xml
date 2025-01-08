@@ -35,11 +35,6 @@
     </select>
 
     <resultMap id="PaymentUserMap" type="java.util.HashMap">
-        <result property="payment.match_idx" column="p.MATCH_IDX"/>
-        <result property="payment.payment_method" column="p.PAYMENT_METHOD"/>
-        <result property="payment.payment_amount" column="p.PAYMENT_AMOUNT"/>
-        <result property="payment.payment_date" column="p.PAYMENT_DATE"/>
-
         <result property="regularUser.user_id" column="r.user_id"/>
         <result property="regularUser.name" column="r.name"/>
         <result property="regularUser.jumin" column="r.jumin"/>

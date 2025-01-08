@@ -31,12 +31,14 @@ public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     private PostService postService;
+//    private CommentService commentService;
 
     //클래스에 생성자가 하나만 존재하는 경우 Spring이 자동으로 의존성을 주입해 주므로 @Autowired를 붙일 필요가 없습니다.
     //Spring Boot 2.6 이상에서는 생성자가 하나뿐인 경우 @Autowired를 생략하는 것을 권장합니다.
     //생성자 주입
     public PostController(PostService postService) {
         this.postService = postService;
+//        this.commentService = commentService;
     }
 
 
@@ -52,9 +54,9 @@ public class PostController {
 
         int limit = 10; // 한 화면에 출력할 로우 갯수
 
-        // 페이지와 limit 값이 제대로 설정되었는지 확인
-        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
-        int end = limit; // 끝 값은 limit과 동일
+//        // 페이지와 limit 값이 제대로 설정되었는지 확인
+//        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
+//        int end = limit; // 끝 값은 limit과 동일
 
         int listcount = postService.getListCount(category); // 총 리스트 수를 받아옴
         List<Post> list = postService.getPostList(page, limit, category); // 리스트를 받아옴
@@ -70,28 +72,35 @@ public class PostController {
         mv.addObject("postlist", list);
         mv.addObject("limit", limit);
         mv.addObject("pagination", result); // PaginationResult 객체를 전달
+        mv.addObject("category", category);
         return mv;
     }
 
     // AJAX 요청을 처리하여 게시글 목록 반환
-    @GetMapping(value = "/list/ajax")
+    @GetMapping(value = "/list_ajax")
     @ResponseBody
-    public PaginationResult postListAjax(
+    public Map<String, Object> postListAjax(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "A") String category // 기본값 추가
     ) {
 
-        // 페이지와 limit 값이 제대로 설정되었는지 확인
-        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
-        int end = limit; // 끝 값은 limit과 동일
-
         int listcount = postService.getListCount(category);
         List<Post> list = postService.getPostList(page, limit, category);
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
-        result.setPostlist(list); // PaginationResult에 게시글 목록 추가
-        return result; // 페이징 정보와 게시글 목록을 포함한 객체 반환
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("page", page);
+        map.put("maxpage", result.getMaxpage());
+        map.put("startpage", result.getStartpage());
+        map.put("endpage", result.getEndpage());
+        map.put("listcount", listcount);
+        map.put("postlist", list);
+        map.put("limit", limit);
+        map.put("pagination", result);
+        map.put("category", category);
+        return map;
     }
 
 //    /*
@@ -134,6 +143,9 @@ public class PostController {
     사용자 입력값을 설정합니다.
     매개변수의 이름과 setter의 property가 일치하면 됩니다.
     */
+
+
+
     @PostMapping("/add")
     public String add(Post post, HttpServletRequest request)
             throws Exception {
@@ -247,12 +259,12 @@ public class PostController {
         boolean usercheck = postService.isPostWriter(postdata.getPost_idx());
 
         String url="";
-        // 비밀번호가 다른 경우
-        if (usercheck == false) {
-            rattr.addFlashAttribute("message", "비밀번호 오류 입니다.");
-            rattr.addFlashAttribute("url", "history.back()");
-            return "redirect:/message";
-        }
+//        // 비밀번호가 다른 경우
+//        if (usercheck == false) {
+//            rattr.addFlashAttribute("message", "비밀번호 오류 입니다.");
+//            rattr.addFlashAttribute("url", "history.back()");
+//            return "redirect:/message";
+//        }
 
         //String url = "";
         MultipartFile uploadfile = postdata.getUploadfile();
@@ -300,6 +312,43 @@ public class PostController {
         return url;
     }
 
+
+
+    @PostMapping("/delete")
+    public String PostDelete(
+            int num,
+            Model mv,
+            RedirectAttributes rattr,
+            HttpServletRequest request
+    ) {
+
+        // 글 삭제 명령을 요청한 사용자가 글을 작성한 사용자인지 판단하기 위해
+        // 입력한 비밀번호와 저장된 비밀번호를 비교하여 일치하면 삭제합니다.
+        boolean usercheck = postService.isPostWriter(num);
+
+//        // 비밀번호 일치하지 않는 경우
+//        if (usercheck == false) {
+//            rattr.addFlashAttribute("result", "passFail");
+//            rattr.addAttribute("num", num);
+//            return "redirect:detail";
+//        }
+
+        // 비밀번호 일치하는 경우 삭제 처리 합니다.
+        int result = postService.postDelete(num);
+
+        //삭제 처리 실패한 경우
+        if (result == 0) {
+            logger.info("게시판 삭제 실패");
+            mv.addAttribute("url", request.getRequestURL());
+            mv.addAttribute("message", "삭제 실패");
+            return "error/error";
+        } else {
+            // 삭제 처리 성공한 경우 - 글 목록 보기 요청을 전송하는 부분입니다.
+            logger.info("삭제 성공");
+            rattr.addFlashAttribute("result", "deleteSuccess");
+            return "redirect:list";
+        }
+    }
 
 
 }

@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>FAQ 작성</title>
+    <title>공지사항 작성</title>
     <th:block th:replace="~{fragments/header :: header}" />
-    <script th:src = "@{/js/faqWriteForm.js}" charset="utf-8"></script>
+    <script th:src = "@{/js/noticeWriteForm.js}" charset="utf-8"></script>
 </head>
 <body>
     <div class="container">
-        <form th:action="@{/testAdmin/faqAdd}" method="post" enctype="multipart/form-data" name="faqform">
-            <h1>FAQ 등록 페이지</h1>
+        <form th:action="@{/testAdmin/noticeAdd}" method="post" enctype="multipart/form-data" name="noticeform">
+            <h1>공지사항 등록 페이지</h1>
             <div class="form-group">
-                <label for="faqName">작성자</label>
-                <input name="writer" id="faqName" type="text" class="form-control" placeholder="이름을 입력하세요">
+                <label for="noticeName">작성자</label>
+                <input name="writer" id="noticeName" type="text" class="form-control" placeholder="이름을 입력하세요">
             </div>
 
             <div class="form-group">

@@ -79,9 +79,9 @@ $(function () {
                     matchListContainer.appendChild(newTable);
 
                     if (gender === 'm') {
-                        document.querySelector('caption').textContent = "남자 매치";
+                        document.querySelector('caption').textContent = "남성 매치";
                     } else if (gender === 'f') {
-                        document.querySelector('caption').textContent = "여자 매치";
+                        document.querySelector('caption').textContent = "여성 매치";
                     } else if (gender === 'a') {
                         document.querySelector('caption').textContent = "혼성 매치";
                     }

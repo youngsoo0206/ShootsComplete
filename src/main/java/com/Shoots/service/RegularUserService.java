@@ -2,6 +2,9 @@ package com.Shoots.service;
 
 import com.Shoots.domain.RegularUser;
 
+import java.util.List;
+import java.util.Map;
+
 public interface RegularUserService {
     public int selectById(String id);
     public RegularUser selectWithId(String id);
@@ -11,4 +14,5 @@ public interface RegularUserService {
     public RegularUser findIdWithEmail(String email);
     public RegularUser selectWithIdAndEmail(String user_id, String email);
     public int updateRegularUserPassword(RegularUser user);
+    List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age);
 }
