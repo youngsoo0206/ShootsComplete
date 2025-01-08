@@ -5,8 +5,10 @@ import com.Shoots.mybatis.mapper.RegularUserMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RegularUserServiceImpl implements RegularUserService {
@@ -70,5 +72,10 @@ public class RegularUserServiceImpl implements RegularUserService {
     public RegularUser findIdWithEmail(String email) {
         RegularUser user = regularUserMapper.findIdWithEmail(email);
         return user;
+    }
+
+    @Override
+    public List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age) {
+        return regularUserMapper.getUserListForBusiness(business_idx, vip, gender, age);
     }
 }

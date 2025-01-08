@@ -28,5 +28,31 @@
         select * from regular_user where email = #{email}
     </select>
 
+    <select id="getUserListForBusiness" resultType="java.util.Map">
+        select r.*, COUNT(p.buyer_idx) AS cnt
+        from regular_user r
+        join payment p on r.idx = p.buyer_idx
+        <where>
+            p.seller_idx = #{business_idx}
+            <if test="gender != null">
+                AND (r.gender = #{gender} OR r.gender = #{gender} + 2)
+            </if>
+        </where>
+        group by r.idx
+
+        <if test="age == null and vip == null">
+            order by r.name asc
+        </if>
+        <if test="vip != null and vip == 'true'">
+            order by cnt desc
+        </if>
+        <if test="age != null and age == 'desc'">
+            order by TIMESTAMPDIFF(YEAR, STR_TO_DATE(CONCAT(CASE WHEN SUBSTRING(r.jumin, 1, 1) = '0' THEN '20' ELSE '19' END, r.jumin), '%Y%m%d'), CURDATE()) desc
+
+        </if>
+        <if test="age != null and age == 'asc'">
+            order by TIMESTAMPDIFF(YEAR, STR_TO_DATE(CONCAT(CASE WHEN SUBSTRING(r.jumin, 1, 1) = '0' THEN '20' ELSE '19' END, r.jumin), '%Y%m%d'), CURDATE()) asc
+        </if>
+    </select>
 
 </mapper>
