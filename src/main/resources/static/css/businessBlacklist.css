@@ -1,0 +1,5 @@
+
+.table {margin-top: 100px}
+
+.btn-unblock {width: 50px; height: 30px; font-size: 13px; color : white; background: #65a30d; border-radius: 20px; border: 1px solid #65a30d; transition: all 0.3s ease;}
+.btn-unblock:hover {color : #65a30d; background: white; border: 1px solid #65a30d}

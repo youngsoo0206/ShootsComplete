@@ -1,6 +1,7 @@
 package com.Shoots.service;
 
 import com.Shoots.domain.Payment;
+import com.Shoots.domain.RegularUser;
 
 import java.util.List;
 import java.util.Map;
