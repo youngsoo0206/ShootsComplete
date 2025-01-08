@@ -52,7 +52,7 @@
             FROM post p
                      INNER JOIN regular_user r ON p.writer = r.idx
             WHERE p.category = #{category}
-            ORDER BY p.register_date DESC
+            ORDER BY p.post_idx DESC
                 LIMIT #{start}, #{end}
         </select>
 
@@ -100,7 +100,6 @@
         select writer
         from post
         where post_idx=#{post_idx}
---         and writer=#{idx}
     </select>
 
 
@@ -116,7 +115,7 @@
     </update>
 
 
-    <delete id="boardDelete">
+    <delete id="postDelete">
         delete from post
         where post_idx=#{post_idx}
     </delete>

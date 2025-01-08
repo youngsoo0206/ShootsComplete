@@ -1,3 +1,24 @@
+
+$(function(){
+    $('#delete-post-btn').click(function(){
+        if (confirm("게시글을 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "POST",
+                url: "delete?num=${postdata.post_idx}",
+                success: function(response) {
+                    alert("삭제되었습니다.");
+                    location.href = "../post/list";
+                },
+                error: function() {
+                    alert("삭제 실패. 다시 시도해주세요.");
+                }
+            });
+        }
+    });
+});
+
+
+
 let option = 1; // 유지할 정렬 옵션
 //선택한 등록순과 최신순을 수정, 삭제, 추가 후에도 유지되도록 하기위한 변수로 사용됩니다
 //댓글 목록을 불러오는 함수
@@ -205,6 +226,8 @@ function updateForm(comment_id) {
   // 글자 수 표시
   $comment_id.find('.comment-write-area-count').text(`${content.length}/200`);
 }
+
+
 
 
 

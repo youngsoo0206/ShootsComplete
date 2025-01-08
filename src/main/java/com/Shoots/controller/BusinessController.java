@@ -1,6 +1,7 @@
 package com.Shoots.controller;
 
 import com.Shoots.domain.*;
+import com.Shoots.service.BcBlacklistService;
 import com.Shoots.service.MatchService;
 import com.Shoots.service.PaymentService;
 import com.Shoots.service.RegularUserService;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -35,11 +37,13 @@ public class BusinessController {
     private RegularUserService regularUserService;
     private PaymentService paymentService;
     private MatchService matchService;
+    private BcBlacklistService bcBlacklistService;
 
-    public BusinessController(RegularUserService regularUserService, PaymentService paymentService, MatchService matchService) {
+    public BusinessController(RegularUserService regularUserService, PaymentService paymentService, MatchService matchService, BcBlacklistService bcBlacklistService) {
         this.regularUserService = regularUserService;
         this.paymentService = paymentService;
         this.matchService = matchService;
+        this.bcBlacklistService = bcBlacklistService;
     }
 
     @GetMapping("/dashboardBefore") //로그인이 성공하면 main 주소로 가기 전 로그인 유저 타입을 확인하는 경로
@@ -183,8 +187,8 @@ public class BusinessController {
         return modelAndView;
     }
 
-    @GetMapping("/customer")
-    public ModelAndView businessCustomer(ModelAndView modelAndView, HttpSession session) {
+    @GetMapping("/MatchParticipants")
+    public ModelAndView businessMatchParticipants(ModelAndView modelAndView, HttpSession session) {
 
         Integer idx = (Integer) session.getAttribute("idx");
 
@@ -213,10 +217,61 @@ public class BusinessController {
             match.setMatchPast(isMatchPast);
         }
 
-        modelAndView.setViewName("business/businessCustomerList");
+        modelAndView.setViewName("business/businessMatchParticipants");
         modelAndView.addObject("matchList", list);
         modelAndView.addObject("list", list.size());
         modelAndView.addObject("results", results);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/customerList")
+    public ModelAndView businessCustomerList(@RequestParam(required = false) String vip,
+                                             @RequestParam(required = false) Integer gender,
+                                             @RequestParam(required = false) String age,
+                                             ModelAndView modelAndView, HttpSession session) {
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+
+        List<Map<String, Object>> userList = regularUserService.getUserListForBusiness(business_idx, vip, gender, age);
+
+        for (Map<String, Object> user : userList) {
+
+            String jumin = (String) user.get("jumin");
+
+            int year = Integer.parseInt(jumin.substring(0, 2));
+            int month = Integer.parseInt(jumin.substring(2, 4));
+            int day = Integer.parseInt(jumin.substring(4, 6));
+
+            int fullYear = (year < 22) ? 2000 + year : 1900 + year;
+
+            LocalDate birthDate = LocalDate.of(fullYear, month, day);
+            LocalDate currentDate = LocalDate.now();
+            Period period = Period.between(birthDate, currentDate);
+
+            user.put("age", period.getYears());
+
+            String status = bcBlacklistService.getStatusById(user.get("idx"));
+            user.put("status", status);
+        }
+
+        modelAndView.setViewName("business/businessCustomerList");
+        modelAndView.addObject("userList", userList);
+        modelAndView.addObject("list", userList.size());
+        modelAndView.addObject("business_idx", business_idx);
+        return modelAndView;
+    }
+
+    @GetMapping("/blacklist")
+    public ModelAndView blacklist(HttpSession session, ModelAndView modelAndView){
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+
+        List<Map<String, Object>> blackList = bcBlacklistService.getBlackListById(business_idx);
+
+        modelAndView.setViewName("business/businessBlackList");
+        modelAndView.addObject("blackListSize", blackList.size());
+        modelAndView.addObject("blackList", blackList);
 
         return modelAndView;
     }

@@ -27,7 +27,7 @@
 					<img th:src="@{/userupload/${postdata.user_file}}" alt="profile picture" style="height:25px; width:25px; border: 1px solid #ccc; border-radius: 50%;">
 				</th:block>
 				<th:block th:unless="${postdata.user_file}">
-					<img th:src="@{${contextPath}/img/info.png}" alt="default profile" style="height:25px; width:25px;">
+					<img th:src="@{/img/info.png}" alt="default profile" style="height:25px; width:25px;">
 				</th:block>
 				<span class="user_id" th:text="${postdata.user_id}"></span>
 				<span class="register_date" style="margin-left: 30px;" th:text="${postdata.register_date}"></span>
@@ -146,29 +146,30 @@
 </div>
 <!-- 모달창 끝 -->
 
-<script>
-	$(function(){
-		$('#delete-post-btn').click(function(){
-			if (confirm("게시글을 삭제하시겠습니까?")) {
-				$.ajax({
-					type: "POST",
-					url: "delete?num=${postdata.post_idx}",
-					success: function(response) {
-						alert("삭제되었습니다.");
-						location.href = "../post/list";
-					},
-					error: function() {
-						alert("삭제 실패. 다시 시도해주세요.");
-					}
-				});
-			}
-		});
-	});
+
+<!--<script>-->
+<!--	$(function(){-->
+<!--		$('#delete-post-btn').click(function(){-->
+<!--			if (confirm("게시글을 삭제하시겠습니까?")) {-->
+<!--				$.ajax({-->
+<!--					type: "POST",-->
+<!--					url: "delete?num=${postdata.post_idx}",-->
+<!--					success: function(response) {-->
+<!--						alert("삭제되었습니다.");-->
+<!--						location.href = "../post/list";-->
+<!--					},-->
+<!--					error: function() {-->
+<!--						alert("삭제 실패. 다시 시도해주세요.");-->
+<!--					}-->
+<!--				});-->
+<!--			}-->
+<!--		});-->
+<!--	});-->
 
 
-	const contextPath = /*[(${contextPath})]*/ "";
-	const role = /*[[${role}]]*/ "";
-</script>
+<!--	const contextPath = /*[(${contextPath})]*/ "";-->
+<!--	const role = /*[[${role}]]*/ "";-->
+<!--</script>-->
 
 </body>
 </html>

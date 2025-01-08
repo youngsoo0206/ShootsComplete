@@ -41,6 +41,25 @@
         where notice_idx = #{id}
     </update>
 
+    <insert id="insertNotice">
+        insert into notice(writer, title, content, notice_file, notice_original, register_date, readcount)
+        values (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp, 0)
+    </insert>
+
+    <delete id="deleteNotice">
+        delete from notice where notice_idx=#{id}
+    </delete>
+
+    <update id="updateNotice">
+        update notice set
+                          title=#{title},
+                          content=#{content},
+                          notice_file=#{notice_file},
+                          notice_original=#{notice_original}
+        where notice_idx=#{notice_idx}
+    </update>
+
+
 
 
 </mapper>

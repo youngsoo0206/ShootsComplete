@@ -342,8 +342,8 @@ a {text-decoration: none}
     top: 2px;
 }
 
-.btn-update {background: #fdba01; border: 2px solid #fdba01;}
+.btn-update {background: #fdba01; border: 2px solid #fdba01; transition: all 0.3s ease;}
 .btn-update:hover {color: #fdba01}
 
-.btn-delete {background: #da0130; border: 2px solid #da0130;}
+.btn-delete {background: #da0130; border: 2px solid #da0130; transition: all 0.3s ease;}
 .btn-delete:hover {color: #da0130}

@@ -13,6 +13,8 @@ public interface FaqMapper {
 
     public Faq detailFaq(int id); //faq 상세 내용 확인
 
+    public Faq getDetailFaq(int id);
+
     public void insertFaq(Faq faq); //faq 글 등록하기
 
     public int updateFaq(Faq faq); //faq 수정

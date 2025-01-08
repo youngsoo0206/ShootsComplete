@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>FAQ</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <script th:inline="javascript"> //삭제 버튼 클릭 시 confirm
+    $(function(){
+        $("div > a:nth-child(3)").click(function(event){
+            const answer = confirm("정말 삭제하시겠습니까?");
+            console.log(answer);
+            if(!answer){
+                event.preventDefault(); //삭제 이벤트 막기
+            }
+        })
+    })
+    </script>
 </head>
 <body>
     <div class="container">
@@ -34,6 +45,8 @@
 
         <div>
             <a href="faqList" type="button">목록</a>
+            <a th:href="@{faqUpdate(id=${faq.faq_idx})}">수정</a>
+            <a th:href="@{faqDelete(id=${faq.faq_idx})}">삭제</a>
         </div>
     </div>
 

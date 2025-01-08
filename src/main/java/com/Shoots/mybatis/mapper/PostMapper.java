@@ -21,12 +21,12 @@ public interface PostMapper {
     public void insertPost(Post post);
 
     // 조회수 업데이트
-    public int setReadCountUpdate(int post_idx);
+    public int setReadCountUpdate(int num);
 
     // 글쓴이인지 확인
     public Post isPostWriter(HashMap<String, Object> map);
 
-    Post getDetail(int post_idx);
+    Post getDetail(int num);
 
     // 글 수정
     public int postModify(Post modifypost);

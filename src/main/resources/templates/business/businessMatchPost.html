@@ -15,8 +15,8 @@
         &nbsp; <span> | </span> &nbsp;
         <select name="player_gender" id="player_gender">
             <option value="" disabled selected> 성별 </option>
-            <option value="m">남자</option>
-            <option value="f">여자</option>
+            <option value="m">남성</option>
+            <option value="f">여성</option>
             <option value="a">혼성</option>
         </select>
         <select name="match_level" id="match_level">
@@ -58,8 +58,8 @@
                             </td>
                             <td>
                                 <div th:switch="${match.player_gender}">
-                                    <span th:case="'f'">여자</span>
-                                    <span th:case="'m'">남자</span>
+                                    <span th:case="'f'">여성</span>
+                                    <span th:case="'m'">남성</span>
                                     <span th:case="a">남녀무관</span>
                                 </div>
                             </td>

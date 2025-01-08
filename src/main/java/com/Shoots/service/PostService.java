@@ -97,7 +97,7 @@ public interface PostService {
     Post getDetail(int num);
 
     //특정 글 번호(postNum)의 작성자가 현재 사용자와 같은지 확인
-    boolean isPostWriter(int num);
+    boolean isPostWriter(int postNum);
     // boolean isPostWriter(int postNum);
 
     //주어진 게시글 데이터를 수정
