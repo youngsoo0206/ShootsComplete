@@ -43,7 +43,8 @@ public class LoginController {
     @GetMapping(value = "/login")
     public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
                               HttpSession session, Principal userPrincipal) {
-        session.removeAttribute("verifyNumber "); //비밀번호 찾을때 저장했던 인증번호 session을 지움
+        session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
+        session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
 
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
@@ -167,6 +168,7 @@ public class LoginController {
     @PostMapping("/checkRegularUserWithIdAndEmail")
     public Map<String, Object> checkRegularUserWithIdAndEmail(@RequestBody Map<String, String> params, HttpSession session) {
         session.removeAttribute("verifyNumber");
+        session.removeAttribute("promptId");
         String userId = params.get("user_id");
         String email = params.get("email");
 
@@ -184,14 +186,11 @@ public class LoginController {
             vo.setTo(email);
             vo.setSubject("Shoots에서 보낸 인증번호 입니다.");
             vo.setText("인증번호는 \" " + verifyNumber + " \" 입니다.");
-            logger.info(verifyNumber + " 인증번호 메일 보내기 직전");
             sendMail.sendMail(vo); // 메일 전송
             session.setAttribute("verifyNumber", verifyNumber); //인증번호를 잠시 세션에 저장
             session.setAttribute("promptId", userId); //비밀번호 찾기에서 비밀번호 변경할때 커리문으로 쓰기 위해 user_id를 받아둠
-            logger.info(verifyNumber + " 인증번호 메일 보낸 뒤 세션에 저장한 값");
+            logger.info(verifyNumber + " : 메일로 인증번호");
             logger.info("세션에 저장된 promptId: " + session.getAttribute("promptId"));
-
-
 
             response.put("success", true);
             response.put("verifyNumber", verifyNumber); // 클라이언트에 난수를 전달
@@ -244,7 +243,7 @@ public class LoginController {
 
     @PostMapping(value = "/updateRegularUserPasswordProcess")
     public String updateRegularUserPasswordProcess(RegularUser user, Model model,
-                                HttpServletRequest request, HttpServletResponse response) throws IOException {
+                                HttpSession session, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=utf-8");
         response.setCharacterEncoding("utf-8");
         PrintWriter out = response.getWriter();
@@ -257,11 +256,16 @@ public class LoginController {
         int result = regularUserService.updateRegularUserPassword(user); //이 시점에서 db에 정보 변경
 
         if(result==1){ //성공적으로 db에 정보 업데이트 됐을때
+            session.removeAttribute("promptId");
             out.println("<script type='text/javascript'>");
             out.println("alert('비밀번호가 성공적으로 변경됐습니다!')");
             out.println("window.location.href = 'login';");
             out.println("</script>");
         }else{
+            out.println("<script type='text/javascript'>");
+            out.println("alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.')");
+            out.println("history.back();");
+            out.println("</script>");
             logger.info("개인회원 비밀번호 업데이트 실패 (updateRegularUserPasswordProcess)");
         }
         return null;
