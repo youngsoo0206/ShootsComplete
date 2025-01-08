@@ -6,7 +6,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +75,18 @@ public class RegularUserServiceImpl implements RegularUserService {
     }
 
     @Override
+    public RegularUser selectWithIdAndEmail(String user_id, String email) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("user_id", user_id);
+        hashMap.put("email", email);
+        RegularUser user = regularUserMapper.selectWithIdAndEmail(hashMap);
+        return user;
+    }
+
+    @Override
+    public int updateRegularUserPassword(RegularUser user) {
+        return regularUserMapper.updateRegularUserPassword(user);
+
     public List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age) {
         return regularUserMapper.getUserListForBusiness(business_idx, vip, gender, age);
     }

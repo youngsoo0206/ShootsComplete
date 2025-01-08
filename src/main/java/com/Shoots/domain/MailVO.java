@@ -1,5 +1,6 @@
 package com.Shoots.domain;
 
+
 public class MailVO {
     private String from = "chldudtn0206@naver.com"; //발신사
     private String to; //수신자

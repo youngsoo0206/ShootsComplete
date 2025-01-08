@@ -12,6 +12,7 @@ public interface RegularUserService {
     public int insert(RegularUser user);
     public int selectByEmail(String email);
     public RegularUser findIdWithEmail(String email);
-
+    public RegularUser selectWithIdAndEmail(String user_id, String email);
+    public int updateRegularUserPassword(RegularUser user);
     List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age);
 }

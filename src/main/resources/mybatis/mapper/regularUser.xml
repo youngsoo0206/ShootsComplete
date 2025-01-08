@@ -28,6 +28,16 @@
         select * from regular_user where email = #{email}
     </select>
 
+    <select id="selectWithIdAndEmail" resultType="regularuser">
+        select * from regular_user where user_id = #{user_id} and email = #{email}
+    </select>
+
+    <update id="updateRegularUserPassword">
+        update regular_user
+        set password = #{password}
+        where user_id = #{user_id}
+    </update>
+  
     <select id="getUserListForBusiness" resultType="java.util.Map">
         select r.*, COUNT(p.buyer_idx) AS cnt
         from regular_user r
