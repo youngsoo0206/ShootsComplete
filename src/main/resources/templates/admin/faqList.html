@@ -5,6 +5,26 @@
     <title>FAQ 관리</title>
     <th:block th:replace="~{fragments/header :: header}" />
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript"> //삭제 버튼 클릭 시 confirm
+        $(function(){
+            $("tr > td:nth-child(5) > a").click(function(event){
+                const answer = confirm("정말 삭제하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault(); //삭제 이벤트 막기
+                }
+            })
+        })
+    </script>
+    <style>
+        table caption {
+            caption-side: top;
+            font-size : 25px;
+            font-weight: bold;
+            color : black;
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
     <table class="table" th:if="${listcount > 0}">
