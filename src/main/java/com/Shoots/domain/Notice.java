@@ -1,5 +1,7 @@
 package com.Shoots.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Notice {
     private int notice_idx;
     private int writer;
@@ -10,6 +12,16 @@ public class Notice {
     private String register_date;
     private int readcount;
     private String name;
+
+    private MultipartFile uploadfile;
+
+    public MultipartFile getUploadfile() {
+        return uploadfile;
+    }
+
+    public void setUploadfile(MultipartFile uploadfile) {
+        this.uploadfile = uploadfile;
+    }
 
     public String getNotice_original() {
         return notice_original;
