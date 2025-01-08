@@ -11,6 +11,13 @@
         order by faq_idx
     </select>
 
+    <select id="getDetailFaq">
+        select f.*, u.name
+        from faq f join regular_user u
+                        on f.writer = u.idx
+        where faq_idx=#{id}
+    </select>
+
     <select id="getListCount">
         select count(*) from faq
     </select>
@@ -20,9 +27,9 @@
     </select>
 
     <insert id="insertFaq">
-        insert into faq(writer, title, content, notice_file, notice_original, register_date, readcount)
+        insert into faq(writer, title, content, faq_file, faq_original, register_date)
         values
-            (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp, 0)
+            (#{writer}, #{title}, #{content}, #{faq_file}, #{faq_original}, current_timestamp)
     </insert>
 
     <delete id="deleteFaq">

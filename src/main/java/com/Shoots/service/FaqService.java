@@ -15,6 +15,8 @@ public interface FaqService {
 
     public Faq faqDetail(int id);
 
+    public Faq getDetailFaq(int id);
+
     public void insertFaq(Faq faq);
 
     public int updateFaq(Faq faq);
