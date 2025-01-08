@@ -9,4 +9,6 @@ public interface RegularUserService {
     public int insert(RegularUser user);
     public int selectByEmail(String email);
     public RegularUser findIdWithEmail(String email);
+    public RegularUser selectWithIdAndEmail(String user_id, String email);
+    public int updateRegularUserPassword(RegularUser user);
 }
