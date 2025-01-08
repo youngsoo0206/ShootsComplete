@@ -54,4 +54,19 @@ public class NoticeServiceImpl implements NoticeService {
         dao.setReadCountUpdate(id);
     }
 
+    @Override
+    public void insertNotice(Notice notice) {
+        dao.insertNotice(notice);
+    }
+
+    @Override
+    public int updateNotice(Notice notice) {
+        return dao.updateNotice(notice);
+    }
+
+    @Override
+    public void deleteNotice(int id) {
+        dao.deleteNotice(id);
+    }
+
 }
