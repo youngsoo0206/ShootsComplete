@@ -30,7 +30,7 @@ public class FaqController {
         this.faqService = faqService;
     }
 
-    @GetMapping
+    @GetMapping("/faqList")
     public ModelAndView faqList(ModelAndView mv) {
         List<Faq> list = faqService.getFaqList();
         int listcount = faqService.getListCount();
@@ -43,14 +43,16 @@ public class FaqController {
 
     @ResponseBody
     @PostMapping("/down")
-    public byte[] FaqFileDown(String filename,
+    public byte[] BoardFileDown(String filename,
                                 HttpServletRequest request,
                                 String original,
                                 HttpServletResponse response
     ) throws Exception{
 
+        //수정
         String sFilePath = saveFolder + filename;
-        File file= new File(sFilePath);
+
+        File file = new File(sFilePath);
 
         //org.springframework.util.FileCopyUtils.copyToByteArray(File file) - File 객체를 읽어서 바이트 배열로 반환합니다.
         byte[] bytes = FileCopyUtils.copyToByteArray(file);

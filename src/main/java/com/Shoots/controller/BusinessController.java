@@ -263,11 +263,17 @@ public class BusinessController {
     }
 
     @GetMapping("/blacklist")
-    public ModelAndView blacklist(HttpSession session, ModelAndView modelAndView){
+    public ModelAndView blacklist(@RequestParam(required = false) String block,
+                                  @RequestParam(required = false) String unblock,
+                                  HttpSession session, ModelAndView modelAndView){
 
         Integer business_idx = (Integer) session.getAttribute("idx");
 
-        List<Map<String, Object>> blackList = bcBlacklistService.getBlackListById(business_idx);
+        List<Map<String, Object>> blackList = bcBlacklistService.getBlackListById(business_idx, block, unblock);
+
+        blackList.forEach(item -> {
+            item.put("unblocked_at", item.getOrDefault("unblocked_at", null));
+        });
 
         modelAndView.setViewName("business/businessBlackList");
         modelAndView.addObject("blackListSize", blackList.size());

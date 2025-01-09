@@ -62,8 +62,11 @@ td {font-size: 15px; line-height: 30px}
 .popover {--bs-popover-max-width: 350px;}
 .popover-body {white-space: pre-line;}
 
+.modal-p {margin: 5px 0 0 0}
+
+.form-control {margin: 0 0 15px 0}
 .modal-select {text-align: left}
 
-.btn-bottom {margin-top: 20px; text-align: center}
+.btn-bottom {margin: 30px 0 10px 0; text-align: center}
 .btn-block {width: 80px; height: 35px; color: white; border-radius: 20px; background: #da0130; border: 1px solid #da0130; transition: all 0.3s ease}
 .btn-block:hover {border: 1px solid #da0130; background: white; color: #da0130}

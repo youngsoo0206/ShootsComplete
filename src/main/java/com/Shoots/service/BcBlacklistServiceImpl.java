@@ -4,6 +4,7 @@ import com.Shoots.domain.BcBlacklist;
 import com.Shoots.mybatis.mapper.BcBlacklistMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,15 @@ public class BcBlacklistServiceImpl implements BcBlacklistService{
     }
 
     @Override
-    public List<Map<String, Object>> getBlackListById(Integer business_idx) {
-        return dao.getBlackListById(business_idx);
+    public List<Map<String, Object>> getBlackListById(Integer business_idx, String block, String unblock) {
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("business_idx", business_idx);
+        map.put("block", block);
+        map.put("unblock", unblock);
+
+        return dao.getBlackListById(map);
     }
 
     @Override
@@ -29,5 +37,10 @@ public class BcBlacklistServiceImpl implements BcBlacklistService{
     @Override
     public String getStatusById(Object user_idx) {
         return dao.getStatusById(user_idx);
+    }
+
+    @Override
+    public void updateBcBlacklist(int idx, Integer business_idx) {
+        dao.updateBcBlacklist(idx, business_idx);
     }
 }

@@ -22,6 +22,14 @@ public class Post {
     private String post_original; //첨부될 파일의 이름
 
 
+//    public String getExistingFile() {
+//        return this.post_file != null ? this.post_file : "";  // 기존 파일명
+//    }
+//
+//    public String getExistingFileOriginal() {
+//        return this.post_original != null ? this.post_original : "";  // 기존 원본 파일명
+//    }
+
 
     public String getPost_original() {
         return post_original;

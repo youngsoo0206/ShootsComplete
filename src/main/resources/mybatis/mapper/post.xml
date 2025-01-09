@@ -53,9 +53,18 @@
                      INNER JOIN regular_user r ON p.writer = r.idx
             WHERE p.category = #{category}
             ORDER BY p.post_idx DESC
-                LIMIT #{start}, #{end}
+                LIMIT #{offset}, #{pageSize}
         </select>
 
+
+    <select id="getAdminPostList" resultType="post">
+        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
+        FROM post p
+                 INNER JOIN regular_user r ON p.writer = r.idx
+
+        ORDER BY p.post_idx DESC
+            LIMIT #{offset}, #{pageSize}
+    </select>
 
 
 

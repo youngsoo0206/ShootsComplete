@@ -1,21 +1,23 @@
 
-$(function(){
-    $('#delete-post-btn').click(function(){
-        if (confirm("게시글을 삭제하시겠습니까?")) {
-            $.ajax({
-                type: "POST",
-                url: "delete?num=${postdata.post_idx}",
-                success: function(response) {
-                    alert("삭제되었습니다.");
-                    location.href = "../post/list";
-                },
-                error: function() {
-                    alert("삭제 실패. 다시 시도해주세요.");
-                }
-            });
-        }
-    });
-});
+// $(function(){
+//     $('#delete-post-btn').click(function(){
+//         if (confirm("게시글을 삭제하시겠습니까?")) {
+//             $.ajax({
+//                 type: "POST",
+//                 url: "delete?num=${postdata.post_idx}",
+//                 success: function(response) {
+//                     alert("삭제되었습니다.");
+//                     location.href = "../post/list";
+//                 },
+//                 error: function() {
+//                     alert("삭제 실패. 다시 시도해주세요.");
+//                 }
+//             });
+//         }
+//     });
+// });
+
+
 
 
 

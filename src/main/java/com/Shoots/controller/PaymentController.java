@@ -26,17 +26,30 @@ public class PaymentController {
 
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> paymentAdd(@RequestBody Payment payment) {
-        logger.info("Payment Add Method >>>>>>>>>>>>>>>>>>> payment : " + payment.toString());
-
-        payment.setPayment_method("card");
-        payment.setPayment_status("SUCCESS");
-
-        paymentService.insertPayment(payment);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
-        response.put("message", "결제 데이터가 서버에 저장되었습니다.");
 
-        return ResponseEntity.ok(response);
+        try {
+            payment.setPayment_method("card");
+            payment.setPayment_status("SUCCESS");
+
+            paymentService.insertPayment(payment);
+
+            logger.info(">>>>>>>>>> Payment success : buyer = " + payment.getBuyer_idx() + ", Merchant_uid = " + payment.getMerchant_uid());
+
+            response.put("success", true);
+            response.put("message", "결제 성공");
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+
+            logger.error(">>>>>>>>>> Payment failed : buyer = " + payment.getBuyer_idx() + ", Merchant_uid = " + payment.getMerchant_uid() + ", error: " + e.getMessage());
+
+            response.put("success", false);
+            response.put("message", "결제 처리 중 오류가 발생했습니다.");
+
+            return ResponseEntity.status(500).body(response);
+        }
     }
 }

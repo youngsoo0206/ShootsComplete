@@ -136,7 +136,7 @@ $(function () {
 
 
 
-    const blockButtons = document.querySelectorAll("[data-bs-target='#insertBlacklist']");
+    const blockButtons = document.querySelectorAll("[data-bs-target='#blockCustomerBtn']");
 
     blockButtons.forEach(button => {
         button.addEventListener("click", function () {
