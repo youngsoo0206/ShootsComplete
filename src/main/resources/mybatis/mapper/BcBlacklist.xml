@@ -7,7 +7,16 @@
     <select id="getBlackListById" resultType="java.util.Map">
         select bc.*, r.user_id as user_id, r.name as name from bc_blacklist bc
         join regular_user r on r.idx = bc.target_idx
-        where business_idx = #{business_idx}
+        <where>
+            bc.business_idx = #{business_idx}
+            <if test="block != null and block == 'true'">
+                and bc.status = 'block'
+            </if>
+            <if test="unblock != null and unblock == 'true'">
+                and bc.status = 'unblock'
+            </if>
+        </where>
+        order by bc.blocked_at desc
     </select>
 
     <select id="getStatusById" resultType="String">
@@ -26,5 +35,10 @@
                   CURRENT_TIMESTAMP
         );
     </insert>
+
+    <update id="updateBcBlacklist">
+        update bc_blacklist set status = 'unblock', unblocked_at = CURRENT_TIMESTAMP
+        where target_idx = #{idx} and business_idx = #{business_idx};
+    </update>
 
 </mapper>
