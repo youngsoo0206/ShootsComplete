@@ -9,6 +9,7 @@ CREATE TABLE inquiry (
     title           VARCHAR(100) NOT NULL,
     content         TEXT         NOT NULL,
     inquiry_file    VARCHAR(50),
+    original_file varchar(50),
     register_date   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

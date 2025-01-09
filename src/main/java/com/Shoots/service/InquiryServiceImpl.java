@@ -35,4 +35,9 @@ public class InquiryServiceImpl implements InquiryService {
 
         return inquiryMapper.getInquiryList(map);
     }
+
+    @Override
+    public void insertInquiry(Inquiry inquiry) {
+        inquiryMapper.insertInquiry(inquiry);
+    }
 }

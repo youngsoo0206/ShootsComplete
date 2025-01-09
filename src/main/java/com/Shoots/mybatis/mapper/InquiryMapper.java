@@ -10,5 +10,5 @@ import java.util.List;
 public interface InquiryMapper {
     public int getListCount(String usertype, int idx);
     public List<Inquiry> getInquiryList(HashMap<String,Object> map);
-
+    public void insertInquiry(Inquiry inquiry);
 }

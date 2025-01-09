@@ -2,10 +2,16 @@ package com.Shoots.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 public class Inquiry {
+    @Getter
+    @Setter
+    private MultipartFile uploadfile;
+
+
     private int inquiry_id;
     private String inquiry_type;
     private int inquiry_ref_idx;
@@ -17,7 +23,9 @@ public class Inquiry {
     private String user_id;
     private String business_id;
     private int idx;
-    private int commentcount;
+    private int commentCount;
     private boolean hasReply;
     private String resolved_id;
+    private String original_file;
+
 }
