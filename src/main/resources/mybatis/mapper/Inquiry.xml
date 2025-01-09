@@ -29,5 +29,20 @@
 
     </select>
 
+    <insert id="insertInquiry">
+        <selectKey resultType="int" order="BEFORE"
+                   keyProperty="inquiry_id">
+            select IFNULL(max(inquiry_id), 0) + 1 from inquiry
+        </selectKey>
+        insert into inquiry
+        (inquiry_type, inquiry_ref_idx, title,
+        content, inquiry_file, original_file,
+         register_date
+        )
+        values
+        (#{inquiry_type}, #{inquiry_ref_idx}, #{title},
+        #{content}, #{inquiry_file}, #{original_file},
+        current_timestamp)
+    </insert>
 
 </mapper>
