@@ -10,6 +10,8 @@ $(document).ready(function () {
     //     }
     // });
 
+    let check = 0;
+
 // 폼 제출 이벤트 처리
     $("form[name=modifyform]").submit(function (event) {
 
@@ -45,17 +47,39 @@ $(document).ready(function () {
         //     }
         // });
 
+
+
+
+// 파일첨부를 변경하지 않으면 $('#filevalue').text()의 파일명을
+        // 파라미터 'check'라는 이름으로 form에 추가하여 전송합니다.
+        if (check == 0) {
+            const value = $('#filevalue').text();
+            const html = `<input type='hidden' value='${value}' name='check'>`;
+            console.log(html);
+            $(this).append(html);
+        }
+
     });
 
 
 
     // 파일 선택 시 파일명을 표시
     $("#upfile").change(function () {
-        const inputFile = $(this).val().split('\\'); // 파일 경로 분리
-        $('#filevalue').text(inputFile[inputFile.length - 1]); // 파일명만 표시
+        check++;
+        const maxSizeInBytes = 20 * 1024 * 1024;
+        const file = this.files[0]; // 선택된 파일
+        if (file.size > maxSizeInBytes) {
+            alert("5MB 이하 크기로 업로드 하세요");
+            $(this).val('');
+        } else {
+            $('#filevalue').text(file.name);	// 파일 이름
+        }
+
+        // const inputFile = $(this).val().split('\\'); // 파일 경로 분리
+        // $('#filevalue').text(inputFile[inputFile.length - 1]); // 파일명만 표시
         show();
-        $('input[name="remove_file"]').val('false'); // 삭제 플래그 초기화
-    });
+        //$('input[name="remove_file"]').val('false'); // 삭제 플래그 초기화
+    })
 
 
     // // 첨부파일이 있을(없을) 경우 remove 이미지가 보이도록 설정
@@ -79,9 +103,9 @@ $(document).ready(function () {
     // 첨부파일 제거 버튼 클릭 시 처리
     $('.remove').click(function () {
         $('#filevalue').text(''); // 첨부파일 표시 내용 제거
-        $('#upfile').val('');    // 파일 입력 필드 초기화
+        //$('#upfile').val('');    // 파일 입력 필드 초기화
         $(this).css('display', 'none'); // 삭제 버튼 숨기기
-        $('input[name="remove_file"]').val('true'); // 파일 삭제 플래그 설정
+        //$('input[name="remove_file"]').val('true'); // 파일 삭제 플래그 설정
     });
 
 

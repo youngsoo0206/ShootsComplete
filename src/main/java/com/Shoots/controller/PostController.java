@@ -4,17 +4,20 @@ import com.Shoots.domain.PaginationResult;
 import com.Shoots.domain.Post;
 import com.Shoots.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,7 +260,7 @@ public class PostController {
             RedirectAttributes rattr
     ) throws Exception {
         boolean usercheck = postService.isPostWriter(postdata.getPost_idx());
-
+        //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
         String url="";
 //        // 비밀번호가 다른 경우
 //        if (usercheck == false) {
@@ -266,9 +269,10 @@ public class PostController {
 //            return "redirect:/message";
 //        }
 
+
         //String url = "";
         MultipartFile uploadfile = postdata.getUploadfile();
-        //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
+        String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
 
         if (check != null && !check.equals("")) { //기존파일 그대로 사용하는 경우
             logger.info("기존파일 그대로 사용합니다.");
@@ -291,6 +295,8 @@ public class PostController {
                 //위 태그에 값이 있다면 ""로 값을 변경합니다.
                 postdata.setPost_file(""); // ""로 초기화 합니다.
                 postdata.setPost_original(""); // ""로 초기화 합니다.
+//                postdata.setPost_file(postdata.getExistingFile()); // 기존 파일명 유지
+//                postdata.setPost_original(postdata.getExistingFileOriginal()); // 기존 원본 파일명 유지
             } //else end
         } //else end
 
@@ -348,6 +354,34 @@ public class PostController {
             rattr.addFlashAttribute("result", "deleteSuccess");
             return "redirect:list";
         }
+    }
+
+
+    @ResponseBody
+    @PostMapping("/down")
+    public byte[] BoardFileDown(String filename,
+                                HttpServletRequest request,
+                                String original,
+                                HttpServletResponse response) throws Exception {
+        //String savePath = "resources/upload";
+        // 서블릿의 실행 환경 정보를 담고 있는 객체를 리턴합니다.
+        //ServletContext context = request.getSession().getServletContext();
+        //String sDownloadPath = context.getRealPath(savePath);
+
+        //수정
+        String sFilePath = saveFolder + filename;
+
+        File file = new File(sFilePath);
+
+        //org.springframework.util.FileCopyUtils.copyToByteArray(File file) - File객체를 읽어서 바이트 배열로 반환합니다..
+        byte[] bytes = FileCopyUtils.copyToByteArray(file);
+
+        String sEncoding = new String(original.getBytes("utf-8"), "ISO-8859-1");
+        //Content-Disposition: attachment:브라우저는 해당 Content를 처리하지 않고, 다운로드 하게 됩니다..
+        response.setHeader("Content-Disposition", "attachment;filename=" + sEncoding);
+
+        response.setContentLength(bytes.length);
+        return bytes;
     }
 
 
