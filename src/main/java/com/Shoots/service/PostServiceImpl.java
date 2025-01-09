@@ -28,6 +28,13 @@ public class PostServiceImpl implements PostService {
         HashMap<String, Object> map = new HashMap<>();
         int startrow = (page - 1) * limit + 1;
         int endrow = startrow + limit - 1;
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+
+
+
         map.put("start", startrow);
         map.put("end", endrow);
         map.put("category", category); // 카테고리 추가
@@ -35,6 +42,23 @@ public class PostServiceImpl implements PostService {
         return dao.getPostList(map); // 카테고리를 포함한 게시글 목록 조회
     }
 
+    @Override
+    public List<Post> getAdminPostList(int page, int limit) {
+        // 페이지네이션을 위한 start와 end 계산
+        HashMap<String, Object> map = new HashMap<>();
+        int startrow = (page - 1) * limit + 1;
+        int endrow = startrow + limit - 1;
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+
+
+
+        map.put("start", startrow);
+        map.put("end", endrow);
+        return dao.getAdminPostList(map);
+    }
 
 
     @Override

@@ -45,6 +45,8 @@ function updatePostList(data) {
     var startPage = data.startpage;
     var endPage = data.endpage;
     var listCount = data.listcount;
+    var offset = data.offset;
+    var pageSize = data.pageSize;
     //let num = data.listcount - (data.page - 1) * data.limit;
 
 
@@ -81,7 +83,7 @@ function updatePostList(data) {
                 const contextPath = origin + pathname;
                 // const contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '';
 
-                var imageUrl = contextPath + '/postupload/' + post.post_file;
+                var imageUrl = contextPath + '/upload/' + post.post_file;
 
                 // 파일 경로에 특수문자가 포함되어 있을 경우 인코딩 처리
                 imageUrl = encodeURIComponent(imageUrl);
@@ -140,58 +142,58 @@ function postWriteN() {
 
 
 
-let isRequestInProgress = false; // 요청이 진행 중이지 않음
-let currentCategory = 'A'; // 현재 선택된 카테고리 (기본값: A)
-
-// 페이지 이동 요청 함수
-function go(page) {
-
-     if (isRequestInProgress) return; // 요청이 진행 중이면 함수 종료
-
-    // isRequestInProgress = true; // 요청이 시작되면 true로 설정
-
-    const limit = 10;
-
-    const data = {
-        limit: limit,
-        state: "ajax",
-        page: page,
-        category: currentCategory // 현재 선택된 카테고리 추가
-    };
-    ajax(data);
-}
-
-
-// 페이징 버튼 생성 함수
-function setPaging(href, digit, isActive = false) {
-    const gray = (href === "" && isNaN(digit)) ? "gray" : "";
-    const active = isActive ? "active" : "";
-    const anchor = `<a class="page-link ${gray}" ${href}>${digit}</a>`;
-    return `<li class="page-item ${active}">${anchor}</li>`;
-}
-
-// 페이지네이션 생성 함수
-function generatePagination(data) {
-    let output = "";
-
-    // 이전 버튼
-    let prevHref = data.page > 1 ? `href=javascript:go(${data.page - 1})` : "";
-    output += setPaging(prevHref, '이전&nbsp;');
-
-    // 페이지 번호
-    for (let i = data.startpage; i <= data.endpage; i++) {
-        const isActive = (i === data.page);
-        let pageHref = !isActive ? `href=javascript:go(${i})` : "";
-        output += setPaging(pageHref, i, isActive);
-    }
+//let isRequestInProgress = false; // 요청이 진행 중이지 않음
+//let currentCategory = 'A'; // 현재 선택된 카테고리 (기본값: A)
+//
+// // 페이지 이동 요청 함수
+// function go(page) {
+//
+//      if (isRequestInProgress) return; // 요청이 진행 중이면 함수 종료
+//
+//     // isRequestInProgress = true; // 요청이 시작되면 true로 설정
+//
+//     const limit = 10;
+//
+//     const data = {
+//         limit: limit,
+//         state: "ajax",
+//         page: page,
+//         category: currentCategory // 현재 선택된 카테고리 추가
+//     };
+//     ajax(data);
+// }
 
 
-    // 다음 버튼
-    let nextHref = (data.page < data.maxpage) ? `href=javascript:go(${data.page + 1})` : "";
-    output += setPaging(nextHref, '&nbsp;다음&nbsp;');
-
-    $('.pagination').empty().append(output);
-}
+// // 페이징 버튼 생성 함수
+// function setPaging(href, digit, isActive = false) {
+//     const gray = (href === "" && isNaN(digit)) ? "gray" : "";
+//     const active = isActive ? "active" : "";
+//     const anchor = `<a class="page-link ${gray}" ${href}>${digit}</a>`;
+//     return `<li class="page-item ${active}">${anchor}</li>`;
+// }
+//
+// // 페이지네이션 생성 함수
+// function generatePagination(data) {
+//     let output = "";
+//
+//     // 이전 버튼
+//     let prevHref = data.page > 1 ? `href=javascript:go(${data.page - 1})` : "";
+//     output += setPaging(prevHref, '이전&nbsp;');
+//
+//     // 페이지 번호
+//     for (let i = data.startpage; i <= data.endpage; i++) {
+//         const isActive = (i === data.page);
+//         let pageHref = !isActive ? `href=javascript:go(${i})` : "";
+//         output += setPaging(pageHref, i, isActive);
+//     }
+//
+//
+//     // 다음 버튼
+//     let nextHref = (data.page < data.maxpage) ? `href=javascript:go(${data.page + 1})` : "";
+//     output += setPaging(nextHref, '&nbsp;다음&nbsp;');
+//
+//     $('.pagination').empty().append(output);
+// }
 
 
 
@@ -199,7 +201,7 @@ function generatePagination(data) {
 function ajax(sdata) {
     console.log(sdata);
 
-    isRequestInProgress = true;
+    //isRequestInProgress = true;
 
     $.ajax({
         data: sdata,
@@ -219,10 +221,10 @@ function ajax(sdata) {
             if (data.listcount > 0) {
                 $("thead").show();
                 updatePostList(data); // 게시글 목록 업데이트
-                generatePagination(data); // 페이지네이션 업데이트
+                //generatePagination(data); // 페이지네이션 업데이트
             } else {
                 $("thead").hide();
-                $(".pagination").empty();
+                //$(".pagination").empty();
                 $("table").append("<tbody><tr><td colspan='5' style='text-align: center;'>게시글이 존재하지 않습니다</td></tr></tbody>");
             }
         },
@@ -231,11 +233,11 @@ function ajax(sdata) {
             console.log("응답 상태:", xhr.status);  // HTTP 상태 코드 확인
             console.log("응답 내용:", xhr.responseText);  // 응답 내용 확인
             $("thead").hide();
-            $(".pagination").empty();
+            //$(".pagination").empty();
             $("table").append("<tbody><tr><td colspan='5' style='text-align: center;'>데이터를 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.</td></tr></tbody>");
         },
         complete: function() {
-            isRequestInProgress = false;
+            // isRequestInProgress = false;
         }
     });
 }

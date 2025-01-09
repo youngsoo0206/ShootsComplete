@@ -15,7 +15,8 @@
 <input type="hidden" id="user_file" th:value="${user_file}" name="user_file">
 
 <input type="hidden" th:value="${postdata.post_idx}" id="post_idx" name="post_idx">
-
+<input type="hidden" th:value="${postdata.post_file}" th:name="filename">
+<input type="hidden" th:value="${postdata.post_original}" th:name="original">
 
 <div class="container">
 	<!-- 게시글 정보 -->
@@ -42,11 +43,13 @@
 		<th:block th:if="${postdata.post_file}">
 			<tr>
 				<td>
-					<img th:src="@{postupload/${postdata.post_file}}" style="width: 300px">
+					<img th:src="@{'/userupload/' + ${postdata.post_file}}" style="width: 300px">
 					<br>
 					<a th:href="@{down?filename=${postdata.post_file}}" th:text="${postdata.post_file}"></a>
 				</td>
+
 			</tr>
+
 		</th:block>
 
 		<tr>
@@ -146,6 +149,29 @@
 </div>
 <!-- 모달창 끝 -->
 
+<!--&lt;!&ndash; modal 시작 &ndash;&gt;-->
+<!--<div class="modal" id="myModal">-->
+<!--	<div class="modal-dialog">-->
+<!--		<div class="modal-content">-->
+<!--			&lt;!&ndash; Modal body &ndash;&gt;-->
+<!--			<div class="modal-body">-->
+<!--				<form name="deleteForm" th:action="@{delete}" method="post">-->
+<!--					&lt;!&ndash; http://localhost:8088/myhome4/detail?num=22-->
+<!--                         주소를 보면 num을 파라미터로 넘기고 있습니다.-->
+<!--                         이 값을 가져와서 ${param.num}를 사용-->
+<!--                         또는 ${boarddata.BOARD_NUM}-->
+<!--                        &ndash;&gt;-->
+<!--					<input type="hidden" name="num" th:value="${param.num}"-->
+<!--						   id="num">-->
+<!--					<button type="submit" class="btn btn-primary">전송</button>-->
+<!--					<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>-->
+<!--				</form>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; modal 끝 &ndash;&gt;-->
+
 
 <!--<script>-->
 <!--	$(function(){-->
@@ -166,9 +192,9 @@
 <!--		});-->
 <!--	});-->
 
-
-<!--	const contextPath = /*[(${contextPath})]*/ "";-->
-<!--	const role = /*[[${role}]]*/ "";-->
+<!--	// js에서 contextPath를 직접 선언할 수 없기에 jsp에서 선언하기 위해 있는 부분-->
+<!--	// const contextPath = /*[(${contextPath})]*/ "";-->
+<!--	// const role = /*[[${role}]]*/ "";-->
 <!--</script>-->
 
 </body>

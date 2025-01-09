@@ -2,14 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>FAQ 수정</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src = "@{/js/faqUpdateForm.js}" charset="utf-8"></script>
+    <title>FAQ 수정</title>
+    <style>
+        h1{font-size:1.5rem; text-align:center; color:#1a92b9}
+        .container{width:60%}
+        label{font-weight:bold}
+        #upfile{display:none}
+        img{width:20px;}
+        textarea{resize:none}
+    </style>
+
 </head>
 <body>
     <div class="container">
         <form th:action="@{faqUpdateProcess}" method="post" enctype="multipart/form-data" name="updateform">
             <input type="hidden" name="faq_idx" th:value="${faq.faq_idx}">
             <input type="hidden" name="faq_file" th:value="${faq.faq_file}">
+            <input type="hidden" name="remove_file" th:value="false"/>
             <h1>FAQ 수정</h1>
             <div class="form-group">
                 <label for="name">작성자</label>
@@ -28,7 +39,7 @@
 
             <div class="form-group">
                 <label>파일 첨부
-                    <img th:src="@{/img/attach.png}" alt="파일첨부" width="10px">
+                    <img th:src="@{/img/attach.png}" alt="파일첨부" width="20px">
                     <input type="file" id="upfile" name="uploadfile">
                 </label>
                 <span id="filevalue">[[${faq.faq_original}]]</span>
@@ -43,4 +54,5 @@
         </form>
     </div>
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

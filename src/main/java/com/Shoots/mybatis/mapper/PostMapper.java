@@ -17,6 +17,8 @@ public interface PostMapper {
 
     public List<Post> getPostList(HashMap<String, Object> map);
 
+    public List<Post> getAdminPostList(HashMap<String, Object> map);
+
     // 글 등록하기
     public void insertPost(Post post);
 
