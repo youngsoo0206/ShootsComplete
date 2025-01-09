@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Shoots.mybatis.mapper.InquiryMapper">
+
+
+    <select id="getListCount" resultType="int">
+        select count(*) from inquiry
+        where inquiry_type = #{usertype}
+        and inquiry_ref_idx = #{idx}
+    </select>
+
+    <select id="getInquiryList" resultType="inquiry">
+        SELECT *
+        FROM (SELECT i.*,
+                CASE
+                    WHEN i.inquiry_type = 'A' THEN r.user_id
+                    WHEN i.inquiry_type = 'B' THEN b.business_id
+                    END AS user_id, b.business_id
+                 FROM inquiry i
+                     LEFT JOIN regular_user r ON i.inquiry_type = 'A' AND i.inquiry_ref_idx = r.idx
+                     LEFT JOIN business_user b ON i.inquiry_type = 'B' AND i.inquiry_ref_idx = b.business_idx
+                    WHERE i.inquiry_type = #{usertype}
+                      AND i.inquiry_ref_idx = #{idx}
+                    ORDER BY i.inquiry_id DESC
+                ) j
+        LIMIT #{limit} OFFSET #{offset}
+
+    </select>
+
+
+</mapper>

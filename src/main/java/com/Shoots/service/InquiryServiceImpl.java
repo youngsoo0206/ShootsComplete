@@ -1,0 +1,38 @@
+package com.Shoots.service;
+
+import com.Shoots.domain.Inquiry;
+import com.Shoots.mybatis.mapper.InquiryMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+
+@Service
+public class InquiryServiceImpl implements InquiryService {
+    private static final Logger log = LoggerFactory.getLogger(InquiryServiceImpl.class);
+    private InquiryMapper inquiryMapper;
+
+    public InquiryServiceImpl(InquiryMapper inquiryMapper) {
+        this.inquiryMapper = inquiryMapper;
+    }
+
+    @Override
+    public int getListCount(String usertype, int idx) {
+        return inquiryMapper.getListCount(usertype, idx);
+    }
+
+    @Override
+    public List<Inquiry> getInquiryList(int page, int limit, int idx, String usertype) {
+        HashMap<String, Object> map = new HashMap<>();
+        int offset = (page - 1) * limit; // offset 페이지까지 생략 (offset 1 -> 2페이지부터 리스트뽑음)
+
+        map.put("offset", offset);
+        map.put("limit", limit);
+        map.put("usertype", usertype);
+        map.put("idx", idx);
+
+        return inquiryMapper.getInquiryList(map);
+    }
+}

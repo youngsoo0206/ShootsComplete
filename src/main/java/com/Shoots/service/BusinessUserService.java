@@ -9,6 +9,8 @@ public interface BusinessUserService {
     public int insert(BusinessUser user);
     public int selectByEmail(String email);
     public BusinessUser findIdWithEmail(String email);
+    public BusinessUser selectWithIdAndEmail(String business_id, String email);
+    public int updateBusinessUserPassword(BusinessUser user);
 
 
 }

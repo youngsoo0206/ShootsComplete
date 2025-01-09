@@ -32,6 +32,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("idx", regularUser.getIdx());
             session.setAttribute("id", regularUser.getUser_id());
             session.setAttribute("role", regularUser.getRole());
+            session.setAttribute("usertype", "A");
             url = request.getContextPath()+"/mainBefore";
 
         } else if (principal instanceof BusinessUser) {
@@ -42,6 +43,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("id", businessUser.getBusiness_id());
             session.setAttribute("role", businessUser.getRole());
             session.setAttribute("businessAccess", businessUser.getLogin_status());
+            session.setAttribute("usertype", "B");
+
 
             if (businessUser.getLogin_status().equals("access")) {
                 url = request.getContextPath() + "/business/dashboard";
