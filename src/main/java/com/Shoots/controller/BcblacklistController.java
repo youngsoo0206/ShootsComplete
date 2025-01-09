@@ -2,6 +2,7 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.BcBlacklist;
 import com.Shoots.service.BcBlacklistService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,22 @@ public class BcblacklistController {
         this.bcBlacklistService = bcBlacklistService;
     }
 
-    @PostMapping("/add")
-    public String bcBlacklistAdd(BcBlacklist bcBlacklist) {
+    @PostMapping("/block")
+    public String bcBlacklistBlock(BcBlacklist bcBlacklist) {
 
         bcBlacklistService.insertBcBlacklist(bcBlacklist);
+
+        return "redirect:/business/dashboard";
+
+    }
+
+    @PostMapping("/unblock")
+    public String bcBlacklistUnblock(BcBlacklist bcBlacklist) {
+
+        int idx = bcBlacklist.getTarget_idx();
+        int business_idx = bcBlacklist.getBusiness_idx();
+
+        bcBlacklistService.updateBcBlacklist(idx, business_idx);
 
         return "redirect:/business/dashboard";
 
