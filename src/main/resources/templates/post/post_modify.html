@@ -4,8 +4,9 @@
 	<th:block th:replace="~{fragments/header :: header}"/>
 	<meta charset="utf-8">
 	<title>수정</title>
-	<script th:src="@{/js/postModifyform.js}"></script>
 	<script th:src="@{/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{/js/postModifyform.js}"></script>
+
 	<link rel="stylesheet" th:href="@{/css/postModifyform.css}" type="text/css">
 	<style>
 		.container { width: 60% }
@@ -18,9 +19,11 @@
 <div class="container">
 	<form th:action="modifyAction" method="post" name="modifyform" enctype="multipart/form-data">
 		<input type="hidden" name="post_idx" th:value="${postdata.post_idx}"/>
-		<input type="hidden" name="existing_file" th:value="${postdata.post_file}"/>
+		<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>
 		<input type="hidden" name="remove_file" th:value="false"/>
-<!--		<input type="hidden" name="num" th:value="${num}"/>-->
+		<input type="hidden" name="category" th:value="${postdata.category}">
+
+		<!--		<input type="hidden" name="num" th:value="${num}"/>-->
 
 		<h1>게시판 - 수정</h1>
 
@@ -63,50 +66,55 @@
 	</form>
 </div>
 
-<!--<script>-->
-<!--	document.addEventListener("DOMContentLoaded", function () {-->
-<!--		document.querySelector("form[name='modifyform']").addEventListener("submit", function (event) {-->
-<!--			if (!validateForm()) {-->
-<!--				event.preventDefault(); // 유효성 검사 실패 시 폼 제출 중단-->
-<!--			}-->
-<!--		});-->
-<!--	});-->
+<script>
 
-<!--	function validateForm() {-->
-<!--		const category = document.querySelector("input[name='category']")?.value || ""; // 숨겨진 카테고리 값-->
-<!--		const priceInput = document.getElementById("priceInput");-->
-<!--		const upfile = document.getElementById("upfile");-->
-<!--		const existingFile = document.querySelector("input[name='existing_file']").value;-->
+	document.addEventListener("DOMContentLoaded", function () {
+		const form = document.querySelector("form[name='modifyform']");
+		if (form) {
+			form.addEventListener("submit", function (event) {
+				if (!validateForm()) {
+					event.preventDefault(); // 유효성 검사 실패 시 폼 제출 중단
+				}
+			});
+		}
+	});
 
-<!--		if (category === "B") {-->
-<!--			if (priceInput && priceInput.value.trim() === "") {-->
-<!--				alert("중고게시판에서는 가격을 입력해야 합니다.");-->
-<!--				priceInput.focus();-->
-<!--				return false;-->
-<!--			}-->
+	function validateForm() {
+		const category = document.querySelector("input[name='category']")?.value || ""; // 숨겨진 카테고리 값
+		const priceInput = document.getElementById("priceInput");
+		const upfile = document.getElementById("upfile");
+		const existingFile = document.querySelector("input[name='existing_file']").value;
 
-<!--			if (priceInput && isNaN(priceInput.value.trim())) {-->
-<!--				alert("가격은 숫자만 입력 가능합니다.");-->
-<!--				priceInput.focus();-->
-<!--				return false;-->
-<!--			}-->
+		if (category === "B") {
+			if (priceInput && priceInput.value.trim() === "") {
+				alert("중고게시판에서는 가격을 입력해야 합니다.");
+				priceInput.focus();
+				return false;
+			}
 
-<!--			if (priceInput && parseFloat(priceInput.value.trim()) <= 0) {-->
-<!--				alert("가격은 0보다 큰 값을 입력해야 합니다.");-->
-<!--				priceInput.focus();-->
-<!--				return false;-->
-<!--			}-->
+			if (priceInput && isNaN(priceInput.value.trim())) {
+				alert("가격은 숫자만 입력 가능합니다.");
+				priceInput.focus();
+				return false;
+			}
 
-<!--			if (!existingFile && !upfile.value) {-->
-<!--				alert("중고게시판에서는 첨부파일을 반드시 첨부해야 합니다.");-->
-<!--				upfile.focus();-->
-<!--				return false;-->
-<!--			}-->
-<!--		}-->
+			if (priceInput && parseFloat(priceInput.value.trim()) <= 0) {
+				alert("가격은 0보다 큰 값을 입력해야 합니다.");
+				priceInput.focus();
+				return false;
+			}
 
-<!--		return true;-->
-<!--	}-->
-<!--</script>-->
+			if (!existingFile && !upfile.value) {
+				alert("중고게시판에서는 첨부파일을 반드시 첨부해야 합니다.");
+				upfile.focus();
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+</script>
 
 </body>
 </html>
