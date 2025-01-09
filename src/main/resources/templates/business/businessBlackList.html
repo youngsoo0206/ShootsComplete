@@ -6,22 +6,22 @@
     <link th:href="@{/css/businessBlacklist.css}" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <th:block th:if="${blackListSize > 0}">
+<div class="container">
+    <th:block th:if="${blackListSize > 0}">
         <table class="table">
             <caption style="caption-side: top; font-size: 20px; margin-left: 5px">차단 고객 리스트</caption>
             <thead>
-                <tr>
-                    <th>차단 회원 ID</th>
-                    <th>이름</th>
-                    <th>차단 이유</th>
-                    <th>차단 상태</th>
-                    <th>차단 시간</th>
-                    <th>차단 해제</th>
-                </tr>
+            <tr>
+                <th>차단 회원 ID</th>
+                <th>이름</th>
+                <th>차단 이유</th>
+                <th>차단 상태</th>
+                <th>차단 시간</th>
+                <th>차단 해제</th>
+            </tr>
             </thead>
             <tbody>
-                <th:block th:each="list : ${blackList}">
+            <th:block th:each="list : ${blackList}">
                 <tr>
                     <td><span th:text="${list.user_id}"></span></td>
                     <td><span th:text="${list.name}"></span></td>
@@ -35,11 +35,11 @@
             </th:block>
             </tbody>
         </table>
-        </th:block>
+    </th:block>
 
-        <th:block th:if="${blackListSize == 0}">
-            <div style="text-align: center; margin: 100px 0 100px 0"><p> 블랙리스트 데이터가 존재하지 않습니다 </p></div>
-        </th:block>
-    </div>
+    <th:block th:if="${blackListSize == 0}">
+        <div style="text-align: center; margin: 100px 0 100px 0"><p> 블랙리스트 데이터가 존재하지 않습니다 </p></div>
+    </th:block>
+</div>
 </body>
 </html>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -26,14 +27,16 @@ import java.util.List;
 @RequestMapping("/match")
 public class MatchController {
 
+    private final View error;
     private MatchService matchService;
     private PaymentService paymentService;
     private static final Logger logger = LoggerFactory.getLogger(MatchController.class);
 
 
-    public MatchController(MatchService matchService, PaymentService paymentService) {
+    public MatchController(MatchService matchService, PaymentService paymentService, View error) {
         this.matchService = matchService;
         this.paymentService = paymentService;
+        this.error = error;
     }
 
     @GetMapping("/list")
@@ -74,12 +77,13 @@ public class MatchController {
             boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
             match.setMatchPast(isMatchPast);
 
-            System.out.println("isMatchPast ============= " + match.isMatchPast());
+            logger.info(">>>>>>>>>>>>>>>> isMatchPast : " + match.getMatch_idx() + " = " + match.isMatchPast());
+
         }
 
-        logger.info(">>>>>>>>>>>>>>> Filter value: {}", filter);
-        logger.info(">>>>>>>>>>>>>>> Gender value: {}", gender);
-        logger.info(">>>>>>>>>>>>>>> Level value: {}", level);
+        logger.info(">>>>>>>>>>>>>>>> Search data Filter value : {}", filter);
+        logger.info(">>>>>>>>>>>>>>>> Search data Gender value : {}", gender);
+        logger.info(">>>>>>>>>>>>>>>> Search data Level value : {}", level);
 
         modelAndView.setViewName("match/matchList");
         modelAndView.addObject("page", page);
@@ -137,18 +141,18 @@ public class MatchController {
         boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
         match.setMatchPast(isMatchPast);
 
-        System.out.println("isMatchPast ============= " + match.isMatchPast());
+        logger.info(">>>>>>>>>>>>>>>> isMatchPast : " + match.isMatchPast());
 
         // 신청 플레이어 수
         int playerCount = paymentService.getPlayerCount(match_idx);
-        logger.info(">>>>>>>>>>>>>>>>> playerCount >> " + playerCount);
+        logger.info(">>>>>>>>>>>>>>>> playerCount : " + playerCount);
 
         // 신청 여부
         boolean hasPaid = false;
 
         if (idx != null) {
             hasPaid = paymentService.hasPaidForMatch(idx, match_idx);
-            logger.info(">>>>>>>>>>>>>>>>> hasPaid >> " + hasPaid);
+            logger.info(">>>>>>>>>>>>>>>> hasPaid : " + hasPaid);
         }
 
         if (match == null) {
@@ -190,8 +194,8 @@ public class MatchController {
 
         int result = matchService.updateMatch(match);
 
-        System.out.println("match >>>>>>>>>>>>>>> " + match.toString());
-        System.out.println("result >>>>>>>>>>>>>>>> " + result);
+        System.out.println(">>>>>>>>>>>>>>> update match data : " + match.toString());
+        System.out.println(">>>>>>>>>>>>>>>> update result : " + result);
         logger.info(match.toString());
 
         String url = "";
