@@ -51,7 +51,8 @@ public class BusinessUserSecurityConfig {
 
     @Bean
     public SecurityFilterChain businessUserFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/businessLoginProcess/**")
+        http
+                .securityMatcher("/businessLoginProcess/**", "/inquiry/**")
                 .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
                         .loginPage("/login")

@@ -85,7 +85,6 @@ public class LoginController {
 
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(user.getPassword());
-        logger.info(encPassword);
         user.setPassword(encPassword);
 
         int result = regularUserService.insert(user);
@@ -250,7 +249,6 @@ public class LoginController {
 
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(user.getPassword());
-        logger.info(encPassword);
         user.setPassword(encPassword);
 
         int result = regularUserService.updateRegularUserPassword(user); //이 시점에서 db에 정보 변경
