@@ -1,13 +1,14 @@
 package com.Shoots.service;
 
 import com.Shoots.domain.BusinessUser;
-import com.Shoots.domain.RegularUser;
 import com.Shoots.mybatis.mapper.BusinessUserMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 @Service
 public class BusinessUserServiceImpl implements BusinessUserService {
@@ -71,5 +72,19 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     public BusinessUser findIdWithEmail(String email) {
         BusinessUser user = businessUserMapper.findIdWithEmail(email);
         return user;
+    }
+
+    @Override
+    public BusinessUser selectWithIdAndEmail(String business_id, String email) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("business_id", business_id);
+        hashMap.put("email", email);
+        BusinessUser user = businessUserMapper.selectWithIdAndEmail(hashMap);
+        return user;
+    }
+
+    @Override
+    public int updateBusinessUserPassword(BusinessUser user) {
+        return businessUserMapper.updateBusinessUserPassword(user);
     }
 }

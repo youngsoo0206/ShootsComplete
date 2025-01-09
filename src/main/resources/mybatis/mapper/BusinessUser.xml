@@ -29,4 +29,14 @@
         select * from business_user where email = #{email}
     </select>
 
+    <select id="selectWithIdAndEmail" resultType="businessuser">
+        select * from business_user where business_id = #{business_id} and email = #{email}
+    </select>
+
+    <update id="updateBusinessUserPassword">
+        update business_user
+        set password = #{password}
+        where business_id = #{business_id}
+    </update>
+
 </mapper>
