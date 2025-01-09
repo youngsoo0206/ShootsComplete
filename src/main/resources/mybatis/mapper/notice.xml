@@ -19,16 +19,13 @@
 
     <select id="getNoticeList">
         SELECT *
-        FROM (
-        SELECT @rownum := @rownum + 1 AS rnum, n.*, u.name
         FROM notice n
         JOIN regular_user u ON n.writer = u.idx
         <include refid="search_" />
-        ORDER BY n.notice_idx
-        ) p
+        ORDER BY n.notice_idx desc
+        LIMIT #{offset}, #{pageSize}
 
     </select>
-<!--WHERE rnum &gt;= #{start} AND rnum &lt;= #{end} -->
 
     <select id="getDetail">
         select *

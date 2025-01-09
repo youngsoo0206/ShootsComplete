@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title>공지사항 수정</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src = "@{/js/noticeUpdateForm.js}" charset="utf-8"></script>
 </head>
 <body>
     <div class="container">
         <form th:action="@{noticeUpdateProcess}" method="post" enctype="multipart/form-data" name="updateform">
             <input type="hidden" name="notice_idx" th:value="${notice.notice_idx}">
             <input type="hidden" name="notice_file" th:value="${notice.notice_file}">
-            <h1>FAQ 수정</h1>
+            <h1>공지사항 수정</h1>
             <div class="form-group">
                 <label for="name">작성자</label>
                 <input type="text" class="form-control" id="name" name="name" th:value="${notice.name}" readonly>
@@ -43,4 +44,5 @@
         </form>
     </div>
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>
