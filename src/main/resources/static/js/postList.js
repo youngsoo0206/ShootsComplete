@@ -1,15 +1,45 @@
+// 전역 변수 추가
+let currentCategory = 'A';  // 기본값은 자유게시판
+let currentPage = 1;        // 현재 페이지
+
+
 // 페이지가 로드될 때 자유게시판(A)의 게시글을 불러오는 부분
 $(document).ready(function() {
-    switchCategory('A'); // 자유게시판(A)로 초기 로딩
+    switchCategory('A'); //
 });
 
 
+
 // 카테고리 변경 시 게시글 목록을 비동기적으로 불러오는 함수
-function switchCategory(category) {
+function switchCategory(category, page = 1) {
+
+    currentCategory = category;  // 선택한 카테고리 저장
+    currentPage = page;          // 현재 페이지 저장
+
+// URL 업데이트 (페이지 번호와 카테고리 정보 반영)
+    const newUrl = `?category=${category}&page=${page}`;
+    history.pushState(null, '', newUrl);  // 페이지 URL 업데이트
+
     // 기존 활성화 상태 초기화
     $(".nav-link").removeClass("active");
     // 클릭된 탭에 활성화 상태 추가
     $(`#tab${category}`).addClass("active");
+
+
+    // 카테고리별로 해당 tab만 보이도록 설정
+    if (category === 'A') {
+        $('#A').addClass('active show');
+        $('#B').removeClass('active show');
+    } else {
+        $('#B').addClass('active show');
+        $('#A').removeClass('active show');
+    }
+
+    // 게시글 목록 비우기
+    $('#postListA').empty();
+    $('#postListB').empty();
+
+
 
     $.ajax({
         url: '/Shoots/post/list_ajax',
@@ -17,13 +47,15 @@ function switchCategory(category) {
         data: {
             category: category,  // 카테고리 정보 전송
             state: 'ajax',  // AJAX 요청임을 알려주는 파라미터
-            page: 1,  // 기본적으로 첫 페이지
+            page: page,  // // 선택한 페이지 반영
             limit: 10  // 한 페이지당 10개씩 게시글을 표시
         },
         dataType : 'json',
         success: function(response) {
             // 서버로부터 받은 JSON 응답 처리
-            updatePostList(response);
+            updatePostList(response, category);
+            updatePagination(response.listcount, page);  // 페이징 업데이트
+
 
         },
         error: function(xhr, status, error) {
@@ -31,41 +63,60 @@ function switchCategory(category) {
             alert("게시글 목록을 불러오는 데 실패했습니다. 다시 시도해주세요.");
         }
     });
-    // currentCategory = category; // 선택된 카테고리 저장
-    // go(1); // 첫 페이지로 이동하여 게시글 목록 요청
+}
+
+function updatePagination(totalCount, currentPage) {
+    let totalPages = Math.ceil(totalCount / 10);
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+    let paginationHtml = '<div class="center-block mt-5"><ul class="pagination justify-content-center">';
+
+    // 이전 버튼
+    if (currentPage <= 1) {
+        paginationHtml += '<li class="page-item"><a class="page-link gray">이전&nbsp;</a></li>';
+    } else {
+        paginationHtml += `<li class="page-item"><a href="javascript:void(0);" class="page-link" onclick="switchCategory('${currentCategory}', ${currentPage - 1});">이전&nbsp;</a></li>`;
+    }
+
+    // 페이지 번호 버튼
+    for (let i = startPage; i <= endPage; i++) {
+        if (i === currentPage) {
+            paginationHtml += `<li class="page-item active"><a href="javascript:void(0);" class="page-link">${i}</a></li>`;
+        } else {
+            paginationHtml += `<li class="page-item"><a href="javascript:void(0);" class="page-link" onclick="switchCategory('${currentCategory}', ${i});">${i}</a></li>`;
+        }
+    }
+
+    // 다음 버튼
+    if (currentPage >= totalPages) {
+        paginationHtml += '<li class="page-item"><a class="page-link gray">&nbsp;다음</a></li>';
+    } else {
+        paginationHtml += `<li class="page-item"><a href="javascript:void(0);" class="page-link" onclick="switchCategory('${currentCategory}', ${currentPage + 1});">&nbsp;다음</a></li>`;
+    }
+
+    paginationHtml += '</ul></div>';
+
+    // 페이징 영역 업데이트
+    $(".pagination").html(paginationHtml);
 }
 
 
+
 // 게시글 목록 업데이트 함수
-function updatePostList(data) {
-    var category = data.category;
+function updatePostList(data, category) {
+
     var postList = data.postlist;
-    var page = data.page;
-    var maxPage = data.maxpage;
-    var startPage = data.startpage;
-    var endPage = data.endpage;
-    var listCount = data.listcount;
-    var offset = data.offset;
-    var pageSize = data.pageSize;
-    //let num = data.listcount - (data.page - 1) * data.limit;
 
 
-    // var tableBody = $('#' + (category === 'A' ? 'postListA' : 'postListB'));
-
-    //게시글 목록 테이블 갱신
+    // 각 카테고리별로 적절한 tbody나 div를 선택
     var tableBody = $('table tbody');
+    if (category === 'A') {
+        tableBody = $('#postListA');  // 자유게시판
+    } else if (category === 'B') {
+        tableBody = $('#postListB');  // 중고게시판
+    }
+
     tableBody.empty();  // 기존 내용 비우기
-
-
-    // var tableBody = $('table tbody');  // 기본적으로 모든 테이블의 tbody를 선택
-    //
-    // tableBody.empty();  // 기존 내용 비우기
-    //
-    // if (category === 'A') {
-    //     tableBody = $('#postListA tbody');
-    // } else if (category === 'B') {
-    //     tableBody = $('#postListB tbody');
-    // }
 
 
     // 새로 받은 게시글 목록을 테이블에 추가
@@ -75,42 +126,26 @@ function updatePostList(data) {
 
         // 중고게시판(카테고리B)의 경우 -> 파일첨부(미리보기),가격 추가
         if (category === 'B') {
-            // 게시글에 첨부파일이 있을 경우 이미지 미리보기 표시
-            if (post.post_file) {
-                // 이미지를 미리보기로 표시 //uploads/
-                const pathname = "/" + window.location.pathname.split("/")[1] + "/";
-                const origin = window.location.origin;
-                const contextPath = origin + pathname;
-                // const contextPath = /*[[${#httpServletRequest.contextPath}]]*/ '';
 
-                var imageUrl = contextPath + '/upload/' + post.post_file;
-
-                // 파일 경로에 특수문자가 포함되어 있을 경우 인코딩 처리
-                imageUrl = encodeURIComponent(imageUrl);
-
-                // 이미지를 미리보기로 표시
-                var imgPreview = $('<img>')
-                    .attr('src', decodeURIComponent(imageUrl))
-                    .attr('alt', '.')
-                    .css({
-                        'min-width': '150px',
-                        'min-height': '150px',
-                        'max-width': '150px',
-                        'max-height': '150px',
-                        'object-fit': 'cover'
-                    });
-                row.append('<td class="jtdI">' + imgPreview[0].outerHTML + '</td>');
-            } else {
-                row.append('<td></td>'); // 첨부파일이 없으면 빈 칸
+            //     //중고게시판 리스트에서 첨부파일 이미지 미리보기
+            if (post.post_file && /\.(jpg|jpeg|png|gif)$/i.test(post.post_file)) {
+                // 게시글 상세보기와 동일한 경로 형식 사용
+                var imageUrl = '/Shoots/upload' + post.post_file.replace(/\//g, '\\'); // /upload -> \upload 형태로 변환
+                row.append('<td class="jtdI"><img src="' + imageUrl + '" style="width: 150px; height: 150px; object-fit: cover;"></td>');
+            } else { //중고게시판은 첨부파일 반드시 넣어야해서 사실 필요없음
+                row.append('<td class="jtdI">-</td>');  // 이미지가 없으면 대시(-)로 표시
             }
 
             row.append('<td class = "jtdt"><a href="detail?num=' + post.post_idx + '">'
                 + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
-                + '&nbsp;&nbsp;'  + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>' + '<br>' + '<br>' + post.price + '원</td>');
+                + '&nbsp;&nbsp;' + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>' + '<br>' + '<br>' + post.price + '원</td>');
             row.append('<td class = "jtdw">' + post.user_id + '</td>');
             row.append('<td class = "jtdr">' + post.register_date + '</td>');
             row.append('<td class = "jtdc">' + post.readcount + '</td>');
+
+
         } // if (category === 'B')
+
         else {  // category A
             row.append('<td><a href="detail?num=' + post.post_idx + '">'
                 + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
@@ -139,61 +174,6 @@ function postWriteN() {
 }
 
 
-
-
-
-//let isRequestInProgress = false; // 요청이 진행 중이지 않음
-//let currentCategory = 'A'; // 현재 선택된 카테고리 (기본값: A)
-//
-// // 페이지 이동 요청 함수
-// function go(page) {
-//
-//      if (isRequestInProgress) return; // 요청이 진행 중이면 함수 종료
-//
-//     // isRequestInProgress = true; // 요청이 시작되면 true로 설정
-//
-//     const limit = 10;
-//
-//     const data = {
-//         limit: limit,
-//         state: "ajax",
-//         page: page,
-//         category: currentCategory // 현재 선택된 카테고리 추가
-//     };
-//     ajax(data);
-// }
-
-
-// // 페이징 버튼 생성 함수
-// function setPaging(href, digit, isActive = false) {
-//     const gray = (href === "" && isNaN(digit)) ? "gray" : "";
-//     const active = isActive ? "active" : "";
-//     const anchor = `<a class="page-link ${gray}" ${href}>${digit}</a>`;
-//     return `<li class="page-item ${active}">${anchor}</li>`;
-// }
-//
-// // 페이지네이션 생성 함수
-// function generatePagination(data) {
-//     let output = "";
-//
-//     // 이전 버튼
-//     let prevHref = data.page > 1 ? `href=javascript:go(${data.page - 1})` : "";
-//     output += setPaging(prevHref, '이전&nbsp;');
-//
-//     // 페이지 번호
-//     for (let i = data.startpage; i <= data.endpage; i++) {
-//         const isActive = (i === data.page);
-//         let pageHref = !isActive ? `href=javascript:go(${i})` : "";
-//         output += setPaging(pageHref, i, isActive);
-//     }
-//
-//
-//     // 다음 버튼
-//     let nextHref = (data.page < data.maxpage) ? `href=javascript:go(${data.page + 1})` : "";
-//     output += setPaging(nextHref, '&nbsp;다음&nbsp;');
-//
-//     $('.pagination').empty().append(output);
-// }
 
 
 

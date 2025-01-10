@@ -199,6 +199,8 @@ public class PostController {
         */
         String sessionReferer = (String) session.getAttribute("referer");
         logger.info("referer:" + beforeURL);
+
+        // 게시글 조회수 증가 (리스트에서 상세보기로 들어왔을 때만)
         if (sessionReferer != null && sessionReferer.equals("list")) {
             if (beforeURL != null && beforeURL.endsWith("list")) {
                 postService.setReadCountUpdate(num);
@@ -207,6 +209,7 @@ public class PostController {
 
         }
 
+        // 상세 게시글 정보 가져오기
         Post post = postService.getDetail(num);
         //board=null; //error 페이지 이동 확인하고자 임의로 지정합니다.
         if (post == null) {
@@ -222,9 +225,12 @@ public class PostController {
             mv.setViewName("post/post_view");
             //mv.addObject("count", count);
             mv.addObject("postdata", post);
+
+
         }
         return mv;
     }
+
 
     @GetMapping("/modifyView")
     public ModelAndView PostModifyView(
@@ -255,28 +261,43 @@ public class PostController {
     @PostMapping("/modifyAction")
     public String PostModifyAction(
             Post postdata,
-            String check, Model mv,
+            @RequestParam(value = "check", required = false) String check,  // 기존 파일명 유지 여부
+            @RequestParam(value = "existingFilePath", required = false) String existingFilePath,  // 기존 파일 경로
+            @RequestParam(value = "existingFileName", required = false) String existingFileName,  // 기존 파일명
+            @RequestParam(value = "remove_file", required = false) String removeFile,  // 파일 삭제 여부
+            Model mv,
             HttpServletRequest request,
             RedirectAttributes rattr
     ) throws Exception {
         boolean usercheck = postService.isPostWriter(postdata.getPost_idx());
         //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
         String url="";
-//        // 비밀번호가 다른 경우
-//        if (usercheck == false) {
-//            rattr.addFlashAttribute("message", "비밀번호 오류 입니다.");
-//            rattr.addFlashAttribute("url", "history.back()");
-//            return "redirect:/message";
-//        }
-
-
-        //String url = "";
         MultipartFile uploadfile = postdata.getUploadfile();
-        String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
 
-        if (check != null && !check.equals("")) { //기존파일 그대로 사용하는 경우
+        // 업로드 폴더 경로 설정
+        String saveFolder = "C:/upload";  // 실제 경로로 변경
+        //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
+
+
+
+        // 파일 삭제 요청이 있는 경우
+        if ("true".equals(removeFile) && existingFilePath != null && !existingFilePath.isEmpty()) {
+            File fileToDelete = new File(saveFolder, existingFilePath);
+            if (fileToDelete.exists()) {
+                if (fileToDelete.delete()) {
+                    logger.info("기존 파일 삭제 완료: " + existingFilePath);
+                } else {
+                    logger.warn("기존 파일 삭제 실패: " + existingFilePath);
+                }
+            }
+            postdata.setPost_file("");      // DB의 파일 경로 초기화
+            postdata.setPost_original("");  // DB의 원본 파일명 초기화
+        } else if (check != null && !check.equals("")) { //기존파일 그대로 사용하는 경우
             logger.info("기존파일 그대로 사용합니다.");
-            postdata.setPost_original(check);
+//            postdata.setPost_original(check);
+            postdata.setPost_file(existingFilePath);  // 기존 파일 경로 유지
+            postdata.setPost_original(existingFileName);  // 기존 파일명 유지
+
             //<input type="hidden" name="BOARD_FILE" value="${boarddata.BOARD_FILE}">
             //위 문장 때문에 board.setBOARD_FILE()값은 자동 저장됩니다.
         } else {
@@ -289,14 +310,15 @@ public class PostController {
                 String fileDBName = postService.saveUploadFile(uploadfile, saveFolder);
                 postdata.setPost_file(fileDBName);
                 postdata.setPost_original(uploadfile.getOriginalFilename());
+            } else if (existingFilePath != null && !existingFilePath.isEmpty()) {
+                // 파일을 삭제하지 않고 유지하는 경우
+                logger.info("파일 변경 없음, 기존 파일 유지.");
+                postdata.setPost_file(existingFilePath);
+                postdata.setPost_original(existingFileName);
             } else { // 기존 파일이 없는데 파일 선택하지 않은 경우 또는 기존 파일이 있었는데 삭제한 경우
-                logger.info("선택 파일 없습니다.");
-                //<input type="hidden" name="BOARD_FILE" value="${boarddata.BOARD_FILE}">
-                //위 태그에 값이 있다면 ""로 값을 변경합니다.
+                logger.info("첨부된 파일 없음");
                 postdata.setPost_file(""); // ""로 초기화 합니다.
                 postdata.setPost_original(""); // ""로 초기화 합니다.
-//                postdata.setPost_file(postdata.getExistingFile()); // 기존 파일명 유지
-//                postdata.setPost_original(postdata.getExistingFileOriginal()); // 기존 원본 파일명 유지
             } //else end
         } //else end
 
@@ -322,7 +344,7 @@ public class PostController {
 
     @PostMapping("/delete")
     public String PostDelete(
-            int num,
+            @RequestParam("num") int num,
             Model mv,
             RedirectAttributes rattr,
             HttpServletRequest request
@@ -330,16 +352,9 @@ public class PostController {
 
         // 글 삭제 명령을 요청한 사용자가 글을 작성한 사용자인지 판단하기 위해
         // 입력한 비밀번호와 저장된 비밀번호를 비교하여 일치하면 삭제합니다.
-        boolean usercheck = postService.isPostWriter(num);
+        //boolean usercheck = postService.isPostWriter(num);
 
-//        // 비밀번호 일치하지 않는 경우
-//        if (usercheck == false) {
-//            rattr.addFlashAttribute("result", "passFail");
-//            rattr.addAttribute("num", num);
-//            return "redirect:detail";
-//        }
-
-        // 비밀번호 일치하는 경우 삭제 처리 합니다.
+        // 삭제 처리 합니다.
         int result = postService.postDelete(num);
 
         //삭제 처리 실패한 경우
