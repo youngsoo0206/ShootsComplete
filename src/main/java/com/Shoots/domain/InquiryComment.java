@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class InquiryComment {
     private int i_comment_id;
-    private int inquiry_id;
+    private int inquiry_idx;
     private int writer;
     private String content;
     private String register_date;
