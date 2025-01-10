@@ -143,5 +143,9 @@
         where post_file=#{file_name}
     </delete>
 
+    <select id="getAdminListCount">
+        select count(*) from post
+    </select>
+
 
 </mapper>

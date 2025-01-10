@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div>
+  <div class="container">
     <form th:action="@{list}">
       <div class="input-group">
         <button class="btn btn-primary search" type="submit">검색</button>
@@ -36,33 +36,33 @@
       </div>
     </form>
 
-    <table class="table" th:if="${listcount > 0}">
-      <caption>공지사항</caption>
-      <thead>
-        <tr>
-          <th colspan="4">공지글 수 : [[${listcount}]]</th>
-        </tr>
-        <tr>
-          <th>작성자</th>
-          <th>제목</th>
-          <th>작성일</th>
-          <th>조회수</th>
-        </tr>
-      </thead>
+    <div th:if="${listcount > 0}">
+      <table class="table">
+        <caption>공지사항</caption>
+        <thead>
+          <tr>
+            <th colspan="4">공지글 수 : [[${listcount}]]</th>
+          </tr>
+          <tr>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>조회수</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr th:each="n : ${noticelist}">
-          <td th:text="${n.name}"></td>
-          <td><a th:href="@{detail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
-          <td th:text="${n.register_date.substring(0, 10)}"></td>
-          <td th:text="${n.readcount}"></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <th:block
-            th:replace="~{fragments/paging :: paging('list',|&search_word=${search_word}|)}"/>
-
+        <tbody>
+          <tr th:each="n : ${noticelist}">
+            <td th:text="${n.name}"></td>
+            <td><a th:href="@{detail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
+            <td th:text="${n.register_date.substring(0, 10)}"></td>
+            <td th:text="${n.readcount}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <th:block
+              th:replace="~{fragments/paging :: paging('list',|&search_word=${search_word}|)}"/>
+    </div>
   </div>
 
   <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>

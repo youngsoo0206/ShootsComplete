@@ -39,4 +39,6 @@ public interface PostMapper {
     public List<String> getDeleteFileList();
 
     public void deleteFileList(String filename);
+
+    public int getAdminListCount();
 }

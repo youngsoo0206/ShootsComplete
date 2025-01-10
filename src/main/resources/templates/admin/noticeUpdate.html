@@ -13,8 +13,8 @@
             <input type="hidden" name="notice_file" th:value="${notice.notice_file}">
             <h1>공지사항 수정</h1>
             <div class="form-group">
-                <label for="name">작성자</label>
-                <input type="text" class="form-control" id="name" name="name" th:value="${notice.name}" readonly>
+                <!--<label for="name">작성자</label>-->
+                <input type="hidden" class="form-control" id="name" name="name" th:value="${session.idx}" readonly>
             </div>
 
             <div class="form-group">

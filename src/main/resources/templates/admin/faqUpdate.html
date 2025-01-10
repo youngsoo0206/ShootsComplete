@@ -23,8 +23,8 @@
             <input type="hidden" name="remove_file" th:value="false"/>
             <h1>FAQ 수정</h1>
             <div class="form-group">
-                <label for="name">작성자</label>
-                <input type="text" class="form-control" id="name" name="name" th:value="${faq.name}" readonly>
+                <!--<label for="name">작성자</label>-->
+                <input type="hidden" class="form-control" id="name" name="name" th:value="${session.idx}" readonly>
             </div>
 
             <div class="form-group">

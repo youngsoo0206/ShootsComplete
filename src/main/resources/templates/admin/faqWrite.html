@@ -11,8 +11,8 @@
         <form th:action="@{/testAdmin/faqAdd}" method="post" enctype="multipart/form-data" name="faqform">
             <h1>FAQ 등록 페이지</h1>
             <div class="form-group">
-                <label for="faqName">작성자</label>
-                <input name="writer" id="faqName" type="text" class="form-control" placeholder="이름을 입력하세요">
+                <!--<label for="faqName">작성자</label>-->
+                <input name="writer" id="faqName" type="hidden" class="form-control" th:value="${session.idx}" readonly>
             </div>
 
             <div class="form-group">
