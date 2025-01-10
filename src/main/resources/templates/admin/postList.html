@@ -2,9 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <style>
+        table caption {
+            caption-side: top;
+            font-size : 25px;
+            font-weight: bold;
+            color : black;
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div th:if="${listcount > 0}">
+        <table class="table">
+            <caption>게시판</caption>
+            <thead>
+                <tr>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="p : ${postlist}">
+                    <td th:text="${p.user_id}"></td>
+                    <td><a th:href="@{/post/detail(num=${p.post_idx})}">[[${p.title}]]</a></td>
+                    <td th:text="${p.register_date.substring(0, 10)}"></td>
+                    <td th:text="${p.readcount}"></td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+        </table>
+            <th:block
+                    th:replace="~{fragments/paging :: paging('postList','')}"/>
+        </div>
+
+        <h1 th:if="${listcount == 0}">등록된 게시글이 없습니다.</h1>
+    </div>
 
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

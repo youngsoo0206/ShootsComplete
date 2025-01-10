@@ -139,4 +139,9 @@ public class PostServiceImpl implements PostService {
         dao.deleteFileList(filename);
     }
 
+    @Override
+    public int getAdminListCount() {
+        return dao.getAdminListCount();
+    }
+
 }

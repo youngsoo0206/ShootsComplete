@@ -94,5 +94,38 @@ public class RegularUserServiceImpl implements RegularUserService {
         return regularUserMapper.getUserListForBusiness(business_idx, vip, gender, age);
     }
 
+    @Override
+    public int listCount(String search_word) {
+        Map<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        return regularUserMapper.listCount(map);
+    }
+
+    @Override
+    public List<RegularUser> getUserList(String search_word, int page, int limit) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return regularUserMapper.getUserList(map);
+    }
+
+    @Override
+    public void setCommonUser(int id) {
+        regularUserMapper.setCommonUser(id);
+    }
+
+    @Override
+    public void setAdminUser(int id) {
+        regularUserMapper.setAdminUser(id);
+    }
+
 }
 
