@@ -76,7 +76,6 @@ public class InquiryController {
 
     @PostMapping("/add")
     public String add(Inquiry inquiry, HttpServletRequest request) throws Exception {
-        //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
         MultipartFile uploadfile = inquiry.getUploadfile();
 
         if (!uploadfile.isEmpty()) {
@@ -152,14 +151,12 @@ public class InquiryController {
 
     @PostMapping("/modifyAction")
     public String BoardModifyAction(
-            Inquiry inquiryData, String check, Model mv, HttpServletRequest request,
-            RedirectAttributes rattr) throws Exception{
+            Inquiry inquiryData, String check, RedirectAttributes rattr) throws Exception{
 
         logger.info("inquiry = " + inquiryData.getInquiry_idx());
 
         String url = "";
         MultipartFile uploadfile = inquiryData.getUploadfile();
-        String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
 
 
         if(check != null && !check.equals("")){ //기본 파일 그대로 사용하는 경우
