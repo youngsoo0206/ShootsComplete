@@ -1,27 +1,37 @@
-
-// $(function(){
-//     $('#delete-post-btn').click(function(){
-//         if (confirm("게시글을 삭제하시겠습니까?")) {
-//             $.ajax({
-//                 type: "POST",
-//                 url: "delete?num=${postdata.post_idx}",
-//                 success: function(response) {
-//                     alert("삭제되었습니다.");
-//                     location.href = "../post/list";
-//                 },
-//                 error: function() {
-//                     alert("삭제 실패. 다시 시도해주세요.");
-//                 }
-//             });
-//         }
-//     });
-// });
-
-
-
-
-
 let option = 1; // 유지할 정렬 옵션
+
+
+$(document).ready(function() {
+    $('#delete-post-btn').click(function() {
+        // 삭제 확인 알림창
+        if (confirm("게시글을 삭제하시겠습니까?")) {
+            // 삭제 요청 보내기
+            var num = $('#post_idx').val(); // 게시글 ID 가져오기
+            $.ajax({
+                type: "POST",
+                url: "../post/delete", // 게시글 삭제 URL
+                data: {
+                    num: num // 삭제할 게시글 ID
+                },
+                success: function(response) {
+                    alert("게시글이 삭제되었습니다.");
+                    // 삭제 후 목록 페이지로 이동
+                    window.location.href = '../post/list';
+                },
+                error: function() {
+                    alert("게시글 삭제에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        } else {
+            alert("게시글 삭제를 취소했습니다.");
+        }
+    });
+});
+
+
+
+
+
 //선택한 등록순과 최신순을 수정, 삭제, 추가 후에도 유지되도록 하기위한 변수로 사용됩니다
 //댓글 목록을 불러오는 함수
 function getList(state) {
