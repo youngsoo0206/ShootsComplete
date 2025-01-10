@@ -76,7 +76,7 @@ public interface InquiryService {
         Random r = new Random();
         int random = r.nextInt(100000000);
 
-        return "inquiry_" + year + month + date + random + "." + fileExtension;
+        return "inquiry" + year + month + date + random + "." + fileExtension;
     }
 
 
