@@ -18,8 +18,8 @@ public class InquiryCommentServiceImpl implements InquiryCommentService{
     }
 
     @Override
-    public int getListCount(int inquiry_id) {
-        return inquiryCommentMapper.getListCount(inquiry_id);
+    public int getListCount(int inquiry_idx) {
+        return inquiryCommentMapper.getListCount(inquiry_idx);
     }
 
     @Override
