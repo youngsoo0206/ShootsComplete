@@ -17,4 +17,7 @@ CREATE TABLE PAYMENT (
 
 select * from PAYMENT;
 delete from PAYMENT;
+
 drop table PAYMENT;
+
+

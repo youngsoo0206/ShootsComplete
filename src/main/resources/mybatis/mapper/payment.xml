@@ -16,30 +16,36 @@
     </insert>
 
     <select id="hasPaidForMatch" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM PAYMENT P
-                 LEFT JOIN REFUND R ON P.PAYMENT_IDX = R.PAYMENT_IDX
-        WHERE P.BUYER_IDX = #{idx}
-          AND P.MATCH_IDX = #{match_idx}
-          AND R.PAYMENT_IDX IS NULL
+        SELECT COUNT(*) > 0 FROM PAYMENT
+        WHERE BUYER_IDX = #{idx}
+          AND MATCH_IDX = #{match_idx}
+          AND PAYMENT_STATUS = 'paid'
     </select>
 
     <select id="getPlayerCount" resultType="int">
-        select COUNT(*) from PAYMENT where match_idx = #{match_idx}
+        select COUNT(*) from PAYMENT p
+        where match_idx = #{match_idx}
+        and payment_status = 'paid'
     </select>
 
-    <select id="getPaymentListById" resultMap="PaymentUserMap">
-        select p.*, r.*
+    <select id="getPaymentListById" resultType="java.util.HashMap">
+        select p.*, r.*,
+            CASE
+                WHEN p.PAYMENT_STATUS = 'refunded' THEN h.ACTION_DATE
+                ELSE NULL
+            END as ACTION_DATE
         from PAYMENT p
-                 left join regular_user r on p.buyer_idx = r.idx
-        where p.seller_idx = #{idx}
+            left join regular_user r on p.BUYER_IDX = r.idx
+            left join PAYMENT_HISTORY h on p.PAYMENT_IDX = h.PAYMENT_IDX
+        where p.SELLER_IDX = #{idx}
     </select>
 
-    <resultMap id="PaymentUserMap" type="java.util.HashMap">
-        <result property="regularUser.user_id" column="r.user_id"/>
-        <result property="regularUser.name" column="r.name"/>
-        <result property="regularUser.jumin" column="r.jumin"/>
-        <result property="regularUser.gender" column="r.gender"/>
-        <result property="regularUser.tel" column="r.tel"/>
-        <result property="regularUser.email" column="r.email"/>
-    </resultMap>
+    <select id="getPaymentInfoById" resultType="Payment">
+        select * from PAYMENT where BUYER_IDX = #{idx} and MATCH_IDX = #{match_idx}
+        order by PAYMENT_DATE desc LIMIT 1
+    </select>
+
+    <update id="updatePayment">
+        update PAYMENT set PAYMENT_STATUS = 'refunded' where payment_idx = #{payment_idx}
+    </update>
 </mapper>

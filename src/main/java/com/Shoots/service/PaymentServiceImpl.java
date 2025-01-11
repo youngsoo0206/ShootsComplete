@@ -40,4 +40,14 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Map<String, Object>> getPaymentListById(Integer idx) {
         return dao.getPaymentListById(idx);
     }
+
+    @Override
+    public Payment getPaymentInfoById(Integer idx, int match_idx) {
+        return dao.getPaymentInfoById(idx, match_idx);
+    }
+
+    @Override
+    public void updatePayment(int payment_idx) {
+        dao.updatePayment(payment_idx);
+    }
 }

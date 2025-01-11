@@ -36,7 +36,10 @@
                             <td><span th:text="${list['user_id']}"></span></td>
                             <td><span th:text="${list['name']}"></span></td>
                             <td><span th:text="${list['reason']}"></span></td>
-                            <td style="color: #da0130">[<span th:text="${list['status']}"></span>]</td>
+
+                            <td th:if="${list['status'] == 'block'}" style="color: #da0130">[<span th:text="${list['status']}"></span>]</td>
+                            <td th:if="${list['status'] == 'unblock'}" style="color: #65a30d">[<span th:text="${list['status']}"></span>]</td>
+
                             <td><span th:text="${list['blocked_at']}"></span></td>
                             <td>
                                 <span th:if="${list['unblocked_at'] != null}" th:text="${list['unblocked_at']}"></span>

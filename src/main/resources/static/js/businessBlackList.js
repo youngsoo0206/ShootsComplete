@@ -1,6 +1,6 @@
 $(function () {
 
-    $('.btn-unblock').click(function(event) {
+    $(document).on('click', '.btn-unblock', function(event) {
         event.preventDefault();
         const checkConfirm = confirm("차단을 해제하시겠습니까?");
 
