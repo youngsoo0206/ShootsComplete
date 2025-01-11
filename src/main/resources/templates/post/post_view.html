@@ -40,21 +40,28 @@
 			</td>
 		</tr>
 
-		<th:block th:if="${postdata.post_file}">
-			<tr>
-				<td>
-					<img th:src="@{'/userupload/' + ${postdata.post_file}}" style="width: 300px">
-					<br>
-					<a th:href="@{down?filename=${postdata.post_file}}" th:text="${postdata.post_file}"></a>
-				</td>
-
-			</tr>
-
-		</th:block>
+		<tr>
+			<td th:if="${not #strings.isEmpty(postdata.post_file)}">
+				<form method="post" th:action="@{down}" >
+					<input type="hidden" th:value="${postdata.post_file}" th:name="filename">
+					<input type="hidden" th:value="${postdata.post_original}" th:name="original">
+					<input type="submit" th:value="${postdata.post_original}">
+				</form>
+			</td>
+		</tr>
 
 		<tr>
 			<td style="padding-right: 0px">
 				<div class="contentD">
+					<!-- 이미지가 있을 때만 출력되도록 수정 -->
+					<th:block th:if="${not #strings.isEmpty(postdata.post_file)}">
+						<img th:src="@{'/upload' + ${#strings.replace(postdata.post_file, '\\', '/')}}"
+							 style="width: 300px">
+					</th:block>
+					<!-- 이미지가 없을 때는 아무 것도 출력하지 않음 -->
+					<th:block th:unless="${not #strings.isEmpty(postdata.post_file)}">
+						<!-- 이미지 자리 비워둠 (아무 내용도 출력하지 않음) -->
+					</th:block>
 					<pre th:text="${postdata.content}"></pre>
 				</div>
 			</td>
@@ -76,12 +83,17 @@
 					</a>
 					<button class="deleteBtn" id="delete-post-btn">삭제</button>
 				</th:block>
+
 				<a th:href="@{list}">
 					<button class="listBtn">목록</button>
 				</a>
 			</td>
 		</tr>
 	</table>
+
+
+
+
 
 	<!-- 댓글창 -->
 	<div class="comment-area">

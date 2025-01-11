@@ -23,16 +23,17 @@
                      LEFT JOIN business_user b ON i.inquiry_type = 'B' AND i.inquiry_ref_idx = b.business_idx
                     WHERE i.inquiry_type = #{usertype}
                       AND i.inquiry_ref_idx = #{idx}
-                    ORDER BY i.inquiry_id DESC
+                    ORDER BY i.inquiry_idx DESC
                 ) j
         LIMIT #{limit} OFFSET #{offset}
 
     </select>
 
+
     <insert id="insertInquiry">
         <selectKey resultType="int" order="BEFORE"
-                   keyProperty="inquiry_id">
-            select IFNULL(max(inquiry_id), 0) + 1 from inquiry
+                   keyProperty="inquiry_idx">
+            select IFNULL(max(inquiry_idx), 0) + 1 from inquiry
         </selectKey>
         insert into inquiry
         (inquiry_type, inquiry_ref_idx, title,
@@ -44,5 +45,19 @@
         #{content}, #{inquiry_file}, #{original_file},
         current_timestamp)
     </insert>
+
+
+    <select id="getDetail" resultType="inquiry">
+        select *
+        from inquiry
+        where inquiry_idx = #{inquiry_idx}
+    </select>
+
+    <update id="inquiryModify" >
+        update inquiry
+        set title = #{title}, content=#{content},
+            inquiry_file = #{inquiry_file}, original_file = #{original_file}
+        where inquiry_idx = #{inquiry_idx}
+    </update>
 
 </mapper>

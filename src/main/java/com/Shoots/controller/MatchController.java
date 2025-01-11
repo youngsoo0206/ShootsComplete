@@ -2,6 +2,7 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.Match;
 import com.Shoots.domain.PaginationResult;
+import com.Shoots.domain.Payment;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.MatchService;
 import com.Shoots.service.PaymentService;
@@ -149,10 +150,16 @@ public class MatchController {
 
         // 신청 여부
         boolean hasPaid = false;
+        Payment payment = null;
 
         if (idx != null) {
             hasPaid = paymentService.hasPaidForMatch(idx, match_idx);
             logger.info(">>>>>>>>>>>>>>>> hasPaid : " + hasPaid);
+        }
+
+        if (hasPaid) {
+            payment = paymentService.getPaymentInfoById(idx, match_idx);
+            logger.info(">>>>>>>>>>>>>>>> payment : " + payment.toString());
         }
 
         if (match == null) {
@@ -167,6 +174,7 @@ public class MatchController {
             modelAndView.setViewName("match/matchDetail");
             modelAndView.addObject("match", match);
             modelAndView.addObject("hasPaid", hasPaid);
+            modelAndView.addObject("payment", payment);
             modelAndView.addObject("playerCount", playerCount);
         }
         return modelAndView;

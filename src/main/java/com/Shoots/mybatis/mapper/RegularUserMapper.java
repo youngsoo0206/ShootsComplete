@@ -21,4 +21,12 @@ public interface RegularUserMapper {
     public int updateRegularUserPassword(RegularUser user);
 
     List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age);
+
+    public int listCount(Map<String, Object> map);
+
+    public List<RegularUser> getUserList(Map<String, Object> map);
+
+    public void setCommonUser(int id);
+
+    public void setAdminUser(int id);
 }

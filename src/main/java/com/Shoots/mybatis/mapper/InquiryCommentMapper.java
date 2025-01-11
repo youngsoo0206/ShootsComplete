@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface InquiryCommentMapper {
-    public int getListCount(int inquiry_id);
+    public int getListCount(int inquiry_idx);
     public List<InquiryComment> getInquiryList(HashMap<String,Object> map);
 
 }

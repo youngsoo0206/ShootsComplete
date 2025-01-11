@@ -7,7 +7,7 @@
 
     <select id="getListCount" resultType="int">
         select count(*) from inquiry_comment
-        where inquiry_id = #{inquiry_id}
+        where inquiry_idx = #{inquiry_idx}
     </select>
 
 

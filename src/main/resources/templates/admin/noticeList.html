@@ -36,44 +36,44 @@
   </style>
 </head>
 <body>
-  <div>
+  <div class="container">
     <form th:action="@{noticeList}">
       <div class="input-group">
         <button class="btn btn-primary search" type="submit">검색</button>
         <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
       </div>
     </form>
+    <div th:if="${listcount > 0}">
+      <table class="table">
+        <caption>공지사항</caption>
+        <thead>
+          <tr>
+            <th colspan="4">공지글 수 : [[${listcount}]]</th>
+          </tr>
+          <tr>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>조회수</th>
+            <th>수정</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
 
-    <table class="table" th:if="${listcount > 0}">
-      <caption>공지사항</caption>
-      <thead>
-        <tr>
-          <th colspan="4">공지글 수 : [[${listcount}]]</th>
-        </tr>
-        <tr>
-          <th>작성자</th>
-          <th>제목</th>
-          <th>작성일</th>
-          <th>조회수</th>
-          <th>수정</th>
-          <th>삭제</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr th:each="n : ${noticelist}">
-          <td th:text="${n.name}"></td>
-          <td><a th:href="@{noticeDetail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
-          <td th:text="${n.register_date.substring(0, 10)}"></td>
-          <td th:text="${n.readcount}"></td>
-          <td><a th:href="@{noticeUpdate(id=${n.notice_idx})}">수정</a></td>
-          <td><a th:href="@{noticeDelete(id=${n.notice_idx})}">삭제</a></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <th:block
-            th:replace="~{fragments/paging :: paging('noticeList',|&search_word=${search_word}|)}"/>
+        <tbody>
+          <tr th:each="n : ${noticelist}">
+            <td th:text="${n.name}"></td>
+            <td><a th:href="@{noticeDetail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
+            <td th:text="${n.register_date.substring(0, 10)}"></td>
+            <td th:text="${n.readcount}"></td>
+            <td><a th:href="@{noticeUpdate(id=${n.notice_idx})}">수정</a></td>
+            <td><a th:href="@{noticeDelete(id=${n.notice_idx})}">삭제</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <th:block
+              th:replace="~{fragments/paging :: paging('noticeList',|&search_word=${search_word}|)}"/>
+    </div>
 
   </div>
 

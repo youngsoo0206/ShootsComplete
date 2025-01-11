@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기업 목록</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+
+    <style>
+        table caption {
+            caption-side: top;
+            font-size : 25px;
+            font-weight: bold;
+            color : black;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{businessList}">
+            <div class="input-group">
+                <button class="btn btn-primary search" type="submit">검색</button>
+                <input name="search_word" type="text" class="form-control" placeholder="기업명 또는 기업 아이디를 입력하세요" th:value="${search_word}">
+            </div>
+        </form>
+        <div th:if="${listcount > 0}">
+            <table class="table">
+                <caption>기업 승인 목록</caption>
+                <thead>
+                    <tr>
+                        <th>기업명</th>
+                        <th>사업자번호</th>
+                        <th>이메일</th>
+                        <th>전화번호</th>
+                        <th>신청일</th>
+                        <th>승인상태</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="b : ${businesslist}">
+                        <td>[[${b.business_name}]]</td>
+                        <td>[[${b.business_number}]]</td>
+                        <td>[[${b.email}]]</td>
+                        <td>[[${#strings.substring(b.tel, 0, 3)}]]-[[${#strings.substring(b.tel, 3, 7)}]]-[[${#strings.substring(b.tel, 7)}]]</td>
+                        <td th:text="${b.register_date.substring(0, 10)}"></td>
+                        <td>
+                            <span th:if="${b.login_status == 'pending'}">
+                                <b class="pending">대기중</b>
+                            </span>
+                            <span th:if="${b.login_status == 'approved'}">
+                                <a th:href="@{businessRefuse(id=${b.business_idx})}" id="refuse"><b class="approved">승인됨</b></a>
+                            </span>
+                            <span th:if="${b.login_status == 'refused'}">
+                                <a th:href="@{businessApprove(id=${b.business_idx})}" id="approve"><b class="refused">거절됨</b></a>
+                            </span>
+                        </td>
+                        <td th:if="${b.login_status == 'pending'}">
+                            <a th:href="@{businessApprove(id=${b.business_idx})}" type="button" class="approve">승인</a>
+                            <a th:href="@{businessRefuse(id=${b.business_idx})}" type="button" class="refuse">거절</a>
+                        </td>
+                        <td th:if="${b.login_status != 'pending'}"></td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <th:block
+                    th:replace="~{fragments/paging :: paging('businessList',|&search_word=${search_word}|)}"/>
+        </div>
+
+        <h1 th:if="${listcount == 0}">가입된 기업이 없습니다.</h1>
+    </div>
+</body>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</html>

@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class BusinessUserServiceImpl implements BusinessUserService {
@@ -86,5 +88,59 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Override
     public int updateBusinessUserPassword(BusinessUser user) {
         return businessUserMapper.updateBusinessUserPassword(user);
+    }
+
+    @Override
+    public List<BusinessUser> getList(String search_word, int page, int limit) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return businessUserMapper.getList(map);
+    }
+
+    @Override
+    public int listCount(String search_word) {
+        Map<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        return businessUserMapper.listCount(map);
+    }
+
+    @Override
+    public void approveStatus(int id) {
+    businessUserMapper.approveStatus(id);
+    }
+
+    @Override
+    public void refuseStatus(int id) {
+        businessUserMapper.refuseStatus(id);
+    }
+
+    @Override
+    public List<BusinessUser> getApprovedList(String search_word, int page, int limit) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return businessUserMapper.getApprovedList(map);
+    }
+
+    @Override
+    public int listApprovedCount(String search_word) {
+        Map<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        return businessUserMapper.listApprovedCount(map);
     }
 }

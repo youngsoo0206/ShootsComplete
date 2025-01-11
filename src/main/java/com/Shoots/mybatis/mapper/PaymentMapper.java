@@ -15,4 +15,8 @@ public interface PaymentMapper {
     int getPlayerCount(int match_idx);
 
     List<Map<String, Object>> getPaymentListById(Integer idx);
+
+    Payment getPaymentInfoById(Integer idx, int match_idx);
+
+    void updatePayment(int payment_idx);
 }

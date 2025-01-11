@@ -12,8 +12,8 @@ public interface InquiryService {
     public int getListCount(String usertype, int idx);
     public List<Inquiry> getInquiryList(int page, int limit, int idx, String usertype);
     public void insertInquiry(Inquiry inquiry);
-
-
+    public Inquiry getDetail(int inquiry_idx);
+    public int inquiryModify(Inquiry inquiryData);
 
 
 
@@ -76,7 +76,7 @@ public interface InquiryService {
         Random r = new Random();
         int random = r.nextInt(100000000);
 
-        return "inquiry_" + year + month + date + random + "." + fileExtension;
+        return "inquiry" + year + month + date + random + "." + fileExtension;
     }
 
 

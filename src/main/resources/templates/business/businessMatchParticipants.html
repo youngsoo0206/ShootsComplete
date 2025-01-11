@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link th:href="@{/css/businessMatchParticipants.css}" rel="stylesheet">
+    <script th:src="@{/js/businessMatchParticipants.js}"></script>
 </head>
 <body>
     <div class="container">
@@ -51,6 +52,7 @@
                                         <th> 결제방법 </th>
                                         <th> 결제금액 </th>
                                         <th> 결제날짜 </th>
+                                        <th> 결제취소날짜 </th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -66,8 +68,15 @@
                                         <td><span th:text="${result['PAYMENT_METHOD']}"></span></td>
                                         <td><span th:text="${result['PAYMENT_AMOUNT']}"></span></td>
                                         <td><span th:text="${result['PAYMENT_DATE']}"></span></td>
-                                        <td>
-                                            <button type="button" class="btn-refund">환불</button>
+                                        <td><span th:text="${result['ACTION_DATE']}"></span></td>
+                                        <td th:if="${result['ACTION_DATE'] == null}">
+                                            <button type="button" class="btn-refund"
+                                                th:data-payment_idx="${result[payment_idx]}" th:data-imp_uid="${result[imp_uid]}"
+                                                th:data-merchant_uid="${result[merchant_uid]}" th:data-amount="${result[payment_amount]}" onclick="BrequestRefund()">
+                                            환불</button>
+                                        </td>
+                                        <td th:if="${result['ACTION_DATE'] != null}">
+                                            <button type="button" class="btn-refund-no">환불</button>
                                         </td>
                                     </tr>
                                     </div>

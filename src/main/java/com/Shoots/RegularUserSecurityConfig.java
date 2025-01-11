@@ -79,7 +79,7 @@ public class RegularUserSecurityConfig {
                 )
                 .authorizeHttpRequests(au -> au
                         .requestMatchers("/member/list", "/member/info", "/member/delete").hasAuthority("admin")
-                        .requestMatchers("/board/**", "/comment/**", "/member/update").hasAnyAuthority("admin", "common")
+                        .requestMatchers("/board/**", "/comment/**", "/member/update", "/inquiry/**").hasAnyAuthority("admin", "common")
                         .requestMatchers("/**").permitAll()
                 )
                 .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler)

@@ -113,4 +113,7 @@ public interface PostService {
     //특정 파일 이름(filename)을 기준으로 파일을 삭제
     void deleteFileList(String filename);
 
+    //관리자용 listcount
+    int getAdminListCount();
+
 }

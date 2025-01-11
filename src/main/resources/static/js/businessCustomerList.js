@@ -21,6 +21,9 @@ $(function () {
                 } else {
                     customerListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 고객리스트가 존재하지 않습니다 </p></div>';
                 }
+
+                initializePopovers();
+
             })
             .catch(error => {
                 console.error('Error loading all matches:', error);
@@ -48,6 +51,9 @@ $(function () {
                 } else {
                     customerListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 고객리스트가 존재하지 않습니다 </p></div>';
                 }
+
+                initializePopovers();
+
             })
             .catch(error => {
                 console.error('Error loading all matches:', error);
@@ -125,6 +131,9 @@ $(function () {
                         customerListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 고객리스트가 존재하지 않습니다 </p></div>';
                     }
                 }
+
+                initializePopovers();
+
             })
             .catch(error => {
                 console.error('Error loading sales data:', error);
@@ -136,21 +145,28 @@ $(function () {
 
 
 
-    const blockButtons = document.querySelectorAll("[data-bs-target='#blockCustomerBtn']");
+    $(document).on('click', '.btn-block', function (event) {
+        event.preventDefault();
+        const checkConfirm = confirm("이 회원을 차단하시겠습니까?");
 
-    blockButtons.forEach(button => {
-        button.addEventListener("click", function () {
-
-            const userIdx = this.getAttribute("data-target");
-            const userName = this.getAttribute("data-targetName");
-
-            document.getElementById("target_idx").value = userIdx;
-            document.getElementById("target_name").value = userName;
-
-        });
+        if (checkConfirm) {
+            alert("차단이 되었습니다");
+            $(this).closest("form").submit();
+        }
     });
 
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    let popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    $(document).on('click', "[data-bs-target='#blockCustomerBtn']", function () {
+        const userIdx = $(this).attr("data-target");
+        const userName = $(this).attr("data-targetName");
+
+        $("#target_idx").val(userIdx);
+        $("#target_name").val(userName);
+    });
+
+    function initializePopovers() {
+        const newPopoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        popoverList = [...newPopoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    }
 
 })

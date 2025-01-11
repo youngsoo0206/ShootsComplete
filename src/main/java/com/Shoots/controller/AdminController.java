@@ -1,11 +1,9 @@
 package com.Shoots.controller;
 
 import java.io.File;
-import com.Shoots.domain.Faq;
-import com.Shoots.domain.Notice;
-import com.Shoots.domain.PaginationResult;
-import com.Shoots.service.FaqService;
-import com.Shoots.service.NoticeService;
+
+import com.Shoots.domain.*;
+import com.Shoots.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -26,17 +24,27 @@ import java.util.List;
 @RequestMapping(value="/testAdmin")
 public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @Value("${my.savefolder}")
     private String saveFolder;
 
     private FaqService faqService;
     private NoticeService noticeService;
+    private PostService postService;
+    private BusinessUserService businessUserService;
+    private RegularUserService regularUserService;
 
     public AdminController(
             FaqService faqService,
-            NoticeService noticeService) {
+            NoticeService noticeService,
+            PostService postService,
+            BusinessUserService businessUserService,
+            RegularUserService regularUserService) {
         this.faqService = faqService;
         this.noticeService = noticeService;
+        this.postService = postService;
+        this.businessUserService = businessUserService;
+        this.regularUserService = regularUserService;
     }
 
     @GetMapping
@@ -293,4 +301,138 @@ public class AdminController {
         response.setContentLength(bytes.length);
         return bytes;
     }
+
+    //post list
+    @GetMapping(value="/postList")
+    public ModelAndView PostList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            ModelAndView mv
+    ){
+        int listcount = postService.getAdminListCount(); //총 리스트 수를 받아옴
+        List<Post> list = postService.getAdminPostList(page, limit); //리스트를 받아옴
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        mv.setViewName("admin/postList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
+        mv.addObject("listcount", listcount);
+        mv.addObject("postlist", list);
+        mv.addObject("limit", limit);
+
+        return mv;
+    }
+
+    //business list
+    @GetMapping(value="/businessList")
+    public ModelAndView BusinessList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "") String search_word,
+            ModelAndView mv
+    ){
+        int listcount = businessUserService.listCount(search_word); //총 리스트 수를 받아옴
+        List<BusinessUser> list = businessUserService.getList(search_word, page, limit); //리스트를 받아옴
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        mv.setViewName("admin/businessList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
+        mv.addObject("listcount", listcount);
+        mv.addObject("businesslist", list);
+        mv.addObject("limit", limit);
+        mv.addObject("search_word", search_word);
+
+        return mv;
+    }
+
+    //business approve
+    @GetMapping(value="/businessApprove")
+    public String businessApprove(int id){
+        businessUserService.approveStatus(id);
+        return "redirect:businessList";
+    }
+
+    //business refuse
+    @GetMapping(value="/businessRefuse")
+    public String businessRefuse(int id){
+        businessUserService.refuseStatus(id);
+        return "redirect:businessList";
+    }
+
+    //business approved list
+    @GetMapping(value="/businessApprovedList")
+    public ModelAndView BusinessApprovedList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "") String search_word,
+            ModelAndView mv
+    ){
+        int listcount = businessUserService.listApprovedCount(search_word);//총 리스트 수를 받아옴
+        List<BusinessUser> list = businessUserService.getApprovedList(search_word, page, limit); //리스트를 받아옴
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        mv.setViewName("admin/approvedBusinessList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
+        mv.addObject("listcount", listcount);
+        mv.addObject("approvedbusinesslist", list);
+        mv.addObject("limit", limit);
+        mv.addObject("search_word", search_word);
+
+        return mv;
+    }
+
+    //regular_user list
+    @GetMapping(value="/userList")
+    public ModelAndView UserList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "") String search_word,
+            ModelAndView mv
+    ){
+        int listcount = regularUserService.listCount(search_word);//총 리스트 수를 받아옴
+        List<RegularUser> list = regularUserService.getUserList(search_word, page, limit); //리스트를 받아옴
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        mv.setViewName("admin/userList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
+        mv.addObject("listcount", listcount);
+        mv.addObject("userList", list);
+        mv.addObject("limit", limit);
+        mv.addObject("search_word", search_word);
+
+
+        return mv;
+    }
+
+    //user common으로
+    @GetMapping(value="/setUserCommon")
+    public String setUserCommon(int id){
+        regularUserService.setCommonUser(id);
+        return "redirect:userList";
+    }
+
+    //user admin으로
+    @GetMapping(value="/setUserAdmin")
+    public String setUserAdmin(int id){
+        regularUserService.setAdminUser(id);
+        return "redirect:userList";
+    }
+
+
+
 }

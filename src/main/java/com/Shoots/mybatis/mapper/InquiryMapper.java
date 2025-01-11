@@ -11,4 +11,6 @@ public interface InquiryMapper {
     public int getListCount(String usertype, int idx);
     public List<Inquiry> getInquiryList(HashMap<String,Object> map);
     public void insertInquiry(Inquiry inquiry);
+    public Inquiry getDetail(int inquiry_idx);
+    public int inquiryModify(Inquiry inquiryData);
 }

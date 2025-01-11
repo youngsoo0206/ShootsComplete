@@ -15,4 +15,8 @@ public interface RegularUserService {
     public RegularUser selectWithIdAndEmail(String user_id, String email);
     public int updateRegularUserPassword(RegularUser user);
     List<Map<String, Object>> getUserListForBusiness(Integer business_idx, String vip, Integer gender, String age);
+    public int listCount(String search_word);
+    public List<RegularUser> getUserList(String search_word, int page, int limit);
+    public void setCommonUser(int id);
+    public void setAdminUser(int id);
 }

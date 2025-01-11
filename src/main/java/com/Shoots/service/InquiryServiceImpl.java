@@ -40,4 +40,15 @@ public class InquiryServiceImpl implements InquiryService {
     public void insertInquiry(Inquiry inquiry) {
         inquiryMapper.insertInquiry(inquiry);
     }
+
+
+    @Override
+    public Inquiry getDetail(int inquiry_idx) {
+        return inquiryMapper.getDetail(inquiry_idx);
+    }
+
+    @Override
+    public int inquiryModify(Inquiry inquiryData) {
+        return inquiryMapper.inquiryModify(inquiryData);
+    }
 }

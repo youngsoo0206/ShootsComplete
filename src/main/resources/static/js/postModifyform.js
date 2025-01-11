@@ -15,50 +15,39 @@ $(document).ready(function () {
 // 폼 제출 이벤트 처리
     $("form[name=modifyform]").submit(function (event) {
 
-        //
-        // event.preventDefault(); // 기본 폼 제출 중단
-        //
-        // const formData = new FormData(this); // 폼 데이터 객체 생성
-        // $('button[type="submit"]').prop('disabled', true); // 중복 제출 방지
-        //
-        // // AJAX 요청으로 폼 데이터 전송
-        // $.ajax({
-        //     url: '/Shoots/post/modifyAction', // 서버 URL (Thymeleaf 경로 확인)
-        //     type: 'POST',
-        //     data: formData,
-        //     contentType: false, // 파일 데이터 전송 시 필요
-        //     processData: false, // 자동 처리 비활성화
-        //     success: function (response) {
-        //         if (response.success) {
-        //             alert("게시글이 수정되었습니다.");
-        //             location.href = '/Shoots/post/list'; // 성공 시 리스트 페이지로 이동
-        //         } else {
-        //             alert("게시글 수정에 실패했습니다. 다시 시도해 주세요.");
-        //             location.href = '/Shoots/post/modify?num=' + response.post_idx; // 수정 페이지로 이동
-        //         }
-        //     },
-        //     error: function (xhr, status, error) {
-        //         alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-        //         console.error("상태: " + status);
-        //         console.error("에러: " + error);
-        //     },
-        //     complete: function () {
-        //         $('button[type="submit"]').prop('disabled', false); // 버튼 다시 활성화
-        //     }
-        // });
+        // category가 B일 때만 첨부파일 유효성 검사
+        const category = $("input[name='category']").val(); // category 값 가져오기
 
+        if (category === 'B') { // 중고게시판인 경우만 유효성 검사 진행
 
+// 파일첨부를 변경하지 않으면 기존 파일 정보를 전송
+            if (check === 0) {
+                const existingFilePath = $('#existingFilePath').val();
+                const existingFileName = $('#existingFileName').val();
+
+                // 기존 파일 경로와 이름을 hidden input으로 추가
+                $(this).append(`<input type='hidden' name='post_file' value='${existingFilePath}'>`);
+                $(this).append(`<input type='hidden' name='post_original' value='${existingFileName}'>`);
+            }
 
 
 // 파일첨부를 변경하지 않으면 $('#filevalue').text()의 파일명을
-        // 파라미터 'check'라는 이름으로 form에 추가하여 전송합니다.
-        if (check == 0) {
-            const value = $('#filevalue').text();
-            const html = `<input type='hidden' value='${value}' name='check'>`;
-            console.log(html);
-            $(this).append(html);
-        }
+            // 파라미터 'check'라는 이름으로 form에 추가하여 전송합니다.
+            if (check == 0) {
+                const value = $('#filevalue').text();
+                const html = `<input type='hidden' value='${value}' name='check'>`;
+                console.log(html);
+                $(this).append(html);
+            }
 
+            // 첨부파일 삭제 후 유효성 검사 추가
+            const removeFile = $('input[name="remove_file"]').val();
+            if (removeFile === 'true' && !$('#upfile').val()) {
+                // 첨부파일을 삭제하고 파일을 새로 선택하지 않았다면 유효성 검사 실패
+                alert("중고게시판에서는 첨부파일을 반드시 첨부해야 합니다.");
+                event.preventDefault(); // 폼 제출 중지
+            }
+        }
     });
 
 
@@ -77,6 +66,9 @@ $(document).ready(function () {
 
         // const inputFile = $(this).val().split('\\'); // 파일 경로 분리
         // $('#filevalue').text(inputFile[inputFile.length - 1]); // 파일명만 표시
+
+        // 삭제된 파일이 있으면 삭제 플래그를 초기화
+        $('input[name="remove_file"]').val('false');
         show();
         //$('input[name="remove_file"]').val('false'); // 삭제 플래그 초기화
     })
@@ -89,6 +81,16 @@ $(document).ready(function () {
     //         .css({ 'position': 'relative', 'top': '-5px' });
     // }
 
+
+    // 첨부파일 제거 버튼 클릭 시 처리
+    $('.remove').click(function () {
+        $('#filevalue').text(''); // 첨부파일 표시 내용 제거
+        $('#upfile').val('');    // 파일 입력 필드 초기화
+        $(this).css('display', 'none'); // 삭제 버튼 숨기기
+        $('input[name="remove_file"]').val('true'); // 파일 삭제 플래그 설정
+    });
+
+
     function show() {
         //파일 이름이 있는 경우 remove 이미지를 보이게 하고
         //파일 이름이 없는 경우 remove 이미지 보이지 않게 합니다.
@@ -99,14 +101,6 @@ $(document).ready(function () {
 
     // 초기 실행 시 remove 이미지 세팅
     show();
-
-    // 첨부파일 제거 버튼 클릭 시 처리
-    $('.remove').click(function () {
-        $('#filevalue').text(''); // 첨부파일 표시 내용 제거
-        //$('#upfile').val('');    // 파일 입력 필드 초기화
-        $(this).css('display', 'none'); // 삭제 버튼 숨기기
-        //$('input[name="remove_file"]').val('true'); // 파일 삭제 플래그 설정
-    });
 
 
 

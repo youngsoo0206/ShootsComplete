@@ -39,4 +39,45 @@
         where business_id = #{business_id}
     </update>
 
+
+    <sql id="search">
+        <if test="search_word != null">
+            where business_id like #{search_word} or business_name like #{search_word}
+        </if>
+    </sql>
+
+    <sql id="searchApproved">
+        <if test="search_word != null">
+            and business_id like #{search_word} or business_name like #{search_word}
+        </if>
+    </sql>
+
+    <select id="getList">
+        select * from business_user
+                 <include refid="search" />
+                 order by business_idx desc
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="listCount">
+        select count(*) from business_user
+    </select>
+
+    <update id="approveStatus">
+        update business_user set login_status = "approved" where business_idx=#{id}
+    </update>
+
+    <update id="refuseStatus">
+        update business_user set login_status = "refused" where business_idx=#{id}
+    </update>
+
+    <select id="getApprovedList">
+        select * from business_user where login_status = "approved" <include refid="searchApproved" /> order by business_idx desc
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="listApprovedCount">
+        select count(*) from business_user where login_status = "approved" <include refid="searchApproved" />
+    </select>
+
 </mapper>

@@ -19,9 +19,13 @@
 <div class="container">
 	<form th:action="modifyAction" method="post" name="modifyform" enctype="multipart/form-data">
 		<input type="hidden" name="post_idx" th:value="${postdata.post_idx}"/>
-		<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>
+<!--		<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>-->
 		<input type="hidden" name="remove_file" th:value="false"/>
 		<input type="hidden" name="category" th:value="${postdata.category}">
+		<!-- 기존 파일 경로와 원본 파일명 hidden input 추가 -->
+		<input type="hidden" id="existingFilePath" name="existingFilePath" th:value="${postdata.post_file}">
+		<input type="hidden" id="existingFileName" name="existingFileName" th:value="${postdata.post_original}">
+
 
 		<!--		<input type="hidden" name="num" th:value="${num}"/>-->
 
@@ -83,7 +87,7 @@
 		const category = document.querySelector("input[name='category']")?.value || ""; // 숨겨진 카테고리 값
 		const priceInput = document.getElementById("priceInput");
 		const upfile = document.getElementById("upfile");
-		const existingFile = document.querySelector("input[name='existing_file']").value;
+		const existingFileName = document.querySelector("input[name='existingFileName']").value;
 
 		if (category === "B") {
 			if (priceInput && priceInput.value.trim() === "") {
@@ -104,7 +108,7 @@
 				return false;
 			}
 
-			if (!existingFile && !upfile.value) {
+			if (!existingFileName && !upfile.value) {
 				alert("중고게시판에서는 첨부파일을 반드시 첨부해야 합니다.");
 				upfile.focus();
 				return false;
@@ -113,6 +117,15 @@
 
 		return true;
 	}
+
+	// // 첨부파일 삭제 버튼 클릭 시 처리
+	// document.querySelector('.remove').addEventListener('click', function () {
+	// 	// 첨부파일 값 초기화
+	// 	document.getElementById('upfile').value = '';
+	// 	document.getElementById('filevalue').textContent = ''; // 파일명 표시 초기화
+	// 	this.style.display = 'none'; // 삭제 버튼 숨기기
+	// 	document.querySelector("input[name='remove_file']").value = 'true'; // 파일 삭제 플래그 설정
+	// });
 
 </script>
 

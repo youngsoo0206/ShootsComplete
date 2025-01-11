@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script th:src="@{/js/inquiryJs/inquiryWriteModify.js}"></script>
 
     <title>1:1 문의글 쓰기</title>
 </head>
@@ -38,12 +39,11 @@
             <div class="form-group">
                 <label>
 					<span class="filep">파일첨부<span>
-					<img th:src="@{/img/attach.png}" alt="파일첨부" class="fileU">
-					<input type="file" id="upfile" name="uploadfile">
+					<img th:src="@{/img/attach.png}" alt="파일첨부" class="fileU" style="width: 30px">
+					<input type="file" id="upfile" name="uploadfile" style="display: none;">
                 </label>
-                <span id="filevalue" name="check"></span>
-                <img th:src="@{/img/remove.png}"
-                     alt="파일삭제" class="remove">
+                <span id="filevalue"></span>
+                <img th:src="@{/img/remove.png}" alt="파일삭제" class="remove">
             </div>
 
             <div class="btnD">

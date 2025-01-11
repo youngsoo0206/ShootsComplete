@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8">
+  <title>회원 조회</title>
+  <th:block th:replace="~{fragments/header :: header}" />
+  <script th:src="@{/js/jquery-3.7.1.js}"></script>
+  <style>
+    table caption {
+      caption-side: top;
+      font-size : 25px;
+      font-weight: bold;
+      color : black;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form th:action="@{userList}">
+      <div class="input-group">
+        <button class="btn btn-primary search" type="submit">검색</button>
+        <input name="search_word" type="text" class="form-control" placeholder="이름 또는 아이디를 입력하세요" th:value="${search_word}">
+      </div>
+    </form>
+    <div th:if="${listcount > 0}">
+      <table class="table">
+        <caption>회원 목록</caption>
+        <thead>
+          <tr>
+            <th colspan="8">회원 수 : [[${listcount}]]</th>
+          </tr>
+          <tr>
+            <td>아이디</td>
+            <td>이름</td>
+            <td>생년월일</td>
+            <td>성별</td>
+            <td>전화번호</td>
+            <td>email</td>
+            <td>가입일</td>
+            <td>권한</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="u : ${userList}" th:if="${u.idx != session.idx}">
+            <td th:text="${u.user_id}"></td>
+            <td th:text="${u.name}"></td>
+            <td th:text="${u.jumin}"></td>
+            <td th:if="${u.gender == 1 or u.gender == 3}">남자</td>
+            <td th:if="${u.gender == 2 or u.gender == 4}">여자</td>
+            <td>[[${#strings.substring(u.tel, 0, 3)}]]-[[${#strings.substring(u.tel, 3, 7)}]]-[[${#strings.substring(u.tel, 7)}]]</td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.register_date.substring(0,10)}"></td>
+            <td th:if="${u.role == 'common'}"><a th:href="@{setUserAdmin(id=${u.idx})}" type="button" class="common">일반</a></td>
+            <td th:if="${u.role == 'admin'}"><a th:href="@{setUserCommon(id=${u.idx})}" type="button" class="admin">관리자</a></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <th:block
+              th:replace="~{fragments/paging :: paging('userList',|&search_word=${search_word}|)}"/>
+    </div>
+
+    <h1 th:if="${listcount == 0 && search_word == ''}">등록된 회원이 없습니다.</h1>
+    <h1 th:if="${listcount == 0 && search_word != ''}">검색 결과가 없습니다.</h1>
+  </div>
+
+</body>
+</html>
