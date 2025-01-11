@@ -115,7 +115,7 @@
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
                     </button>
                     <button id="refundButton" th:if="${session.role == 'common' && hasPaid && match.isMatchPast() == false}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
-                            th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청취소
+                            th:data-payment_idx="${payment.payment_idx}" th:data-imp_uid="${payment.imp_uid}" th:data-merchant_uid="${payment.merchant_uid}" th:data-amount="${payment.payment_amount}">신청취소
                     </button>
                     <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !hasPaid}" class="button button--refund button--text-upper button--size-s" onclick="limitedMatch()">마감
                     </button>
