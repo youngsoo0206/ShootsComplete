@@ -51,4 +51,7 @@ public class InquiryServiceImpl implements InquiryService {
     public int inquiryModify(Inquiry inquiryData) {
         return inquiryMapper.inquiryModify(inquiryData);
     }
+
+    @Override
+    public int inquiryDelete(int inquiry_idx) {return inquiryMapper.inquiryDelete(inquiry_idx);}
 }

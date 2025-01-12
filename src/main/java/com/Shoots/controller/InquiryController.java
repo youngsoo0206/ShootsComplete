@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,20 +194,14 @@ public class InquiryController {
 
     @ResponseBody
     @PostMapping("/down")
-    public byte[] BoardFileDown(String filename,
-                                HttpServletRequest request,
-                                String original,
-                                HttpServletResponse response) throws Exception{
-//        String savePath = "resources/upload";
-//        ServletContext context = request.getSession().getServletContext();
-//        String sDownloadPath = context.getRealPath(savePath);
+    public byte[] BoardFileDown(String filename,String original, HttpServletResponse response) throws Exception{
 
         //수정
         String sFilePath = saveFolder + filename;
 
         File file = new File(sFilePath);
 
-        //org.springframework.util.FileCopyUtils.copyToByteArray(File file) - File 객체를 읽어서 바이트 배열로 반환합니다.
+        //org.springframework.util.FileCopyUtils.copyToByteArray(File file) - File 객체를 읽어서 바이트 배열로 반환해주는 클래스
         byte[] bytes = FileCopyUtils.copyToByteArray(file);
 
         String sEncoding = new String(original.getBytes("UTF-8"), "iso-8859-1");
@@ -215,6 +210,29 @@ public class InquiryController {
 
         response.setContentLength(bytes.length);
         return bytes;
+    }
+
+
+    @PostMapping("/delete")
+    public String inquiryDelete(int inquiry_idx, HttpServletResponse response) throws Exception {
+        response.setContentType("text/html; charset=utf-8");
+        PrintWriter out = response.getWriter();
+
+        //비밀번호 일치하는 경우 삭제 처리합니다.
+        int result = inquiryService.inquiryDelete(inquiry_idx);
+
+        //삭제 처리 실패한 경우
+        if(result == 0){
+            logger.info("문의글 삭제 실패");
+            return "error/error";
+        }else{
+            logger.info("문의글 삭제 성공");
+            out.println("<script type='text/javascript'>");
+            out.println("alert('성공적으로 삭제되었습니다.')");
+            out.println("location.href='/Shoots/inquiry/list';");
+            out.println("</script>");
+        }
+        return null;
     }
 
 

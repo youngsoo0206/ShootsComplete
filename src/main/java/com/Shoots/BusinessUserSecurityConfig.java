@@ -52,7 +52,7 @@ public class BusinessUserSecurityConfig {
     @Bean
     public SecurityFilterChain businessUserFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/businessLoginProcess/**")
+                .securityMatcher("/businessLoginProcess/**", "/inquiry/**")
                 .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
                         .loginPage("/login")
@@ -69,7 +69,7 @@ public class BusinessUserSecurityConfig {
                         .deleteCookies("remember-me", "JSESSION_ID")
                 )
                 .authorizeHttpRequests(au -> au
-                        .requestMatchers("/business/**").hasAuthority("business")
+                        .requestMatchers("/business/**", "/inquiry/**").hasAuthority("business")
                         .requestMatchers("/**").permitAll()
                 )
                 .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler)
