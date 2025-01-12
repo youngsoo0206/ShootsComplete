@@ -14,6 +14,7 @@ public interface InquiryService {
     public void insertInquiry(Inquiry inquiry);
     public Inquiry getDetail(int inquiry_idx);
     public int inquiryModify(Inquiry inquiryData);
+    public int inquiryDelete(int inquiry_idx);
 
 
 

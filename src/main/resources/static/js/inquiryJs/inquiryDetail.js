@@ -1,7 +1,14 @@
 $(function() { //ready 함수
     const loginid = $("#loginid").val();  // 로그인한 유저의 id
     const inquiry_idx = $("#inquiry_idx").val(); // 문의글 번호.
-    
+
+	$('#inquiryDelete').click(function(event){ //문의글 삭제 버튼 누르면 삭제하는 메서드
+		event.preventDefault();
+		if (confirm("정말 문의글을 삭제하시겠습니까?")) {
+			$("#deleteInquiryForm").submit();
+		}
+	});
+
     $(".listlook").click(function(){
 		history.back();
 	})

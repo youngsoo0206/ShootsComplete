@@ -78,8 +78,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/regularJoinProcess")
-    public String regularJoinProcess(RegularUser user, RedirectAttributes rattr,
-                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String regularJoinProcess(RegularUser user, HttpServletResponse response) throws IOException {
 
         response.setContentType("text/html;charset=UTF-8");
 

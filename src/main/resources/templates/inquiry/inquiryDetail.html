@@ -121,10 +121,12 @@
                         <button class="btn btn-info updateBtn">수정</button>
                     </a>
                 </th:block>
-            <!--href의 주소를 #으로 설정함. -->
-            <a href ="#">
-                <button class="btn btn-danger deleteBtn" data-toggle="modal"
-                        data-target="#myModal" id="inquiryDelete">삭제</button>
+            <form name="deleteInquiryForm" id ="deleteInquiryForm" th:action="@{'delete?inquiry_idx=' +${inquiryData.inquiry_idx}}" method="post">
+                <input type="hidden" th:value="${inquiryData.inquiry_idx}">
+                <button class="btn btn-danger deleteBtn" id="inquiryDelete">삭제</button>
+            </form>
+
+            <a th:href ="@{'delete?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
             </a>
         </th:block>
 
@@ -141,27 +143,6 @@
 
 </div>
 
-<script>
-    const inquiry_idx = $('#inquiry_idx').val();
-
-    $('#inquiryDelete').click(function(){ //문의글 삭제 버튼 누르면 삭제하는 메서드
-        if (confirm("문의글을 삭제하시겠습니까?")) {
-            $.ajax({
-                type: "POST",
-                url: "delete?inquiry_idx=" + inquiry_idx,
-                success: function(response) {
-                    alert("삭제되었습니다.");
-                    location.href = "../inquiry/list";
-                },
-                error: function() {
-                    alert("삭제 실패. 다시 시도해주세요.");
-                }
-            });
-        }
-    });
-    // <%--js에서 contextPath를 직접 선언할 수 없기에 jsp에서 선언하기 위해 있는 부분 --%>
-    const contextPath = "${pageContext.request.contextPath}";
-</script>
 </body>
 
 

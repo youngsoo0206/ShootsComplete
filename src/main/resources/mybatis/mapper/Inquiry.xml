@@ -60,4 +60,10 @@
         where inquiry_idx = #{inquiry_idx}
     </update>
 
+
+    <delete id="inquiryDelete">
+        delete from inquiry
+        where inquiry_idx = #{inquiry_idx}
+    </delete>
+
 </mapper>
