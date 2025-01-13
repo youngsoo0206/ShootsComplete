@@ -20,22 +20,28 @@
 
 
     <select id="getCommentList" resultType="postcomment">
-        select *
-        from ( select rownum rnum, num, idx, content, reg_date, post_idx
-            from(
-                select num, idx, content, register_date, post_idx
-                from post_comment
-                where post_idx = #{post_idx}
-                order by register_date desc
-                )
-            )
-        where rnum between #{offset} and #{pageSize}
+        SELECT co.*, r.user_id, r.user_file
+        FROM post_comment co
+        JOIN regular_user r ON co.writer = r.idx
+        WHERE co.post_idx = #{post_idx}
+        <choose>
+            <when test="state == 1">
+                ORDER BY co.comment_idx ASC, co.comment_ref_id ASC
+            </when>
+            <when test="state == 2">
+                ORDER BY co.comment_idx DESC, co.comment_ref_id ASC
+            </when>
+            <otherwise>
+                ORDER BY co.comment_idx ASC, co.comment_ref_id ASC
+            </otherwise>
+        </choose>
     </select>
 
 
     <insert id="commentsInsert">
         insert into post_comment
-        values(#{comment_idx}, #{idx}, #{content}, current_timestamp, #{post_idx})
+        (post_idx, comment_ref_id, writer, content)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
     </insert>
 
 
