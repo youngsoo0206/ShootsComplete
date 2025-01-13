@@ -25,6 +25,10 @@
         LIMIT 1
     </select>
 
+    <select id="isBlockForBusiness" resultType="boolean">
+        select COUNT(*) > 0 from bc_blacklist where target_idx = #{idx} and business_idx = #{writer} and unblocked_at is null;
+    </select>
+
     <insert id="insertBcBlacklist">
         insert into bc_blacklist (
             target_idx, business_idx, reason, blocked_at

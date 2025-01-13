@@ -18,3 +18,5 @@ select * from bc_blacklist;
 
 drop table bc_blacklist;
 
+select * from bc_blacklist where unblocked_at is  null;
+

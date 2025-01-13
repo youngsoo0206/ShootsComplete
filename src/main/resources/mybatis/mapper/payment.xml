@@ -29,15 +29,24 @@
     </select>
 
     <select id="getPaymentListById" resultType="java.util.HashMap">
-        select p.*, r.*,
-            CASE
-                WHEN p.PAYMENT_STATUS = 'refunded' THEN h.ACTION_DATE
-                ELSE NULL
-            END as ACTION_DATE
-        from PAYMENT p
-            left join regular_user r on p.BUYER_IDX = r.idx
-            left join PAYMENT_HISTORY h on p.PAYMENT_IDX = h.PAYMENT_IDX
-        where p.SELLER_IDX = #{idx}
+        SELECT p.*,
+               r.*,
+               CASE
+                   WHEN p.PAYMENT_STATUS = 'refunded' THEN h.ACTION_DATE
+                   ELSE NULL
+                   END AS ACTION_DATE
+        FROM PAYMENT p
+                 LEFT JOIN regular_user r ON p.BUYER_IDX = r.idx
+                 LEFT JOIN PAYMENT_HISTORY h ON p.PAYMENT_IDX = h.PAYMENT_IDX
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM PAYMENT p2
+                     LEFT JOIN PAYMENT_HISTORY h2 ON p2.PAYMENT_IDX = h2.PAYMENT_IDX
+            WHERE p2.BUYER_IDX = p.BUYER_IDX
+              AND COALESCE(h2.ACTION_DATE, p2.PAYMENT_DATE) > COALESCE(h.ACTION_DATE, p.PAYMENT_DATE)
+        )
+           OR h.ACTION_DATE IS NULL
+        ORDER BY p.PAYMENT_DATE DESC;
     </select>
 
     <select id="getPaymentInfoById" resultType="Payment">
