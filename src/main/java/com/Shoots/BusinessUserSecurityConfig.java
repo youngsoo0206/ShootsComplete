@@ -52,10 +52,10 @@ public class BusinessUserSecurityConfig {
     @Bean
     public SecurityFilterChain businessUserFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/businessLoginProcess/**")
+                .securityMatcher("/businessLoginProcess/**", "/businessLogin", "/business/**")
                 .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
-                        .loginPage("/login")
+                        .loginPage("/businessLogin")
                         .loginProcessingUrl("/businessLoginProcess")
                         .usernameParameter("business_id")
                         .passwordParameter("password")
