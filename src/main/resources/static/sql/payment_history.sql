@@ -23,5 +23,5 @@ DELIMITER ;
 
 SHOW TRIGGERS;
 
-
 select * from PAYMENT_HISTORY;
+

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link th:href="@{/css/businessMatchParticipants.css}" rel="stylesheet">
-    <script th:src="@{/js/businessMatchParticipants.js}"></script>
+    <script th:src="@{/js/businessMatchParticipantsRefund.js}"></script>
 </head>
 <body>
     <div class="container">
@@ -71,8 +71,8 @@
                                         <td><span th:text="${result['ACTION_DATE']}"></span></td>
                                         <td th:if="${result['ACTION_DATE'] == null}">
                                             <button type="button" class="btn-refund"
-                                                th:data-payment_idx="${result[payment_idx]}" th:data-imp_uid="${result[imp_uid]}"
-                                                th:data-merchant_uid="${result[merchant_uid]}" th:data-amount="${result[payment_amount]}" onclick="BrequestRefund()">
+                                                th:data-payment_idx="${result['PAYMENT_IDX']}" th:data-imp_uid="${result['IMP_UID']}" th:data-name="${result['name']}"
+                                                th:data-merchant_uid="${result['MERCHANT_UID']}" th:data-amount="${result['PAYMENT_AMOUNT']}" onclick="BrequestRefund(this)">
                                             환불</button>
                                         </td>
                                         <td th:if="${result['ACTION_DATE'] != null}">

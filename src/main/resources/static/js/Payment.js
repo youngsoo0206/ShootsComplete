@@ -32,59 +32,70 @@
                 console.log(response);
 
                 if (response.imp_uid) {
-                    try {
-                        // 서버에 결제 정보를 전송하는 부분
-                        fetch("/Shoots/payment/add", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                imp_uid: response.imp_uid,
-                                merchant_uid: response.merchant_uid,
-                                match_idx: matchIdx,
-                                seller_idx: sellerIdx,
-                                buyer_idx: buyerIdx,
-                                payment_amount: price,
-                            }),
-                        })
-                            .then((notified) => {
-                                if (notified.ok) {
-                                    return notified.json();
-                                } else {
-                                    throw new Error('서버 응답 오류');
-                                }
-                            })
-                            .then((result) => {
-                                console.log("서버 응답 데이터:", result);
+                    fetch("/Shoots/payment/add", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            imp_uid: response.imp_uid,
+                            merchant_uid: response.merchant_uid,
+                            match_idx: matchIdx,
+                            seller_idx: sellerIdx,
+                            buyer_idx: buyerIdx,
+                            payment_amount: price,
+                            payment_method: "card"
+                        }),
+                    })
+                        .then((notified) => notified.ok ? notified.json() : Promise.reject('서버 응답 오류'))
+                        .then((result) => {
+                            console.log("서버 응답 데이터:", result);
 
-                                if (result.success) {
-                                    alert("매칭 신청이 완료되었습니다");
-                                    console.log("결제 데이터가 성공적으로 서버에 저장되었습니다.");
-                                    window.location.reload();
+                            if (result.success) {
+                                fetch("/Shoots/payment/checkPayment", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({imp_uid: response.imp_uid}),
+                                })
+                                    .then((verifyResponse) => verifyResponse.json())
+                                    .then((verificationResult) => {
+                                        if (verificationResult.status === 'paid') {
+                                            alert("이미 결제가 완료되었습니다.");
+                                            console.log("결제 검증 성공:", verificationResult);
+                                            window.location.reload();
+                                        } else {
+                                            alert("결제가 완료되었습니다.");
+                                            console.log("결제 검증 성공:", verificationResult);
+                                            window.location.reload();
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error("결제 검증 중 오류:", error);
+                                        alert("결제 검증 중 오류가 발생했습니다.");
+                                        window.location.reload();
+                                    });
+                            } else {
+
+                                if (response.error_code = 'F400') {
+                                    alert("결제를 취소했습니다");
+                                } else if (response.error_code = 'F500') {
+                                    alert("한도 초과로 결제가 거부되었습니다");
                                 } else {
                                     alert("결제에 실패하였습니다. 관리자에게 문의해주세요");
-                                    console.log(`서버 처리 중 오류가 발생했습니다: ${result.message}`);
                                 }
-                            })
-                            .catch((error) => {
-                                console.error("결제 데이터 전송 중 오류:", error);
-                                alert("결제 처리 중 오류가 발생했습니다.");
-                            });
-                    } catch (error) {
-                        console.error("결제 데이터 전송 중 오류:", error);
-                        alert("결제 처리 중 오류가 발생했습니다.");
-                    }
+
+                                window.location.reload();
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("결제 데이터 전송 중 오류:", error);
+                            alert("결제 처리 중 오류가 발생했습니다.");
+                            window.location.reload();
+                        });
                 } else {
-                    console.log("Error code:", response.error_code);
-                    if (response.error_code === 'F400') {
-                        alert("결제를 취소했습니다");
-                    } else if (response.error_code === 'F500') {
-                        alert("한도 초과로 결제가 거부되었습니다");
-                    } else {
-                        alert("결제 오류 : " + response.error_msg);
-                        console.log("결제 오류:", response.error_msg);
-                    }
+                    alert("결제오류 : " + response.error_code + ", " + response.error_msg );
                 }
             }
         );
@@ -101,6 +112,12 @@
 
 
     function requestRefund() {
+
+        const userConfirmed = confirm("매칭 신청을 취소하시겠습니까?");
+
+        if (!userConfirmed) {
+            return;
+        }
 
         const paymentIdx = document.getElementById('refundButton').getAttribute('data-payment_idx');
         const impUid = document.getElementById('refundButton').getAttribute('data-imp_uid');
@@ -127,7 +144,7 @@
             data: JSON.stringify(refundData),
             success: function(response) {
                 if (response.success) {
-                    alert('환불이 성공적으로 처리되었습니다.');
+                    alert('환불 처리되었습니다.');
                     console.log(response);
                     window.location.reload();
                 } else {

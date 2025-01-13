@@ -43,4 +43,9 @@ public class BcBlacklistServiceImpl implements BcBlacklistService{
     public void updateBcBlacklist(int idx, Integer business_idx) {
         dao.updateBcBlacklist(idx, business_idx);
     }
+
+    @Override
+    public boolean isBlockForBusiness(Integer idx, int writer) {
+        return dao.isBlockForBusiness(idx, writer);
+    }
 }

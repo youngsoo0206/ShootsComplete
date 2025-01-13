@@ -46,7 +46,7 @@ public class BusinessController {
         this.bcBlacklistService = bcBlacklistService;
     }
 
-    @GetMapping("/dashboardBefore") //로그인이 성공하면 main 주소로 가기 전 로그인 유저 타입을 확인하는 경로
+    @GetMapping("/dashboardBefore")
     public String beforeBusinessDashboard(@AuthenticationPrincipal Object principal, HttpSession session) {
         if (principal instanceof BusinessUser) {
             BusinessUser businessUser = (BusinessUser) principal;
@@ -125,7 +125,7 @@ public class BusinessController {
 
         List<Match> list = matchService.getMatchListByIdForSales(idx, month, year, gender, level);
 
-        logger.info(">>>>>>>>>>>>>>>> list : " + list.size());
+        logger.info("결제 리스트 사이즈 : " + list.size());
 
         // match_date별로 그룹화
         Map<LocalDate, List<Match>> groupedByDate = list.stream().collect(Collectors.groupingBy(Match::getMatch_date));
