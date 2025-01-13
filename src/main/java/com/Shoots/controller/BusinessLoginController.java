@@ -40,6 +40,27 @@ public class BusinessLoginController {
         this.sendMail = sendMail;
     }
 
+
+    @GetMapping(value = "/businessLogin")
+    public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
+                              HttpSession session, Principal userPrincipal) {
+        session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
+        session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
+
+
+        if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
+            logger.info("저장된 아이디 : " + userPrincipal.getName());
+            mv.setViewName("redirect:/main");
+        } else { // 로그인 안된 상태면 로그인 폼 뜸
+            mv.setViewName("home/loginForm");
+            mv.addObject("loginResult", session.getAttribute("loginResult"));
+            session.removeAttribute("loginResult");
+        }
+
+        return mv;
+    }
+
+
     @GetMapping("/businessJoinForm")
     public String getBusinessJoinForm(Model model) {
         return "fragments/businessJoinForm";
