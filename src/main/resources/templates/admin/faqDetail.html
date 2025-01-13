@@ -31,10 +31,10 @@
             </tr>
 
             <tr>
-                <td>첨부파일</td>
-                <td th:if="${not #strings.isEmpty(faq.faq_file)}">
-                    <img th:src="@{/img/down.png}" width="10px">
-                    <form method="post" th:action="@{down}" style="height:0">
+                <td th:if="${not #strings.isEmpty(faq.faq_file)}" colspan="2">
+                    <form method="post" th:action="@{down}">
+                        <span>첨부 파일</span>
+                        <img th:src="@{/img/down.png}" width="10px">
                         <input type="hidden" th:value="${faq.faq_file}" th:name="filename">
                         <input type="hidden" th:value="${faq.faq_original}" th:name="original">
                         <input type="submit" th:value="${faq.faq_original}">
