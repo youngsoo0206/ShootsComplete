@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -22,8 +23,14 @@ public class InquiryCommentServiceImpl implements InquiryCommentService{
         return inquiryCommentMapper.getListCount(inquiry_idx);
     }
 
+
     @Override
-    public List<InquiryComment> getInquiryCommentList(int page, int limit) {
-        return List.of();
+    public List<InquiryComment> getInquiryCommentList(int inquiry_idx) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("inquiry_idx", inquiry_idx);
+        return inquiryCommentMapper.getInquiryCommentList(map);
     }
+
+
+
 }

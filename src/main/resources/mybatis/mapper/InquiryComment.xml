@@ -11,4 +11,16 @@
     </select>
 
 
+    <select id = "getInquiryCommentList" resultType="inquirycomment">
+        select * from (
+                      select ic.*, r.user_id
+                      from inquiry_comment ic
+                      join regular_user r
+                      on ic.writer = r.idx
+                      )
+        where inquiry_idx = #{inquiry_idx}
+        order by i_comment_idx asc
+    </select>
+
+
 </mapper>

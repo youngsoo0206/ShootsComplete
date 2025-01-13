@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS inquiry_comment;
 
 CREATE TABLE inquiry_comment (
-    i_comment_id  INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- 댓글 번호: primary 키
+    i_comment_idx  INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- 댓글 번호: primary 키
     inquiry_idx    INT NOT NULL,                            -- 문의글 ID (외래 키) : 몇번 문의글에 댓글 달건지.
-    writer        INT NOT NULL,                            -- 작성자 ID
+    writer        INT NOT NULL,                            -- 작성자 ID : idx / business_idx 가져옴.
     content       TEXT NOT NULL,                               -- 댓글 내용
     register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- 댓글 등록일
     CONSTRAINT fk_inquiry FOREIGN KEY (inquiry_idx) REFERENCES inquiry (inquiry_idx) ON DELETE CASCADE
@@ -15,7 +15,7 @@ CREATE TABLE inquiry_comment (
 select * from inquiry_comment;
 
 
-#1. 문의댓글을 쓴 사람 (writer)의 모든 문의댓글 정보와 그 작성자의 닉네임 (user_id)를 조회하는 조인 커리문 (writer = idx면 select)
+-- 1. 문의댓글을 쓴 사람 (writer)의 모든 문의댓글 정보와 그 작성자의 닉네임 (user_id)를 조회하는 조인 커리문 (writer = idx면 select)
 select ic.*, r.user_id
 from inquiry_comment ic
 join regular_user r
