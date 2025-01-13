@@ -48,7 +48,7 @@ public class PostController {
 
     @GetMapping(value = "/list")
     public ModelAndView postlist(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(defaultValue = "A") String category, // 기본 카테고리 추가
             ModelAndView mv,
             HttpSession session) {

@@ -12,8 +12,8 @@ CREATE TABLE post (
       CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
 
-ALTER TABLE post MODIFY post_file VARCHAR(200);
-ALTER TABLE post MODIFY post_original VARCHAR(200);
+# ALTER TABLE post MODIFY post_file VARCHAR(200);
+# ALTER TABLE post MODIFY post_original VARCHAR(200);
 
 
 drop table post;
