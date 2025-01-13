@@ -4,30 +4,49 @@
     <meta charset="UTF-8">
     <title>기업 목록</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript">
+        $(function(){
+            $(".approved, .refuse").click(function(event){
+                const answer = confirm("가입을 거부 하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault();
+                }
+            })
 
+            $(".refused, .approve").click(function(event){
+                const answer = confirm("가입을 승인 하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault();
+                }
+            })
+        })
+    </script>
     <style>
-        table caption {
-            caption-side: top;
-            font-size : 25px;
-            font-weight: bold;
-            color : black;
-            text-align:center;
+        tr > td:nth-child(6) {
+            text-align: center;
+        }
+        tr > th:nth-child(6) {
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <form th:action="@{businessList}">
-            <div class="input-group">
-                <button class="btn btn-primary search" type="submit">검색</button>
-                <input name="search_word" type="text" class="form-control" placeholder="기업명 또는 기업 아이디를 입력하세요" th:value="${search_word}">
-            </div>
-        </form>
         <div th:if="${listcount > 0}">
+            <h1>기업 상태 관리</h1>
+            <form th:action="@{businessList}">
+                <div class="input-group">
+                    <button class="btn btn-primary search" type="submit">검색</button>
+                    <input name="search_word" type="text" class="form-control" placeholder="기업명 또는 기업 아이디" th:value="${search_word}">
+                </div>
+            </form>
             <table class="table">
-                <caption>기업 승인 목록</caption>
                 <thead>
+                <tr><th th:colspan="7">기업 수 : [[${listcount}]]</th></tr>
                     <tr>
                         <th>기업명</th>
                         <th>사업자번호</th>
@@ -58,8 +77,8 @@
                             </span>
                         </td>
                         <td th:if="${b.login_status == 'pending'}">
-                            <a th:href="@{businessApprove(id=${b.business_idx})}" type="button" class="approve">승인</a>
-                            <a th:href="@{businessRefuse(id=${b.business_idx})}" type="button" class="refuse">거절</a>
+                            <a th:href="@{businessApprove(id=${b.business_idx})}" type="button" class="btn btn-primary approve">승인</a>
+                            <a th:href="@{businessRefuse(id=${b.business_idx})}" type="button" class="btn btn-danger refuse">거절</a>
                         </td>
                         <td th:if="${b.login_status != 'pending'}"></td>
                     </tr>

@@ -4,41 +4,53 @@
    <meta charset="UTF-8">
   <title>회원 조회</title>
   <th:block th:replace="~{fragments/header :: header}" />
+  <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
   <script th:src="@{/js/jquery-3.7.1.js}"></script>
-  <style>
-    table caption {
-      caption-side: top;
-      font-size : 25px;
-      font-weight: bold;
-      color : black;
-      text-align:center;
-    }
-  </style>
+  <script th:inline="javascript">
+    $(function(){
+      $(".common").click(function(event){
+        const answer = confirm("관리자로 권한을 변경하시겠습니까?");
+        console.log(answer);
+        if(!answer){
+          event.preventDefault();
+        }
+      })
+
+      $(".admin").click(function(event){
+        const answer = confirm("일반 회원으로 권한을 변경하시겠습니까?");
+        console.log(answer);
+        if(!answer){
+          event.preventDefault();
+        }
+      })
+    })
+  </script>
+
 </head>
 <body>
   <div class="container">
-    <form th:action="@{userList}">
-      <div class="input-group">
-        <button class="btn btn-primary search" type="submit">검색</button>
-        <input name="search_word" type="text" class="form-control" placeholder="이름 또는 아이디를 입력하세요" th:value="${search_word}">
-      </div>
-    </form>
+    <h1>회원 목록</h1>
     <div th:if="${listcount > 0}">
+      <form th:action="@{userList}">
+        <div class="input-group">
+          <button class="btn btn-primary search" type="submit">검색</button>
+          <input name="search_word" type="text" class="form-control" placeholder="이름 또는 아이디" th:value="${search_word}">
+        </div>
+      </form>
       <table class="table">
-        <caption>회원 목록</caption>
         <thead>
           <tr>
             <th colspan="8">회원 수 : [[${listcount}]]</th>
           </tr>
           <tr>
-            <td>아이디</td>
-            <td>이름</td>
-            <td>생년월일</td>
-            <td>성별</td>
-            <td>전화번호</td>
-            <td>email</td>
-            <td>가입일</td>
-            <td>권한</td>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>생년월일</th>
+            <th>성별</th>
+            <th>전화번호</th>
+            <th>email</th>
+            <th>가입일</th>
+            <th>권한</th>
           </tr>
         </thead>
         <tbody>
@@ -61,9 +73,22 @@
               th:replace="~{fragments/paging :: paging('userList',|&search_word=${search_word}|)}"/>
     </div>
 
-    <h1 th:if="${listcount == 0 && search_word == ''}">등록된 회원이 없습니다.</h1>
-    <h1 th:if="${listcount == 0 && search_word != ''}">검색 결과가 없습니다.</h1>
+
+    <div th:if="${listcount == 0 && search_word == ''}">
+      <h1>등록된 회원이 없습니다.</h1>
+    </div>
+
+    <div th:if="${listcount == 0 && search_word != ''}">
+      <form th:action="@{userList}">
+        <div class="input-group">
+          <button class="btn btn-primary search" type="submit">검색</button>
+          <input name="search_word" type="text" class="form-control" placeholder="이름 또는 아이디" th:value="${search_word}">
+        </div>
+      </form>
+      <h1>검색 결과가 없습니다.</h1>
+    </div>
   </div>
 
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

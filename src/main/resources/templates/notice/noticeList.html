@@ -18,27 +18,32 @@
     })
   </script>
   <style>
-    table caption {
-      caption-side: top;
-      font-size : 25px;
-      font-weight: bold;
-      color : black;
+    h1{
       text-align:center;
+      margin-top: 30px;
+    }
+    .input-group{
+      width: 30%;
+      text-align: center;
+      margin-right: 50px;
+      margin-top : 30px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: flex-end;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <form th:action="@{list}">
-      <div class="input-group">
-        <button class="btn btn-primary search" type="submit">검색</button>
-        <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
-      </div>
-    </form>
-
     <div th:if="${listcount > 0}">
+      <h1>공지사항</h1>
+      <form th:action="@{list}">
+        <div class="input-group">
+          <button class="btn btn-primary search" type="submit">검색</button>
+          <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+        </div>
+      </form>
       <table class="table">
-        <caption>공지사항</caption>
         <thead>
           <tr>
             <th colspan="4">공지글 수 : [[${listcount}]]</th>
@@ -65,8 +70,14 @@
     </div>
   </div>
 
-  <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>
-  <h1 th:if="${listcount == 0 && search_word != ''}">검색 결과가 없습니다.</h1>
+
+    <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>
+
+    <div th:if="${listcount == 0 && search_word != ''}" class="input-group">
+      <button class="btn btn-primary search" type="submit">검색</button>
+      <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+      <h1>검색 결과가 없습니다.</h1>
+    </div>
 
 </body>
 <th:block th:replace="~{fragments/footer :: footer}" />

@@ -264,7 +264,7 @@ public class AdminController {
         }
     }
 
-    //faq 삭제
+    //notice 삭제
     @GetMapping(value="/noticeDelete")
     public String noticeDelete(int id){
         noticeService.deleteNotice(id);
@@ -324,6 +324,13 @@ public class AdminController {
         mv.addObject("limit", limit);
 
         return mv;
+    }
+
+    //post 삭제
+    @GetMapping(value="/postDelete")
+    public String postDelete(int num){
+        postService.postDelete(num);
+        return "redirect:postList";
     }
 
     //business list
