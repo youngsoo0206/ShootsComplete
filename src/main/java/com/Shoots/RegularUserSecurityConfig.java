@@ -61,7 +61,7 @@ public class RegularUserSecurityConfig {
     @Bean
     public SecurityFilterChain regularUserFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/login/**", "/loginProcess/**", "/logout/**", "/inquiry/**")
+                .securityMatcher("/login/**", "/loginProcess/**", "/logout/**", "/inquiry/**", "/testAdmin/**")
                 .formLogin(fo -> fo
                         .loginPage("/login")
                         .loginProcessingUrl("/loginProcess")
@@ -78,7 +78,7 @@ public class RegularUserSecurityConfig {
                         .deleteCookies("remember-me", "JSESSION_ID")
                 )
                 .authorizeHttpRequests(au -> au
-                        .requestMatchers("/member/list", "/member/info", "/member/delete").hasAuthority("admin")
+                        .requestMatchers("/testAdmin/**").hasAuthority("admin")
                         .requestMatchers("/inquiry/**").hasAnyAuthority("admin", "common", "business")
                         .requestMatchers("/**").permitAll()
                 )

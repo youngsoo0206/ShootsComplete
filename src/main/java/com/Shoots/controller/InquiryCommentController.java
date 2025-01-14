@@ -4,13 +4,10 @@ import com.Shoots.domain.InquiryComment;
 import com.Shoots.service.InquiryCommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/inquiryComment")
@@ -24,15 +21,30 @@ public class InquiryCommentController {
     }
 
 
-    @PostMapping(value = "/list")
-    public ModelAndView CommentList(int inquiry_idx, ModelAndView mv) {
-        int listcount = inquiryCommentService.getListCount(inquiry_idx);
-        List<InquiryComment> iqList = inquiryCommentService.getInquiryCommentList(inquiry_idx);
+    //댓글 (문의답변)의 List 처리는 inquiryController 의 detail 에서 한번에 처리한 뒤 보내버림.
 
-        mv.setViewName("inquiry/inquiryDetail");
-        mv.addObject("listcount", listcount);
-        mv.addObject("iqList", iqList);
-        return mv;
+
+    @PostMapping(value = "/add")
+    public String inquiryCommentAdd(InquiryComment ic, int inquiry_idx) {
+        inquiryCommentService.insertInquiryComment(ic);
+        logger.info("댓글 달린 문의글 (inquiry_idx)은 : " + inquiry_idx);
+        return "redirect:/inquiry/detail?inquiry_idx=" + inquiry_idx;
     }
+
+    @PostMapping(value = "/inquiryCommentModify")
+    public ResponseEntity<String> inquiryCommentModify(InquiryComment ic) {
+
+        int result = inquiryCommentService.inquiryCommentModify(ic);
+
+        //수정에 실패한 경우
+        if (result == 0) {
+            logger.info("문의댓글 수정 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
+        } else {
+            logger.info("문의댓글 수정 완료");
+            return ResponseEntity.ok("수정 성공");
+        }
+    }
+
 
 }

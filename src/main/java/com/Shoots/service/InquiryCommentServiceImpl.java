@@ -32,5 +32,13 @@ public class InquiryCommentServiceImpl implements InquiryCommentService{
     }
 
 
+    @Override
+    public void insertInquiryComment(InquiryComment ic) {
+        inquiryCommentMapper.insertInquiryComment(ic);
+    }
 
+    @Override
+    public int inquiryCommentModify(InquiryComment ic) {
+        return inquiryCommentMapper.inquiryCommentModify(ic);
+    }
 }
