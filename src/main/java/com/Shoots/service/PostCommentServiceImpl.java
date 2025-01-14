@@ -47,6 +47,11 @@ public class PostCommentServiceImpl implements PostCommentService {
         return dao.commentsInsert(c);
     }
 
+    @Override
+    public int commentsReply(PostComment c) {
+        return dao.commentsReply(c);
+    }
+
 
 
     @Override

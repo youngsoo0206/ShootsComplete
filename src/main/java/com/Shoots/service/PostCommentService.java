@@ -23,4 +23,6 @@ public interface PostCommentService {
 
     // 댓글 수정
     public int commentsUpdate(PostComment co);
+
+    int commentsReply(PostComment co);
 }

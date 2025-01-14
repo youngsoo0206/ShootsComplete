@@ -44,6 +44,12 @@
         values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
     </insert>
 
+    <insert id="commentsReply">
+        insert into post_comment
+            (post_idx, comment_ref_id, writer, content)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
+    </insert>
+
 
     <update id="commentsUpdate">
         update post_comment

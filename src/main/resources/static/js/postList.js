@@ -107,7 +107,6 @@ function updatePostList(data, category) {
 
     var postList = data.postlist;
 
-
     // 각 카테고리별로 적절한 tbody나 div를 선택
     var tableBody = $('table tbody');
     if (category === 'A') {
@@ -127,7 +126,7 @@ function updatePostList(data, category) {
         // 중고게시판(카테고리B)의 경우 -> 파일첨부(미리보기),가격 추가
         if (category === 'B') {
 
-            //     //중고게시판 리스트에서 첨부파일 이미지 미리보기
+            //중고게시판 리스트에서 첨부파일 이미지 미리보기
             if (post.post_file && /\.(jpg|jpeg|png|gif)$/i.test(post.post_file)) {
                 // 게시글 상세보기와 동일한 경로 형식 사용
                 var imageUrl = '/Shoots/upload' + post.post_file.replace(/\//g, '\\'); // /upload -> \upload 형태로 변환

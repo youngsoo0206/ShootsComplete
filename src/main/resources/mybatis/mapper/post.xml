@@ -38,23 +38,27 @@
 
 
 
-<!--    <select id="getPostList" resultType="post">-->
-<!--        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id-->
-<!--        FROM post p-->
-<!--                 INNER JOIN regular_user r ON p.writer = r.idx-->
-<!--        WHERE p.category = #{category}-->
-<!--        ORDER BY p.register_date DESC-->
-<!--    </select>-->
+<!--        <select id="getPostList" resultType="post">-->
+<!--            SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id-->
+<!--            FROM post p-->
+<!--                     INNER JOIN regular_user r ON p.writer = r.idx-->
+<!--            WHERE p.category = #{category}-->
+<!--            ORDER BY p.post_idx DESC-->
+<!--                LIMIT #{offset}, #{pageSize}-->
+<!--        </select>-->
 
 
-        <select id="getPostList" resultType="post">
-            SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
-            FROM post p
-                     INNER JOIN regular_user r ON p.writer = r.idx
-            WHERE p.category = #{category}
-            ORDER BY p.post_idx DESC
-                LIMIT #{offset}, #{pageSize}
-        </select>
+    <select id="getPostList" resultType="post">
+        SELECT sub.post_idx, sub.writer, sub.category, sub.title, sub.content, sub.post_file, sub.price, sub.register_date, sub.readcount, sub.user_id, sub.commentCount
+        FROM (
+                 SELECT p.*, r.user_id, (SELECT COUNT(comment_idx) FROM post_comment c WHERE c.post_idx = p.post_idx) AS commentCount
+                 FROM post p
+                          INNER JOIN regular_user r ON p.writer = r.idx
+                 WHERE p.category = #{category}
+             ) sub
+        ORDER BY sub.post_idx DESC
+            LIMIT #{offset}, #{pageSize}
+    </select>
 
 
     <select id="getAdminPostList" resultType="post">
