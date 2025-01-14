@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface InquiryMapper {
@@ -14,4 +15,6 @@ public interface InquiryMapper {
     public Inquiry getDetail(int inquiry_idx);
     public int inquiryModify(Inquiry inquiryData);
     public int inquiryDelete (int inquiry_idx);
+    public List<Inquiry> getInquiryAdminList(HashMap<String, Object> map);
+    public int getAdminListCount();
 }
