@@ -10,5 +10,7 @@ import java.util.List;
 public interface InquiryCommentMapper {
     public int getListCount(int inquiry_idx);
     public List<InquiryComment> getInquiryCommentList(HashMap<String, Object> map);
+    public void insertInquiryComment(InquiryComment ic);
+    public int inquiryCommentModify (InquiryComment ic);
 
 }

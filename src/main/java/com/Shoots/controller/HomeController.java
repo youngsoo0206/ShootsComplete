@@ -47,6 +47,11 @@ public class HomeController {
         return "home/home";
     }
 
+    @GetMapping("/error/403")
+    public String error_403() {
+        return "error/403";
+    }
+
 
 
 }

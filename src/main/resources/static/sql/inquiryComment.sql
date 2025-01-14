@@ -9,9 +9,6 @@ CREATE TABLE inquiry_comment (
     CONSTRAINT fk_inquiry FOREIGN KEY (inquiry_idx) REFERENCES inquiry (inquiry_idx) ON DELETE CASCADE
 );
 
--- AUTO_INCREMENT를 사용하므로 별도의 SEQUENCE는 필요하지 않습니다.
-
-
 select * from inquiry_comment;
 
 
@@ -28,7 +25,7 @@ select * from (
 	join regular_user r
 	on ic.writer = r.idx)
 where inquiry_idx = 23
-order by i_comment_id asc;
+order by i_comment_idx asc;
 
 
 

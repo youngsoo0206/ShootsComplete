@@ -1,21 +1,17 @@
 package com.Shoots.controller;
 
-import com.Shoots.domain.BusinessUser;
 import com.Shoots.domain.Inquiry;
+import com.Shoots.domain.InquiryComment;
 import com.Shoots.domain.PaginationResult;
-import com.Shoots.domain.RegularUser;
 import com.Shoots.service.InquiryCommentService;
 import com.Shoots.service.InquiryService;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,9 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/inquiry")
@@ -76,7 +70,7 @@ public class InquiryController {
     }
 
     @PostMapping("/add")
-    public String add(Inquiry inquiry, HttpServletRequest request) throws Exception {
+    public String add(Inquiry inquiry) throws Exception {
         MultipartFile uploadfile = inquiry.getUploadfile();
 
         if (!uploadfile.isEmpty()) {
@@ -111,18 +105,21 @@ public class InquiryController {
             session.removeAttribute("referer");
         }
 
+        //문의글의 내용과 (inquiry), 해당 문의글에 달린 답변들 (icList)
         Inquiry inquiry = inquiryService.getDetail(inquiry_idx);
+        List<InquiryComment> icList = inquiryCommentService.getInquiryCommentList(inquiry_idx);
+
         //inquiry=null; //error 페이지 이동 확인하고자 임의로 지정합니다.
         if(inquiry == null){
             logger.info("상세보기 실패");
-            mv.setViewName("error/error");
+            mv.setViewName("403");
         }else{
             logger.info("상세보기 성공");
-//            int count = inquiryCommentService.getListCount(inquiry_idx);
-            //int count = 0;
+            int icListCount = inquiryCommentService.getListCount(inquiry_idx);
             mv.setViewName("inquiry/inquiryDetail");
-//            mv.addObject("count", count);
+            mv.addObject("icListCount", icListCount);
             mv.addObject("inquiryData", inquiry);
+            mv.addObject("icList", icList);
         }
         return mv;
     }
@@ -137,7 +134,7 @@ public class InquiryController {
         //글 내용 불러오기 실패한 경우입니다.
         if(inquiryData == null){
             logger.info("수정보기 실패");
-            mv.setViewName("error/error");
+            mv.setViewName("403");
         }else{
             logger.info("(수정)상세보기 성공");
             //수정 홈 페이지로 이동할 때 원문 글 내용을 보여주기 때문에 inquiryData 객체를
@@ -151,7 +148,7 @@ public class InquiryController {
 
 
     @PostMapping("/modifyAction")
-    public String BoardModifyAction(
+    public String inquiryModifyAction(
             Inquiry inquiryData, String check, RedirectAttributes rattr) throws Exception{
 
         logger.info("inquiry = " + inquiryData.getInquiry_idx());
@@ -224,7 +221,7 @@ public class InquiryController {
         //삭제 처리 실패한 경우
         if(result == 0){
             logger.info("문의글 삭제 실패");
-            return "error/error";
+            return "403";
         }else{
             logger.info("문의글 삭제 성공");
             out.println("<script type='text/javascript'>");

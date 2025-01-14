@@ -53,7 +53,6 @@ public class BusinessUserSecurityConfig {
     public SecurityFilterChain businessUserFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/businessLoginProcess/**", "/businessLogin", "/business/**")
-                .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
                         .loginPage("/businessLogin")
                         .loginProcessingUrl("/businessLoginProcess")
@@ -62,14 +61,15 @@ public class BusinessUserSecurityConfig {
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailHandler)
                 )
+                .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .logout(lo -> lo
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/businessLogin")
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("remember-me", "JSESSION_ID")
                 )
                 .authorizeHttpRequests(au -> au
-                        .requestMatchers("/business/**").hasAuthority("business")
+                        .requestMatchers("/business/**", "/inquiry/**").hasAuthority("business")
                         .requestMatchers("/**").permitAll()
                 )
                 .exceptionHandling(ex -> ex.accessDeniedHandler(customAccessDeniedHandler)
