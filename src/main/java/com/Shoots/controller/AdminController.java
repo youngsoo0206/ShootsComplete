@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
+import com.Shoots.task.SendMail;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -33,18 +34,24 @@ public class AdminController {
     private PostService postService;
     private BusinessUserService businessUserService;
     private RegularUserService regularUserService;
+    private InquiryService inquiryService;
+    private SendMail sendMail;
 
     public AdminController(
             FaqService faqService,
             NoticeService noticeService,
             PostService postService,
             BusinessUserService businessUserService,
-            RegularUserService regularUserService) {
+            RegularUserService regularUserService,
+            InquiryService inquiryService,
+            SendMail sendMail) {
         this.faqService = faqService;
         this.noticeService = noticeService;
         this.postService = postService;
         this.businessUserService = businessUserService;
         this.regularUserService = regularUserService;
+        this.inquiryService = inquiryService;
+        this.sendMail = sendMail;
     }
 
     @GetMapping
@@ -331,6 +338,37 @@ public class AdminController {
     public String postDelete(int num){
         postService.postDelete(num);
         return "redirect:postList";
+    }
+
+    //inquiry list
+    @GetMapping(value="/inquiryList")
+    public ModelAndView InquiryList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            ModelAndView mv
+    ){
+        int listcount = inquiryService.getAdminListCount(); //총 리스트 수를 받아옴
+        List<Inquiry> list = inquiryService.getInquiryAdminList(page, limit); //리스트를 받아옴
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        mv.setViewName("admin/inquiryList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
+        mv.addObject("listcount", listcount);
+        mv.addObject("inquirylist", list);
+        mv.addObject("limit", limit);
+
+        return mv;
+    }
+
+    //inquiry 삭제
+    @GetMapping(value="/inquiryDelete")
+    public String inquiryDelete(int inquiry_idx){
+        inquiryService.inquiryDelete(inquiry_idx);
+        return "redirect:inquiryList";
     }
 
     //business list

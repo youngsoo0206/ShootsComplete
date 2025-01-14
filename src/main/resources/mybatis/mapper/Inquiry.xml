@@ -66,4 +66,19 @@
         where inquiry_idx = #{inquiry_idx}
     </delete>
 
+    <select id="getInquiryAdminList">
+        select i.*, r.user_id, b.business_id
+        from inquiry i
+                 left join regular_user r
+                      on i.inquiry_ref_idx = r.idx
+                left join business_user b
+                    on i.inquiry_ref_idx = b.business_idx
+            order by inquiry_idx
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getAdminListCount">
+        select count(*) from inquiry
+    </select>
+
 </mapper>

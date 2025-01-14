@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>관리자 페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminDashboard.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -47,7 +46,7 @@
 
                         <div class="sb-sidenav-menu-heading">Interface</div>
 
-                        <a class="nav-link" id="Users">
+                        <a class="nav-link" id="Users" th:href="@{testAdmin/userList}">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Users
                         </a>
@@ -61,13 +60,13 @@
 
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <div class="nav-link" id="BusinessStatus">Business Status</div>
-                                <div class="nav-link" id="BusinessApprove">Business Approved</div>
+                                <a class="nav-link" id="BusinessStatus" th:href="@{testAdmin/businessList}">Business Status</a>
+                                <a class="nav-link" id="BusinessApprove" th:href="@{testAdmin/businessApprovedList}">Business Approved</a>
                             </nav>
                         </div>
 
 
-                        <a class="nav-link" id="Post">
+                        <a class="nav-link" id="Post" th:href="@{testAdmin/postList}">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Post
                         </a>
@@ -80,9 +79,9 @@
 
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link" id="Faq">FAQ</a>
-                                <a class="nav-link" id="Notice">공지사항 </a>
-                                <a class="nav-link" id="Inquiry">문의사항</a>
+                                <a class="nav-link" id="Faq" th:href="@{testAdmin/faqList}">FAQ</a>
+                                <a class="nav-link" id="Notice" th:href="@{testAdmin/noticeList}">공지사항 </a>
+                                <a class="nav-link" id="Inquiry" th:href="@{testAdmin/inquiryList}">문의사항</a>
                             </nav>
                         </div>
                         <hr>
@@ -101,10 +100,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script th:src="@{/js/adminDashboard.js}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/adminDashboard.js}"></script>
 
 </body>
 </html>
