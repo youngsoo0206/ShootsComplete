@@ -33,9 +33,13 @@ public class NoticeServiceImpl implements NoticeService {
             map.put("search_word", "%" + search_word + "%");
         }
         int startrow = (page - 1) * limit+1;
-        map.put("startrow", startrow);
+        map.put("start", startrow);
         int endrow = startrow+limit-1;
-        map.put("endrow", endrow);
+        map.put("end", endrow);
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
 
         return dao.getNoticeList(map);
     }
@@ -52,6 +56,21 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void setReadCountUpdate(int id) {
         dao.setReadCountUpdate(id);
+    }
+
+    @Override
+    public void insertNotice(Notice notice) {
+        dao.insertNotice(notice);
+    }
+
+    @Override
+    public int updateNotice(Notice notice) {
+        return dao.updateNotice(notice);
+    }
+
+    @Override
+    public void deleteNotice(int id) {
+        dao.deleteNotice(id);
     }
 
 }

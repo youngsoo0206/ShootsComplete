@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript">
+        $(function(){
+            $("tr > td:nth-child(5) > a").click(function(event){
+                const answer = confirm("정말 삭제하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div th:if="${listcount > 0}">
+            <h1>게시물 관리</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="p : ${postlist}">
+                    <td th:text="${p.user_id}"></td>
+                    <td><a th:href="@{/post/detail(num=${p.post_idx})}">[[${p.title}]]</a></td>
+                    <td th:text="${p.register_date.substring(0, 10)}"></td>
+                    <td th:text="${p.readcount}"></td>
+                    <td><a th:href="@{postDelete(num=${p.post_idx})}">삭제</a></td>
+                </tr>
+            </tbody>
+
+        </table>
+            <th:block
+                    th:replace="~{fragments/paging :: paging('postList','')}"/>
+        </div>
+
+        <h1 th:if="${listcount == 0}">등록된 게시글이 없습니다.</h1>
+    </div>
+
+</body>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</html>

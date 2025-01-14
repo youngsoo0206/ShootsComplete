@@ -8,7 +8,8 @@ public class Post {
     private String category;
     private String title;
     private String content;
-    private String post_file;
+    private String post_file; //실제 저장된 파일의 이름
+    private MultipartFile uploadfile;
     private Integer price;
     private String register_date;
     private int readcount;
@@ -18,8 +19,16 @@ public class Post {
     private int comment_ref_id;
     private int commentCount;  // 댓글 수 추가
     private String user_file;
-    private String post_original;
-    private MultipartFile uploadfile;
+    private String post_original; //첨부될 파일의 이름
+
+
+//    public String getExistingFile() {
+//        return this.post_file != null ? this.post_file : "";  // 기존 파일명
+//    }
+//
+//    public String getExistingFileOriginal() {
+//        return this.post_original != null ? this.post_original : "";  // 기존 원본 파일명
+//    }
 
 
     public String getPost_original() {

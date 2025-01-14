@@ -4,10 +4,22 @@
     <meta charset="UTF-8">
     <title>FAQ</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <script th:inline="javascript"> //삭제 버튼 클릭 시 confirm
+    $(function(){
+        $("div > a:nth-child(3)").click(function(event){
+            const answer = confirm("정말 삭제하시겠습니까?");
+            console.log(answer);
+            if(!answer){
+                event.preventDefault(); //삭제 이벤트 막기
+            }
+        })
+    })
+    </script>
 </head>
 <body>
     <div class="container">
         <table class="table">
+
             <tr>
                 <th colspan="2">[[${faq.title}]]</th>
             </tr>
@@ -19,10 +31,10 @@
             </tr>
 
             <tr>
-                <td>첨부파일</td>
-                <td th:if="${not #strings.isEmpty(faq.faq_file)}">
-                    <img th:src="@{/img/down.png}" width="10px">
-                    <form method="post" th:action="@{down}" style="height:0">
+                <td th:if="${not #strings.isEmpty(faq.faq_file)}" colspan="2">
+                    <form method="post" th:action="@{down}">
+                        <span>첨부 파일</span>
+                        <img th:src="@{/img/down.png}" width="10px">
                         <input type="hidden" th:value="${faq.faq_file}" th:name="filename">
                         <input type="hidden" th:value="${faq.faq_original}" th:name="original">
                         <input type="submit" th:value="${faq.faq_original}">
@@ -34,8 +46,11 @@
 
         <div>
             <a href="faqList" type="button">목록</a>
+            <a th:href="@{faqUpdate(id=${faq.faq_idx})}">수정</a>
+            <a th:href="@{faqDelete(id=${faq.faq_idx})}">삭제</a>
         </div>
     </div>
 
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

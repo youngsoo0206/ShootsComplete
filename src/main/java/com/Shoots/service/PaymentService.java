@@ -1,6 +1,10 @@
 package com.Shoots.service;
 
 import com.Shoots.domain.Payment;
+import com.Shoots.domain.RegularUser;
+
+import java.util.List;
+import java.util.Map;
 
 public interface PaymentService {
     void insertPayment(Payment payment);
@@ -8,4 +12,10 @@ public interface PaymentService {
     boolean hasPaidForMatch(int idx, int matchIdx);
 
     int getPlayerCount(int matchIdx);
+
+    List<Map<String, Object>> getPaymentListById(Integer idx);
+
+    Payment getPaymentInfoById(Integer idx, int matchIdx);
+
+    void updatePayment(int payment_idx);
 }

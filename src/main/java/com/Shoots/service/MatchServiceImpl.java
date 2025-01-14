@@ -22,14 +22,19 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<Match> getMatchList(int page, int limit) {
+    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit) {
 
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
 
         int offset = (page - 1) * limit;
 
+        map.put("filter", (filter != null && !filter.isEmpty()) ? filter : null);
+        map.put("gender", gender);
+        map.put("level", level);
+
         map.put("limit", limit);
         map.put("offset", offset);
+
 
         return dao.getMatchList(map);
     }
@@ -52,5 +57,44 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public int deleteMatch(int matchIdx) {
         return dao.deleteMatch(matchIdx);
+    }
+
+    @Override
+    public List<Match> getMatchListById(Integer idx, String filter, String gender, String level, int page, int limit) {
+
+        int offset = (page - 1) * limit;
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("idx", idx);
+
+        map.put("filter", (filter != null && !filter.isEmpty()) ? filter : null);
+        map.put("gender", gender);
+        map.put("level", level);
+
+        map.put("limit", limit);
+        map.put("offset", offset);
+
+
+        return dao.getMatchListById(map);
+    }
+
+    @Override
+    public int getListCountById(Integer idx) {
+        return dao.getListCountById(idx);
+    }
+
+    @Override
+    public List<Match> getMatchListByIdForSales(Integer idx, String month, String year, String gender, String level) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("idx", idx);
+        map.put("month", month);
+        map.put("year", year);
+        map.put("gender", gender);
+        map.put("level", level);
+
+        return dao.getMatchListByIdForSales(map);
     }
 }

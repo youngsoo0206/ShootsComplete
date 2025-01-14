@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 작성</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <script th:src = "@{/js/noticeWriteForm.js}" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container">
+        <form th:action="@{/testAdmin/noticeAdd}" method="post" enctype="multipart/form-data" name="noticeform">
+            <h1>공지사항 등록 페이지</h1>
+            <div class="form-group">
+                <!--<label for="noticeName">작성자</label>-->
+                <input name="writer" id="noticeName" type="hidden" class="form-control" th:value="${session.idx}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input name="title" id="title" type="text" size="50"
+                       maxlength="100" class="form-control" placeholder="제목을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <textarea name="content" id="content" rows="10"
+                          class="form-control" placeholder="내용을 입력해 주세요" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    파일 첨부
+                    <img src="../img/attach.png" alt="파일첨부" width="25px">
+                    <input type="file" id="upfile" name="uploadfile">
+                </label>
+                <span id="fileValue"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="reset" class="btn btn-danager">취소</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</html>

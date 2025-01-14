@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>공지사항</title>
+  <th:block th:replace="~{fragments/header :: header}" />
+  <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+  <script th:src="@{/js/jquery-3.7.1.js}"></script>
+  <script th:inline="javascript">
+    $(function(){
+      $(".search").click(function(){
+        const word = $(".form-control").val();
+        if(word==""){
+          alert("검색어를 입력하세요");
+          $(".form-control").focus();
+          return false;
+        }
+      })
+
+      $("tr > td:nth-child(6) > a").click(function(event){
+        const answer = confirm("정말 삭제하시겠습니까?");
+        console.log(answer);
+        if(!answer){
+          event.preventDefault(); //삭제 이벤트 막기
+        }
+      })
+    })
+  </script>
+
+</head>
+<body>
+  <div class="container">
+    <div th:if="${listcount > 0}">
+      <h1 class="title">공지사항</h1>
+      <form th:action="@{noticeList}">
+        <div class="input-group">
+          <button class="btn btn-primary search" type="submit">검색</button>
+          <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+        </div>
+      </form>
+      <table class="table">
+        <thead>
+          <tr>
+            <th colspan="6">공지글 수 : [[${listcount}]]</th>
+          </tr>
+          <tr>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>조회수</th>
+            <th>수정</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="n : ${noticelist}">
+            <td th:text="${n.name}"></td>
+            <td><a th:href="@{noticeDetail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
+            <td th:text="${n.register_date.substring(0, 10)}"></td>
+            <td th:text="${n.readcount}"></td>
+            <td><a th:href="@{noticeUpdate(id=${n.notice_idx})}">수정</a></td>
+            <td><a th:href="@{noticeDelete(id=${n.notice_idx})}">삭제</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="write-btn-container">
+        <a th:href="@{noticeWrite}" type="button" class="btn btn-primary">글쓰기</a>
+      </div>
+      <th:block
+              th:replace="~{fragments/paging :: paging('noticeList',|&search_word=${search_word}|)}"/>
+    </div>
+
+  </div>
+
+  <div th:if="${listcount == 0 && search_word == ''}" class="container notfound">
+    <h1>
+      등록된 공지가 없습니다.
+    </h1>
+    <a th:href="@{noticeWrite}" type="button" class="btn btn-primary write">글쓰기</a>
+  </div>
+
+  <div th:if="${listcount == 0 && search_word != ''}" class="container notfound">
+    <form th:action="@{noticeList}">
+      <div class="input-group">
+        <button class="btn btn-primary search" type="submit">검색</button>
+        <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+      </div>
+    </form>
+    <h1>
+      검색 결과가 없습니다.
+    </h1>
+    <a th:href="@{noticeWrite}" type="button" class="btn btn-primary write">글쓰기</a>
+  </div>
+
+</body>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</html>

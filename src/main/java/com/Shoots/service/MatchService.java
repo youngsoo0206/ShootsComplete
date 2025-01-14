@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MatchService {
     void insertMatch(Match match);
-    public List<Match> getMatchList(int page, int limit);
+    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit);
 
     int getListCount();
 
@@ -15,4 +15,11 @@ public interface MatchService {
     int updateMatch(Match match);
 
     int deleteMatch(int matchIdx);
+
+    List<Match> getMatchListById(Integer idx, String filter, String gender, String level, int page, int limit);
+
+    int getListCountById(Integer idx);
+
+    List<Match> getMatchListByIdForSales(Integer idx, String month, String year, String gender, String level);
+
 }

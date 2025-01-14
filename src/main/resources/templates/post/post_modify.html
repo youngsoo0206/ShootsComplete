@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<th:block th:replace="~{fragments/header :: header}"/>
 	<meta charset="utf-8">
 	<title>수정</title>
-	<script th:src="@{/js/postModifyform.js}"></script>
 	<script th:src="@{/js/jquery-3.7.1.js}"></script>
+	<script th:src="@{/js/postModifyform.js}"></script>
+
 	<link rel="stylesheet" th:href="@{/css/postModifyform.css}" type="text/css">
 	<style>
 		.container { width: 60% }
@@ -17,16 +17,23 @@
 <body>
 
 <div class="container">
-	<form action="modifyProcess" method="post" name="modifyform" enctype="multipart/form-data">
-		<input type="hidden" name="post_idx" th:value="${postdata.post_idx}">
-		<input type="hidden" name="existing_file" th:value="${postdata.post_file}"> <!-- 기존 첨부파일명 전달 -->
-		<input type="hidden" name="remove_file" value="false"> <!-- 파일 삭제 여부 플래그 추가 -->
+	<form th:action="modifyAction" method="post" name="modifyform" enctype="multipart/form-data">
+		<input type="hidden" name="post_idx" th:value="${postdata.post_idx}"/>
+<!--		<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>-->
+		<input type="hidden" name="remove_file" th:value="false"/>
+		<input type="hidden" name="category" th:value="${postdata.category}">
+		<!-- 기존 파일 경로와 원본 파일명 hidden input 추가 -->
+		<input type="hidden" id="existingFilePath" name="existingFilePath" th:value="${postdata.post_file}">
+		<input type="hidden" id="existingFileName" name="existingFileName" th:value="${postdata.post_original}">
+
+
+		<!--		<input type="hidden" name="num" th:value="${num}"/>-->
 
 		<h1>게시판 - 수정</h1>
 
 		<div class="form-group">
 			<label for="writer">작성자</label>
-			<input type="text" class="form-control" name="writer" id="writer" th:value="${postdata.writer}" readonly>
+			<input type="text" class="form-control" name="writer" id="writer" th:value="${postdata.writer}" readonly/>
 		</div>
 
 		<div class="form-group">
@@ -40,19 +47,20 @@
 		</div>
 
 		<!-- 중고게시판일 경우 가격 입력란 보이기 -->
-		<div class="form-group" th:style="${postdata.category == 'B' ? '' : 'display: none;'}">
+		<div class="form-group" th:if="${postdata.category == 'B'}">
 			<label for="priceInput">가격</label>
-			<input name="price" id="priceInput" type="text" class="form-control" th:value="${postdata.price}" placeholder="가격을 입력해주세요">
+			<input name="price" id="priceInput" type="text" class="form-control" th:value="${postdata.price}" placeholder="가격을 입력해주세요"/>
 		</div>
 
 		<!-- 원문글인 경우에만 파일 첨부 수정 가능 -->
 		<div class="form-group">
 			<label>파일첨부
-				<img th:src="@{${pageContext.request.contextPath}/img/attach.png}" alt="파일첨부">
-				<input type="file" id="upfile" name="post_file">
+				<img th:src="@{/img/attach.png}" alt="파일첨부"/>
+				<input type="file" id="upfile" name="uploadfile"/>
 			</label>
-			<span id="filevalue" th:text="${postdata.post_file}"></span> <!-- 기존 파일명 출력 -->
-			<img th:src="@{${pageContext.request.contextPath}/img/remove.png}" alt="파일삭제" width="10px" class="remove">
+<!--			<span id="filevalue" th:text="${postdata.post_file}"></span>-->
+			<span id="filevalue">[[${postdata.post_original}]]</span>
+			<img th:src="@{/img/remove.png}" alt="파일삭제" width="10px" class="remove"/>
 		</div>
 
 		<div class="form-group">
@@ -63,53 +71,62 @@
 </div>
 
 <script>
+
 	document.addEventListener("DOMContentLoaded", function () {
-		document.querySelector("form[name='modifyform']").addEventListener("submit", function (event) {
-			if (!validateForm()) {
-				event.preventDefault(); // 유효성 검사 실패 시 폼 제출 중단
-			}
-		});
+		const form = document.querySelector("form[name='modifyform']");
+		if (form) {
+			form.addEventListener("submit", function (event) {
+				if (!validateForm()) {
+					event.preventDefault(); // 유효성 검사 실패 시 폼 제출 중단
+				}
+			});
+		}
 	});
 
 	function validateForm() {
-		const category = document.querySelector("input[name='category']").value; // 숨겨진 카테고리 값
+		const category = document.querySelector("input[name='category']")?.value || ""; // 숨겨진 카테고리 값
 		const priceInput = document.getElementById("priceInput");
 		const upfile = document.getElementById("upfile");
-		const existingFile = document.querySelector("input[name='existing_file']").value; // 기존 첨부파일
+		const existingFileName = document.querySelector("input[name='existingFileName']").value;
 
-		// 중고게시판(B)인 경우 추가 유효성 검사
 		if (category === "B") {
-			// 가격 필수 확인
 			if (priceInput && priceInput.value.trim() === "") {
 				alert("중고게시판에서는 가격을 입력해야 합니다.");
 				priceInput.focus();
 				return false;
 			}
 
-			// 가격이 숫자인지 확인
 			if (priceInput && isNaN(priceInput.value.trim())) {
 				alert("가격은 숫자만 입력 가능합니다.");
 				priceInput.focus();
 				return false;
 			}
 
-			// 가격이 0인지 확인
 			if (priceInput && parseFloat(priceInput.value.trim()) <= 0) {
 				alert("가격은 0보다 큰 값을 입력해야 합니다.");
 				priceInput.focus();
 				return false;
 			}
 
-			// 첨부파일 필수 확인 (기존 파일이 없고 새 파일도 첨부되지 않은 경우)
-			if (!existingFile && !upfile.value) {
+			if (!existingFileName && !upfile.value) {
 				alert("중고게시판에서는 첨부파일을 반드시 첨부해야 합니다.");
 				upfile.focus();
 				return false;
 			}
 		}
 
-		return true; // 유효성 검사 통과
+		return true;
 	}
+
+	// // 첨부파일 삭제 버튼 클릭 시 처리
+	// document.querySelector('.remove').addEventListener('click', function () {
+	// 	// 첨부파일 값 초기화
+	// 	document.getElementById('upfile').value = '';
+	// 	document.getElementById('filevalue').textContent = ''; // 파일명 표시 초기화
+	// 	this.style.display = 'none'; // 삭제 버튼 숨기기
+	// 	document.querySelector("input[name='remove_file']").value = 'true'; // 파일 삭제 플래그 설정
+	// });
+
 </script>
 
 </body>

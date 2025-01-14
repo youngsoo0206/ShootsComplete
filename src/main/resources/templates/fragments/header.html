@@ -27,19 +27,21 @@
             <div class="navbar-brand flex-grow-1 text-center mx-auto">
                 <a class="navbar-brand" th:href="@{/main}" style="margin:0 0 0 100px">SHOOTS</a>
             </div>
-
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <div th:if="${session.id == null}">
                     <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
                     </div>
                     <div th:if="${session.id != null}">
-                    <a class="nav-link active" aria-current="page" th:href="@{/#}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess}" th:href="@{/business/dashboard}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null}" th:href="@{/}">[[${session.id}]]님</a>
                     </div>
                 </li>
+                <div th:if="${session.id != null}">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">로그아웃</a>
                 </li>
+                </div>
             </ul>
         </div>
     </nav>
@@ -64,7 +66,7 @@
                 </div><br><br>
             <p><a class="offcanvas-a" href="#">Notice</a></p><br>
             <p><a class="offcanvas-a" href="#">Faq</a></p><br>
-            <p><a class="offcanvas-a" href="#">Inquiry</a></p>
+            <p><a class="offcanvas-a" th:href="@{/inquiry/list}">Inquiry</a></p>
         </div>
     </div>
 </body>

@@ -30,6 +30,11 @@ public class FaqServiceImpl implements FaqService{
     }
 
     @Override
+    public Faq getDetailFaq(int id) {
+        return dao.getDetailFaq(id);
+    }
+
+    @Override
     public void insertFaq(Faq faq) {
         dao.insertFaq(faq);
     }

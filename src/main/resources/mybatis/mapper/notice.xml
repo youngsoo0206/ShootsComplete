@@ -19,16 +19,13 @@
 
     <select id="getNoticeList">
         SELECT *
-        FROM (
-        SELECT @rownum := @rownum + 1 AS rnum, n.*, u.name
         FROM notice n
         JOIN regular_user u ON n.writer = u.idx
         <include refid="search_" />
-        ORDER BY n.notice_idx
-        ) p
+        ORDER BY n.notice_idx desc
+        LIMIT #{offset}, #{pageSize}
 
     </select>
-<!--WHERE rnum &gt;= #{start} AND rnum &lt;= #{end} -->
 
     <select id="getDetail">
         select *
@@ -40,6 +37,25 @@
         update notice set readcount = readcount + 1
         where notice_idx = #{id}
     </update>
+
+    <insert id="insertNotice">
+        insert into notice(writer, title, content, notice_file, notice_original, register_date, readcount)
+        values (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp, 0)
+    </insert>
+
+    <delete id="deleteNotice">
+        delete from notice where notice_idx=#{id}
+    </delete>
+
+    <update id="updateNotice">
+        update notice set
+                          title=#{title},
+                          content=#{content},
+                          notice_file=#{notice_file},
+                          notice_original=#{notice_original}
+        where notice_idx=#{notice_idx}
+    </update>
+
 
 
 

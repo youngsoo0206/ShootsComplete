@@ -16,5 +16,5 @@ CREATE TABLE PAYMENT (
 #                          FOREIGN KEY (seller_idx) REFERENCES business_user(business_idx)  -- 외래 키 제약
 
 select * from PAYMENT;
-delete from PAYMENT;
-drop table PAYMENT;
+
+rollback;

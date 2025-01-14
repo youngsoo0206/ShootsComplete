@@ -51,15 +51,22 @@ public class BusinessUserSecurityConfig {
 
     @Bean
     public SecurityFilterChain businessUserFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/businessLoginProcess/**")
+        http
+                .securityMatcher("/businessLoginProcess/**", "/businessLogin", "/business/**")
                 .authenticationProvider(businessUserAuthenticationProvider()) // BusinessUser Provider
                 .formLogin(fo -> fo
-                        .loginPage("/login")
+                        .loginPage("/businessLogin")
                         .loginProcessingUrl("/businessLoginProcess")
                         .usernameParameter("business_id")
                         .passwordParameter("password")
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailHandler)
+                )
+                .logout(lo -> lo
+                        .logoutSuccessUrl("/login")
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("remember-me", "JSESSION_ID")
                 )
                 .authorizeHttpRequests(au -> au
                         .requestMatchers("/business/**").hasAuthority("business")
@@ -71,13 +78,5 @@ public class BusinessUserSecurityConfig {
 
         return http.build();
     }
-
-
-
-
-
-
-
-
 
 }

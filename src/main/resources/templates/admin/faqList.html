@@ -4,38 +4,53 @@
     <meta charset="UTF-8">
     <title>FAQ 관리</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript"> //삭제 버튼 클릭 시 confirm
+        $(function(){
+            $("tr > td:nth-child(5) > a").click(function(event){
+                const answer = confirm("정말 삭제하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault(); //삭제 이벤트 막기
+                }
+            })
+        })
+    </script>
+
 </head>
 <body>
-    <table class="table" th:if="${listcount > 0}">
-        <caption>FAQ</caption>
-        <thead>
+    <div class="container">
+        <h1>FAQ</h1>
+        <table class="table" th:if="${listcount > 0}">
+            <thead>
             <tr>
-                <td>작성자</td>
-                <td>제목</td>
-                <td>등록일</td>
-                <td>수정</td>
-                <td>삭제</td>
+                <th>작성자</th>
+                <th>제목</th>
+                <th>등록일</th>
+                <th>수정</th>
+                <th>삭제</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:block th:each="f, interStat :${list}">
                 <td th:text="${f.name}"></td>
-                <td><a th:href="@{faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
+                <td><a th:href="@{/testAdmin/faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
                 <td th:text="${f.register_date.substring(0, 10)}"></td>
                 <td><a th:href="@{faqUpdate(id=${f.faq_idx})}">수정</a></td>
                 <td><a th:href="@{faqDelete(id=${f.faq_idx})}">삭제</a></td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <th:block th:if="${listcount == 0}">
-        <h1>등록된 FAQ가 없습니다.</h1>
-    </th:block>
+        <th:block th:if="${listcount == 0}">
+            <h1>등록된 FAQ가 없습니다.</h1>
+        </th:block>
 
-    <div>
-        <a th:href="@{faqWrite}" type="button">글쓰기</a>
+        <div class="write-btn-container">
+            <a th:href="@{faqWrite}" type="button" class="btn btn-primary">글쓰기</a>
+        </div>
     </div>
-
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

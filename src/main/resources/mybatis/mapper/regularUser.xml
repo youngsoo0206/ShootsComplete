@@ -20,5 +20,75 @@
                 )
     </insert>
 
+    <select id="selectByEmail" resultType="regularuser">
+        select * from regular_user where email = #{email}
+    </select>
+
+    <select id="findIdWithEmail" resultType="regularuser">
+        select * from regular_user where email = #{email}
+    </select>
+
+    <select id="selectWithIdAndEmail" resultType="regularuser">
+        select * from regular_user where user_id = #{user_id} and email = #{email}
+    </select>
+
+    <update id="updateRegularUserPassword">
+        update regular_user
+        set password = #{password}
+        where user_id = #{user_id}
+    </update>
+  
+    <select id="getUserListForBusiness" resultType="java.util.Map">
+        select r.*, COUNT(p.buyer_idx) AS cnt
+        from regular_user r
+        join payment p on r.idx = p.buyer_idx
+        <where>
+            p.seller_idx = #{business_idx}
+            <if test="gender != null">
+                AND (r.gender = #{gender} OR r.gender = #{gender} + 2)
+            </if>
+        </where>
+        group by r.idx
+
+        <if test="age == null and vip == null">
+            order by r.name asc
+        </if>
+        <if test="vip != null and vip == 'true'">
+            order by cnt desc
+        </if>
+        <if test="age != null and age == 'desc'">
+            order by TIMESTAMPDIFF(YEAR, STR_TO_DATE(CONCAT(CASE WHEN SUBSTRING(r.jumin, 1, 1) = '0' THEN '20' ELSE '19' END, r.jumin), '%Y%m%d'), CURDATE()) desc
+
+        </if>
+        <if test="age != null and age == 'asc'">
+            order by TIMESTAMPDIFF(YEAR, STR_TO_DATE(CONCAT(CASE WHEN SUBSTRING(r.jumin, 1, 1) = '0' THEN '20' ELSE '19' END, r.jumin), '%Y%m%d'), CURDATE()) asc
+        </if>
+    </select>
+
+    <sql id="search">
+        <if test="search_word != null">
+            where user_id like #{search_word} or name like #{search_word}
+        </if>
+    </sql>
+
+    <select id="listCount">
+        select count(*) from regular_user
+        <include refid="search" />
+    </select>
+
+    <select id="getUserList">
+        select * from regular_user
+        <include refid="search" />
+            order by idx
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <update id="setCommonUser">
+        update regular_user set role = 'common' where idx = #{id}
+    </update>
+
+    <update id="setAdminUser">
+        update regular_user set role='admin' where idx = #{id}
+    </update>
 
 </mapper>

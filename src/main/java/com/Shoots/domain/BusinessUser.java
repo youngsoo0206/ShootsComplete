@@ -21,7 +21,7 @@ public class BusinessUser implements UserDetails {
     private String description;
     private String business_file;
     private String register_date;
-    private String login_status;
+    private String login_status = "pending";
     private String role = "business";
 
     @Override

@@ -1,18 +1,17 @@
 package com.Shoots.controller;
-
+import java.io.File;
 import com.Shoots.domain.Notice;
 import com.Shoots.domain.PaginationResult;
 import com.Shoots.service.NoticeService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -89,6 +88,28 @@ public class NoticeController {
 
         }
         return mv;
+    }
+
+    @ResponseBody
+    @PostMapping("/down")
+    public byte[] BoardFileDown(String filename,
+                                HttpServletRequest request,
+                                String original,
+                                HttpServletResponse response
+    ) throws Exception{
+
+        //수정
+        String sFilePath = saveFolder + filename;
+
+        File file = new File(sFilePath);
+
+        byte[] bytes = FileCopyUtils.copyToByteArray(file);
+
+        String sEncoding = new String(original.getBytes("utf-8"), "ISO-8859-1");
+        response.setHeader("Content-Disposition", "attachment;filename=" + sEncoding);
+
+        response.setContentLength(bytes.length);
+        return bytes;
     }
 
 }

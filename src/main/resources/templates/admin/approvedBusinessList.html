@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>승인된 기업 목록</title>
+    <th:block th:replace="~{fragments/header :: header}" />
+    <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
+
+</head>
+<body>
+<div class="container">
+
+    <div th:if="${listcount > 0}">
+        <h1>승인된 기업 목록</h1>
+        <form th:action="@{businessApprovedList}">
+            <div class="input-group">
+                <button class="btn btn-primary search" type="submit">검색</button>
+                <input name="search_word" type="text" class="form-control" placeholder="기업명 또는 기업 아이디를 입력하세요" th:value="${search_word}">
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+            <tr><th th:colspan="4">기업 수 : [[${listcount}]]</th></tr>
+            <tr>
+                <th>기업명</th>
+                <th>사업자번호</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>가입일</th>
+
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="b : ${approvedbusinesslist}">
+                <td>[[${b.business_name}]]</td>
+                <td>[[${b.business_number}]]</td>
+                <td>[[${b.email}]]</td>
+                <td>[[${#strings.substring(b.tel, 0, 3)}]]-[[${#strings.substring(b.tel, 3, 7)}]]-[[${#strings.substring(b.tel, 7)}]]</td>
+                <td th:text="${b.register_date.substring(0, 10)}"></td>
+
+            </tr>
+            </tbody>
+
+        </table>
+        <th:block
+                th:replace="~{fragments/paging :: paging('businessApprovedList',|&search_word=${search_word}|)}"/>
+    </div>
+
+    <h1 th:if="${listcount == 0}">가입된 기업이 없습니다.</h1>
+</div>
+</body>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</html>

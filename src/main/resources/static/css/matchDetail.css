@@ -209,12 +209,97 @@ a {text-decoration: none}
     animation: anim-moema-2 0.3s 0.3s forwards;
 }
 
+/* button--no */
+.button--no {
+    border-radius: 50px;
+    background: #838383;
+    color: #fff;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+}
+.button--no.button--inverted {
+    background: #ECEFF1;
+    color: #acacac;
+}
+.button--no::before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    bottom: -13px;
+    right: -13px;
+    background: inherit;
+    border-radius: 50px;
+    z-index: -1;
+    opacity: 0.4;
+    -webkit-transform: scale3d(0.8, 0.5, 1);
+    transform: scale3d(0.8, 0.5, 1);
+}
+.button--no:hover {
+    -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    color: #ECEFF1;
+    background-color: #838383;
+    -webkit-animation: anim-moema-1 0.3s forwards;
+    animation: anim-moema-1 0.3s forwards;
+}
+.button--no.button--inverted:hover {
+    color: #838383;
+    background-color: #ECEFF1;
+}
+.button--no:hover::before {
+    -webkit-animation: anim-moema-2 0.3s 0.3s forwards;
+    animation: anim-moema-2 0.3s 0.3s forwards;
+}
+
+/* 매칭확정 */
+.button--confirm {
+              border-radius: 50px;
+              background: #65a30d;
+              color: #fff;
+              -webkit-transition: background-color 0.3s, color 0.3s;
+              transition: background-color 0.3s, color 0.3s;
+          }
+.button--confirm.button--inverted {
+    background: #ECEFF1;
+    color: #75855f;
+}
+.button--confirm::before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    bottom: -13px;
+    right: -13px;
+    background: inherit;
+    border-radius: 50px;
+    z-index: -1;
+    opacity: 0.4;
+    -webkit-transform: scale3d(0.8, 0.5, 1);
+    transform: scale3d(0.8, 0.5, 1);
+}
+.button--confirm:hover {
+    -webkit-transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    transition: background-color 0.1s 0.3s, color 0.1s 0.3s;
+    color: #ECEFF1;
+    background-color: #65a30d;
+    -webkit-animation: anim-moema-1 0.3s forwards;
+    animation: anim-moema-1 0.3s forwards;
+}
+.button--confirm.button--inverted:hover {
+    color: #65a30d;
+    background-color: #ECEFF1;
+}
+.button--confirm:hover::before {
+    -webkit-animation: anim-moema-2 0.3s 0.3s forwards;
+    animation: anim-moema-2 0.3s 0.3s forwards;
+}
 
 
 
 
 /* 하위 btn */
-.div-btn {justify-content: center; margin-top: 30px; display: flex; gap : 10px;}
+.div-btn {justify-content: center; margin-top: 50px; display: flex; gap : 10px;}
 
 .custom-btn {
     width: 110px;
@@ -253,13 +338,12 @@ a {text-decoration: none}
     left: 0;
     width: 100%;
 }
-
 .btn-15:active {
     top: 2px;
 }
 
-.btn-update {background: #fdba01; border: 2px solid #fdba01;}
+.btn-update {background: #fdba01; border: 2px solid #fdba01; transition: all 0.3s ease;}
 .btn-update:hover {color: #fdba01}
 
-.btn-delete {background: #da0130; border: 2px solid #da0130;}
+.btn-delete {background: #da0130; border: 2px solid #da0130; transition: all 0.3s ease;}
 .btn-delete:hover {color: #da0130}
