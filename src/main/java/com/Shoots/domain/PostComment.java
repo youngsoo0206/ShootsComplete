@@ -12,6 +12,15 @@ public class PostComment {
     private String user_file;
     private String post_title;
     private String category;
+    private int readcount;
+
+    public int getReadcount() {
+        return readcount;
+    }
+
+    public void setReadcount(int readcount) {
+        this.readcount = readcount;
+    }
 
     public int getComment_idx() {
         return comment_idx;

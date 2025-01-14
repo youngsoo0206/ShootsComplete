@@ -20,7 +20,11 @@ public interface PostCommentMapper {
 
     public int commentsInsert(PostComment c);
 
+    public int commentsReply(PostComment c);
+
     public int commentsDelete(int num);
 
     public int commentsUpdate(PostComment co);
+
+
 }

@@ -1,40 +1,10 @@
 let option = 1; // 유지할 정렬 옵션
 
 
-$(document).ready(function() {
-    $('#delete-post-btn').click(function() {
-        // 삭제 확인 알림창
-        if (confirm("게시글을 삭제하시겠습니까?")) {
-            // 삭제 요청 보내기
-            var num = $('#post_idx').val(); // 게시글 ID 가져오기
-            $.ajax({
-                type: "POST",
-                url: "../post/delete", // 게시글 삭제 URL
-                data: {
-                    num: num // 삭제할 게시글 ID
-                },
-                success: function(response) {
-                    alert("게시글이 삭제되었습니다.");
-                    // 삭제 후 목록 페이지로 이동
-                    window.location.href = '../post/list';
-                },
-                error: function() {
-                    alert("게시글 삭제에 실패했습니다. 다시 시도해주세요.");
-                }
-            });
-        } else {
-            alert("게시글 삭제를 취소했습니다.");
-        }
-    });
-});
-
-
-
-
 
 //선택한 등록순과 최신순을 수정, 삭제, 추가 후에도 유지되도록 하기위한 변수로 사용됩니다
 //댓글 목록을 불러오는 함수
-function getList(state, currentPage) {
+function getList(state) {
   console.log(state);
   option = state; // state는 정렬 옵션을 받음
   $.ajax({
@@ -42,8 +12,7 @@ function getList(state, currentPage) {
     url: "../comment/list",
     data: {
       "post_idx": $("#post_idx").val(),
-      state: state,
-        page: currentPage
+      state: state
     },
     dataType: "json", //응답 데이터는 JSON 형식으로 처리됨
     success: function(rdata) { //댓글 목록의 수 (listcount)
@@ -63,9 +32,11 @@ function getList(state, currentPage) {
       output = ''; // 초기화
       if (rdata.list.length) {
     rdata.list.forEach(Comment => {
-        console.log(66);
-        console.log(Comment.comment_ref_id); //   받는 값 확인 >> null
-        console.log(typeof Comment.comment_ref_id);
+
+        // console.log(66);
+        // console.log(Comment.comment_ref_id); //   받는 값 확인 >> null
+        // console.log(typeof Comment.comment_ref_id);
+
         // 부모 댓글 처리
         let replyClass = (Comment.comment_ref_id) ? 'comment-list-item--reply' : ''; // 답글 여부
         let src = Comment.user_file ? `../userupload/${Comment.user_file}` : '../img/info.png';
@@ -74,8 +45,10 @@ function getList(state, currentPage) {
         let replyButton = (!Comment.comment_ref_id) ? 
             `<a href='javascript:replyform(${Comment.comment_idx})' class='comment-info-button'>답글쓰기</a>` : '';
 
+
         // 댓글 작성자가 로그인한 사용자일 경우, 수정/삭제 버튼 표시
-        let toolButtons = $("#loginid").val() === Comment.user_id ? ` 
+        // let toolButtons = $("#loginid").val() == Comment.user_id ? `
+        let toolButtons = $("#loginid").val() == Comment.user_id ? ` 
             <div class='comment-tool'>
                 <div title='더보기' class='comment-tool-button'> 
                     <div>&#46;&#46;&#46;</div>
@@ -93,13 +66,13 @@ function getList(state, currentPage) {
 		//신고버튼은 댓글 작성자와 로그인한 사람이 같을시 안뜨도록 설정하기 위해 미리 선언함
 		// let reportButton = (Comment.user_id !== $("#loginid").val() && role === 'common') ? `
         let reportButton = (Comment.user_id !== $("#loginid").val()) ? `
-            <button class="commentReportButton" data-comment-id="${Comment.comment_idx}" 
+            <button class="commentReportButton" data-comment-idx="${Comment.comment_idx}" 
                     data-writer="${Comment.writer}" data-tidx="${Comment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
 		
-
+        //댓글은 ref_id 가 null, 답글은 ref_id가 댓글의 comment_id 값을 참조
 		//답글은 ref_id가 null이 아니니까 출력하면 안되지
 		// 댓글 처리
         output += (Comment.comment_ref_id != null) ? '' : `
@@ -221,7 +194,8 @@ function getList(state, currentPage) {
 		
 		// 버튼에서 댓글 ID와 작성자 ID 가져오기
 	    const commentIdx = $(this).data('comment-idx');
-	    const target = $(this).data('writer');
+	    // const target = $(this).data('writer');
+        const target = $(this).data('user_id');
 	    console.log('===> commentIdx:', commentIdx);
 	    console.log('===> writer:', target);
 	
@@ -337,7 +311,7 @@ $(function() {
     $.ajax({
       url: '../comment/add',
       data: {
-        id: $("#loginid").val(),
+        "id": $("#loginid").val(),
         content: content,
           writer: $("#writer").val(),
         post_idx: $("#post_idx").val(),
@@ -420,9 +394,10 @@ $(function() {
       url: '../comment/reply',
       data: {
         id: $('#loginid').val(),
+        writer: $("#writer").val(),
         content: content,
         post_idx: $("#post_idx").val(),
-        comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_id를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       },
       success: function(rdata) {
         if (rdata === 1) {
@@ -463,3 +438,30 @@ $(function() {
 
 
 
+
+$(document).ready(function() {
+    $('#delete-post-btn').click(function() {
+        // 삭제 확인 알림창
+        if (confirm("게시글을 삭제하시겠습니까?")) {
+            // 삭제 요청 보내기
+            var num = $('#post_idx').val(); // 게시글 ID 가져오기
+            $.ajax({
+                type: "POST",
+                url: "../post/delete", // 게시글 삭제 URL
+                data: {
+                    num: num // 삭제할 게시글 ID
+                },
+                success: function(response) {
+                    alert("게시글이 삭제되었습니다.");
+                    // 삭제 후 목록 페이지로 이동
+                    window.location.href = '../post/list';
+                },
+                error: function() {
+                    alert("게시글 삭제에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        } else {
+            alert("게시글 삭제를 취소했습니다.");
+        }
+    });
+});

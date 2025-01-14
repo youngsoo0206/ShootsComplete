@@ -26,6 +26,7 @@ public class PostCommentController {
         this.postCommentService = postCommentService;
     }
 
+
     @PostMapping(value="/list")
     public Map<String, Object> CommentList(int post_idx, int state) {
         List<PostComment> list = postCommentService.getCommentList(post_idx, state);
@@ -44,6 +45,10 @@ public class PostCommentController {
         return postCommentService.commentsInsert(co);
     }
 
+    @PostMapping(value = "/reply")
+    public int commentReply(PostComment co) {
+        return postCommentService.commentsReply(co);
+    }
 
     @PostMapping(value = "/update")
     public int commentUpdate(PostComment co) {
@@ -54,6 +59,7 @@ public class PostCommentController {
     public int commentDelete(int num) {
         return postCommentService.commentsDelete(num);
     }
+
 
 
 }
