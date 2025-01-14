@@ -1,0 +1,49 @@
+h1{
+    text-align:center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.input-group{
+    width: 30%;
+    text-align: center;
+    margin-right: 50px;
+    margin-top : 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.fileAttach{
+    margin-bottom: 20px;
+}
+
+.write-btn-container {
+    text-align: right;
+    margin-top: 20px;
+    margin-right: 50px;
+
+}
+
+.notfound{
+    margin-top: 50px;
+    text-align: center;
+}
+
+.pending{
+    color:orange;
+}
+#refuse{
+    text-decoration: none;
+    color: #1d4ed8;
+}
+#approve{
+    text-decoration: none;
+    color: #be123c;
+}
+
+.comS{
+    color: #1d4ed8;
+}
+.comP{
+    color: #be123c;
+}

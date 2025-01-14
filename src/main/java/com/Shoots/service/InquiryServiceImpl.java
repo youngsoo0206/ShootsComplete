@@ -51,4 +51,22 @@ public class InquiryServiceImpl implements InquiryService {
     public int inquiryModify(Inquiry inquiryData) {
         return inquiryMapper.inquiryModify(inquiryData);
     }
+
+    @Override
+    public int inquiryDelete(int inquiry_idx) {return inquiryMapper.inquiryDelete(inquiry_idx);}
+
+    @Override
+    public List<Inquiry> getInquiryAdminList(int page, int limit) {
+        HashMap<String, Object> map = new HashMap<>();
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return inquiryMapper.getInquiryAdminList(map);
+    }
+
+    @Override
+    public int getAdminListCount() {
+        return inquiryMapper.getAdminListCount();
+    }
 }

@@ -2,6 +2,7 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.PaginationResult;
 import com.Shoots.domain.Post;
+import com.Shoots.service.PostCommentService;
 import com.Shoots.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,21 +35,21 @@ public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     private PostService postService;
-//    private CommentService commentService;
+    private PostCommentService postCommentService;
 
     //클래스에 생성자가 하나만 존재하는 경우 Spring이 자동으로 의존성을 주입해 주므로 @Autowired를 붙일 필요가 없습니다.
     //Spring Boot 2.6 이상에서는 생성자가 하나뿐인 경우 @Autowired를 생략하는 것을 권장합니다.
     //생성자 주입
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PostCommentService postCommentService) {
         this.postService = postService;
-//        this.commentService = commentService;
+        this.postCommentService = postCommentService;
     }
 
 
 
     @GetMapping(value = "/list")
     public ModelAndView postlist(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(defaultValue = "A") String category, // 기본 카테고리 추가
             ModelAndView mv,
             HttpSession session) {
@@ -202,7 +203,9 @@ public class PostController {
 
         // 게시글 조회수 증가 (리스트에서 상세보기로 들어왔을 때만)
         if (sessionReferer != null && sessionReferer.equals("list")) {
-            if (beforeURL != null && beforeURL.endsWith("list")) {
+            //if (beforeURL != null && beforeURL.endsWith("list")) {  // << 주소 경로 바꾼거 땜에
+            //if (beforeURL != null && beforeURL.endsWith("list")) {  // << 주소 경로 바꾼거 땜에
+            if (beforeURL != null) {
                 postService.setReadCountUpdate(num);
             }
             session.removeAttribute("referer");
@@ -219,7 +222,7 @@ public class PostController {
             mv.addObject("message", "상세보기 실패입니다.");
         } else {
             logger.info("상세보기 성공");
-            //int count = commentService.getListCount(num);
+            //int count = postCommentService.getListCount(num);
             //int count = commentService.getListCount(num);
             // int count=0;
             mv.setViewName("post/post_view");

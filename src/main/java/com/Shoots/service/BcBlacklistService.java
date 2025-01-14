@@ -13,4 +13,6 @@ public interface BcBlacklistService {
     String getStatusById(Object user_idx);
 
     void updateBcBlacklist(int idx, Integer business_idx);
+
+    boolean isBlockForBusiness(Integer idx, int writer);
 }

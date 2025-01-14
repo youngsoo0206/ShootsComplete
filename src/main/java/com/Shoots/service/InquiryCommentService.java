@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface InquiryCommentService {
     public int getListCount(int inquiry_idx);
-    public List<InquiryComment> getInquiryCommentList(int page, int limit);
+    public List<InquiryComment> getInquiryCommentList(int inquiry_idx);
+    public void insertInquiryComment(InquiryComment ic);
+    public int inquiryCommentModify (InquiryComment ic);
+
 }

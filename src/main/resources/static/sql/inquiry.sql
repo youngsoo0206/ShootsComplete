@@ -56,7 +56,7 @@ where inquiry_idx = 32;  --DAO 메서드에서 ? 부분. 특정 문의글 번호
 
 
 # --2. 댓글이 달린 문의글들을 찾고 그 문의글들에 달린 댓글이 몇개인지 세는 커리문
-select i.inquiry_idx, count(ic.i_comment_id)
+select i.inquiry_idx, count(ic.i_comment_idx)
 from INQUIRY i
          inner join INQUIRY_COMMENT ic
                     on i.inquiry_idx = ic.inquiry_idx

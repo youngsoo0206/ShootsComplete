@@ -11,160 +11,164 @@
 </head>
 <body>
 
-<input type="hidden" th:value="${session.id}" id="loginid">  <!-- 수정 삭제 버튼 보이게 하려고 현재 로그인 한 유저의 id값을 받아놓음 -->
-<input type="hidden" th:value="${inquiryData.inquiry_idx}" id="inquiry_idx">  <!-- 댓글 삭제한 뒤 다시 문의글로 돌아오게 하기 위해 문의글 번호값을 받아둠 -->
+<!--해당 문의글을 작성한 사람의 idx와 유저타입(개인/기업)이, 로그인 한 사람의 idx와 유저타입과 일치해야 문의글을 보여줌. ==본인이 쓴 문의글만 보고 나머진 못보게끔. -->
+<th:block th:if="${session.idx} eq ${inquiryData.inquiry_ref_idx} and ${session.usertype} eq ${inquiryData.inquiry_type}">
 
-<div class="containerI">
-    <table class="table tableV">
+    <div class-="container">
+        <input type="hidden" th:value="${session.id}" id="loginid">  <!-- 수정 삭제 버튼 보이게 하려고 현재 로그인 한 유저의 id값을 받아놓음 -->
+        <input type="hidden" th:value="${inquiryData.inquiry_idx}" id="inquiry_idx">
+        <!-- 댓글 삭제한 뒤 다시 문의글로 돌아오게 하기 위해 문의글 번호값을 받아둠 -->
 
-        <!-- 문의글 제목 -->
-        <tr>
-            <th colspan="3" style="font-size:20px">
-                <span th:text ="${inquiryData.title}"></span>
-            </th>
-        </tr>
+        <div class="containerI">
+            <table class="table tableV">
 
-        <tr>
-            <td><div>문의자 : [[${session.id}]]</span></div></td>
-            <td>문의 날짜 : <span th:text ="${inquiryData.register_date.substring(0,16)}"></span></td>
-        </tr>
+                <!-- 문의글 제목 -->
+                <tr>
+                    <th colspan="3" style="font-size:20px">
+                        <span th:text="${inquiryData.title}"></span>
+                    </th>
+                </tr>
 
-        <tr>
-            <td colspan="2" style ="padding-right:0px">
-                <div class = "contentT">
-                    <pre th:text ="${inquiryData.content}"></pre>
-                </div>
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        <div>문의자 :
+                            <span th:text="${inquiryData.user_id}"></span></span>
+                        </div>
+                    </td>
+                    <td>문의 날짜 : <span th:text="${inquiryData.register_date.substring(0,16)}"></span></td>
+                </tr>
 
-            <!--파일 첨부 -->
-        <tr>
-            <td><div>첨부파일</div></td>
-            <td th:if="${not #strings.isEmpty(inquiryData.inquiry_file)}">
-                <img th:src="@{/img/down.png}" width="10px">
-                <form method="post" th:action="@{down}" style="height: 0px">
-                    <input type="hidden" th:value="${inquiryData.inquiry_file}" th:name="filename">
-                    <input type="hidden" th:value="${inquiryData.original_file}" th:name="original">
-                    <input type="submit" th:value="${inquiryData.original_file}">
-                </form>
-            </td>
-        </tr>
-    </table>
-    <hr>
+                <tr>
+                    <td colspan="2" style="padding-right:0px">
+                        <div class="contentT">
+                            <pre th:text="${inquiryData.content}"></pre>
+                        </div>
+                    </td>
+                </tr>
 
-    <!-- 댓글 리스트 출력 -->
-<!--    <div class="comments-section">-->
-<!--        <c:if test="${!empty iqlist}">-->
-<!--            <c:forEach var="ic" items="${iqlist}">-->
-<!--                <div class="ic">-->
+                <!--파일 첨부 -->
+                <tr>
+                    <td>
+                        <div>첨부파일</div>
+                    </td>
+                    <td th:if="${not #strings.isEmpty(inquiryData.inquiry_file)}">
+                        <img th:src="@{/img/down.png}" width="10px">
+                        <form method="post" th:action="@{down}" style="height: 0px">
+                            <input type="hidden" th:value="${inquiryData.inquiry_file}" th:name="filename">
+                            <input type="hidden" th:value="${inquiryData.original_file}" th:name="original">
+                            <input type="submit" th:value="${inquiryData.original_file}">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <hr>
 
-<!--                    <input type="hidden" value="${ic.i_comment_id}" name = "i_comment_id" class="ic-num">  &lt;!&ndash; 문의댓글의 고유번호값 받아두기 &ndash;&gt;-->
+            <!-- 댓글 리스트 출력 -->
+            <div class="comments-section">
+                <th:block th:if="${icListCount > 0}">
+                    <th:block th:each="ic, iterStat : ${icList}">
+                        <div class="ic">
 
-<!--                    &lt;!&ndash; 프로필 사진 &ndash;&gt;-->
-<!--                    <img src ="${pageContext.request.contextPath}/img/profile.png" alt="프로필" width="60" height="48">-->
+                            <input type="hidden" th:value="${ic.i_comment_idx}" name="i_comment_idx" class="ic_num">
+                            <!-- 문의댓글의 고유번호값 받아두기 -->
 
-<!--                    <input type="hidden" value="${ic.user_id}" class="iqcomment-writer"> &lt;!&ndash; 각 문의댓글을 남긴 댓글 작성자 값 &ndash;&gt;-->
-<!--                    <div class="buttonfront">-->
-<!--                        <p><strong>작성자 :</strong> ${ic.user_id} <strong>등록일 :</strong> ${ic.register_date.substring(0,16)}-->
-<!--                    </div>-->
-<!--                    <button type="button" class="btn btn-primary ic-modify" style="display:none" value="${ic.i_comment_id}">수정</button>-->
-<!--                    <button type="button" class="btn btn-danger ic-delete" style="display:none" value="${ic.i_comment_id}">삭제</button>-->
-<!--                    </p>-->
-<!--                    <span class="iqcomment-content">${ic.content}</span>-->
-<!--                </div>-->
-<!--                <hr>-->
-<!--            </c:forEach>-->
-<!--        </c:if>-->
+                            <!-- 프로필 사진 -->
+                            <img th:src="@{/img/profile.png}" alt="프로필" width="60" height="48">
 
-<!--        <c:if test="${empty iqlist}">-->
-<!--            <div class = "comD">-->
-<!--                <p class = "comP">아직 관리자의 답변이 없습니다.</p>-->
-<!--            </div>-->
-<!--            <br>-->
-<!--        </c:if>-->
-<!--    </div>-->
+                            <input type="hidden" th:value="${ic.user_id}" class="ic_writer">
+                            <!-- 각 문의댓글을 남긴 댓글 작성자 값 -->
+                            <div class="buttonfront">
+                                <p><strong>작성자 :</strong> [[${ic.user_id}]] <strong>등록일 :</strong>
+                                    [[${ic.register_date.substring(0,16)}]]
+                            </div>
+                            <button type="button" class="btn btn-primary ic_modify" style="display:none"
+                                    th:value="${ic.i_comment_idx}">수정
+                            </button>
+                            <button type="button" class="btn btn-danger ic_delete" style="display:none"
+                                    th:value="${ic.i_comment_idx}">삭제
+                            </button>
+                            </p>
+                            <span class="ic_content">[[${ic.content}]]</span>
+                        </div>
+                        <hr>
+                    </th:block>
+                </th:block>
 
-<!--    &lt;!&ndash; 댓글 폼 시작. 댓글 작성은 관리자만 가능 (role == admin) &ndash;&gt;-->
-<!--    <c:if test="${role == 'admin'}">-->
-<!--        <form action="../iqcomments/add" method ="post" name = "iqcommentform" id="iqcommentform">-->
-<!--            <div class="comment-head">-->
-<!--            </div>-->
+                <th:block th:if="${icListCount == 0}">
+                    <div class="comD">
+                        <p class="comP">아직 관리자의 답변이 없습니다.</p>
+                    </div>
+                    <br>
+                </th:block>
+            </div>
 
-<!--            &lt;!&ndash; 댓글 내용 부분 &ndash;&gt;-->
-<!--            <div class="comment-body">-->
-<!--                <input type="hidden" name="inquiry_idx" value="${inquiryData.inquiry_idx}">-->
-<!--                <img src ="${pageContext.request.contextPath}/img/profile.png" alt="프로필" width="60" height="48">-->
+            <!-- 댓글 폼 시작. 댓글 작성은 관리자만 가능 (role == admin) -->
+            <th:block th:if="${session.role == 'admin'}">
+                <div class="container">
 
-<!--                <div class="nickname">-->
-<!--                    <input type="hidden" class ="nickname" name="writer" value="${idx}"> &lt;!&ndash; 댓글 작성자의 로그인id :int형, idx 가져옴. &ndash;&gt;-->
-<!--                    <span class="nickname">${id}</span>  &lt;!&ndash; 댓글 작성자의 닉네임 : 로그인 한 유저 닉네임 &ndash;&gt;-->
-<!--                </div>-->
+                    <form th:action="@{../inquiryComment/add}" method="post" name="icForm" id="icForm">
 
+                        <!-- 댓글 내용 부분 -->
+                        <div class="comment-body">
+                            <input type="hidden" name="inquiry_idx" th:value="${inquiryData.inquiry_idx}">
+                            <img th:src="@{/img/profile.png}" alt="프로필" width="60" height="48">
 
-<!--                <textarea placeholder = "문의글에 대한 답변을 남겨보세요" class="iqcomment-content" name="content" maxlength="300" required></textarea>-->
+                            <div class="nickname">
+                                <input type="hidden" class="nickname" name="writer" th:value="${session.idx}">
+                                <!-- 댓글 작성자의 로그인id :int형, idx 가져옴. -->
+                                <span class="nickname">[[${session.id}]]</span>  <!-- 댓글 작성자의 닉네임 : 로그인 한 유저 닉네임 -->
+                            </div>
 
-<!--                <div class="register-box">-->
-<!--                    <button class="btn-primary" id="register-comment">등록</button>-->
-<!--                    <button class="btn-danger" id="cancel-comment" style="display:none">취소</button>-->
-<!--                </div>-->
+                            <textarea placeholder="문의글에 대한 답변을 남겨보세요" class="ic_content" name="content" maxlength="300"
+                                      required></textarea>
 
-<!--            </div>-->
-<!--        </form>-->
-<!--    </c:if>-->
+                            <div class="register-box">
+                                <button class="btn-primary" type="submit" id="register-comment">등록</button>
+                                <button class="btn-danger" id="cancel-comment" style="display:none">취소</button>
+                            </div>
 
-    <!--수정, 삭제 버튼은 로그인 한 유저만 보이게 함. 관리자도 안보임 -->
-    <div class = "btnD">
+                        </div>
+                    </form>
 
-        <th:block th:if="${inquiryData.inquiry_ref_idx == session.idx}">
-                <th:block th:if="${!inquiryData.hasReply}"> <!-- 답변 안달렸으면 수정 가능-->
-                    <a th:href="@{'modifyView?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
-                        <button class="btn btn-info updateBtn">수정</button>
+                </div> <!-- 컨테이너 -->
+            </th:block>
+
+            <!--수정, 삭제 버튼은 로그인 한 유저만 보이게 함. 관리자도 안보임 -->
+            <div class="btnD">
+
+                <th:block th:if="${inquiryData.inquiry_ref_idx == session.idx}">
+                    <th:block th:if="${!inquiryData.hasReply}"> <!-- 답변 안달렸으면 수정 가능-->
+                        <a th:href="@{'modifyView?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
+                            <button class="btn btn-info updateBtn">수정</button>
+                        </a>
+                    </th:block>
+                    <form name="deleteInquiryForm" id="deleteInquiryForm"
+                          th:action="@{'delete?inquiry_idx=' +${inquiryData.inquiry_idx}}" method="post">
+                        <input type="hidden" th:value="${inquiryData.inquiry_idx}">
+                        <button class="btn btn-danger deleteBtn" id="inquiryDelete">삭제</button>
+                    </form>
+
+                    <a th:href="@{'delete?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
                     </a>
                 </th:block>
-            <!--href의 주소를 #으로 설정함. -->
-            <a href ="#">
-                <button class="btn btn-danger deleteBtn" data-toggle="modal"
-                        data-target="#myModal" id="inquiryDelete">삭제</button>
-            </a>
-        </th:block>
 
-        <!--관리자가 목록 버튼 누르면 관리자 전용 리스트로, 일반회원은 개인 문의글 리스트 경로로 이동 -->
-<!--            <c:when test="${role == 'admin'}">-->
-<!--                <a href="../admin/mypage">-->
-<!--                    <button class="btn listB listBtn">목록</button>-->
-<!--                </a>-->
-<!--            </c:when>-->
+                <!--관리자가 목록 버튼 누르면 관리자 전용 리스트로, 일반회원은 개인 문의글 리스트 경로로 이동 -->
+                <!--            <c:when test="${role == 'admin'}">-->
+                <!--                <a href="../admin/mypage">-->
+                <!--                    <button class="btn listB listBtn">목록</button>-->
+                <!--                </a>-->
+                <!--            </c:when>-->
                 <a th:href="@{/inquiry/list}">
                     <button class="btn btn-warning listB">목록</button>
                 </a>
-    </div>
+            </div>
 
-</div>
+        </div> <!-- 컨테이너I -->
+    </div> <!-- 전체 컨테이너-->
 
-<script>
-    const inquiry_idx = $('#inquiry_idx').val();
-
-    $('#inquiryDelete').click(function(){ //문의글 삭제 버튼 누르면 삭제하는 메서드
-        if (confirm("문의글을 삭제하시겠습니까?")) {
-            $.ajax({
-                type: "POST",
-                url: "delete?inquiry_idx=" + inquiry_idx,
-                success: function(response) {
-                    alert("삭제되었습니다.");
-                    location.href = "../inquiry/list";
-                },
-                error: function() {
-                    alert("삭제 실패. 다시 시도해주세요.");
-                }
-            });
-        }
-    });
-    // <%--js에서 contextPath를 직접 선언할 수 없기에 jsp에서 선언하기 위해 있는 부분 --%>
-    const contextPath = "${pageContext.request.contextPath}";
-</script>
+</th:block> <!-- 본인 문의글만 뜨도록 타인은 막은 조건문, 끝 -->
 </body>
 
 
-</body>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </html>

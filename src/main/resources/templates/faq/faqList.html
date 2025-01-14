@@ -4,48 +4,53 @@
     <meta charset="UTF-8">
     <title>FAQ</title>
     <th:block th:replace="~{fragments/header :: header}" />
+    <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
     <!--<link rel="stylesheet" th:href="@{/css/faqList.css}" type = "text/css"></link>-->
-
 </head>
 <body>
-<th:block th:if="${listcount > 0}">
-    <br>
-    <th:block th:each="f, interStat :${faqList}">
-        <div class="faqlist">
-            <div class="accordion" id="accordionPanel">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#panelsStayOpen-collapse' + ${f.faq_idx}" aria-expanded="true" th:aria-controls="'#panelsStayOpen-collapse' + ${f.faq_idx}">
-                            [[${f.title}]]
-                        </button>
-                    </h2>
-                    <div th:id="'panelsStayOpen-collapse' + ${f.faq_idx}" class="accordion-collapse collapse">
-                        <div class="accordion-body">
-                            <p>[[${f.content}]]</p>
-                            <!--파일을 첨부한 경우 -->
-                            <form method="post" th:action="@{down}" style="height:0">
-                                <div th:if="${not #strings.isEmpty(f.faq_file)}">
+<div class="container">
+    <h1>FAQ</h1>
+    <th:block th:if="${listcount > 0}">
+        <br>
+        <th:block th:each="f, interStat :${faqList}">
+            <div class="faqlist">
+                <div class="accordion" id="accordionPanel">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#panelsStayOpen-collapse' + ${f.faq_idx}" aria-expanded="true" th:aria-controls="'#panelsStayOpen-collapse' + ${f.faq_idx}">
+                                [[${f.title}]]
+                            </button>
+                        </h2>
+                        <div th:id="'panelsStayOpen-collapse' + ${f.faq_idx}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <p>[[${f.content}]]</p>
+                                <!--파일을 첨부한 경우 -->
+                                <div th:if="${not #strings.isEmpty(f.faq_file)}" class="fileAttach">
+                                <form method="post" th:action="@{down}" style="height:0">
+                                    <span>첨부파일</span>
                                     <img th:src="@{/img/down.png}" width="10px" id="downImg">
                                     <input type="hidden" th:value="${f.faq_file}" th:name="filename">
                                     <input type="hidden" th:value="${f.faq_original}" th:name="original">
                                     <input type="submit" th:value="${f.faq_original}">
+                                </form>
                                 </div>
-                            </form>
 
-                            <!--파일을 첨부하지 않은 경우 -->
-                            <div th:if="${#strings.isEmpty(f.faq_file)}"></div>
+                                <!--파일을 첨부하지 않은 경우 -->
+                                <div th:if="${#strings.isEmpty(f.faq_file)}"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </th:block>
     </th:block>
-</th:block>
 
-<th:block th:if="${listcount == 0}">
-    <h1>등록된 FAQ가 없습니다.</h1>
-</th:block>
+    <th:block th:if="${listcount == 0}">
+        <h1>등록된 FAQ가 없습니다.</h1>
+    </th:block>
+</div>
+
 </body>
 <th:block th:replace="~{fragments/footer :: footer}" />
 </html>
