@@ -50,7 +50,7 @@ public class RefundController {
                 paymentService.updatePayment(payment.getPayment_idx());
 
                 mresponse.put("success", true);
-                mresponse.put("message", "이미 환불된 상태입니다.");
+                mresponse.put("message", "이미 환불된 상태");
                 mresponse.put("data", paymentDetails);
 
                 logger.info("DB삭제 및 결제이력 수정 완료");
