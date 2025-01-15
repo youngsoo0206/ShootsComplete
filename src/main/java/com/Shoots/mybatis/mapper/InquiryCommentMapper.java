@@ -12,5 +12,6 @@ public interface InquiryCommentMapper {
     public List<InquiryComment> getInquiryCommentList(HashMap<String, Object> map);
     public void insertInquiryComment(InquiryComment ic);
     public int inquiryCommentModify (InquiryComment ic);
+    public int inquiryCommentDelete (int i_comment_idx);
 
 }

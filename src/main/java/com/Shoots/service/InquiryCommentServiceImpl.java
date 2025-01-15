@@ -41,4 +41,9 @@ public class InquiryCommentServiceImpl implements InquiryCommentService{
     public int inquiryCommentModify(InquiryComment ic) {
         return inquiryCommentMapper.inquiryCommentModify(ic);
     }
+
+    @Override
+    public int inquiryCommentDelete(int i_comment_idx) {
+        return inquiryCommentMapper.inquiryCommentDelete(i_comment_idx);
+    }
 }

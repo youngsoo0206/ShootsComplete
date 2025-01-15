@@ -69,4 +69,12 @@ public class InquiryServiceImpl implements InquiryService {
     public int getAdminListCount() {
         return inquiryMapper.getAdminListCount();
     }
+
+    @Override
+    public boolean replyComplete(int inquiry_idx) {
+
+        int result = inquiryMapper.replyComplete(inquiry_idx);
+        return  result == 1;
+    }
+
 }
