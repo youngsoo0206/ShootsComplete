@@ -6,11 +6,10 @@ import lombok.Setter;
 @Setter
 public class Board {
     private int board_idx;
-    private int writer;
+    private int readcount;
+    private String writer;
     private String title;
     private String content;
     private String register_date;
-    private int readcount;
-    private String user_id;
-    private int idx;
+
 }
