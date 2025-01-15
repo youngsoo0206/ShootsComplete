@@ -9,5 +9,6 @@ public interface InquiryCommentService {
     public List<InquiryComment> getInquiryCommentList(int inquiry_idx);
     public void insertInquiryComment(InquiryComment ic);
     public int inquiryCommentModify (InquiryComment ic);
+    public int inquiryCommentDelete (int i_comment_idx);
 
 }

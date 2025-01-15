@@ -17,4 +17,5 @@ public interface InquiryMapper {
     public int inquiryDelete (int inquiry_idx);
     public List<Inquiry> getInquiryAdminList(HashMap<String, Object> map);
     public int getAdminListCount();
+    public int replyComplete(int inquiry_idx);
 }

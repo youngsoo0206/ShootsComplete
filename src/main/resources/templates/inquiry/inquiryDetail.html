@@ -11,8 +11,9 @@
 </head>
 <body>
 
-<!--해당 문의글을 작성한 사람의 idx와 유저타입(개인/기업)이, 로그인 한 사람의 idx와 유저타입과 일치해야 문의글을 보여줌. ==본인이 쓴 문의글만 보고 나머진 못보게끔. -->
-<th:block th:if="${session.idx} eq ${inquiryData.inquiry_ref_idx} and ${session.usertype} eq ${inquiryData.inquiry_type}">
+<!--해당 문의글을 작성한 사람의 idx와 유저타입(개인/기업)이, 로그인 한 사람의 idx와 유저타입과 일치해야 문의글을 보여줌. ==본인이 쓴 문의글만 보고 나머진 못보게끔.
+    단, 관리자라면 그냥 볼 수 있음.-->
+<th:block th:if="${session.role} eq 'admin' or (${session.idx} eq ${inquiryData.inquiry_ref_idx} and ${session.usertype} eq ${inquiryData.inquiry_type})">
 
     <div class-="container">
         <input type="hidden" th:value="${session.id}" id="loginid">  <!-- 수정 삭제 버튼 보이게 하려고 현재 로그인 한 유저의 id값을 받아놓음 -->
