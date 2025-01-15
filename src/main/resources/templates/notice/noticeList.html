@@ -68,16 +68,24 @@
       <th:block
               th:replace="~{fragments/paging :: paging('list',|&search_word=${search_word}|)}"/>
     </div>
-  </div>
-
 
     <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>
 
-    <div th:if="${listcount == 0 && search_word != ''}" class="input-group">
-      <button class="btn btn-primary search" type="submit">검색</button>
-      <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+    <div th:if="${listcount == 0 && search_word != ''}">
+      <h1>공지사항</h1>
+      <form th:action="@{list}">
+        <div class="input-group">
+          <button class="btn btn-primary search" type="submit">검색</button>
+          <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+        </div>
+      </form>
       <h1>검색 결과가 없습니다.</h1>
     </div>
+
+  </div>
+
+
+
 
 </body>
 <th:block th:replace="~{fragments/footer :: footer}" />

@@ -53,6 +53,7 @@ public class NoticeController {
         mv.addObject("listcount", listcount);
         mv.addObject("noticelist", list);
         mv.addObject("limit", limit);
+        mv.addObject("pagination", result);
         mv.addObject("search_word", search_word);
 
         return mv;
@@ -68,7 +69,7 @@ public class NoticeController {
         String sessionReferer = (String) session.getAttribute("referer");
         logger.info("referer: " + beforeURL);
         if(sessionReferer != null && sessionReferer.equals("list")){
-            if(beforeURL != null && beforeURL.endsWith("list")){
+            if(beforeURL != null && beforeURL.contains("list")){
                 noticeService.setReadCountUpdate(id);
             }
             session.removeAttribute("referer");

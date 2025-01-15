@@ -127,5 +127,15 @@ public class RegularUserServiceImpl implements RegularUserService {
         regularUserMapper.setAdminUser(id);
     }
 
+    @Override
+    public String getEmail(int id) {
+        return regularUserMapper.getEmail(id);
+    }
+
+    @Override
+    public RegularUser regularUserList(String id) {
+        return regularUserMapper.regularUserList(id);
+    }
+
 }
 

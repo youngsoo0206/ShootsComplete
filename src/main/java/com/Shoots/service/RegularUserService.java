@@ -19,4 +19,6 @@ public interface RegularUserService {
     public List<RegularUser> getUserList(String search_word, int page, int limit);
     public void setCommonUser(int id);
     public void setAdminUser(int id);
+    public String getEmail(int id);
+    public RegularUser regularUserList(String id);
 }

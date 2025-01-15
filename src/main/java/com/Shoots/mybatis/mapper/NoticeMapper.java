@@ -15,5 +15,4 @@ public interface NoticeMapper {
     public void insertNotice(Notice notice); //공지사항 등록하기
     public int updateNotice(Notice notice); //공지사항 수정
     public void deleteNotice(int id); //공지사항 삭제
-
 }

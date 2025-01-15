@@ -5,6 +5,7 @@ import java.io.File;
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
 import com.Shoots.task.SendMail;
+import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -36,6 +38,7 @@ public class AdminController {
     private RegularUserService regularUserService;
     private InquiryService inquiryService;
     private SendMail sendMail;
+    private SendMailText sendMailText;
 
     public AdminController(
             FaqService faqService,
@@ -44,7 +47,8 @@ public class AdminController {
             BusinessUserService businessUserService,
             RegularUserService regularUserService,
             InquiryService inquiryService,
-            SendMail sendMail) {
+            SendMail sendMail,
+            SendMailText sendMailText) {
         this.faqService = faqService;
         this.noticeService = noticeService;
         this.postService = postService;
@@ -52,6 +56,7 @@ public class AdminController {
         this.regularUserService = regularUserService;
         this.inquiryService = inquiryService;
         this.sendMail = sendMail;
+        this.sendMailText = sendMailText;
     }
 
     @GetMapping
@@ -287,18 +292,11 @@ public class AdminController {
                                 HttpServletResponse response
     ) throws Exception{
 
-
-        //String savePath = "resources/upload";
-        //서블릿의 실행 환경 정보를 담고 있는 객체를 리턴합니다.
-        //ServletContext context = request.getSession().getServletContext();
-        //String sDownloadPath = context.getRealPath(savePath);
-
         //수정
         String sFilePath = saveFolder + filename;
 
         File file = new File(sFilePath);
 
-        //org.springframework.util.FileCopyUtils.copyToByteArray(File file) - File 객체를 읽어서 바이트 배열로 반환합니다.
         byte[] bytes = FileCopyUtils.copyToByteArray(file);
 
         String sEncoding = new String(original.getBytes("utf-8"), "ISO-8859-1");
@@ -314,10 +312,11 @@ public class AdminController {
     public ModelAndView PostList(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit,
-            ModelAndView mv
+            ModelAndView mv,
+            @RequestParam(defaultValue = "") String search_word
     ){
-        int listcount = postService.getAdminListCount(); //총 리스트 수를 받아옴
-        List<Post> list = postService.getAdminPostList(page, limit); //리스트를 받아옴
+        int listcount = postService.getAdminListCount(search_word); //총 리스트 수를 받아옴
+        List<Post> list = postService.getAdminPostList(search_word, page, limit); //리스트를 받아옴
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -329,6 +328,7 @@ public class AdminController {
         mv.addObject("listcount", listcount);
         mv.addObject("postlist", list);
         mv.addObject("limit", limit);
+        mv.addObject("search_word", search_word);
 
         return mv;
     }
@@ -399,8 +399,15 @@ public class AdminController {
 
     //business approve
     @GetMapping(value="/businessApprove")
-    public String businessApprove(int id){
+    public String businessApprove(int id) throws IOException {
+        String email = businessUserService.getEmail(id);
         businessUserService.approveStatus(id);
+        MailVO vo = new MailVO();
+        vo.setTo(email);
+        vo.setSubject("Shoots와 함께 해주셔서 감사합니다.");
+        vo.setText("Shoots와 연계 기업이 되었음을 알려드립니다.");
+        sendMailText.sendMail(vo);
+
         return "redirect:businessList";
     }
 
@@ -408,6 +415,12 @@ public class AdminController {
     @GetMapping(value="/businessRefuse")
     public String businessRefuse(int id){
         businessUserService.refuseStatus(id);
+        String email = businessUserService.getEmail(id);
+        MailVO vo = new MailVO();
+        vo.setTo(email);
+        vo.setSubject("Shoots 연계 기업 안내");
+        vo.setText("Shoots에 가입 신청이 거부 되었습니다.");
+        sendMailText.sendMail(vo);
         return "redirect:businessList";
     }
 
@@ -459,8 +472,6 @@ public class AdminController {
         mv.addObject("userList", list);
         mv.addObject("limit", limit);
         mv.addObject("search_word", search_word);
-
-
         return mv;
     }
 
@@ -475,9 +486,13 @@ public class AdminController {
     @GetMapping(value="/setUserAdmin")
     public String setUserAdmin(int id){
         regularUserService.setAdminUser(id);
+        String email = regularUserService.getEmail(id);
+        MailVO vo = new MailVO();
+        vo.setTo(email);
+        vo.setSubject("Shoots 권한 변경 안내");
+        vo.setText("Shoots의 관리자로 권한이 변경되었음을 알려드립니다.");
+        sendMailText.sendMail(vo);
         return "redirect:userList";
     }
-
-
 
 }

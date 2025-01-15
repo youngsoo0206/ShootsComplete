@@ -33,7 +33,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("id", regularUser.getUser_id());
             session.setAttribute("role", regularUser.getRole());
             session.setAttribute("usertype", "A");
-            url = request.getContextPath()+"/mainBefore";
+
+
+            if(regularUser.getRole().equals("admin")){
+                url = request.getContextPath() + "/testAdmin";
+            } else{
+                url = request.getContextPath()+"/mainBefore";
+            }
 
         } else if (principal instanceof BusinessUser) {
             BusinessUser businessUser = (BusinessUser) principal;
