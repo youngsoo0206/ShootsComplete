@@ -4,8 +4,12 @@
 
 <mapper namespace="com.Shoots.service.report.BoardMapper">
 
-    <select id="select" resultType="Faq">
+    <insert id="insertBoard">
+        insert into board(writer,title,content) values('A','B','C');
+    </insert>
 
+    <select id="selectBoardList" resultType="Board">
+        select * from board;
     </select>
 
 </mapper>

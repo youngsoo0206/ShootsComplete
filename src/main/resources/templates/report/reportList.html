@@ -19,8 +19,15 @@
     </style>
 </head>
 <body>
-    <th:block th:text="${board}">
-    </th:block>
+
+    <table>
+        <tbody th:each="items : ${boardList}" >
+            <tr>
+                <td th:each="item : ${items}" > [[${item.writer}]]</td>
+            </tr>
+        </tbody>
+    </table>
+
     <a th:href="report3">go report</a>
 </body>
 <!--<th:block th:replace="~{fragments/footer :: footer}" />-->
