@@ -39,8 +39,8 @@
     </update>
 
     <insert id="insertNotice">
-        insert into notice(writer, title, content, notice_file, notice_original, register_date, readcount)
-        values (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp, 0)
+        insert into notice(writer, title, content, notice_file, notice_original, register_date)
+        values (#{writer}, #{title}, #{content}, #{notice_file}, #{notice_original}, current_timestamp)
     </insert>
 
     <delete id="deleteNotice">

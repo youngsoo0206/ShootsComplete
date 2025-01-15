@@ -34,7 +34,8 @@
                     </div>
                     <div th:if="${session.id != null}">
                         <a class="nav-link active" aria-current="page" th:if="${session.businessAccess}" th:href="@{/business/dashboard}">[[${session.id}]]님</a>
-                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null}" th:href="@{/}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null && session.role == 'common'}" th:href="@{/myPage/info(id=${session.id})}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null && session.role == 'admin'}" th:href="@{/testAdmin}">[[${session.id}]]님</a>
                     </div>
                 </li>
                 <div th:if="${session.id != null}">
@@ -64,8 +65,8 @@
                         <li><a class="dropdown-item offcanvas-a" href="#">중고 게시판</a></li>
                     </ul>
                 </div><br><br>
-            <p><a class="offcanvas-a" href="#">Notice</a></p><br>
-            <p><a class="offcanvas-a" href="#">Faq</a></p><br>
+            <p><a class="offcanvas-a" th:href="@{/notice/list}">Notice</a></p><br>
+            <p><a class="offcanvas-a" th:href="@{/faq/faqList}">Faq</a></p><br>
             <p><a class="offcanvas-a" th:href="@{/inquiry/list}">Inquiry</a></p>
         </div>
     </div>

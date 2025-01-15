@@ -22,5 +22,6 @@ public interface BusinessUserMapper {
     public void refuseStatus(int id);
     public List<BusinessUser> getApprovedList(Map<String, Object> map);
     public int listApprovedCount(Map<String, Object> map);
+    public String getEmail(int id);
 
 }

@@ -19,5 +19,6 @@ public interface BusinessUserService {
     public void refuseStatus(int id);
     public List<BusinessUser> getApprovedList(String search_word, int page, int limit);
     public int listApprovedCount(String search_word);
+    public String getEmail(int id);
 
 }

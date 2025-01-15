@@ -7,6 +7,6 @@ CREATE TABLE notice (
                         notice_file VARCHAR(50),
                         notice_original varchar(50),
                         register_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        readcount INT,
+                        readcount INT DEFAULT 0,
                         FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
