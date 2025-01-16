@@ -18,4 +18,4 @@ CREATE TABLE PAYMENT (
 select * from PAYMENT;
 
 
-delete from PAYMENT where PAYMENT_IDX = 82;
+delete from PAYMENT where PAYMENT_IDX = 97;

@@ -7,7 +7,21 @@
         const buyerIdx = document.getElementById('paymentButton').getAttribute('data-buyer');
         const price = document.getElementById('paymentButton').getAttribute('data-price');
 
-        let merchant_uid = sessionStorage.getItem('currentMerchantUid') || 'merchant_' + matchIdx + "_" + buyerIdx;
+        const sessionKey = `currentMerchantUid_${matchIdx}_${buyerIdx}`;
+
+        let merchant_uid = sessionStorage.getItem(sessionKey) || `merchant_${matchIdx}_${buyerIdx}`;
+
+        if (merchant_uid) {
+            const storedMatchIdx = merchant_uid.split('_')[1];
+            const storedBuyerIdx = merchant_uid.split('_')[2];
+
+            if (storedMatchIdx !== matchIdx || storedBuyerIdx !== buyerIdx) {
+                sessionStorage.removeItem(sessionKey);
+                merchant_uid = `merchant_${matchIdx}_${buyerIdx}`;
+            }
+        }
+
+        sessionStorage.setItem(sessionKey, merchant_uid);
 
         console.log("merchant_uid = " + merchant_uid);
 
@@ -83,7 +97,7 @@
                     let newMerchantUid = 'merchant_' + matchIdx + "_" + buyerIdx + "_" + Date.now();
                     console.log("재결제 주문번호 (재설정) newMerchantUid : " + newMerchantUid)
 
-                    sessionStorage.setItem('currentMerchantUid', newMerchantUid);
+                    sessionStorage.setItem(sessionKey, newMerchantUid);
 
                     IMP.request_pay(
                         {
@@ -202,6 +216,12 @@
         });
     }
 
+    function clearSessionForMatch(matchIdx, buyerIdx) {
+        const sessionKey = `currentMerchantUid_${matchIdx}_${buyerIdx}`;
+        console.log(`초기화된 세션 키: ${sessionKey}`);
+        sessionStorage.removeItem(sessionKey);
+    }
+
 
     function closedMatch(){
         alert("마감된 매칭입니다");
@@ -224,6 +244,8 @@
         const impUid = document.getElementById('refundButton').getAttribute('data-imp_uid');
         const merchantUid = document.getElementById('refundButton').getAttribute('data-merchant_uid');
         const refundAmount = document.getElementById('refundButton').getAttribute('data-amount');
+        const matchIdx = document.getElementById('paymentButton').getAttribute('data-matchIdx');
+        const buyerIdx = document.getElementById('paymentButton').getAttribute('data-buyer');
 
         console.log("impUid = " + impUid)
         console.log("merchantUid = " + merchantUid)
@@ -247,6 +269,7 @@
                 if (response.success) {
                     alert('환불 처리되었습니다.');
                     console.log(response);
+                    clearSessionForMatch(matchIdx, buyerIdx);
                     window.location.reload();
                 } else {
                     alert('환불 처리에 실패했습니다.');

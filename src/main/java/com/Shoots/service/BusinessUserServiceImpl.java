@@ -148,4 +148,9 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     public String getEmail(int id) {
         return businessUserMapper.getEmail(id);
     }
+
+    @Override
+    public BusinessUser getBusinessUserInfoById(Integer business_idx) {
+        return businessUserMapper.getBusinessUserInfoById(business_idx);
+    }
 }
