@@ -11,5 +11,9 @@
     <select id="selectBoardList" resultType="Board">
         select * from board;
     </select>
+    
+    <select id="selectBoardById" resultType="Board">
+        select * from board where board_idx=#{num};
+    </select>
 
 </mapper>
