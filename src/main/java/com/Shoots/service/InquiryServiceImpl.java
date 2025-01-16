@@ -72,7 +72,6 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     public boolean replyComplete(int inquiry_idx) {
-
         int result = inquiryMapper.replyComplete(inquiry_idx);
         return  result == 1;
     }

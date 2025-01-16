@@ -87,14 +87,14 @@
     <select id="getAdminListCount">
         select count(*) from inquiry
     </select>
-    
-<!--    <select id="replyComplete" resultType="int">-->
-<!--        SELECT i.inquiry_idx, i.title, i.content,-->
-<!--               CASE WHEN COUNT(c.inquiry_idx) > 0 THEN 1 ELSE 0 END AS hasReply-->
-<!--        FROM inquiry i-->
-<!--                 LEFT JOIN inquiry_comment c ON i.inquiry_idx = c.inquiry_idx-->
-<!--        GROUP BY i.inquiry_idx;-->
-<!--    </select>-->
+
+    <select id="replyComplete" resultType="int">
+        SELECT CASE WHEN COUNT(ic.inquiry_idx) > 0 THEN 1 ELSE 0 END AS hasReply
+        FROM inquiry i
+                 LEFT JOIN inquiry_comment ic ON i.inquiry_idx = ic.inquiry_idx
+        WHERE i.inquiry_idx = #{inquiry_idx};
+    </select>
+
 
 
 
