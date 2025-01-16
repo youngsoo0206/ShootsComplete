@@ -34,5 +34,7 @@ public interface RegularUserMapper {
 
     public RegularUser regularUserList(String id);
 
+    public void updateRegularUser(RegularUser user);
+
 
 }
