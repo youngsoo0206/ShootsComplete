@@ -143,4 +143,9 @@ public class BusinessUserServiceImpl implements BusinessUserService {
         }
         return businessUserMapper.listApprovedCount(map);
     }
+
+    @Override
+    public String getEmail(int id) {
+        return businessUserMapper.getEmail(id);
+    }
 }

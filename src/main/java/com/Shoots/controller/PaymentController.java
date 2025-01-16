@@ -5,12 +5,14 @@ import com.Shoots.service.IamportService;
 import com.Shoots.service.PaymentHistoryService;
 import com.Shoots.service.PaymentService;
 import lombok.AllArgsConstructor;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
-
 
 @Controller
 @AllArgsConstructor
@@ -49,8 +50,8 @@ public class PaymentController {
                 paymentService.insertPayment(payment);
 
                 response.put("success", true);
-                response.put("message", "이미 결제된 상태입니다.");
-                response.put("data", paymentDetails);
+                response.put("message", "이미 결제된 상태");
+                response.put("data", new JSONObject(paymentDetails));
 
                 return ResponseEntity.ok(response);
             }
@@ -88,7 +89,7 @@ public class PaymentController {
             logger.error("결제 실패 : buyer = " + payment.getBuyer_idx() + ", Merchant_uid = " + payment.getMerchant_uid() + ", error: " + e.getMessage());
 
             response.put("success", false);
-            response.put("message", "결제 처리 중 오류가 발생했습니다.");
+            response.put("message", "결제 처리 중 오류 발생");
             response.put("error", e.getMessage());
 
             payment.setPayment_status("fail");
@@ -103,31 +104,44 @@ public class PaymentController {
     }
 
     @PostMapping("/checkPayment")
-    public ResponseEntity<?> verifyPayment(@RequestBody Map<String, String> request) {
-        String impUid = request.get("imp_uid");
+    public ResponseEntity<?> checkPayment(@RequestBody Map<String, String> request) throws Exception {
+        String merchant_uid = request.get("merchant_uid");
 
-        String paymentDetails = iamportService.getPaymentDetails(impUid);
+        String paymentDetails = iamportService.getPaymentStatusByMerchantUid(merchant_uid);
 
-        if (paymentDetails != null) {
-
-            JSONObject jsonResponse = new JSONObject(paymentDetails);
-            JSONObject response = jsonResponse.getJSONObject("response");
-            String paymentStatus = response.getString("status");
-
-            logger.info("결제 조회 성공 checkPayment : payment details = " + paymentDetails);
-            if ("paid".equals(paymentStatus)) {
-                logger.info("결제 조회 성공 : imp_uid = " + impUid + " 결제 상태 : paid");
-                return ResponseEntity.ok(response);
-            } else if ("cancelled".equals(paymentStatus)) {
-                logger.info("결제 조회 성공 : imp_uid = " + impUid + " 결제 상태 : cancelled");
-                return ResponseEntity.ok(response);
-            } else {
-                logger.error("결제 상태 오류 : imp_uid = " + impUid + " 결제 상태 : " + paymentStatus);
-                return ResponseEntity.status(500).body("결제 상태 오류");
-            }
+        if (paymentDetails.equals("no_impUid")) {
+            logger.info("결제 조회 실패 (no_impUid) : response 키가 없음. merchant_uid = " + merchant_uid);
+            return ResponseEntity.status(204).build();
         } else {
-            logger.error("결제 조회 실패 imp_uid: " + impUid);
-            return ResponseEntity.status(500).body("결제 조회 실패");
+            try {
+                JSONObject jsonResponse = new JSONObject(paymentDetails);
+
+                if (jsonResponse.has("response")) {
+                    JSONObject response = jsonResponse.getJSONObject("response");
+                    String paymentStatus = response.getString("status");
+
+                    logger.info("결제 조회 성공 checkPayment : payment details = " + paymentDetails);
+                    if ("paid".equals(paymentStatus)) {
+                        logger.info("결제 조회 (paid) 성공 : merchant_uid = " + merchant_uid + " 결제 상태 : paid");
+                        return ResponseEntity.ok(response.toString());
+                    } else if ("cancelled".equals(paymentStatus)) {
+                        logger.info("결제 조회 (cancelled) 성공 : merchant_uid = " + merchant_uid + " 결제 상태 : cancelled");
+                        return ResponseEntity.ok(response.toString());
+                    } else if ("failed".equals(paymentStatus)) {
+                        logger.info("결제 조회 : merchant_uid = " + merchant_uid + " 결제 상태 : failed");
+                        return ResponseEntity.ok(response.toString());
+                    } else {
+                        logger.error("결제 조회 실패 : merchant_uid = " + merchant_uid + " 결제 상태 : " + paymentDetails);
+                        return ResponseEntity.status(500).body(response.toString());
+                    }
+                } else {
+                    logger.error("결제 조회 실패 : response 키가 없음. merchant_uid = " + merchant_uid);
+                    return ResponseEntity.status(204).body("imp_uid 없음: 결제 정보를 찾지 못했습니다.");
+                }
+            } catch (JSONException e) {
+                logger.error("JSON 파싱 오류: " + e.getMessage(), e);
+                return ResponseEntity.status(400).body("JSON parsing error");
+            }
         }
     }
 }

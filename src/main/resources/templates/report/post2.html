@@ -4,7 +4,7 @@
 <html>
 
 <head>
-<!--    <th:block th:replace="~{fragments/header :: header}" />-->
+    <!--    <th:block th:replace="~{fragments/header :: header}" />-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <style>
         nav.navbar {
@@ -19,9 +19,9 @@
     </style>
 </head>
 <body>
-    <th:block th:text="${board}">
-    </th:block>
-    <a th:href="report3">go report</a>
+<th:block th:text="${param.board}">
+</th:block>
+<a th:href="report3">go report</a>
 </body>
 <!--<th:block th:replace="~{fragments/footer :: footer}" />-->
 </html>

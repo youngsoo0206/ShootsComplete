@@ -22,10 +22,28 @@ $(function() { //ready 함수
     
     $(".ic_delete").click(function(){ //댓글 삭제 버튼 누르면 해당 i_commoent_id 값에 해당하는 문의댓글 삭제
 		const deletenum = $(this).val();
-		const inquiry_idx = $("#inquiry_idx").val();  //삭제 후 다시 문의글로 돌아갈때 글의 번호값을 저장
-		
-		if(confirm("정말 문의댓글을 삭제하시겠습니까?"))
-		location.href= `${contextPath}/inquiryComment/delete?i_comment_idx=${deletenum}&inquiry_idx=${inquiry_idx}`;
+		const i_comment_idx = $(this).closest(".ic").find(".ic_num").val();
+
+		if (confirm("정말 문의댓글을 삭제하시겠습니까?")) {
+			$.ajax({
+				url: '../inquiryComment/delete',
+				type: "POST",
+				data: {
+					"i_comment_idx": i_comment_idx
+				},
+				success: function (response) {
+					// 서버로부터 성공적인 응답을 받은 경우 처리
+					alert("문의댓글을 성공적으로 삭제했습니다.");
+					location.href = 'detail?inquiry_idx=' + inquiry_idx;
+				},
+				error: function (xhr, status, error) {
+					// 오류 처리
+					console.log("수정 실패:", error);
+					alert("문의댓글을 삭제하지 못했습니다.");
+				}
+			}); //ajax 끝
+		} // if문 끝 (confirm - 확인=true 일때)
+
 	}) //문의댓글 삭제 click() 끝
     
     
@@ -68,21 +86,18 @@ $(function() { //ready 함수
 		//수정, 삭제버튼 숨긴 뒤 만들어둔 수정완료, 수정취소 버튼을 div(buttonfront) 부분 뒤에 갖다 붙임.
 		//선택자가 긴 이유는, 그냥 buttonfront.append 로 붙이면 모든 댓글에 다 수정완료 버튼이 생겨버림.
 		$modifybutton.closest(".ic").find(".buttonfront").append(modifyCompleteButton, modifyCancelButton);
-		
-		
-		$(".ic_modifyCancel").click(function(){ //수정취소 버튼 누르면 숨겼던 수정, 삭제 버튼 다시 나오게 하고 수정완료, 수정취소버튼 삭제함
-			const $modifyComplete = $(this).closest(".ic").find(".ic_modifyComplete")
-			const $modifyCancel = $(this);
-			$modifyComplete.remove();
-			$modifyCancel.remove();
-			
+
+
+		modifyCancelButton.click(function () { //수정취소 버튼 누르면 숨겼던 수정, 삭제 버튼 다시 나오게 하고 수정완료, 수정취소버튼 삭제함
+			modifyCompleteButton.remove();
+			modifyCancelButton.remove();
+
 			$modifybutton.show();
 			$deletebutton.show();
-			
+
 			newContent.remove();
 			originalContent.show();
-			
-		})
+		});
 		
 		$(".ic_modifyComplete").click(function() {  //수정완료 버튼을 누를시 실행하는 ajax.
 		    const modifyButton = $(this);

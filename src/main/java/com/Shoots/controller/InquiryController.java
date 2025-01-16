@@ -48,7 +48,13 @@ public class InquiryController {
         int limit = 10;
 
         int listcount = inquiryService.getListCount(usertype, idx);
-        List<Inquiry> list = inquiryService.getInquiryList(page, limit, idx, usertype);
+        List<Inquiry> inquiryList = inquiryService.getInquiryList(page, limit, idx, usertype);
+
+//        for (Inquiry inquiry : inquiryList) {
+//            boolean replyExist = inquiryService.replyComplete(inquiry.getInquiry_idx());
+//            inquiry.setHasReply(replyExist);
+//            logger.info("inquiry_idx: " + inquiry.getInquiry_idx() + " hasReply: " + replyExist);
+//        }
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -58,7 +64,7 @@ public class InquiryController {
         mv.addObject("startpage", result.getStartpage());
         mv.addObject("endpage", result.getEndpage());
         mv.addObject("listcount", listcount);
-        mv.addObject("inquiryList", list);
+        mv.addObject("inquiryList", inquiryList);
         mv.addObject("limit", limit);
         return mv;
     }
@@ -221,8 +227,8 @@ public class InquiryController {
         //삭제 처리 실패한 경우
         if(result == 0){
             logger.info("문의글 삭제 실패");
-            return "403";
-        }else{
+            return "error/404";
+        } else {
             logger.info("문의글 삭제 성공");
             out.println("<script type='text/javascript'>");
             out.println("alert('성공적으로 삭제되었습니다.')");

@@ -29,4 +29,10 @@ public interface RegularUserMapper {
     public void setCommonUser(int id);
 
     public void setAdminUser(int id);
+
+    public String getEmail(int id);
+
+    public RegularUser regularUserList(String id);
+
+
 }

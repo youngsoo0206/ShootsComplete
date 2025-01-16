@@ -17,6 +17,7 @@ public interface InquiryService {
     public int inquiryDelete(int inquiry_idx);
     public List<Inquiry> getInquiryAdminList(int page, int limit);
     public int getAdminListCount();
+    public boolean replyComplete(int inquiry_idx);
 
 
     default public String saveUploadedFile(MultipartFile uploadfile, String saveFolder) throws Exception {

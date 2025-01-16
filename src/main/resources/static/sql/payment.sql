@@ -17,4 +17,5 @@ CREATE TABLE PAYMENT (
 
 select * from PAYMENT;
 
-rollback;
+
+delete from PAYMENT where PAYMENT_IDX = 82;

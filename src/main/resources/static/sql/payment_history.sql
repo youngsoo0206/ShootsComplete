@@ -25,3 +25,5 @@ SHOW TRIGGERS;
 
 select * from PAYMENT_HISTORY;
 
+delete from PAYMENT_HISTORY where PAYMENT_IDX = 82;
+

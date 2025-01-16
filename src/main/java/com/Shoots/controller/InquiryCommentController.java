@@ -2,12 +2,17 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.InquiryComment;
 import com.Shoots.service.InquiryCommentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Controller
 @RequestMapping(value = "/inquiryComment")
@@ -46,5 +51,11 @@ public class InquiryCommentController {
         }
     }
 
+    @PostMapping(value = "/delete")
+    @ResponseBody
+    public int inquiryCommentDelete(int i_comment_idx) {
+        int result = inquiryCommentService.inquiryCommentDelete(i_comment_idx);
+        return result;
+    }
 
 }

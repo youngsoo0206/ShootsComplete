@@ -91,4 +91,14 @@
         update regular_user set role='admin' where idx = #{id}
     </update>
 
+    <select id="getEmail">
+        select email from regular_user where idx=#{id}
+    </select>
+
+    <select id="regularUserList">
+        select * from regular_user where user_id=#{id}
+    </select>
+
+
+
 </mapper>

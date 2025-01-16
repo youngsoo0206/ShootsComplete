@@ -16,7 +16,7 @@ public interface PostService {
     // 글 목록 보기
     public List<Post> getPostList(int page, int limit, String category);
 
-    public List<Post> getAdminPostList(int page, int limit);
+    public List<Post> getAdminPostList(String search_word, int page, int limit);
 
     //업로드된 파일(MultipartFile)을 주어진 폴더(saveFolder)에 저장하고, 데이터베이스에 저장할 파일 경로를 반환
     default public String saveUploadFile(MultipartFile uploadfile, String saveFolder) throws Exception {
@@ -114,6 +114,6 @@ public interface PostService {
     void deleteFileList(String filename);
 
     //관리자용 listcount
-    int getAdminListCount();
+    int getAdminListCount(String search_word);
 
 }

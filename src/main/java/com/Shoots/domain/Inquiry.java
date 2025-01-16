@@ -10,8 +10,6 @@ public class Inquiry {
     @Getter
     @Setter
     private MultipartFile uploadfile;
-
-
     private int inquiry_idx;
     private String inquiry_type;
     private int inquiry_ref_idx;

@@ -36,5 +36,9 @@
     </update>
 
 
+    <delete id="inquiryCommentDelete">
+        delete from inquiry_comment
+        where i_comment_idx = #{i_comment_idx}
+    </delete>
 
 </mapper>

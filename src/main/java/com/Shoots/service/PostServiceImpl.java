@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -43,17 +44,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAdminPostList(int page, int limit) {
+    public List<Post> getAdminPostList(String search_word, int page, int limit) {
         // 페이지네이션을 위한 start와 end 계산
         HashMap<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
         int startrow = (page - 1) * limit + 1;
         int endrow = startrow + limit - 1;
         int offset = (page - 1) * limit;
         map.put("offset", offset);
         int pageSize = limit;
         map.put("pageSize", pageSize);
-
-
 
         map.put("start", startrow);
         map.put("end", endrow);
@@ -140,8 +142,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getAdminListCount() {
-        return dao.getAdminListCount();
+    public int getAdminListCount(String search_word) {
+        HashMap<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        return dao.getAdminListCount(map);
     }
 
 }

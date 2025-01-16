@@ -48,7 +48,7 @@
 
     <sql id="searchApproved">
         <if test="search_word != null">
-            and business_id like #{search_word} or business_name like #{search_word}
+            and (business_id like #{search_word} or business_name like #{search_word})
         </if>
     </sql>
 
@@ -60,7 +60,7 @@
     </select>
 
     <select id="listCount">
-        select count(*) from business_user
+        select count(*) from business_user <include refid="search" />
     </select>
 
     <update id="approveStatus">
@@ -78,6 +78,10 @@
 
     <select id="listApprovedCount">
         select count(*) from business_user where login_status = "approved" <include refid="searchApproved" />
+    </select>
+
+    <select id="getEmail">
+        select email from business_user where business_idx=#{id}
     </select>
 
 </mapper>
