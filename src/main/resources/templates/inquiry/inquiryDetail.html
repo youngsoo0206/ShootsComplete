@@ -142,12 +142,12 @@
                         <a th:href="@{'modifyView?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
                             <button class="btn btn-info updateBtn">수정</button>
                         </a>
-                    </th:block>
                     <form name="deleteInquiryForm" id="deleteInquiryForm"
                           th:action="@{'delete?inquiry_idx=' +${inquiryData.inquiry_idx}}" method="post">
                         <input type="hidden" th:value="${inquiryData.inquiry_idx}">
                         <button class="btn btn-danger deleteBtn" id="inquiryDelete">삭제</button>
                     </form>
+                    </th:block>
 
                     <a th:href="@{'delete?inquiry_idx=' + ${inquiryData.inquiry_idx}}">
                     </a>

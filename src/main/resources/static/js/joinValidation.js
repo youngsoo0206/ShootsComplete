@@ -135,6 +135,12 @@ $(function(){
             return false;
         }
 
+        if (!["1", "2", "3", "4"].includes($("input[name='gender']").val())) {
+            alert("주민번호 뒷자리는 1, 2, 3, 4 중 하나여야 합니다");
+            $("input[name='gender']").val('').focus();
+            return false;
+        }
+
         if(!$.isNumeric($("input[name='tel']").val())){
             alert("전화번호는 숫자로 입력해 주세요");
             $("input[name='tel']").val('').focus();

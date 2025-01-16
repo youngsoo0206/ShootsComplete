@@ -50,11 +50,10 @@ public class InquiryController {
         int listcount = inquiryService.getListCount(usertype, idx);
         List<Inquiry> inquiryList = inquiryService.getInquiryList(page, limit, idx, usertype);
 
-//        for (Inquiry inquiry : inquiryList) {
-//            boolean replyExist = inquiryService.replyComplete(inquiry.getInquiry_idx());
-//            inquiry.setHasReply(replyExist);
-//            logger.info("inquiry_idx: " + inquiry.getInquiry_idx() + " hasReply: " + replyExist);
-//        }
+        for (Inquiry inquiry : inquiryList) {
+            boolean replyExist = inquiryService.replyComplete(inquiry.getInquiry_idx());
+            inquiry.setHasReply(replyExist);
+        }
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -91,15 +90,13 @@ public class InquiryController {
 
     @GetMapping("/detail")
     public ModelAndView detail(
-            int inquiry_idx, ModelAndView mv,
-            HttpServletRequest request,
-            @RequestHeader(value = "referer", required = false) String beforeURL,
+            int inquiry_idx, ModelAndView mv, @RequestHeader(value = "referer", required = false) String beforeURL,
             HttpSession session) {
         /*
             1. String beforeURL = request.getHeader("referer"); 의미로
                 어느 주소에서 detail로 이동했는지 header의 정보 중에서 "referer"를 통해 알 수 있습니다.
             2. 수정 후 이곳으로 이동하는 경우 조회수는 증가하지 않도록 합니다.
-            3. myhome4/inquiry/list에서 제목을 클릭한 경우 조회수가 증가하도록 합니다.
+            3. myhome4/inquiryData/list에서 제목을 클릭한 경우 조회수가 증가하도록 합니다.
          */
         String sessionReferer = (String) session.getAttribute("referer");
         logger.info("referer: " + beforeURL);
@@ -111,12 +108,15 @@ public class InquiryController {
             session.removeAttribute("referer");
         }
 
-        //문의글의 내용과 (inquiry), 해당 문의글에 달린 답변들 (icList)
-        Inquiry inquiry = inquiryService.getDetail(inquiry_idx);
+        //문의글의 내용과 (inquiryData), 해당 문의글에 달린 답변들 (icList)
+        Inquiry inquiryData = inquiryService.getDetail(inquiry_idx);
+        boolean replyExist = inquiryService.replyComplete(inquiryData.getInquiry_idx()); //답변유무에 따른 수정,삭제 버튼 나타냄/없앰
+        inquiryData.setHasReply(replyExist);
+
         List<InquiryComment> icList = inquiryCommentService.getInquiryCommentList(inquiry_idx);
 
-        //inquiry=null; //error 페이지 이동 확인하고자 임의로 지정합니다.
-        if(inquiry == null){
+        //inquiryData=null; //error 페이지 이동 확인하고자 임의로 지정합니다.
+        if(inquiryData == null){
             logger.info("상세보기 실패");
             mv.setViewName("403");
         }else{
@@ -124,7 +124,7 @@ public class InquiryController {
             int icListCount = inquiryCommentService.getListCount(inquiry_idx);
             mv.setViewName("inquiry/inquiryDetail");
             mv.addObject("icListCount", icListCount);
-            mv.addObject("inquiryData", inquiry);
+            mv.addObject("inquiryData", inquiryData);
             mv.addObject("icList", icList);
         }
         return mv;
