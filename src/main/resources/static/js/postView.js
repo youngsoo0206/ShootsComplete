@@ -30,8 +30,8 @@ function getList(state) {
       $('.comment-order-list').html(output);
 
       output = ''; // 초기화
-      if (rdata.list.length) {
-    rdata.list.forEach(Comment => {
+      if (rdata.commentlist.length) {
+    rdata.commentlist.forEach(Comment => {
 
         // console.log(66);
         // console.log(Comment.comment_ref_id); //   받는 값 확인 >> null
@@ -103,7 +103,7 @@ function getList(state) {
         console.log(128 + "=" + output);
 
         // 답글 처리: 부모 댓글에 대한 답글을 출력
-        rdata.list.forEach(childComment => {
+        rdata.commentlist.forEach(childComment => {
             if (childComment.comment_ref_id === Comment.comment_idx) {
                 let childSrc = childComment.user_file ? `../userupload/${childComment.user_file}` : '../img/info.png';
                 /*
@@ -177,7 +177,7 @@ function getList(state) {
       $('.comment-list').html(output); //댓글 데이터를 HTML로 변환하여 화면에 출력
       
       //댓글이 없으면 댓글 목록과 정렬 메뉴를 비움
-      if (!rdata.list.length) {
+      if (!rdata.commentlist.length) {
         $('.comment-list, .comment-order-list').empty();
       }
       
@@ -237,8 +237,12 @@ function del(comment_idx) {//num : 댓글 번호
     return;
   }
   $.ajax({
+      type: 'post',
     url: '../comment/delete',
-    data: { comment_idx: comment_idx },
+    data: {
+        comment_idx: comment_idx
+    },
+
     success: function(rdata) {
       if (rdata === 1) {
         getList(option); // 댓글 리스트 다시 불러오기
@@ -251,6 +255,7 @@ function del(comment_idx) {//num : 댓글 번호
 
 //답글 달기 폼
 function replyform(comment_idx) {
+
   //수정 삭제 영역 선택 후 답글쓰기를 클릭한 경우
   $(".LayerMore").hide(); // 수정 삭제 영역 숨김
   
@@ -311,9 +316,9 @@ $(function() {
     $.ajax({
       url: '../comment/add',
       data: {
-        "id": $("#loginid").val(),
+        id: $("#loginid").val(),
         content: content,
-          writer: $("#writer").val(),
+          writer: $("#idx").val(),
         post_idx: $("#post_idx").val(),
         comment_ref_id: null // 원본 댓글은 comment_ref_id가 null
       },
@@ -352,6 +357,7 @@ $(function() {
 		$.ajax({
 			url:'../comment/update',
 			data:{comment_idx:comment_idx, content:content},
+            type: 'post',
 			success:function(rdata){
 				if(rdata===1){
 					getList(option);
@@ -393,8 +399,8 @@ $(function() {
       type: 'post',
       url: '../comment/reply',
       data: {
-        id: $('#loginid').val(),
-        writer: $("#writer").val(),
+        id: $("#loginid").val(),
+        writer: $("#idx").val(),
         content: content,
         post_idx: $("#post_idx").val(),
         comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

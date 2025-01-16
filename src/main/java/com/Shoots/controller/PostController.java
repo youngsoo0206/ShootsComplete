@@ -51,6 +51,7 @@ public class PostController {
     public ModelAndView postlist(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(defaultValue = "A") String category, // 기본 카테고리 추가
+            @RequestParam(defaultValue = "") String search_word,
             ModelAndView mv,
             HttpSession session) {
 
@@ -62,8 +63,8 @@ public class PostController {
 //        int start = Math.max(0, (page - 1) * limit); // start가 음수일 수 없도록 Math.max 사용
 //        int end = limit; // 끝 값은 limit과 동일
 
-        int listcount = postService.getListCount(category); // 총 리스트 수를 받아옴
-        List<Post> list = postService.getPostList(page, limit, category); // 리스트를 받아옴
+        int listcount = postService.getListCount(category, search_word); // 총 리스트 수를 받아옴
+        List<Post> list = postService.getPostList(page, limit, category, search_word); // 리스트를 받아옴
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -77,6 +78,7 @@ public class PostController {
         mv.addObject("limit", limit);
         mv.addObject("pagination", result); // PaginationResult 객체를 전달
         mv.addObject("category", category);
+        mv.addObject("search_word", search_word);
         return mv;
     }
 
@@ -86,11 +88,12 @@ public class PostController {
     public Map<String, Object> postListAjax(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit,
-            @RequestParam(defaultValue = "A") String category // 기본값 추가
+            @RequestParam(defaultValue = "A") String category, // 기본값 추가
+            @RequestParam(defaultValue = "") String search_word
     ) {
 
-        int listcount = postService.getListCount(category);
-        List<Post> list = postService.getPostList(page, limit, category);
+        int listcount = postService.getListCount(category, search_word);
+        List<Post> list = postService.getPostList(page, limit, category, search_word);
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -104,34 +107,10 @@ public class PostController {
         map.put("limit", limit);
         map.put("pagination", result);
         map.put("category", category);
+        map.put("search_word", search_word);
         return map;
     }
 
-//    /*
-//     @ResponseBody를 사용하면 각 메서드의 실행 결과는 JSON으로 변환되어 HTTP Response BODY에
-//    */
-//    @ResponseBody
-//    @PostMapping(value = "/list_ajax")
-//    public Map<String, Object> postListAjax(
-//            @RequestParam(defaultValue = "1") int page,
-//            @RequestParam(defaultValue = "10") int limit
-//    ) {
-//        int listcount = postService.getListCount(); // 총 리스트 수를 받아옴
-//
-//        List<Post> list = postService.getPostList(page, limit);
-//
-//        PaginationResult result = new PaginationResult(page, limit, listcount);
-//
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("page", page);
-//        map.put("maxpage", result.getMaxpage());
-//        map.put("startpage", result.getStartpage());
-//        map.put("endpage", result.getEndpage());
-//        map.put("listcount", listcount);
-//        map.put("postlist", list);
-//        map.put("limit", limit);
-//        return map;
-//    }
 
 
 

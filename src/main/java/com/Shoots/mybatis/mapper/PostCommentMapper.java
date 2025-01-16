@@ -22,7 +22,7 @@ public interface PostCommentMapper {
 
     public int commentsReply(PostComment c);
 
-    public int commentsDelete(int num);
+    public int commentsDelete(int comment_idx);
 
     public int commentsUpdate(PostComment co);
 

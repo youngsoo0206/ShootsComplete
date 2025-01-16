@@ -11,11 +11,7 @@
 </head>
 <body>
 <input type="hidden" id="loginid" th:value="${session.id}" th:name="loginid"> <!-- 로그인한 유저의 id값 -->
-<!--<input type="hidden" id="user_id" th:value="${user_id}" th:name="user_id">-->
-<!--<input type="hidden" id="loginid" th:value="${user_id}" th:name="loginid">-->
-<!--<input type="hidden" id="loginid" th:value="${session.user_id}" th:name="loginid">-->
-<!--<input type="hidden" id="loginUserId" th:value="${session.user_id}">-->
-
+<input type="hidden" id="idx" th:value="${session.idx}" th:name="idx">
 <input type="hidden" id="user_file" th:value="${user_file}" name="user_file">
 <input type="hidden" th:value="${postdata.writer}" id="writer" name="writer">
 <input type="hidden" th:value="${postdata.post_idx}" id="post_idx" name="post_idx">
@@ -116,6 +112,7 @@
 				<b class="comment-write-area-name" th:text="${session.id}"></b>
 				<span class="comment-write-area-count">0/200</span>
 				<textarea placeholder="댓글을 남겨보세요" rows="1" class="comment-write-area-text" maxlength="200"></textarea>
+				<input type="checkbox" name="isSecret" value="Y"> 비밀댓글
 			</div>
 			<div class="register-box">
 				<div class="button btn-cancel">취소</div>

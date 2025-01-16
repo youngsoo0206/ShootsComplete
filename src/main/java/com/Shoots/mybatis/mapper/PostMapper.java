@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostMapper {
 
     // 글의 갯수 구하기
-    public int getListCount(String category);
+    public int getListCount(HashMap<String, Object> map);
 
     public List<Post> getPostList(HashMap<String, Object> map);
 

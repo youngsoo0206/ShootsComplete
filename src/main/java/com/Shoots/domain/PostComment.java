@@ -13,6 +13,15 @@ public class PostComment {
     private String post_title;
     private String category;
     private int readcount;
+    private String isSecret;
+
+    public String getIsSecret() {
+        return isSecret;
+    }
+
+    public void setIsSecret(String isSecret) {
+        this.isSecret = isSecret;
+    }
 
     public int getReadcount() {
         return readcount;

@@ -41,9 +41,6 @@ public class PostCommentServiceImpl implements PostCommentService {
 
     @Override
     public int commentsInsert(PostComment c) {
-//        if (c.getComment_ref_id() == null) {
-//            c.setComment_ref_id(-1);  // 일반 댓글일 때
-//        }
         return dao.commentsInsert(c);
     }
 

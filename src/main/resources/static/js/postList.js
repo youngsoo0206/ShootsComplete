@@ -4,20 +4,58 @@ let currentPage = 1;        // 현재 페이지
 
 
 // 페이지가 로드될 때 자유게시판(A)의 게시글을 불러오는 부분
+// 페이지 로드 시 URL에서 category, page, search_word를 읽어오기
 $(document).ready(function() {
-    switchCategory('A'); //
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'A';
+    const page = parseInt(urlParams.get('page')) || 1;
+    const searchWord = urlParams.get('search_word') || '';
+
+    // 카테고리와 검색어로 게시글 목록을 불러오기
+    switchCategory(category, page, searchWord);
+    //switchCategory('A'); //
 });
 
+// 검색 버튼 클릭 시 호출되는 함수
+function searchPosts(category, page = 1) {
+    //const searchWord = $('input[name="search_word"]').val();  // 입력된 검색어
+    let searchWord = '';
 
+    // 카테고리별 검색어 입력 필드에서 값 가져오기
+    if (category === 'A') {
+        searchWord = $('#searchWordA').val();
+    } else if (category === 'B') {
+        searchWord = $('#searchWordB').val();
+    }
+    // 카테고리 및 페이지 정보 갱신
+    switchCategory(category, page, searchWord);  // 카테고리, 페이지, 검색어를 포함한 요청
+}
+
+
+// 검색어 리셋 함수
+function resetSearch(category) {
+    if (category === 'A') {
+        $('#searchWordA').val('');  // A게시판 검색어 초기화
+    } else if (category === 'B') {
+        $('#searchWordB').val('');  // B게시판 검색어 초기화
+    }
+
+    // URL에서 검색어 파라미터 제거
+    const newUrl = `?category=${category}&page=1`;
+    history.pushState(null, '', newUrl);
+
+    // 검색어 초기화 후 전체 게시글 다시 불러오기
+    switchCategory(category, 1, '');
+}
 
 // 카테고리 변경 시 게시글 목록을 비동기적으로 불러오는 함수
-function switchCategory(category, page = 1) {
+function switchCategory(category, page = 1, searchWord = '') {
 
     currentCategory = category;  // 선택한 카테고리 저장
     currentPage = page;          // 현재 페이지 저장
 
 // URL 업데이트 (페이지 번호와 카테고리 정보 반영)
-    const newUrl = `?category=${category}&page=${page}`;
+    const newUrl = `?category=${category}&page=${page}&search_word=${encodeURIComponent(searchWord)}`;
     history.pushState(null, '', newUrl);  // 페이지 URL 업데이트
 
     // 기존 활성화 상태 초기화
@@ -46,9 +84,10 @@ function switchCategory(category, page = 1) {
         type: 'GET',
         data: {
             category: category,  // 카테고리 정보 전송
-            state: 'ajax',  // AJAX 요청임을 알려주는 파라미터
-            page: page,  // // 선택한 페이지 반영
-            limit: 10  // 한 페이지당 10개씩 게시글을 표시
+            //state: 'ajax',  // AJAX 요청임을 알려주는 파라미터
+            page: page,  // // 선택한 페이지 번호 반영
+            limit: 10,  // 한 페이지당 10개씩 게시글을 표시
+            search_word: searchWord // 검색어
         },
         dataType : 'json',
         success: function(response) {

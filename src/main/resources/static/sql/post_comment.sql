@@ -12,18 +12,11 @@ CREATE TABLE post_comment (
 );
 
 
+ALTER TABLE post_comment
+    ADD is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N'));
 
 
 drop table post_comment;
 
 SELECT * FROM information_schema.key_column_usage
 WHERE table_name = 'post_comment';
-
-
-insert into POST_COMMENT
-(post_idx, comment_ref_id, writer, content)
-values( 34, null, 1,'ㅎㅇ');
-
-insert into POST_COMMENT
-(post_idx, comment_ref_id, writer, content)
-values( 34, null, 1,'comment_idx 값 확인하기');

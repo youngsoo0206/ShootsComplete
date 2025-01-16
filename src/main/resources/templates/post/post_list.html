@@ -17,10 +17,10 @@
     <!-- 카테고리 선택 탭 -->
     <ul class="nav nav-tabs" id="categoryTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="tabA" data-toggle="tab" href="#A" role="tab" onclick="switchCategory('A')">자유 게시판</a>
+            <a class="nav-link active" id="tabA" data-toggle="tab" role="tab" onclick="switchCategory('A')">자유 게시판</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="tabB" data-toggle="tab" href="#B" role="tab" onclick="switchCategory('B')">중고 게시판</a>
+            <a class="nav-link" id="tabB" data-toggle="tab" role="tab" onclick="switchCategory('B')">중고 게시판</a>
         </li>
     </ul>
 
@@ -28,6 +28,13 @@
     <div class="tab-content mt-3">
 
         <div class="tab-pane fade active show" id="A" role="tabpanel">
+            <form th:action="@{list}"  method="get" onsubmit="return false;">
+                <div class="input-group">
+                    <input id="searchWordA" type="text" class="form-control" placeholder="검색어를 입력하세요">
+                    <button class="btn btn-secondary" type="button" onclick="resetSearch('A')">❌</button> <!-- 리셋 버튼 추가 -->
+                    <button class="btn btn-primary search" type="button" onclick="searchPosts('A')">검색</button>
+                </div>
+            </form>
             <!-- 게시글 목록 테이블 (자유게시판) -->
             <table class="table">
                 <thead>
@@ -45,6 +52,13 @@
         </div>
 
         <div class="tab-pane fade" id="B" role="tabpanel">
+            <form th:action="@{list}" method="get" onsubmit="return false;">
+                <div class="input-group">
+                    <input id="searchWordB" type="text" class="form-control" placeholder="검색어를 입력하세요">
+                    <button class="btn btn-secondary" type="button" onclick="resetSearch('B')">❌</button> <!-- 리셋 버튼 추가 -->
+                    <button class="btn btn-primary search" type="button" onclick="searchPosts('B')">검색</button>
+                </div>
+            </form>
             <!-- 게시글 목록 테이블 (중고게시판) -->
             <table class="table">
                 <thead>

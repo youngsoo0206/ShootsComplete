@@ -11,10 +11,10 @@ import java.util.Random;
 public interface PostService {
 
     //글의 갯수 구하기
-    public int getListCount(String category);
+    public int getListCount(String category, String search_word);
 
     // 글 목록 보기
-    public List<Post> getPostList(int page, int limit, String category);
+    public List<Post> getPostList(int page, int limit, String category, String search_word);
 
     public List<Post> getAdminPostList(String search_word, int page, int limit);
 
