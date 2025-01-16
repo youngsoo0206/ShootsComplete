@@ -1,11 +1,9 @@
 package com.Shoots.controller;
 
 import com.Shoots.domain.*;
-import com.Shoots.service.BcBlacklistService;
-import com.Shoots.service.MatchService;
-import com.Shoots.service.PaymentService;
-import com.Shoots.service.RegularUserService;
+import com.Shoots.service.*;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +28,7 @@ import static java.util.Locale.filter;
 
 @Controller
 @RequestMapping("/business")
+@AllArgsConstructor
 public class BusinessController {
 
     private static final Logger logger = LoggerFactory.getLogger(BusinessController.class);
@@ -38,13 +37,8 @@ public class BusinessController {
     private PaymentService paymentService;
     private MatchService matchService;
     private BcBlacklistService bcBlacklistService;
-
-    public BusinessController(RegularUserService regularUserService, PaymentService paymentService, MatchService matchService, BcBlacklistService bcBlacklistService) {
-        this.regularUserService = regularUserService;
-        this.paymentService = paymentService;
-        this.matchService = matchService;
-        this.bcBlacklistService = bcBlacklistService;
-    }
+    private BusinessUserService businessUserService;
+    private BusinessInfoService businessInfoService;
 
     @GetMapping("/dashboardBefore")
     public String beforeBusinessDashboard(@AuthenticationPrincipal Object principal, HttpSession session) {
@@ -278,6 +272,23 @@ public class BusinessController {
         modelAndView.setViewName("business/businessBlackList");
         modelAndView.addObject("blackListSize", blackList.size());
         modelAndView.addObject("blackList", blackList);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/Settings")
+    public ModelAndView settings(HttpSession session, ModelAndView modelAndView){
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+
+        BusinessUser businessUser = businessUserService.getBusinessUserInfoById(business_idx);
+        BusinessInfo businessInfo = businessInfoService.getInfoById(business_idx);
+
+        logger.info("businessUser : " + businessUser.toString());
+
+        modelAndView.setViewName("business/businessSettings");
+        modelAndView.addObject("businessUser", businessUser);
+        modelAndView.addObject("businessInfo", businessInfo);
 
         return modelAndView;
     }
