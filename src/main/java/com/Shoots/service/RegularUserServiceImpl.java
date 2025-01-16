@@ -137,5 +137,10 @@ public class RegularUserServiceImpl implements RegularUserService {
         return regularUserMapper.regularUserList(id);
     }
 
+    @Override
+    public void updateRegularUser(RegularUser user) {
+        regularUserMapper.updateRegularUser(user);
+    }
+
 }
 

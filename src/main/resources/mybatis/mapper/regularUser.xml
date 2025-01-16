@@ -99,6 +99,9 @@
         select * from regular_user where user_id=#{id}
     </select>
 
-
+    <update id="updateRegularUser">
+        update regular_user set name=#{name}, jumin=#{jumin}, gender=#{gender}, email=#{email}, tel=#{tel}
+        where idx=#{idx}
+    </update>
 
 </mapper>
