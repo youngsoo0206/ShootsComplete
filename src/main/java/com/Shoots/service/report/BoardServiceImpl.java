@@ -21,4 +21,9 @@ public class BoardServiceImpl implements BoardService {
     public List<Board> selectBoardList() {
         return dao.selectBoardList();
     }
+
+    @Override
+    public Board selectByBoardNum(int num) {
+        return dao.selectBoardById(num);
+    }
 }

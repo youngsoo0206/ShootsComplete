@@ -23,6 +23,13 @@ public class ReportController {
         return "report/reportList";
     }
 
+    @GetMapping("/boardView")
+    public String view(@RequestParam int num, Model model) {
+        model.addAttribute("board", boardService.selectByBoardNum(num));
+        return "report/reportView";
+    }
+
+
     @GetMapping("/report2")
     public ModelAndView location2(@RequestParam(defaultValue = "1") int page, ModelAndView mv, HttpSession session) {
         mv.setViewName("report/post2");
