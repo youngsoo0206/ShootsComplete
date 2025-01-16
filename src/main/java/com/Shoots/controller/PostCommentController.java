@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -28,11 +29,12 @@ public class PostCommentController {
 
 
     @PostMapping(value="/list")
-    public Map<String, Object> CommentList(int post_idx, int state) {
+    public Map<String, Object> CommentList(@RequestParam("post_idx") int post_idx,@RequestParam("state") int state) {
         List<PostComment> list = postCommentService.getCommentList(post_idx, state);
+
         int listcount = postCommentService.getListCount(post_idx);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("list", list);
+        map.put("commentlist", list);
         map.put("listcount", listcount);
         map.put("state", state);
         logger.info("/comment/list");
@@ -56,8 +58,8 @@ public class PostCommentController {
     }
 
     @PostMapping(value = "/delete")
-    public int commentDelete(int num) {
-        return postCommentService.commentsDelete(num);
+    public int commentDelete(int comment_idx) {
+        return postCommentService.commentsDelete(comment_idx);
     }
 
 

@@ -19,12 +19,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getListCount(String category) {
-        return dao.getListCount(category); // 카테고리별 게시글 개수 조회
+    public int getListCount(String category, String search_word) {
+        HashMap<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        map.put("category", category);
+        return dao.getListCount(map); // 카테고리별 게시글 개수 조회
     }
 
     @Override
-    public List<Post> getPostList(int page, int limit, String category) {
+    public int getAdminListCount(String search_word) {
+        HashMap<String, Object> map = new HashMap<>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        return dao.getAdminListCount(map);
+    }
+
+
+    @Override
+    public List<Post> getPostList(int page, int limit, String category, String search_word) {
         // 페이지네이션을 위한 start와 end 계산
         HashMap<String, Object> map = new HashMap<>();
         int startrow = (page - 1) * limit + 1;
@@ -39,7 +54,7 @@ public class PostServiceImpl implements PostService {
         map.put("start", startrow);
         map.put("end", endrow);
         map.put("category", category); // 카테고리 추가
-
+        map.put("search_word", search_word);
         return dao.getPostList(map); // 카테고리를 포함한 게시글 목록 조회
     }
 
@@ -141,13 +156,6 @@ public class PostServiceImpl implements PostService {
         dao.deleteFileList(filename);
     }
 
-    @Override
-    public int getAdminListCount(String search_word) {
-        HashMap<String, Object> map = new HashMap<>();
-        if(!search_word.isEmpty()){
-            map.put("search_word", "%" + search_word + "%");
-        }
-        return dao.getAdminListCount(map);
-    }
+
 
 }
