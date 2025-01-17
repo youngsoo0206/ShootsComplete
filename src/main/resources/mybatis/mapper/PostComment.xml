@@ -16,6 +16,9 @@
         select count(*)
         from post_comment
         where post_idx = #{post_idx}
+        <if test="state == 1">
+            and is_secret = false -- 비밀댓글은 제외
+        </if>
     </select>
 
 
@@ -35,13 +38,14 @@
                 ORDER BY co.comment_idx ASC, co.comment_ref_id ASC
             </otherwise>
         </choose>
+
     </select>
 
 
     <insert id="commentsInsert">
         insert into post_comment
-        (post_idx, comment_ref_id, writer, content)
-        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
+        (post_idx, comment_ref_id, writer, content, is_secret)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content}, #{is_secret})
     </insert>
 
     <insert id="commentsReply">
@@ -53,7 +57,7 @@
 
     <update id="commentsUpdate">
         update post_comment
-        set content=#{content}
+        set content=#{content}, is_secret=#{is_secret}
         where comment_idx = #{comment_idx}
     </update>
 
