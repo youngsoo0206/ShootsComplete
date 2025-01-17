@@ -65,7 +65,7 @@
                 <div>
                     <h5> 매치 포인트 </h5>
                     <div class="div-detail">
-                        <table class="table">
+                        <table class="table matchTable">
                             <tr>
                                 <td><img th:src="@{/img/detail1.png}" width="30px"></td>
                                 <td><span>최소 <b th:text="${match.player_min}"></b>명 &nbsp; 최대 <b th:text="${match.player_max}"></b>명</span></td>
@@ -101,7 +101,66 @@
                 <hr>
                 <div>
                     <h5> 구장 정보 </h5>
-                    <div th:text="${session.idx}"></div>
+                    <div class="div-detail">
+                    <th:block th:if="${businessInfo != null}">
+                        <table class="table infoTable">
+                            <tr>
+                                <th> 주차장 </th>
+                                <td><span th:switch="${businessInfo.parking}">
+                                <span th:case="'yesPaid'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">유료주차</span></span>
+                                <span th:case="'yesFree'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">무료주차</span></span>
+                                <span th:case="'none'"><span style="color: #da0130">X</span></span>
+                            </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 샤워장 </th>
+                                <td>
+                                    <span th:if="${businessInfo.shower == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.shower == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 휴게실 / 락커룸 </th>
+                                <td>
+                                    <span th:if="${businessInfo.lounge == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.lounge == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 잔디 </th>
+                                <td><span th:text="${businessInfo.field_type}"></span></td>
+                            </tr>
+                            <tr>
+                                <th> CCTV / 보안 </th>
+                                <td>
+                                    <span th:if="${businessInfo.cctv == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.cctv == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 매점 / 자판기 </th>
+                                <td>
+                                    <span th:if="${businessInfo.kiosk == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.kiosk == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 물품대여 </th>
+                                <td><span th:text="${businessInfo.rental}"></span></td>
+                            </tr>
+                            <tr>
+                                <th> 운영시간 </th>
+                                <td><span th:text="${businessInfo.open_time}"></span> ~ <span th:text="${businessInfo.close_time}"></span></td>
+                            </tr>
+                        </table>
+                    </th:block>
+                    <th:block th:if="${businessInfo == null}">
+                        <div style="text-align: center; margin: 100px 0 100px 0">
+                            <span> 기업에서 제공되는 구장 정보가 존재하지 않습니다. </span>
+                        </div>
+                    </th:block>
+                    </div>
                 </div>
             </div>
             <div class="div2">
