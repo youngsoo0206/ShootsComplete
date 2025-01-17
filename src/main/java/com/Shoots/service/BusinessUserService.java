@@ -21,4 +21,5 @@ public interface BusinessUserService {
     public int listApprovedCount(String search_word);
     public String getEmail(int id);
 
+    BusinessUser getBusinessUserInfoById(Integer business_idx);
 }

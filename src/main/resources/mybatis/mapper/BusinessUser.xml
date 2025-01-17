@@ -84,4 +84,8 @@
         select email from business_user where business_idx=#{id}
     </select>
 
+    <select id="getBusinessUserInfoById" resultType="BusinessUser">
+        select * from business_user where business_idx = #{business_idx}
+    </select>
+
 </mapper>

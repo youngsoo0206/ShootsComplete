@@ -54,12 +54,12 @@
     <update id="commentsUpdate">
         update post_comment
         set content=#{content}
-        where num = #{num}
+        where comment_idx = #{comment_idx}
     </update>
 
     <delete id="commentsDelete">
-        delete post_comment
-        where num = #{num}
+        delete from post_comment
+        where comment_idx = #{comment_idx}
     </delete>
 
 </mapper>

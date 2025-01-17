@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/businessSettings.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="div-t1">
+            <table class="table">
+                <caption style="caption-side: top; font-size: 20px; margin-left: 5px">기업 정보</caption>
+                <tr>
+                    <th> 기업 아이디 </th>
+                    <td><span th:text="${businessUser.business_id}"></span></td>
+                </tr>
+                <tr>
+                    <th> 기업 이름 </th>
+                    <td><span th:text="${businessUser.business_name}"></span></td>
+                </tr>
+                <tr>
+                    <th> 사업자 번호 </th>
+                    <td><span th:text="${businessUser.business_number}"></span></td>
+                </tr>
+                <tr>
+                    <th> 대표번호 </th>
+                    <td><span th:text="${businessUser.tel}"></span></td>
+                </tr>
+                <tr>
+                    <th> 이메일 </th>
+                    <td><span th:text="${businessUser.email}"></span></td>
+                </tr>
+                <tr>
+                    <th> 우편번호 </th>
+                    <td><span th:text="${businessUser.post}"></span></td>
+                </tr>
+                <tr>
+                    <th> 주소 </th>
+                    <td><span th:text="${businessUser.address}"></span></td>
+                </tr>
+                <tr>
+                    <th> 승인 상태 </th>
+                    <td><span th:text="${businessUser.login_status}"></span></td>
+                </tr>
+            </table>
+            <div class="btnD">
+                <button class="custom-btn-update btn-15-update">기업 정보 수정</button>
+            </div>
+        </div>
+
+
+        <div class="div-t2">
+            <th:block th:if="${businessInfo != null}">
+                <table class="table">
+                    <caption style="caption-side: top; font-size: 20px; margin-left: 5px"> 구장 정보 </caption>
+                    <tr>
+                        <th> 기업 아이디 </th>
+                        <td><span th:text="${businessUser.business_id}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 기업 이름 </th>
+                        <td><span th:text="${businessUser.business_name}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 사업자 번호 </th>
+                        <td><span th:text="${businessUser.business_number}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 대표번호 </th>
+                        <td><span th:text="${businessUser.tel}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 이메일 </th>
+                        <td><span th:text="${businessUser.email}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 우편번호 </th>
+                        <td><span th:text="${businessUser.post}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 주소 </th>
+                        <td><span th:text="${businessUser.address}"></span></td>
+                    </tr>
+                    <tr>
+                        <th> 승인 상태 </th>
+                        <td><span th:text="${businessUser.login_status}"></span></td>
+                    </tr>
+                </table>
+                <div class="btnD">
+                    <button class="custom-btn-update btn-15-update">구장 정보 수정</button>
+                </div>
+            </th:block>
+            <th:block th:if="${businessInfo == null}">
+                <div style="text-align: center; margin: 100px 0 100px 0">
+                    <span> 저장된 구장 정보가 존재 하지 않습니다. </span><br>
+                    <span> 매칭글을 간편하게 올리기 위해 구장 정보를 등록해주시길 바랍니다. </span>
+                </div>
+                <div class="btnD">
+                    <button class="custom-btn btn-15" data-bs-toggle="modal" data-bs-target="#businessInfoInsertBtn">구장 정보 추가</button>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="businessInfoInsertBtn" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-p"> 구장 정보 추가 </p>
+                    <button type="button" class="btn-closeModal" data-bs-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/}" method="post">
+                        <input type="hidden" name="business_idx" th:value="${business_idx}">
+                        <div class="form-group">
+                            <span> 주차장 </span>
+                            <input type="checkbox" name="parking">
+                        </div>
+                        <div class="btn-bottom">
+                            <button type="submit" class="btn-block"> 저장 </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

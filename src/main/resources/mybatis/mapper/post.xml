@@ -11,41 +11,43 @@
     2. resultType속성은 Mapper인터페이스에 사용된 메서드의 반환 타입을 작성해줍니다.
 -->
 
-    <select id="getListCount" resultType="int">
-        select count(*) from post
-        WHERE category = #{category}
+
+
+    <sql id="search">
+        <if test="search_word != null">
+            where title like #{search_word}
+        </if>
+    </sql>
+
+
+
+    <select id="getAdminPostList" resultType="post">
+        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
+        FROM post p
+        INNER JOIN regular_user r ON p.writer = r.idx
+        <include refid="search" />
+        ORDER BY p.post_idx DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+
+    <select id="getAdminListCount">
+        select count(*) from post <include refid="search" />
     </select>
 
 
 
-    <!-- 문법 오류
-    where rnum >= #{start}
-    ==> 해결법
-       ① where rnum &gt;= #{start}
-       ② where rnum <![CDATA[   >=   ]]> #{start}
+    <sql id="search_">
+        <if test="search_word != null and search_word != ''">
+            AND title LIKE CONCAT('%', #{search_word}, '%')
+        </if>
+    </sql>
 
-    ==> 설명
-    ① HTML 문서는 '<', '>' 와 같은 마크업 문자들을 파싱해서 읽어들이는 구조입니다.
-        그래서 마크업 문자들을 작다(<), 크다(>)로 사용하기 위해서
-        '&lt;', '&gt;' 등의 escape 문자열(escape character)을 이용해야 합니다.
-
-    < : &lt;
-    > : &gt;
-
-    ② CDATA(Character DATA) XML 파서가 분석하지 않는 문자 데이터를 의미합니다.
-        사용하는 방법은 <![CDATA[ 와 ]]> 사이에 문자들을 넣으면 됩니다.
-    -->
-
-
-
-<!--        <select id="getPostList" resultType="post">-->
-<!--            SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id-->
-<!--            FROM post p-->
-<!--                     INNER JOIN regular_user r ON p.writer = r.idx-->
-<!--            WHERE p.category = #{category}-->
-<!--            ORDER BY p.post_idx DESC-->
-<!--                LIMIT #{offset}, #{pageSize}-->
-<!--        </select>-->
+    <select id="getListCount" resultType="int">
+        select count(*) from post
+        WHERE category = #{category}
+        <include refid="search_" />
+    </select>
 
 
     <select id="getPostList" resultType="post">
@@ -55,6 +57,7 @@
                  FROM post p
                           INNER JOIN regular_user r ON p.writer = r.idx
                  WHERE p.category = #{category}
+        <include refid="search_" />
              ) sub
         ORDER BY sub.post_idx DESC
             LIMIT #{offset}, #{pageSize}
@@ -137,25 +140,7 @@
     </delete>
 
 
-    <sql id="search">
-        <if test="search_word != null">
-            where title like #{search_word}
-        </if>
-    </sql>
 
-    <select id="getAdminPostList" resultType="post">
-        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
-        FROM post p
-                 INNER JOIN regular_user r ON p.writer = r.idx
-        <include refid="search" />
-        ORDER BY p.post_idx DESC
-            LIMIT #{offset}, #{pageSize}
-    </select>
-
-
-    <select id="getAdminListCount">
-        select count(*) from post <include refid="search" />
-    </select>
 
 
 </mapper>

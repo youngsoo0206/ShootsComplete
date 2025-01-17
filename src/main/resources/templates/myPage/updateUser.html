@@ -3,8 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>정보수정</title>
+    <script th:src="@{/js/myPageUpdate.js}"></script>
 </head>
 <body>
+    <div class="container">
+        <form th:action="@{updateUserProcess}" method="post" enctype="multipart/form-data" name="updateform">
+            <input type="hidden" name="idx" th:value="${user.idx}">
+            <input type="hidden" name="user_id" th:value="${user.user_id}">
+            <div class="input-field">
+                <label for="user_id" style="color: #B0B0B0;">아이디</label>
+                <input type="text" id="user_id" name="user_id" th:value="${user.user_id}" readonly>
+            </div>
+
+            <div class="input-field">
+                <label for="name" style="color: #B0B0B0;">이름</label>
+                <input type="text" id="name" name="name" th:value="${user.name}">
+            </div>
+
+            <div class="input-field">
+                <label for="jumin" style="color: #B0B0B0;">주민번호</label>
+                <input type="text" id="jumin" name="jumin" th:value="${user.jumin}"> &nbsp; - &nbsp;
+                <input type="text" id="gender" name="gender" maxlength="1" style="width: 10%" th:value="${user.gender}"> &nbsp; *  *  *  *  *  *
+            </div>
+
+            <div class="input-field">
+                <label for="email" style="color: #B0B0B0;">이메일</label>
+                <input type="text" id="email" name="email" th:value="${user.email}" readonly>
+            </div>
+
+            <div class="input-field">
+                <label for="tel" style="color: #B0B0B0;">전화번호</label>
+                <input type="text" id="tel" name="tel" th:value="${user.tel}">
+            </div>
+
+            <div class="button-container">
+                <button type="reset" class="reset-btn" onclick="history.go(-1)">취소</button>
+                <button type="submit" class="signup-btn">정보 수정</button>
+            </div>
+
+        </form>
+    </div>
 
 </body>
 </html>

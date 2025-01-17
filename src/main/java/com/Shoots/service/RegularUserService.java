@@ -21,4 +21,5 @@ public interface RegularUserService {
     public void setAdminUser(int id);
     public String getEmail(int id);
     public RegularUser regularUserList(String id);
+    public void updateRegularUser(RegularUser user);
 }
