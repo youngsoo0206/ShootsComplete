@@ -6,4 +6,13 @@
     <select id="getInfoById" resultType="BusinessInfo">
         select * from business_info where business_idx = #{business_idx}
     </select>
+
+    <insert id="insertBusinessInfo" parameterType="BusinessInfo">
+        insert into business_info (
+            business_idx, parking, shower, lounge, field_type, open_time, close_time, cctv, kiosk, rental
+        ) values (
+                  #{business_idx}, #{parking}, #{shower}, #{lounge},
+                  #{field_type}, #{open_time}, #{close_time}, #{cctv}, #{kiosk}, #{rental}
+                         )
+    </insert>
 </mapper>

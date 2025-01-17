@@ -76,13 +76,75 @@
                 </div>
             </div>
             <hr>
-<!--            <div class="form-group">-->
-<!--                <div class="divS">-->
-<!--                    <span> 특이사항 </span>-->
-<!--                    <textarea class="form-control" id="etc" name="etc" placeholder="구장 설명을 작성해 주세요 * 기업페이지 에서 기본값 설정이 가능합니다 *"></textarea>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <hr>-->
+            <div class="form-group">
+                <div class="divS">
+                    <span> 구장정보 </span>
+                    <button type="button" style="border: none; background: none" data-bs-container="body" data-bs-toggle="popover"
+                            data-bs-placement="right" data-bs-content="구장 정보는 매칭글 업로드 시 사용되는 정보입니다. 기업페이지 내 settings 탭 에서 등록/수정해 주시길 바랍니다.">
+                        <img th:src="@{/img/btn-info.png}" style="width: 15px; padding-bottom: 3px"/>
+                    </button>
+                    <th:block th:if="${businessInfo != null}">
+                        <table class="table">
+                            <tr>
+                                <th> 주차장 </th>
+                                <td><span th:switch="${businessInfo.parking}">
+                                <span th:case="'yesPaid'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">유료주차</span></span>
+                                <span th:case="'yesFree'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">무료주차</span></span>
+                                <span th:case="'none'"><span style="color: #da0130">X</span></span>
+                            </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 샤워장 </th>
+                                <td>
+                                    <span th:if="${businessInfo.shower == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.shower == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 휴게실 / 락커룸 </th>
+                                <td>
+                                    <span th:if="${businessInfo.lounge == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.lounge == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 잔디 </th>
+                                <td><span th:text="${businessInfo.field_type}"></span></td>
+                            </tr>
+                            <tr>
+                                <th> CCTV / 보안 </th>
+                                <td>
+                                    <span th:if="${businessInfo.cctv == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.cctv == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 매점 / 자판기 </th>
+                                <td>
+                                    <span th:if="${businessInfo.kiosk == true}"><span style="color: #0147d5">O</span></span>
+                                    <span th:if="${businessInfo.kiosk == false}"><span style="color: #da0130">X</span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th> 물품대여 </th>
+                                <td><span th:text="${businessInfo.rental}"></span></td>
+                            </tr>
+                            <tr>
+                                <th> 운영시간 </th>
+                                <td><span th:text="${businessInfo.open_time}"></span> ~ <span th:text="${businessInfo.close_time}"></span></td>
+                            </tr>
+                        </table>
+                    </th:block>
+                    <th:block th:if="${businessInfo == null}">
+                        <div style="text-align: center; margin: 100px 0 100px 0">
+                            <span> 저장된 구장 정보가 존재 하지 않습니다. </span><br>
+                            <span> 매칭글을 간편하게 올리기 위해 기업페이지 내 settings 탭 에서 구장 정보를 등록해주시길 바랍니다. </span>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+            <hr>
             <div class="btnD">
                 <button class="custom-btn btn-15 btn-list" onclick="matchList()">목록보기</button>
                 <button class="custom-btn btn-15 btn-reset" type="reset">다시작성</button>
@@ -90,5 +152,6 @@
             </div>
         </form>
     </div>
+    <th:block th:replace="~{fragments/footer :: footer}" />
 </body>
 </html>

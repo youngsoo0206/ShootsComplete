@@ -16,6 +16,10 @@ function populateTimeOptions() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    let popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
     populateTimeOptions();
 
     document.matchForm.onsubmit = function(event) {

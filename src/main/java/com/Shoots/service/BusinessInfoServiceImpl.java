@@ -18,4 +18,9 @@ public class BusinessInfoServiceImpl implements BusinessInfoService{
     public BusinessInfo getInfoById(Integer business_idx) {
         return dao.getInfoById(business_idx);
     }
+
+    @Override
+    public void insertBusinessInfo(BusinessInfo businessInfo) {
+        dao.insertBusinessInfo(businessInfo);
+    }
 }

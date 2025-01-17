@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Getter
 @Setter
 public class BusinessInfo {
@@ -12,7 +14,9 @@ public class BusinessInfo {
     private String parking;
     private boolean shower;
     private boolean lounge;
-    private String equipment;
+    private String field_type;
+    private LocalTime open_time;
+    private LocalTime close_time;
     private boolean cctv;
     private boolean kiosk;
     private String rental;

@@ -1,12 +1,7 @@
 package com.Shoots.controller;
 
-import com.Shoots.domain.Match;
-import com.Shoots.domain.PaginationResult;
-import com.Shoots.domain.Payment;
-import com.Shoots.domain.RegularUser;
-import com.Shoots.service.BcBlacklistService;
-import com.Shoots.service.MatchService;
-import com.Shoots.service.PaymentService;
+import com.Shoots.domain.*;
+import com.Shoots.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -35,6 +30,7 @@ public class MatchController {
     private MatchService matchService;
     private PaymentService paymentService;
     private BcBlacklistService bcBlacklistService;
+    private BusinessInfoService businessInfoService;
     private static final Logger logger = LoggerFactory.getLogger(MatchController.class);
 
 
@@ -95,8 +91,14 @@ public class MatchController {
     }
 
     @GetMapping("/write")
-    public String matchWrite() {
-        return "match/matchForm";
+    public ModelAndView matchWrite(HttpSession session, ModelAndView modelAndView) {
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+        BusinessInfo businessInfo = businessInfoService.getInfoById(business_idx);
+
+        modelAndView.setViewName("match/matchForm");
+        modelAndView.addObject("businessInfo", businessInfo);
+        return modelAndView;
     }
 
     @PostMapping("/add")
@@ -114,6 +116,7 @@ public class MatchController {
         Integer idx = (Integer) session.getAttribute("idx");
 
         Match match = matchService. getDetail(match_idx);
+        BusinessInfo businessInfo = businessInfoService.getInfoById(match.getWriter());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("HH시 mm분");
@@ -180,6 +183,7 @@ public class MatchController {
             modelAndView.addObject("payment", payment);
             modelAndView.addObject("isBlock", isBlock);
             modelAndView.addObject("playerCount", playerCount);
+            modelAndView.addObject("businessInfo", businessInfo);
         }
         return modelAndView;
     }
