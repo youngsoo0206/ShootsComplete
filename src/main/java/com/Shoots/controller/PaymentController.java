@@ -94,7 +94,7 @@ public class PaymentController {
 
             payment.setPayment_status("fail");
 
-            return ResponseEntity.status(500).body(response);
+            throw new RuntimeException("결제 처리 중 오류 발생", e);
         }
     }
 

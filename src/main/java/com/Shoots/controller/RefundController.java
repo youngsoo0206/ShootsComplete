@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class RefundController {
     private PaymentService paymentService;
     private final IamportService iamportService;
 
+    @Transactional
     @PostMapping("/refundProcess")
     public ResponseEntity<?> refundProcess(@RequestBody Payment payment) {
 
@@ -91,16 +93,14 @@ public class RefundController {
                     response.put("success", true);
                     response.put("message", "Refund success");
 
-
                     return ResponseEntity.ok(response.toString());
                 } else {
-                    logger.error("환불 실패 : " + responseRefund.body());
-                    return new ResponseEntity<>("{\"message\": \"" + responseRefund.body() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+                    logger.error("환불 실패 : 상태 코드 = {}, 메시지 = {}", responseRefund.statusCode(), responseRefund.body());
+                    throw new RuntimeException("환불 처리 중 오류가 발생했습니다. 상태 코드: " + responseRefund.statusCode());
                 }
 
             } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+            logger.error("환불 처리 중 오류 발생: ", e);
+            throw new RuntimeException("환불 처리 중 오류 발생", e);        }
     }
 }
