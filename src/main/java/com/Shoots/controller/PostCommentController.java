@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -40,6 +41,13 @@ public class PostCommentController {
         logger.info("/comment/list");
         return map;
     }
+
+//    // 비밀댓글 필터링: 비밀댓글은 작성자와 댓글 작성자만 볼 수 있음
+//    private List<PostComment> filterSecretComments(List<PostComment> comments, int userId) {
+//        return comments.stream()
+//                .filter(comment -> !comment.isSecret() || comment.getWriter() == userId) // 비밀댓글인 경우 작성자만 보기
+//                .collect(Collectors.toList());
+//    }
 
 
     @PostMapping(value = "/add")

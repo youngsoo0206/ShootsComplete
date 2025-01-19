@@ -35,10 +35,11 @@ nav.navbar {
 .div-player {text-align: center; margin: 20px 0 0 0}
 
 .div-detail {padding : 20px; font-size: 15px}
-.table {width: 40%;}
-.table th:nth-child(1) {width:5%}
-.table th:nth-child(2) {width:95%}
+.matchTable {width: 40%;}
+.matchTable th:nth-child(1) {width:5%}
+.matchTable th:nth-child(2) {width:95%}
 
+.infoTable {width: 80%!important; font-size: 15px}
 
 .place {font-size: 30px; font-weight: bold; margin: 10px 0 0 0}
 .address {font-size: 15px; color : dimgray; margin: 5px 0 0 0}
