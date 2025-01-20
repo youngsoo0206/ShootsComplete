@@ -13,14 +13,14 @@ public class PostComment {
     private String post_title;
     private String category;
     private int readcount;
-    private String isSecret;
+    private String is_secret;
 
-    public String getIsSecret() {
-        return isSecret;
+    public String getIs_secret() {
+        return is_secret;
     }
 
-    public void setIsSecret(String isSecret) {
-        this.isSecret = isSecret;
+    public void setIs_secret(String is_secret) {
+        this.is_secret = is_secret;
     }
 
     public int getReadcount() {
@@ -118,4 +118,5 @@ public class PostComment {
     public void setCategory(String category) {
         this.category = category;
     }
+
 }

@@ -244,8 +244,8 @@
         const impUid = document.getElementById('refundButton').getAttribute('data-imp_uid');
         const merchantUid = document.getElementById('refundButton').getAttribute('data-merchant_uid');
         const refundAmount = document.getElementById('refundButton').getAttribute('data-amount');
-        const matchIdx = document.getElementById('paymentButton').getAttribute('data-matchIdx');
-        const buyerIdx = document.getElementById('paymentButton').getAttribute('data-buyer');
+        const matchIdx = document.getElementById('refundButton').getAttribute('data-matchIdx');
+        const buyerIdx = document.getElementById('refundButton').getAttribute('data-buyer');
 
         console.log("impUid = " + impUid)
         console.log("merchantUid = " + merchantUid)

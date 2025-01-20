@@ -9,4 +9,5 @@ public interface BoardService {
     List<Board> selectBoardList();
 
     Board selectByBoardNum(int num);
+
 }
