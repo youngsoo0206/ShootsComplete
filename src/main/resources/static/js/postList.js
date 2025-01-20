@@ -174,9 +174,12 @@ function updatePostList(data, category) {
                 row.append('<td class="jtdI">-</td>');  // 이미지가 없으면 대시(-)로 표시
             }
 
-            row.append('<td class = "jtdt"><a href="detail?num=' + post.post_idx + '">'
+            row.append('<td class="jtdt"><a href="detail?num=' + post.post_idx + '">'
                 + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
-                + '&nbsp;&nbsp;' + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>' + '<br>' + '<br>' + post.price + '원</td>');
+                + '&nbsp;&nbsp;' + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>'
+                + '<br><br>' + post.price + '원' + '<br><br>'
+                + '거래상태: ' + (post.status === 'available' ? '거래 가능' : (post.status === 'completed' ? '판매 완료' : ''))
+                + '</td>');
             row.append('<td class = "jtdw">' + post.user_id + '</td>');
             row.append('<td class = "jtdr">' + post.register_date + '</td>');
             row.append('<td class = "jtdc">' + post.readcount + '</td>');

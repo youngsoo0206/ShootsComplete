@@ -23,6 +23,8 @@ public class PostCommentServiceImpl implements PostCommentService {
         return dao.getListCount(post_idx);
     }
 
+
+
     @Override
     public List<PostComment> getCommentList(int post_idx, int state) {
 

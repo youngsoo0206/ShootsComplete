@@ -19,9 +19,13 @@
 <div class="container">
 	<form th:action="modifyAction" method="post" name="modifyform" enctype="multipart/form-data">
 		<input type="hidden" name="post_idx" th:value="${postdata.post_idx}"/>
-<!--		<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>-->
+<!--	<input type="hidden" name="existing_file" th:value="${postdata.post_original}"/>-->
 		<input type="hidden" name="remove_file" th:value="false"/>
 		<input type="hidden" name="category" th:value="${postdata.category}">
+
+		<!--거래 상태-->
+<!--		<input type="hidden" name="status" th:value="${postdata.status}">-->
+
 		<!-- 기존 파일 경로와 원본 파일명 hidden input 추가 -->
 		<input type="hidden" id="existingFilePath" name="existingFilePath" th:value="${postdata.post_file}">
 		<input type="hidden" id="existingFileName" name="existingFileName" th:value="${postdata.post_original}">
@@ -50,6 +54,11 @@
 		<div class="form-group" th:if="${postdata.category == 'B'}">
 			<label for="priceInput">가격</label>
 			<input name="price" id="priceInput" type="text" class="form-control" th:value="${postdata.price}" placeholder="가격을 입력해주세요"/>
+			<br>
+			<label for="priceInput">거래 표시</label>
+			<input type="radio" name="status" id="available" th:value="available" th:checked="${postdata.status == 'available'}" required><span>거래가능</span>
+			<input type="radio" name="status" id="completed" th:value="completed" th:checked="${postdata.status == 'completed'}" required><span>판매완료</span>
+
 		</div>
 
 		<!-- 원문글인 경우에만 파일 첨부 수정 가능 -->
@@ -71,6 +80,27 @@
 </div>
 
 <script>
+
+	document.addEventListener("DOMContentLoaded", function () {
+		const availableRadio = document.getElementById('available');
+		const completedRadio = document.getElementById('completed');
+		const statusInput = document.getElementById('status');
+
+		// // 기본값은 available로 설정
+		// if (!availableRadio.checked && !completedRadio.checked) {
+		// 	availableRadio.checked = true;
+		// 	statusInput.value = 'available';
+		// }
+
+		// radio 버튼 클릭 시 status 값 업데이트
+		availableRadio.addEventListener('click', function() {
+			statusInput.value = 'available';
+		});
+		completedRadio.addEventListener('click', function() {
+			statusInput.value = 'completed';
+		});
+	});
+
 
 	document.addEventListener("DOMContentLoaded", function () {
 		const form = document.querySelector("form[name='modifyform']");
