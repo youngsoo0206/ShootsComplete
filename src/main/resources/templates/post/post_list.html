@@ -14,6 +14,9 @@
 
 
 <div class="container">
+
+    <input type="hidden" name="status" th:value="${status}">
+
     <!-- 카테고리 선택 탭 -->
     <ul class="nav nav-tabs" id="categoryTab" role="tablist">
         <li class="nav-item">
@@ -86,6 +89,9 @@
         <button type="button" class="btn btn-info btnw" onclick="postWrite()">글 작성</button>
     </th:block>
 </div>
+
+
+
 
 </body>
 </html>
