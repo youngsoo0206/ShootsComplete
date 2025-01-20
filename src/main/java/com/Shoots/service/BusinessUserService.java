@@ -22,4 +22,6 @@ public interface BusinessUserService {
     public String getEmail(int id);
 
     BusinessUser getBusinessUserInfoById(Integer business_idx);
+
+    BusinessUser getBusinessUserAddressById(String businessId);
 }

@@ -88,4 +88,7 @@
         select * from business_user where business_idx = #{business_idx}
     </select>
 
+    <select id="getBusinessUserAddressById" resultType="BusinessUser">
+        select business_idx, address from business_user where business_id = #{business_id}
+    </select>
 </mapper>
