@@ -22,4 +22,5 @@ public interface RegularUserService {
     public String getEmail(int id);
     public RegularUser regularUserList(String id);
     public void updateRegularUser(RegularUser user);
+    public int invalidUserId(String id);
 }

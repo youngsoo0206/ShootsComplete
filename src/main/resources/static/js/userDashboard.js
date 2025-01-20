@@ -9,4 +9,37 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+    $('#Post').on('click', function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/myPage/myPostList',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
+    $('#Inquiry').on('click', function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/myPage/myInquiryList',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
+
 });

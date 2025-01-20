@@ -73,6 +73,10 @@
         where inquiry_idx = #{inquiry_idx}
     </delete>
 
+    <sql id="search_">
+        where title like #{search_word}
+    </sql>
+
     <select id="getInquiryAdminList">
         select i.*, r.user_id, b.business_id
         from inquiry i
@@ -95,6 +99,13 @@
         WHERE i.inquiry_idx = #{inquiry_idx};
     </select>
 
+    <select id="getMyInquiryList">
+        select * from inquiry where inquiry_ref_idx=#{id}
+    </select>
+
+    <select id="getMyInquiryListCount">
+        select count(*) from inquiry where inquiry_reF_idx=#{id}
+    </select>
 
 
 

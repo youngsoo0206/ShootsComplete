@@ -76,4 +76,15 @@ public class InquiryServiceImpl implements InquiryService {
         return  result == 1;
     }
 
+    @Override
+    public List<Inquiry> getMyInquiryList(int id) {
+        return inquiryMapper.getMyInquiryList(id);
+    }
+
+    @Override
+    public int getMyInquiryListCount(int id) {
+        return inquiryMapper.getMyInquiryListCount(id);
+    }
+
+
 }
