@@ -1,6 +1,7 @@
 package com.Shoots.service.report;
 
 import com.Shoots.domain.Board;
+import com.Shoots.domain.Report;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -16,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ReportController {
 
     BoardService boardService;
+    ReportService reportService;
 
     @GetMapping("/report")
     public String location(Model model) {
         model.addAttribute("boardList", boardService.selectBoardList());
+        model.addAttribute("report", reportService.selectReportedUsers("ReporterName"));
         return "report/reportList";
     }
 

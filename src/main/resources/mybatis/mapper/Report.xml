@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Shoots.service.report.ReportMapper">
+
+    <insert id="insertReport">
+        insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
+        values(#{reporterUser}, #{reportedUser}, #{category},
+               COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0)
+              );
+    </insert>
+
+    <select id="selectReportedUsers" resultType="Report">
+        select * from report
+        where reporterUser=#{reporter};
+    </select>
+
+</mapper>
