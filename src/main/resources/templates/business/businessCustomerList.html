@@ -53,7 +53,7 @@
                                 <span th:if="${user.gender == 1 || user.gender == 3}">남자</span>
                                 <span th:if="${user.gender == 2 || user.gender == 4}">여자</span>
                             </td>
-                            <td><span th:text="${user.tel}"></span></td>
+                            <td>[[${#strings.substring(user.tel, 0, 3)}]]-[[${#strings.substring(user.tel, 3, 7)}]]-[[${#strings.substring(user.tel, 7)}]]</td>
                             <td><span th:text="${user.email}"></span></td>
                             <td><span th:text="${user.cnt}"></span></span></td>
 
