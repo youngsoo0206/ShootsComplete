@@ -20,16 +20,26 @@ public class Post {
     private int commentCount;  // 댓글 수 추가
     private String user_file;
     private String post_original; //첨부될 파일의 이름
+    private String status;
+
+    private String is_secret;
+
+    public String getIs_secret() {
+        return is_secret;
+    }
+
+    public void setIs_secret(String is_secret) {
+        this.is_secret = is_secret;
+    }
 
 
-//    public String getExistingFile() {
-//        return this.post_file != null ? this.post_file : "";  // 기존 파일명
-//    }
-//
-//    public String getExistingFileOriginal() {
-//        return this.post_original != null ? this.post_original : "";  // 기존 원본 파일명
-//    }
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getPost_original() {
         return post_original;

@@ -51,7 +51,7 @@
 
 
     <select id="getPostList" resultType="post">
-        SELECT sub.post_idx, sub.writer, sub.category, sub.title, sub.content, sub.post_file, sub.price, sub.register_date, sub.readcount, sub.user_id, sub.commentCount
+        SELECT sub.post_idx, sub.writer, sub.category, sub.title, sub.content, sub.post_file, sub.price, sub.register_date, sub.readcount, sub.status, sub.user_id, sub.commentCount
         FROM (
                  SELECT p.*, r.user_id, (SELECT COUNT(comment_idx) FROM post_comment c WHERE c.post_idx = p.post_idx) AS commentCount
                  FROM post p
@@ -68,10 +68,10 @@
     <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_idx">
         insert into post
         (writer, category, title, content,
-         post_file, post_original, price, register_date, readcount)
+         post_file, post_original, price, register_date, readcount, status)
         values
             (#{writer}, #{category}, #{title}, #{content},
-             #{post_file}, #{post_original}, #{price}, current_timestamp, #{readcount})
+             #{post_file}, #{post_original}, #{price}, current_timestamp, #{readcount}, #{status})
     </insert>
 
 
@@ -115,7 +115,8 @@
             content=#{content},
             price=#{price},
             post_file=#{post_file},
-            post_original=#{post_original}
+            post_original=#{post_original},
+            status=#{status}
         where post_idx = #{post_idx}
     </update>
 
@@ -139,8 +140,13 @@
         where post_file=#{file_name}
     </delete>
 
+    <select id="getMyPostList">
+        select * from post
+                 where writer=#{id} order by post_idx desc
+    </select>
 
-
-
+    <select id="getMyPostListCount">
+        select count(*) from post where writer=#{id}
+    </select>
 
 </mapper>

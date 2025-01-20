@@ -2,6 +2,7 @@ package com.Shoots.service;
 
 
 import com.Shoots.domain.PostComment;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 

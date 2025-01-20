@@ -24,6 +24,43 @@
         <img th:src="@{/img/zoomIn.png}" onclick="zoomIn()">
         <img th:src="@{/img/zoomOut.png}" onclick="zoomOut()">
     </div>
-
+    <hr style="width: 60%; margin: 0 auto; margin-top: 30px">
+    <div>
+        <th:block th:if="${list != null}">
+            <div style="display: flex; justify-content: center; gap: 20px">
+                <input name="search_word" type="text" class="form-control" placeholder="풋살장 이름 및 위치를 검색하세요" th:value="${search_word}">
+                <button class="custom-btn-top btn-15-top">검색</button>
+                <button class="custom-btn-all btn-15-all">전체목록</button>
+            </div>
+            <div id="matchListContainer">
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th> 풋살장 </th>
+                        <th> 위치 </th>
+                        <th> 대표번호 </th>
+                        <th> 이메일 </th>
+                        <th> 신청하러 가기 </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="businessUser : ${list}">
+                    <tr>
+                        <td><span th:text="${businessUser.business_name}"></span></td>
+                        <td><span th:text="${businessUser.address}"></span></td>
+                        <td><span th:text="${businessUser.tel}"></span></td>
+                        <td><span th:text="${businessUser.email}"></span></td>
+                        <td><button type="button" class="btn-apply">신청하러가기</button></td>
+                    </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+        </th:block>
+        <th:block th:if="${list == null}">
+            <div style="text-align: center; margin: 100px 0 100px 0"><p> 연계된 기업이 없습니다. </p></div>
+        </th:block>
+    </div>
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

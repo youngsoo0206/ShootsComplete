@@ -16,9 +16,9 @@
         select count(*)
         from post_comment
         where post_idx = #{post_idx}
-        <if test="state == 1">
-            and is_secret = false -- 비밀댓글은 제외
-        </if>
+<!--        <if test="state == 1">-->
+<!--            and is_secret = false &#45;&#45; 비밀댓글은 제외-->
+<!--        </if>-->
     </select>
 
 
@@ -44,8 +44,8 @@
 
     <insert id="commentsInsert">
         insert into post_comment
-        (post_idx, comment_ref_id, writer, content, is_secret)
-        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content}, #{is_secret})
+        (post_idx, comment_ref_id, writer, content)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
     </insert>
 
     <insert id="commentsReply">
@@ -57,7 +57,7 @@
 
     <update id="commentsUpdate">
         update post_comment
-        set content=#{content}, is_secret=#{is_secret}
+        set content=#{content}
         where comment_idx = #{comment_idx}
     </update>
 

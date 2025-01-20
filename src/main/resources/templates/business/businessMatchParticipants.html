@@ -41,6 +41,7 @@
                     </h2>
                     <div th:id="'collapse' + ${match.match_idx}"  class="accordion-collapse collapse" th:aria-labelledby="'heading' + ${match.match_idx}" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
+                            <th:block th:if="${results != null}">
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -63,7 +64,10 @@
                                         <td><span th:text="${result['user_id']}"></span></td>
                                         <td><span th:text="${result['name']}"></span></td>
                                         <td><span th:text="${result['jumin']}"></span></td>
-                                        <td><span th:text="${result['tel']}"></span></td>
+                                        <td><span th:text="${#strings.substring(result['tel'], 0, 3) + '-'
+                                              + #strings.substring(result['tel'], 3, 7) + '-'
+                                              + #strings.substring(result['tel'], 7)}"></span>
+                                        </td>
                                         <td><span th:text="${result['email']}"></span></td>
                                         <td><span th:text="${result['PAYMENT_METHOD']}"></span></td>
                                         <td><span th:text="${result['PAYMENT_AMOUNT']}"></span></td>
@@ -83,6 +87,7 @@
                                     </div>
                                 </tbody>
                             </table>
+                            </th:block>
                         </div>
                     </div>
                 </th:block>
@@ -90,7 +95,7 @@
         </div>
         </th:block>
         <th:block th:if="${list == 0}">
-            <div style="text-align: center; margin: 100px 0 100px 0"><p> 고객리스트가 존재하지 않습니다 </p></div>
+            <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치리스트와 고객리스트가 존재하지 않습니다 </p></div>
         </th:block>
     </div>
 </body>

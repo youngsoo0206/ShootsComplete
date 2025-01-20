@@ -301,4 +301,12 @@ public class BusinessController {
 
         return "redirect:/business/dashboard";
     }
+
+    @PostMapping("/updateInfo")
+    public String BusinessInfoUpdate(BusinessInfo businessInfo) {
+
+        businessInfoService.updateBusinessInfo(businessInfo);
+
+        return "redirect:/business/dashboard";
+    }
 }

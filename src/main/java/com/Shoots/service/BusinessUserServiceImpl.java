@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BusinessUserServiceImpl implements BusinessUserService {
@@ -152,5 +153,35 @@ public class BusinessUserServiceImpl implements BusinessUserService {
     @Override
     public BusinessUser getBusinessUserInfoById(Integer business_idx) {
         return businessUserMapper.getBusinessUserInfoById(business_idx);
+    }
+
+    @Override
+    public BusinessUser getBusinessUserAddressById(String business_id) {
+        return businessUserMapper.getBusinessUserAddressById(business_id);
+    }
+
+    @Override
+    public List<Integer> getAllBusinessIndexes() {
+        return businessUserMapper.getAllBusinessIndexes();
+    }
+
+    @Override
+    public Map<Integer, String> getBusinessNames(List<Integer> businessIdxList) {
+        List<BusinessUser> businesses = businessUserMapper.getBusinessNames(businessIdxList);
+        return businesses.stream()
+                .collect(Collectors.toMap(BusinessUser::getBusiness_idx, BusinessUser::getBusiness_name));
+    }
+
+    @Override
+    public List<BusinessUser> getListForLocation(String search_word, int page, int limit) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(!search_word.isEmpty()){
+            map.put("search_word", "%" + search_word + "%");
+        }
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return businessUserMapper.getListForLocation(map);
     }
 }

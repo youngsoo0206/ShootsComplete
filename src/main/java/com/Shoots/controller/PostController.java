@@ -51,6 +51,7 @@ public class PostController {
     public ModelAndView postlist(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(defaultValue = "A") String category, // 기본 카테고리 추가
+            @RequestParam(defaultValue = "available") String status, // 기본값 추가
             @RequestParam(defaultValue = "") String search_word,
             ModelAndView mv,
             HttpSession session) {
@@ -64,7 +65,7 @@ public class PostController {
 //        int end = limit; // 끝 값은 limit과 동일
 
         int listcount = postService.getListCount(category, search_word); // 총 리스트 수를 받아옴
-        List<Post> list = postService.getPostList(page, limit, category, search_word); // 리스트를 받아옴
+        List<Post> list = postService.getPostList(page, limit, category, search_word, search_word); // 리스트를 받아옴
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -78,6 +79,7 @@ public class PostController {
         mv.addObject("limit", limit);
         mv.addObject("pagination", result); // PaginationResult 객체를 전달
         mv.addObject("category", category);
+        mv.addObject("status", status);
         mv.addObject("search_word", search_word);
         return mv;
     }
@@ -89,11 +91,12 @@ public class PostController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "A") String category, // 기본값 추가
+            @RequestParam(defaultValue = "available") String status, // 기본값 추가
             @RequestParam(defaultValue = "") String search_word
     ) {
 
         int listcount = postService.getListCount(category, search_word);
-        List<Post> list = postService.getPostList(page, limit, category, search_word);
+        List<Post> list = postService.getPostList(page, limit, category, status, search_word);
 
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
@@ -107,6 +110,7 @@ public class PostController {
         map.put("limit", limit);
         map.put("pagination", result);
         map.put("category", category);
+        map.put("status", status);
         map.put("search_word", search_word);
         return map;
     }
@@ -156,6 +160,13 @@ public class PostController {
             //post.setPrice(post.getPrice()); // 가격이 입력되었을 경우 유지
         } else {
             post.setPrice(0); // 기타 카테고리는 가격을 0으로 설정
+        }
+
+        // 거래상태 처리
+        if ("completed".equals(post.getStatus())) {
+            post.setStatus(post.getStatus()); //
+        } else {
+            post.setStatus("available"); //
         }
 
         postService.insertPost(post); // 저장메서드 호출
@@ -260,7 +271,7 @@ public class PostController {
         String saveFolder = "C:/upload";  // 실제 경로로 변경
         //String saveFolder = request.getSession().getServletContext().getRealPath("resources/upload");
 
-
+        //System.out.println("Received status: " + postdata.getStatus()); // 디버깅용 로그
 
         // 파일 삭제 요청이 있는 경우
         if ("true".equals(removeFile) && existingFilePath != null && !existingFilePath.isEmpty()) {

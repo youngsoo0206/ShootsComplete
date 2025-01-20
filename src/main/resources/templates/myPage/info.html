@@ -12,16 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>마이페이지</title>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <style>
-        h1{
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-        table{text-align:center}
-        .container{width:50%}
 
-    </style>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -49,41 +40,19 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">MyPage</div>
-                    <a class="nav-link" th:href="@{info(id=${session.id})}">
+                    <a class="nav-link" th:href="@{info}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Info
                     </a>
                     <div class="sb-sidenav-menu-heading">Interface</div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Matchs
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <div class="nav-link" id="MatchPost">Match Post</div>
-                            <div class="nav-link" id="Sales">Sales</div>
-                        </nav>
-                    </div>
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Customers
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link" id="MatchParticipants">Match Participants</a>
-                            <a class="nav-link" id="CustomerList">Customer List </a>
-                            <a class="nav-link" id="BlackList">Black list</a>
-                        </nav>
-                    </div>
-                    <a class="nav-link" id="Inquiry">
+
+                    <a class="nav-link" id="Post">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Inquiry
+                        Post
                     </a>
-                    <a class="nav-link" id="Charts">
+                    <a class="nav-link" id="Inquiry">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
+                        Inquiry
                     </a>
                     <hr>
                     <a class="nav-link" id="Settings">
@@ -98,9 +67,9 @@
     <!--  메인  -->
     <div id="layoutSidenav_content">
 
-    <div class="container">
-        <h1>내 정보</h1>
-        <table class="table">
+    <div class="container" style="width:50%">
+        <h1 style="text-align: center; margin-top: 30px; margin-bottom: 20px">내 정보</h1>
+        <table class="table" style="text-align: center">
             <tr>
                 <th>아이디</th>
                 <td th:text="${user.user_id}"></td>
@@ -144,10 +113,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/userDashboard.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<script src="assets/demo/chart-area-demo.js"></script>
-<script src="assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="js/datatables-simple-demo.js"></script>
 </body>
 <th:block th:replace="~{fragments/footer :: footer}" />
 </html>

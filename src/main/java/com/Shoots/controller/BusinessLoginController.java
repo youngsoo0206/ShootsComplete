@@ -2,6 +2,7 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.BusinessUser;
 import com.Shoots.domain.MailVO;
+import com.Shoots.redis.RedisService;
 import com.Shoots.service.BusinessUserService;
 import com.Shoots.task.SendMail;
 import jakarta.servlet.http.Cookie;
@@ -32,12 +33,13 @@ public class BusinessLoginController {
     private BCryptPasswordEncoder passwordEncoder;
     private SendMail sendMail;
 
+    private final RedisService redisService;
 
-
-    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail) {
+    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail, RedisService redisService) {
         this.businessUserService = businessUserService;
         this.passwordEncoder = passwordEncoder;
         this.sendMail = sendMail;
+        this.redisService = redisService;
     }
 
 
@@ -82,6 +84,10 @@ public class BusinessLoginController {
 
         //삽입 성공하면?
         if (result == 1) {
+
+            BusinessUser savedUser = businessUserService.getBusinessUserAddressById(user.getBusiness_id());
+            redisService.saveAddressData(savedUser.getBusiness_idx(), savedUser.getAddress());
+
             out.println("<script type='text/javascript'>");
             out.println("alert('기업회원가입에 성공하셨습니다!');");
             out.println("window.location.href='/Shoots/login';");
