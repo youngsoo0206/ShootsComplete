@@ -91,4 +91,41 @@
     <select id="getBusinessUserAddressById" resultType="BusinessUser">
         select business_idx, address from business_user where business_id = #{business_id}
     </select>
+
+    <select id="getAllBusinessIndexes" resultType="java.lang.Integer" >
+        select business_idx from business_user where login_status = 'access';
+    </select>
+
+    <select id="getBusinessNames" resultMap="businessUserResultMap">
+        select business_idx, business_name
+        from business_user
+        where business_idx in
+        <foreach item="idx" collection="businessIdxList" open="(" separator="," close=")">
+            #{idx}
+        </foreach>
+    </select>
+
+    <resultMap id="businessUserResultMap" type="com.Shoots.domain.BusinessUser">
+        <id property="business_idx" column="business_idx" />
+        <result property="business_name" column="business_name" />
+    </resultMap>
+
+    <select id="getAddressByBusinessIdx" resultType="String">
+        select address
+        from business_user
+        where business_idx = #{businessIdx}
+    </select>
+
+    <sql id="searchForLocation">
+        <if test="search_word != null">
+            where business_name like #{search_word} or address like #{search_word}
+        </if>
+    </sql>
+
+    <select id="getListForLocation">
+        select * from business_user
+        <include refid="searchForLocation" />
+        order by business_idx desc
+        LIMIT #{offset}, #{pageSize}
+    </select>
 </mapper>
