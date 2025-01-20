@@ -16,16 +16,4 @@
         select * from board where board_idx=#{num};
     </select>
 
-    <insert id="insertReport">
-        insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
-        values(#{reporterUser}, #{reportedUser}, #{category},
-               COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0)
-              );
-    </insert>
-
-    <select id="selectReporterUsers">
-        select * from report
-        where reporterUser=#{reporterUser};
-    </select>
-
 </mapper>

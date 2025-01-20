@@ -6,6 +6,7 @@
 <head>
 <!--    <th:block th:replace="~{fragments/header :: header}" />-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <style>
         nav.navbar {
             position: fixed;
@@ -17,20 +18,46 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
+    <script>
+        $(function () {
+            $('.report').on('click', function (){
+                if(confirm($(this).closest('tr').find('.reportIdx').text() + "신고하시겠습니까?")){
+                    alert('신고가 접수 되었습니다.');
+                    //fetch start
+                    const formdata = {
+
+                    };
+                    fetch('/some-endpoint',{
+                        method:'GET',
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify(formdata)
+                    }).then(resp => resp.json());
+                    //fetch end
+                }
+
+            });
+        });
+
+        function ajax() {
+        }
+    </script>
 </head>
 <body>
     <table>
-        <tbody th:each="board : ${boardList}" >
-            <tr>
-                <th:block th:if>
-                    <td><a th:href="@{'boardView?num='+${board.board_idx}}">[[${board.board_idx}]]</a></td>
+        <tbody th:each="board : ${boardList}" id="tbody1">
+            <th:block th:if="${board.writer != report.reported}">
+                <tr>
+                    <td><a th:href="@{'boardView?num='+${board.board_idx}}" class="reportIdx">[[${board.board_idx}]]</a></td>
                     <td>[[${board.title}]]</td>
                     <td>[[${board.writer}]]</td>
                     <td>[[${board.content}]]</td>
                     <td>[[${board.readcount}]]</td>
                     <td>[[${board.register_date}]]</td>
-                </th:block>
-            </tr>
+                    <td><a th:href="'#'" class="report">신고하기</a></td>
+                </tr>
+            </th:block>
         </tbody>
     </table>
 
