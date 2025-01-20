@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>정보수정</title>
-    <script th:src="@{/js/myPageUpdate.js}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/js/jquery-3.7.1.js}"></script>
 </head>
 <body>
     <div class="container">
@@ -12,7 +14,7 @@
             <input type="hidden" name="user_id" th:value="${user.user_id}">
             <div class="input-field">
                 <label for="user_id" style="color: #B0B0B0;">아이디</label>
-                <input type="text" id="user_id" name="user_id" th:value="${user.user_id}" readonly>
+                <input type="text" id="user_id" name="user_id" th:value="${user.user_id}">
             </div>
 
             <div class="input-field">
@@ -22,7 +24,7 @@
 
             <div class="input-field">
                 <label for="jumin" style="color: #B0B0B0;">주민번호</label>
-                <input type="text" id="jumin" name="jumin" th:value="${user.jumin}"> &nbsp; - &nbsp;
+                <input type="text" id="jumin" name="jumin" th:value="${user.jumin}" maxlength="6"> &nbsp; - &nbsp;
                 <input type="text" id="gender" name="gender" maxlength="1" style="width: 10%" th:value="${user.gender}"> &nbsp; *  *  *  *  *  *
             </div>
 
@@ -43,6 +45,6 @@
 
         </form>
     </div>
-
+    <script th:src="@{/js/myPageUpdate.js}"></script>
 </body>
 </html>

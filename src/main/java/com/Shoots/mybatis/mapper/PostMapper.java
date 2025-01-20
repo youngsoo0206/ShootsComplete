@@ -41,4 +41,8 @@ public interface PostMapper {
     public void deleteFileList(String filename);
 
     public int getAdminListCount(HashMap<String, Object> map);
+
+    public List<Post> getMyPostList(int id);
+
+    public int getMyPostListCount(int id);
 }

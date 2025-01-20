@@ -16,7 +16,7 @@ $(function(){
         }
 
         $.ajax({  //아이디 중복검사 : 개인회원
-            url	: "idcheck",
+            url	: "validId",
             data : {"id" : id},
             success	: function(resp){
                 if(resp == "-1"){//db에 해당 id가 없는 경우
@@ -68,7 +68,7 @@ $(function(){
 
 
     //개인회원가입 버튼 제출시 유효성 검사
-    $('form[name="regularJoinProcess"]').off('submit').submit(function(){
+    $('form[name="updateform"]').off('submit').submit(function(){
         const telPattern = /^[0-9]{8,13}$/;
         if (!telPattern.test($("input[name=tel]").val())) {
             alert("전화번호를 확인해 주세요.");

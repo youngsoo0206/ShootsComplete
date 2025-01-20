@@ -18,4 +18,6 @@ public interface InquiryMapper {
     public List<Inquiry> getInquiryAdminList(HashMap<String, Object> map);
     public int getAdminListCount();
     public int replyComplete(int inquiry_idx);
+    public List<Inquiry> getMyInquiryList(int id);
+    public int getMyInquiryListCount(int id);
 }

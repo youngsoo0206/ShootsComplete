@@ -104,4 +104,8 @@
         where idx=#{idx}
     </update>
 
+    <select id="invalidUserId">
+        select user_id from regular_user where user_id != (select user_id from regular_user where user_id=#{id})
+    </select>
+
 </mapper>

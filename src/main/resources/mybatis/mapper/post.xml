@@ -139,8 +139,13 @@
         where post_file=#{file_name}
     </delete>
 
+    <select id="getMyPostList">
+        select * from post
+                 where writer=#{id} order by post_idx desc
+    </select>
 
-
-
+    <select id="getMyPostListCount">
+        select count(*) from post where writer=#{id}
+    </select>
 
 </mapper>

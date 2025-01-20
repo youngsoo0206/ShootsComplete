@@ -350,6 +350,10 @@ public class AdminController {
         int listcount = inquiryService.getAdminListCount(); //총 리스트 수를 받아옴
         List<Inquiry> list = inquiryService.getInquiryAdminList(page, limit); //리스트를 받아옴
 
+        for(Inquiry i : list){
+            boolean replyExist = inquiryService.replyComplete(i.getInquiry_idx());
+            i.setHasReply(replyExist);
+        }
         PaginationResult result = new PaginationResult(page, limit, listcount);
 
         mv.setViewName("admin/inquiryList");

@@ -116,4 +116,10 @@ public interface PostService {
     //관리자용 listcount
     int getAdminListCount(String search_word);
 
+    //MyPage 내가 쓴 post list
+    List<Post> getMyPostList(int id);
+
+    //MyPage 내가 쓴 post count
+    int getMyPostListCount(int id);
+
 }
