@@ -149,4 +149,17 @@
         select count(*) from post where writer=#{id}
     </select>
 
+
+    <update id="setAvailable">
+        update post
+        set status='available'
+        where post_idx=#{post_idx}
+    </update>
+
+    <update id="setCompleted">
+        update post
+        set status='completed'
+        where post_idx=#{post_idx}
+    </update>
+
 </mapper>
