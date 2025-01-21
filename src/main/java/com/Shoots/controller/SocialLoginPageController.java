@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping("/socialLogin")
-public class SocialLoginController {
+@RequestMapping("/socialLogin")
+public class SocialLoginPageController {
 
     @Value("${kakao.client_id}")
     private String client_id;
@@ -22,7 +22,7 @@ public class SocialLoginController {
         String kakaoLoginPath = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
         model.addAttribute("kakaoLoginPath", kakaoLoginPath);
 
-        return "login";
+        return "home/loginForm";
     }
 
 }

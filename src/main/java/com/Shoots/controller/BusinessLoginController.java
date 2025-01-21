@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,12 @@ public class BusinessLoginController {
     private BCryptPasswordEncoder passwordEncoder;
     private SendMail sendMail;
 
+    @Value("${kakao.client_id}")
+    private String client_id;
+
+    @Value("${kakao.redirect_uri}")
+    private String redirect_uri;
+
 
 
     public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail) {
@@ -47,6 +54,10 @@ public class BusinessLoginController {
         session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
         session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
 
+
+        //카카오톡 로그인을 위한 경로 설정.
+        String kakaoLoginPath = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        mv.addObject("kakaoLoginPath", kakaoLoginPath);
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
             logger.info("저장된 아이디 : " + userPrincipal.getName());
