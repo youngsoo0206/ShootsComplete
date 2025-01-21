@@ -14,7 +14,7 @@ $(function () {
 
                 // 서버에서 반환된 HTML에서 테이블만 추출하여 matchListContainer 갱신
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
+                const doc = par  ser.parseFromString(data, 'text/html');
                 const newTable = doc.querySelector('#matchListContainer table');
                 const matchListContainer = document.getElementById('matchListContainer');
 

@@ -3,6 +3,7 @@ package com.Shoots.service;
 import com.Shoots.domain.BusinessUser;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BusinessUserService {
     public int selectById(String id);
@@ -22,4 +23,12 @@ public interface BusinessUserService {
     public String getEmail(int id);
 
     BusinessUser getBusinessUserInfoById(Integer business_idx);
+
+    BusinessUser getBusinessUserAddressById(String businessId);
+
+    List<Integer> getAllBusinessIndexes();
+
+    Map<Integer, String> getBusinessNames(List<Integer> businessIdxList);
+
+    List<BusinessUser> getListForLocation(String searchWord, int page, int limit);
 }

@@ -17,6 +17,7 @@
 <input type="hidden" th:value="${postdata.post_idx}" id="post_idx" name="post_idx">
 <input type="hidden" th:value="${postdata.post_file}" th:name="filename">
 <input type="hidden" th:value="${postdata.post_original}" th:name="original">
+<input type="hidden" th:name="status" th:value="${postdata.status}">
 <!--<input type="hidden" th:value="0" th:name="comment_ref_id">-->
 <div class="container">
 	<!-- 게시글 정보 -->
@@ -70,6 +71,13 @@
 		<th:block th:if="${postdata.category == 'B'}">
 			<tr>
 				<td>가격: &nbsp; <span th:text="${postdata.price}"></span>원</td>
+<!--				<td>거래상태: &nbsp; <span th:text="${postdata.status}"></span></td>-->
+				<td>거래상태: &nbsp;
+					<span th:switch="${postdata.status}">
+						<span th:case="'available'">거래 가능</span>
+						<span th:case="'completed'">판매 완료</span>
+    				</span>
+				</td>
 			</tr>
 		</th:block>
 
@@ -164,53 +172,6 @@
 </div>
 <!-- 모달창 끝 -->
 
-<!--&lt;!&ndash; modal 시작 &ndash;&gt;-->
-<!--<div class="modal" id="myModal">-->
-<!--	<div class="modal-dialog">-->
-<!--		<div class="modal-content">-->
-<!--			&lt;!&ndash; Modal body &ndash;&gt;-->
-<!--			<div class="modal-body">-->
-<!--				<form name="deleteForm" th:action="@{delete}" method="post">-->
-<!--					&lt;!&ndash; http://localhost:8088/myhome4/detail?num=22-->
-<!--                         주소를 보면 num을 파라미터로 넘기고 있습니다.-->
-<!--                         이 값을 가져와서 ${param.num}를 사용-->
-<!--                         또는 ${boarddata.BOARD_NUM}-->
-<!--                        &ndash;&gt;-->
-<!--					<input type="hidden" name="num" th:value="${param.num}"-->
-<!--						   id="num">-->
-<!--					<button type="submit" class="btn btn-primary">전송</button>-->
-<!--					<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>-->
-<!--				</form>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; modal 끝 &ndash;&gt;-->
-
-
-<!--<script>-->
-<!--	$(function(){-->
-<!--		$('#delete-post-btn').click(function(){-->
-<!--			if (confirm("게시글을 삭제하시겠습니까?")) {-->
-<!--				$.ajax({-->
-<!--					type: "POST",-->
-<!--					url: "delete?num=${postdata.post_idx}",-->
-<!--					success: function(response) {-->
-<!--						alert("삭제되었습니다.");-->
-<!--						location.href = "../post/list";-->
-<!--					},-->
-<!--					error: function() {-->
-<!--						alert("삭제 실패. 다시 시도해주세요.");-->
-<!--					}-->
-<!--				});-->
-<!--			}-->
-<!--		});-->
-<!--	});-->
-
-<!--	// js에서 contextPath를 직접 선언할 수 없기에 jsp에서 선언하기 위해 있는 부분-->
-<!--	// const contextPath = /*[(${contextPath})]*/ "";-->
-<!--	// const role = /*[[${role}]]*/ "";-->
-<!--</script>-->
 
 </body>
 </html>

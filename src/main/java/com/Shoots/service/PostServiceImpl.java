@@ -37,9 +37,19 @@ public class PostServiceImpl implements PostService {
         return dao.getAdminListCount(map);
     }
 
+    @Override
+    public List<Post> getMyPostList(int id) {
+        return dao.getMyPostList(id);
+    }
 
     @Override
-    public List<Post> getPostList(int page, int limit, String category, String search_word) {
+    public int getMyPostListCount(int id) {
+        return dao.getMyPostListCount(id);
+    }
+
+
+    @Override
+    public List<Post> getPostList(int page, int limit, String category, String status, String search_word) {
         // 페이지네이션을 위한 start와 end 계산
         HashMap<String, Object> map = new HashMap<>();
         int startrow = (page - 1) * limit + 1;
@@ -54,6 +64,7 @@ public class PostServiceImpl implements PostService {
         map.put("start", startrow);
         map.put("end", endrow);
         map.put("category", category); // 카테고리 추가
+        map.put("status", status);
         map.put("search_word", search_word);
         return dao.getPostList(map); // 카테고리를 포함한 게시글 목록 조회
     }

@@ -24,4 +24,14 @@ public interface BusinessUserMapper {
     public int listApprovedCount(Map<String, Object> map);
     public String getEmail(int id);
     BusinessUser getBusinessUserInfoById(Integer business_idx);
+
+    BusinessUser getBusinessUserAddressById(String business_id);
+
+    List<Integer> getAllBusinessIndexes();
+
+    List<BusinessUser> getBusinessNames(List<Integer> businessIdxList);
+
+    String getAddressByBusinessIdx(int businessIdx);
+
+    List<BusinessUser> getListForLocation(Map<String, Object> map);
 }

@@ -14,7 +14,7 @@ public interface PostService {
     public int getListCount(String category, String search_word);
 
     // 글 목록 보기
-    public List<Post> getPostList(int page, int limit, String category, String search_word);
+    public List<Post> getPostList(int page, int limit, String category, String search_word, String searchWord);
 
     public List<Post> getAdminPostList(String search_word, int page, int limit);
 
@@ -115,5 +115,11 @@ public interface PostService {
 
     //관리자용 listcount
     int getAdminListCount(String search_word);
+
+    //MyPage 내가 쓴 post list
+    List<Post> getMyPostList(int id);
+
+    //MyPage 내가 쓴 post count
+    int getMyPostListCount(int id);
 
 }

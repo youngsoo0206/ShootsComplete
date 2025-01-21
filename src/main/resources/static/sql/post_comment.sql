@@ -12,6 +12,7 @@ CREATE TABLE post_comment (
               CONSTRAINT fk_writer_post_comment FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
 
+# is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N')), -- 비밀 댓글 여부
 
 ALTER TABLE post_comment
     ADD is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N'));

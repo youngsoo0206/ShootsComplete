@@ -2,6 +2,7 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.PostComment;
 import com.Shoots.service.PostCommentService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,8 @@ public class PostCommentController {
 
 
     @PostMapping(value="/list")
-    public Map<String, Object> CommentList(@RequestParam("post_idx") int post_idx,@RequestParam("state") int state) {
+    public Map<String, Object> CommentList(@RequestParam("post_idx") int post_idx,
+                                           @RequestParam("state") int state) {
         List<PostComment> list = postCommentService.getCommentList(post_idx, state);
 
         int listcount = postCommentService.getListCount(post_idx);
@@ -42,12 +44,7 @@ public class PostCommentController {
         return map;
     }
 
-//    // 비밀댓글 필터링: 비밀댓글은 작성자와 댓글 작성자만 볼 수 있음
-//    private List<PostComment> filterSecretComments(List<PostComment> comments, int userId) {
-//        return comments.stream()
-//                .filter(comment -> !comment.isSecret() || comment.getWriter() == userId) // 비밀댓글인 경우 작성자만 보기
-//                .collect(Collectors.toList());
-//    }
+
 
 
     @PostMapping(value = "/add")
