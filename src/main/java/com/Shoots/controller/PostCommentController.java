@@ -32,8 +32,9 @@ public class PostCommentController {
 
     @PostMapping(value="/list")
     public Map<String, Object> CommentList(@RequestParam("post_idx") int post_idx,
-                                           @RequestParam("state") int state) {
-        List<PostComment> list = postCommentService.getCommentList(post_idx, state);
+                                           @RequestParam("state") int state,
+                                           HttpSession session) {
+        List<PostComment> list = postCommentService.getCommentList(post_idx, state, session);
 
         int listcount = postCommentService.getListCount(post_idx);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -48,7 +49,9 @@ public class PostCommentController {
 
 
     @PostMapping(value = "/add")
-    public int commentAdd(PostComment co) {
+    public int commentAdd(PostComment co, HttpSession session) {
+        String user_id = (String) session.getAttribute("user_id");
+        co.setUser_id(user_id);
         return postCommentService.commentsInsert(co);
     }
 
