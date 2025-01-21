@@ -41,6 +41,11 @@ public class RegularUserServiceImpl implements RegularUserService {
         return user;
     }
 
+    @Override
+    public RegularUser findByKakaoUserId(String kakaoId) {
+        RegularUser user = regularUserMapper.findByKakaoUserId(kakaoId);
+        return user;
+    }
 
     @Override
     public int selectByIdPassword(String id, String password) {
@@ -62,6 +67,9 @@ public class RegularUserServiceImpl implements RegularUserService {
     public int insert(RegularUser user) {
         return regularUserMapper.insert(user);
     }
+
+    @Override
+    public int insert2(RegularUser user) {return regularUserMapper.insert2(user);}
 
     @Override
     public int selectByEmail(String email) {

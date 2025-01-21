@@ -12,12 +12,22 @@
         select * from regular_user where user_id = #{id}
     </select>
 
+    <select id="findByKakaoUserId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('Shoots', #{id})
+    </select>
+
 
     <insert id="insert">
         insert into regular_user (user_id, password, name, jumin, gender, tel, email)
         values (#{user_id}, #{password}, #{name},
                 #{jumin}, #{gender}, #{tel}, #{email}
                 )
+    </insert>
+
+    <insert id="insert2">
+        insert into regular_user (user_id, password, name)
+        values (#{user_id}, #{password}, #{name}
+               )
     </insert>
 
     <select id="selectByEmail" resultType="regularuser">
