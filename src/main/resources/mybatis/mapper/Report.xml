@@ -6,9 +6,7 @@
 
     <insert id="insertReport">
         insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
-        values(#{reporterUser}, #{reportedUser}, #{category},
-               COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0)
-              );
+        values( #{reporterUser}, #{reportedUser}, #{category}, COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
     </insert>
 
     <select id="selectReportedUsers" resultType="Report">

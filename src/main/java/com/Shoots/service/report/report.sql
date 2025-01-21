@@ -7,7 +7,11 @@ CREATE TABLE Report (
     PostIdx INT DEFAULT 0,
     CommentIdx INT DEFAULT 0
 );
+insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
+values('admin', 'userA', 'USER', 0, 0);
 
+select * from report
+where reporterUser='admin';
 # 신고 누름 > DB 등록
 # List 조회시 if board.username == List foreach(reportUser) 면 List 안뜸
 
