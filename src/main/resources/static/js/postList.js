@@ -16,6 +16,8 @@ $(document).ready(function() {
     //switchCategory('A'); //
 });
 
+
+
 // 검색 버튼 클릭 시 호출되는 함수
 function searchPosts(category, page = 1) {
     //const searchWord = $('input[name="search_word"]').val();  // 입력된 검색어

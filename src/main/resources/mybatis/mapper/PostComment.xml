@@ -44,20 +44,20 @@
 
     <insert id="commentsInsert">
         insert into post_comment
-        (post_idx, comment_ref_id, writer, content)
-        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
+        (post_idx, comment_ref_id, writer, content, isSecret)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content}, #{isSecret})
     </insert>
 
     <insert id="commentsReply">
         insert into post_comment
-            (post_idx, comment_ref_id, writer, content)
-        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content})
+            (post_idx, comment_ref_id, writer, content, isSecret)
+        values(#{post_idx}, #{comment_ref_id}, #{writer}, #{content}, #{isSecret})
     </insert>
 
 
     <update id="commentsUpdate">
         update post_comment
-        set content=#{content}
+        set content=#{content}, isSecret=#{isSecret}
         where comment_idx = #{comment_idx}
     </update>
 
