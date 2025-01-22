@@ -40,12 +40,22 @@ function connect(event) {
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/'+topicName, onMessageReceived);
-
+    loadChat()
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN'})
-    )
+
+    // DB설계
+    //
+    // 채팅방 idx
+    // 채팅방 이름
+    // 채팅방 내용들
+    // 채팅방 가입자?
+    // 채팅방
+
+    // 01/23 여기 만지세요
+    stompClient.send("/app/"+topicName,
+                    {},
+                    JSON.stringify({sender: username, type: 'JOIN'})
+                    )
 
     connectingElement.classList.add('hidden');
 }
@@ -65,7 +75,7 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/chat"+topicName, {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();

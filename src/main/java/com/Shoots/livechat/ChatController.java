@@ -1,6 +1,8 @@
 package com.Shoots.livechat;
 
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -17,25 +19,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value="/livechat")
 public class ChatController {
 
+    private static Logger logger = LoggerFactory.getLogger(ChatController.class);
+
     @GetMapping(value = "/livechat")
     public String livechat(HttpSession session, Model model) {
         model.addAttribute("id", session.getId());
         return "livechat/livechat";
     }
 
-    @MessageMapping("/chat.sendMessage")
+    @MessageMapping("/chat{topicName}")
     @SendTo("/topic/{topicName}")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage,
-                                   @DestinationVariable String topicName, HttpSession session) {
+                                   @DestinationVariable String topicName) {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.addUser")
+    @MessageMapping("{topicName}")
     @SendTo("/topic/{topicName}")
     public ChatMessage addUser(@Payload ChatMessage chatMessage,
-            SimpMessageHeaderAccessor headerAccessor,
-                               @DestinationVariable String topicName, HttpSession session) {
+                                SimpMessageHeaderAccessor headerAccessor,
+                               @DestinationVariable String topicName) {
         // Add username in web socket session
+        logger.info("topicName : " +  topicName);
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         return chatMessage;
     }
