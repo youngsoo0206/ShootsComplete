@@ -19,7 +19,7 @@ SET role = 'admin'
 WHERE user_id = 'admin';
 
 -- 테스트 데이터 삽입
-INSERT INTO regular_user (user_id, password, name, jumin, gender, tel, email, nickname, user_file, register_date, role)
+INSERT INTO regular_user (user_id, password, name, jumin, gender, tel, email, register_date, role)
 VALUES
     ('youngsoo1', '1', '일수', '111111', 1, '01012345678', '1@1.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),
     ('youngsoo2', '2', '이수', '222222', 2, '01012345678', '2@2.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),
