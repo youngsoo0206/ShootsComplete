@@ -90,7 +90,7 @@
 
     <select id="getDetail" resultType="Post">
         select * from(
-                         select p.*, r.user_id, r.idx, r.user_file
+                         select p.*, r.user_id, r.idx
                          from post p
                                   join regular_user r
                                        on p.writer = r.idx
