@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,13 +25,25 @@ public class ReportController {
     BoardService boardService;
     ReportService reportService;
     private static Logger logger = (Logger) LoggerFactory.getLogger(ReportController.class);
-
     @GetMapping("/report")
     public String location(Model model, HttpSession session) {
-        model.addAttribute("boardList", boardService.selectBoardList());
+
+        //신고대상 제거 로직
+        List<Board> boardList = boardService.selectBoardList();
+        List<Report> reportList = reportService.selectReportedUsers(String.valueOf(session.getAttribute("id"))); // 신고자 == userId 인 report정보 가져옴
+        Iterator<Board> iterator = boardList.iterator();
+        while (iterator.hasNext() && reportList.size() > 0) {
+            Board board = iterator.next();
+            for(Report report : reportList) {
+                if(board.getWriter().equals(report.getReportedUser())){
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+
+        model.addAttribute("boardList", boardList);
         logger.info("session 값 : " + session.getAttribute("id"));
-        //login 안하면 null이기 때문에 처리 필요
-        model.addAttribute("reportList", reportService.selectReportedUsers(String.valueOf(session.getAttribute("id"))));
         return "report/reportList";
     }
 
@@ -37,12 +51,18 @@ public class ReportController {
     @ResponseBody
     public Map<String, Object> insertReport(Model model, HttpSession session, @RequestBody Report report) {
 
+        Map<String, Object> resp = new HashMap<>();
+
+        if(session.getAttribute("id") == null) {
+            resp.put("msg", "로그인 후 이용해주세요.");
+            return resp;
+        }
+
         report.setReporterUser((String) session.getAttribute("id"));
         logger.info("insertReport 정보 : "+String.valueOf(report));
-        logger.info("insertReport 실행결과 : "+String.valueOf(reportService.insertReport(report)));
-        Map<String, Object> resp = new HashMap<>();
+
         if(reportService.insertReport(report) == 1)
-            resp.put("msg", "신고가 접수되었습니다.");
+            resp.put("msg", report.getReportedUser() + "님의 신고가 접수되었습니다.");
         else
             resp.put("msg", "신고에 실패했습니다.");
         return resp;

@@ -22,8 +22,7 @@
         $(function () {
             $('.report').on('click', function (){
                 var tr = $(this).closest('tr');
-                if(confirm(tr.find('.reportIdx').text() + "신고하시겠습니까?")){
-                    alert(tr.find('.boardWriter').text() + '신고가 접수 되었습니다.');
+                if(confirm(tr.find('.reportIdx').text() + "번 게시글을 신고하시겠습니까?")){
                     //fetch start
 
                     //category in ('POST','COMMENT','USER')
@@ -41,6 +40,7 @@
                         .then(resp => resp.json())
                         .then(data => {
                             alert(data.msg);
+                            location.reload();
                         })
                         .catch(error => alert("에러 뜸 : " + error))
                     //fetch end
@@ -56,20 +56,15 @@
 <body>
     <table>
         <tbody th:each="board : ${boardList}" id="tbody1">
-            <th:block th:each="reported : ${reportList}">
-            </th:block>
-            <th:block th:if="${board.writer != reported}">
-            <th:block th:if="${#lists.size(#lists.filter(report -> report.reportedUser == board.writer, reportList)) == 0}">
-                <tr>
-                    <td><a th:href="@{'boardView?num='+${board.board_idx}}" class="reportIdx">[[${board.board_idx}]]</a></td>
-                    <td>[[${board.title}]]</td>
-                    <td class="boardWriter">[[${board.writer}]]</td>
-                    <td>[[${board.content}]]</td>
-                    <td>[[${board.readcount}]]</td>
-                    <td>[[${board.register_date}]]</td>
-                    <td><a th:href="'#'" class="report">신고하기</a></td>
-                </tr>
-            </th:block>
+            <tr>
+                <td><a th:href="@{'boardView?num='+${board.board_idx}}" class="reportIdx">[[${board.board_idx}]]</a></td>
+                <td>[[${board.title}]]</td>
+                <td class="boardWriter">[[${board.writer}]]</td>
+                <td>[[${board.content}]]</td>
+                <td>[[${board.readcount}]]</td>
+                <td>[[${board.register_date}]]</td>
+                <td><a th:href="'#'" class="report">신고하기</a></td>
+            </tr>
         </tbody>
     </table>
 
