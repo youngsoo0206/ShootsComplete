@@ -38,20 +38,24 @@ public class SocialLoginController {
 
         // DB에서 유저를 확인하고, 없다면 신규 회원가입
         RegularUser existingUser = regularUserService.findByKakaoUserId(String.valueOf(userInfo.getId())); // 카카오 ID(고유번호)로 조회
-        if (existingUser != null) {
-            // 기존 사용자 로그인
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (existingUser != null) {// 기존 사용자 로그인
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .header("Location","/Shoots/loginProcess")
+                    .build();
+
         } else { //자동 회원가입 처리를 위한 정보 삽입
             RegularUser regularUser = new RegularUser();
-            regularUser.setUser_id("Shoots" + userInfo.getId()); //회원 id, 카카오 ID (userinfo.id)는 고유 번호라 중복 걱정X
+            regularUser.setUser_id("k_" + userInfo.getId()); //회원 id, 카카오 ID (userinfo.id)는 고유 번호라 중복 걱정X
             regularUser.setName(userInfo.getKakaoAccount().getProfile().getNickName()); //회원이름
+            regularUser.setEmail(userInfo.getKakaoAccount().getEmail()); //이메일에 카카오 이메일 삽입
             //난수 5자리를 암호화 후 비밀번호로 설정. 어차피 카카오 로그인은 회원이 있는지만 판별한뒤 자동 로그인이기 때문에 비밀번호 쓸모 x
             Random random = new Random();
             int randomNumber = random.nextInt(100000);
             regularUser.setPassword(passwordEncoder.encode((String.valueOf(randomNumber))));
             regularUserService.insert2(regularUser);
-            return new ResponseEntity<>(HttpStatus.CREATED);
         }
+            return new ResponseEntity<>(HttpStatus.OK);
+
 
     }
 

@@ -13,7 +13,7 @@
     </select>
 
     <select id="findByKakaoUserId" resultType="regularuser">
-        select * from regular_user where user_id = CONCAT('Shoots', #{id})
+        select * from regular_user where user_id = CONCAT('k_', #{id})
     </select>
 
 
@@ -25,8 +25,8 @@
     </insert>
 
     <insert id="insert2">
-        insert into regular_user (user_id, password, name)
-        values (#{user_id}, #{password}, #{name}
+        insert into regular_user (user_id, password, name, email)
+        values (#{user_id}, #{password}, #{name}, #{email}
                )
     </insert>
 
