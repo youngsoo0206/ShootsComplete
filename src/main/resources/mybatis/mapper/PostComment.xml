@@ -23,7 +23,7 @@
 
 
     <select id="getCommentList" resultType="postcomment">
-        SELECT co.*, r.user_id, r.user_file
+        SELECT co.*, r.user_id
         FROM post_comment co
         JOIN regular_user r ON co.writer = r.idx
         WHERE co.post_idx = #{post_idx}
