@@ -4,6 +4,7 @@ import com.Shoots.domain.MailVO;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.RegularUserService;
 import com.Shoots.task.SendMail;
+import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +33,16 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     private final RegularUserService regularUserService;
     private BCryptPasswordEncoder passwordEncoder;
-    private SendMail sendMail;
+    private SendMailText sendMail;
+
+    @Value("${kakao.client_id}")
+    private String client_id;
+
+    @Value("${kakao.redirect_uri}")
+    private String redirect_uri;
 
 
-    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail) {
+    public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMailText sendMail) {
         this.regularUserService = regularUserService;
         this.passwordEncoder = passwordEncoder;
         this.sendMail = sendMail;
@@ -46,6 +54,10 @@ public class LoginController {
         session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
         session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
 
+
+        //카카오톡 로그인을 위한 경로 설정.
+        String kakaoLoginPath = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        mv.addObject("kakaoLoginPath", kakaoLoginPath);
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
             logger.info("저장된 아이디 : " + userPrincipal.getName());

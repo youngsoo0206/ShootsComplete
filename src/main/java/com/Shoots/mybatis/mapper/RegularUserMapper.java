@@ -10,7 +10,12 @@ import java.util.Map;
 public interface RegularUserMapper {
     public RegularUser selectById(String id);
 
+    public RegularUser findByKakaoUserId(String kakaoId);
+
     public int insert(RegularUser user);
+
+    //소셜 로그인을 위한 약식 회원가입
+    public int insert2(RegularUser user);
 
     public RegularUser selectByEmail(String email);
 

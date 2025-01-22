@@ -116,9 +116,16 @@ $(function(){
     //개인회원가입 버튼 제출시 유효성 검사
     $('form[name="regularJoinProcess"]').off('submit').submit(function(){
         const telPattern = /^[0-9]{8,13}$/;
-        if (!telPattern.test($("input[name=tel]").val())) {
+        if (!telPattern.test($("input[name='tel']").val())) {
             alert("전화번호를 확인해 주세요.");
             $("input[name=tel]").val('').focus();
+            return false;
+        }
+
+        const juminPattern = /^[0-9]{2}[0-1]{1}[0-9]{1}[0-3]{1}[0-9]{1}$/;
+        if (!juminPattern.test($("input[name='jumin']").val())) {
+            alert("주민등록번호를 확인해 주세요.");
+            $("input[name='jumin']").val('').focus();
             return false;
         }
 
