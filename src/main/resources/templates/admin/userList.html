@@ -33,6 +33,48 @@
     })
   </script>
 
+  <style>
+    .common{
+      text-decoration: none;
+      color: white;
+      font-size: 15px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      width: 60px;
+      height: 25px;
+      padding: 0;
+      border: none;
+      background-color: #65A30D;
+      text-align: center;
+    }
+
+    .common:hover{
+      background-color: white;
+      color: #65A30D;
+      border: 1.5px solid #65A30D;
+    }
+
+    .admin{
+      text-decoration: none;
+      color: white;
+      font-size: 15px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      width: 60px;
+      height: 25px;
+      padding: 0;
+      border: none;
+      background-color: #FDBA01;
+      text-align: center;
+    }
+
+    .admin:hover{
+      background-color: white;
+      color: #FDBA01;
+      border: 1.5px solid #FDBA01;
+    }
+  </style>
+
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -118,7 +160,6 @@
 
   <div id="layoutSidenav_content">
     <div class="container">
-      <h1>회원 목록</h1>
       <div th:if="${listcount > 0}">
         <form th:action="@{userList}">
           <div class="input-group">
@@ -127,6 +168,7 @@
           </div>
         </form>
         <table class="table">
+          <caption style="caption-side: top; font-size: 20px; margin-left: 5px">회원 목록</caption>
           <thead>
           <tr>
             <th colspan="8">회원 수 : [[${listcount}]]</th>
@@ -144,7 +186,7 @@
           </thead>
           <tbody>
           <tr th:each="u : ${userList}" th:if="${u.idx != session.idx}">
-            <td th:text="${u.user_id}"></td>
+            <td>[[${u.user_id}]]</td>
             <td th:text="${u.name}"></td>
             <td th:text="${u.jumin}"></td>
             <td th:if="${u.gender == 1 or u.gender == 3}">남자</td>
@@ -176,6 +218,8 @@
         </form>
         <h1>검색 결과가 없습니다.</h1>
       </div>
+
+
     </div>
   </div>
 </div>

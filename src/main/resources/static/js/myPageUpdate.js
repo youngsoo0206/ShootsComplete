@@ -1,33 +1,6 @@
 $(function(){
-    let checkid=false;	 //아이디의 정규식 체크하기 위한 변수로 기본값은 false, 규칙에 맞게 입력하면 true값을 갖습니다.
+	 //아이디의 정규식 체크하기 위한 변수로 기본값은 false, 규칙에 맞게 입력하면 true값을 갖습니다.
     let checkemail=false;//이메일의 정규식 체크하기 위한 변수로 기본값은 false, 규칙에 맞게 입력하면 true값을 갖습니다.
-
-    $(function(){
-        $(".idcheck").click(function (){
-            const id = $("input[name=user_id]").val();
-            const idpattern = /^\w{2,30}$/;
-            if(!idpattern.test(id)){
-                checkid = false;
-                alert("영문이나 숫자를 이용한 2 ~ 30 글자의 아이디를 사용해 주세요.")
-                return;
-            } else{
-                checkid= true;
-            }
-            $.ajax({  //아이디 중복검사 : 개인회원
-                url	: "idcheck",
-                data : {"id" : id},
-                success	: function(resp){
-                    if(resp == "-1"){//db에 해당 id가 없는 경우
-                        $("#id-message").css('color','green').html("사용 가능한 아이디 입니다.");
-                        checkid=true;
-                    }else{//db에 해당 id가 있는 경우(1)
-                        $("#id-message").css('color','blue').html("사용중인 아이디 입니다.");
-                        checkid=false;
-                    }
-                }
-            });//아이디중복검사 : 개인회원 ajax 끝
-        })
-    })
 
     $(function(){
         $(".emailcheck").click(function(){
@@ -86,12 +59,6 @@ $(function(){
             return false;
         }
 
-
-        if(!checkid){
-            alert("사용 가능한 id를 입력해 주세요.");
-            $("input[name=user_id]").focus();
-            return false;
-        }
 
 
         if(!checkemail){
