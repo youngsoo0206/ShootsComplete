@@ -10,6 +10,7 @@ var connectingElement = document.querySelector('.connecting');
 
 var stompClient = null;
 var username = null;
+var topicName = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -20,15 +21,17 @@ usernameForm.addEventListener('submit', connect, true) //true는 캡처링. fals
 messageForm.addEventListener('submit', sendMessage, true)
 
 function connect(event) {
-    username = document.querySelector('#name').value.trim();
-
+    username = $('#name').val().trim();
+    topicName = $('#chatRoomNumber').val();
+    //String(num); 이거 null도 처리
+    
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
         var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
     }
     event.preventDefault();
 }
@@ -36,7 +39,7 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    stompClient.subscribe('/topic/'+topicName, onMessageReceived);
 
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
