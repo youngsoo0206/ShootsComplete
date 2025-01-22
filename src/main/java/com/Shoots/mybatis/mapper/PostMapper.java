@@ -45,4 +45,10 @@ public interface PostMapper {
     public List<Post> getMyPostList(int id);
 
     public int getMyPostListCount(int id);
+
+    // completed >> available
+    public void setAvailable(int post_idx);
+
+    // available >> completed
+    public void setCompleted(int post_idx);
 }

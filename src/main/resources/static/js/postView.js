@@ -48,7 +48,7 @@ function getList(state) {
 
         // 댓글 작성자가 로그인한 사용자일 경우, 수정/삭제 버튼 표시
         // let toolButtons = $("#loginid").val() == Comment.user_id ? `
-        let toolButtons = $("#loginid").val() == Comment.user_id ? ` 
+        let toolButtons = ($("#loginid").val() == Comment.user_id || $("#loginid").val() == 'admin')? ` 
             <div class='comment-tool'>
                 <div title='더보기' class='comment-tool-button'> 
                     <div>&#46;&#46;&#46;</div>
@@ -78,7 +78,7 @@ function getList(state) {
         output += (Comment.comment_ref_id != null) ? '' : `
         <li id='${Comment.comment_idx}' class='comment-list-item ${replyClass}'>
             <div class='comment-nick-area'>
-                <img src='${src}' alt='profile picture' style = "width : 35px; height : 35px">
+                <!-- <img src='${src}' alt='profile picture' style = "width : 35px; height : 35px"> -->
                 <div class='comment-box'>
                     <div class='comment-nick-box'>
                         <div class='comment-nick-info'>
@@ -126,7 +126,7 @@ function getList(state) {
         
         
                 // 답글의 더보기 버튼 및 수정/삭제 버튼 처리
-        let childToolButtons = $("#loginid").val() === childComment.user_id ? ` 
+        let childToolButtons = ($("#loginid").val() === childComment.user_id || $("#loginid").val() == 'admin') ? ` 
             <div class='comment-tool'>
                 <div title='더보기' class='comment-tool-button'> 
                     <div>&#46;&#46;&#46;</div>
@@ -144,7 +144,7 @@ function getList(state) {
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
                     <div class='comment-nick-area'>
-                        <img src='${childSrc}' alt='profile picture' style = "width : 35px; height : 35px">
+                        <!-- <img src='${childSrc}' alt='profile picture' style = "width : 35px; height : 35px"> -->
                         <div class='comment-box'>
                             <div class='comment-nick-box'>
                                 <div class='comment-nick-info'>

@@ -1,5 +1,6 @@
 package com.Shoots.controller;
 
+import com.Shoots.domain.MailVO;
 import com.Shoots.domain.PaginationResult;
 import com.Shoots.domain.Post;
 import com.Shoots.service.PostCommentService;
@@ -391,6 +392,25 @@ public class PostController {
         response.setContentLength(bytes.length);
         return bytes;
     }
+
+
+
+    //completed >> available 로
+    @GetMapping(value="/setAvailable")
+    public String setAvailable(int post_idx){
+        postService.setAvailable(post_idx);
+        return "redirect:/post/detail?num=" + post_idx;
+    }
+
+
+    //available >> completed 로
+    @GetMapping(value="/setCompleted")
+    public String setCompleted(int post_idx){
+        postService.setCompleted(post_idx);
+        return "redirect:/post/detail?num=" + post_idx;
+    }
+
+
 
 
 }

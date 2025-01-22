@@ -16,6 +16,9 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
+messageForm.addEventListener('submit', sendMessage, true)
+
 function connect(event) {
     username = document.querySelector('#name').value.trim();
 
@@ -113,5 +116,4 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
-messageForm.addEventListener('submit', sendMessage, true)
+

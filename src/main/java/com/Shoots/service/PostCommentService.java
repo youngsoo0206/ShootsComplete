@@ -12,7 +12,7 @@ public interface PostCommentService {
     public int getListCount(int post_idx);
 
     // 댓글 목록 가져오기
-    public List<PostComment> getCommentList(int post_idx, int state);
+    public List<PostComment> getCommentList(int post_idx, int state, HttpSession session);
 
 
 

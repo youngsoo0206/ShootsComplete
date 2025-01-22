@@ -150,11 +150,8 @@ public class RegularUserServiceImpl implements RegularUserService {
         regularUserMapper.updateRegularUser(user);
     }
 
-    @Override
-    public int invalidUserId(String id) {
-        List<String> user = regularUserMapper.invalidUserId(id);
-        return (user == null) ? -1 : 1;
-    }
+
+
 
 }
 

@@ -51,10 +51,24 @@ public class MyPageController {
     }
 
     @ResponseBody
-    @GetMapping(value="/validId")
-    public int validId(HttpServletRequest request) {
-        String id = (String)request.getSession().getAttribute("id");
-        return regularUserService.invalidUserId(id);
+    @GetMapping(value="/idcheck")
+    public int idcheck(String id, HttpServletRequest request) {
+        String my = (String) request.getSession().getAttribute("id");
+        if(regularUserService.selectById(id) == -1 || id.equals(my)) {
+            System.out.println("반환값: " + regularUserService.selectById(id));
+            return -1;
+        } else return 1;
+    }
+
+    @ResponseBody
+    @GetMapping(value="/emailcheck")
+    public int emailcheck(String email, HttpServletRequest request) {
+        int idx = (Integer) request.getSession().getAttribute("idx");
+        String my = regularUserService.getEmail(idx);
+        if(regularUserService.selectByEmail(email) == -1 || email.equals(my)){
+            System.out.println(regularUserService.selectByEmail(email));
+            return -1;
+        }else return 1;
     }
 
 

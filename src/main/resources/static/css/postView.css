@@ -21,18 +21,28 @@
 }
 
 
+/*스크롤 시 에도 header 고정 → CSS에 작성*/
+nav.navbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+	background-color: white;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 
 
 /*수정/삭제/목록 버튼 디자인 */
 
-.modifyBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : orange; margin-left : 10px; transition: background 0.3s, color 0.3s; }
-.deleteBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : #d60e0e; margin-left : 10px; transition: background 0.3s, color 0.3s; }
-.listBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : #059669; margin-left : 10px; transition: background 0.3s, color 0.3s;}
+.modifyBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : #FDBA01; margin-left : 10px; transition: background 0.3s, color 0.3s; }
+.deleteBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : #DA0130; margin-left : 10px; transition: background 0.3s, color 0.3s; }
+.listBtn {font-size :  12px; border-radius : 20px; border : none; width : 80px; height : 25px; color : white ; background : #65A30D; margin-left : 10px; transition: background 0.3s, color 0.3s;}
 
-.modifyBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid orange; width : 80px; height : 25px; color : orange ; background : white; margin-left : 10px }
-.deleteBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid #d60e0e; width : 80px; height : 25px; color : #d60e0e ; background : white; margin-left : 10px }
-.listBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid #059669; width : 80px; height : 25px; color : #059669 ; background : white; margin-left : 10px}
+.modifyBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid orange; width : 80px; height : 25px; color : #FDBA01 ; background : white; margin-left : 10px }
+.deleteBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid #DA0130; width : 80px; height : 25px; color : #DA0130 ; background : white; margin-left : 10px }
+.listBtn:hover {font-size :  12px; border-radius : 20px; border : 1px solid #059669; width : 80px; height : 25px; color : #65A30D ; background : white; margin-left : 10px}
 
 
 

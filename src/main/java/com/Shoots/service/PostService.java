@@ -10,6 +10,19 @@ import java.util.Random;
 
 public interface PostService {
 
+
+    public void setAvailable(int post_idx);
+
+    public void setCompleted(int post_idx);
+
+
+//    static void getCompleted(String status) {
+//    }
+//
+//    static void getAvailable(String status) {
+//
+//    }
+
     //글의 갯수 구하기
     public int getListCount(String category, String search_word);
 

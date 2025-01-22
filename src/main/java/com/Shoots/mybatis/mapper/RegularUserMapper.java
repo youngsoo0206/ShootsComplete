@@ -41,7 +41,8 @@ public interface RegularUserMapper {
 
     public void updateRegularUser(RegularUser user);
 
-    public List<String> invalidUserId(String id);
+
+
 
 
 }
