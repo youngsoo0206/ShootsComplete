@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminDashboard.css}" rel="stylesheet" />
+    <link th:href="@{/css/adminList.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>공지사항 수정</title>
@@ -104,7 +105,7 @@
     </div>
 
     <div id="layoutSidenav_content">
-        <div class="container">
+        <div class="container" style="margin-top: 30px">
             <form th:action="@{noticeUpdateProcess}" method="post" enctype="multipart/form-data" name="updateform">
                 <input type="hidden" name="notice_idx" th:value="${notice.notice_idx}">
                 <input type="hidden" name="notice_file" th:value="${notice.notice_file}">
@@ -119,12 +120,12 @@
                     <input type="text" id="title" name="title" maxlength="100" class="form-control" th:value="${notice.title}">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 10px">
                     <label for="content">내용</label>
                     <textarea name="content" id="content" rows="15" class="form-control">[[${notice.content}]]</textarea>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-top: 10px">
                     <label>파일 첨부
                         <img th:src="@{/img/attach.png}" alt="파일첨부" width="25px">
                         <input type="file" id="upfile" name="uploadfile">
@@ -134,8 +135,8 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">수정</button>
-                    <button type="reset" class="btn btn-danger" onclick="history.go(-1)">취소</button>
+                    <button type="submit" class="btn btn-primary submit">수정</button>
+                    <button type="reset" class="btn btn-danger cancel" onclick="history.go(-1)">취소</button>
                 </div>
 
             </form>

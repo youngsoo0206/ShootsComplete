@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminDashboard.css}" rel="stylesheet" />
+    <link th:href="@{/css/adminList.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>FAQ</title>
@@ -23,6 +24,13 @@
     })
     </script>
     <style>
+        table caption {
+            caption-side: top;
+            font-size : 25px;
+            font-weight: bold;
+            color : black;
+        }
+
         textarea{
             resize: none;
         }
@@ -111,16 +119,13 @@
     </div>
 
     <div id="layoutSidenav_content">
-        <div class="container">
+        <div class="container" style="margin-top: 30px">
             <table class="table">
-
-                <tr>
-                    <th colspan="2">[[${faq.title}]]</th>
-                </tr>
+                <caption>[[${faq.title}]]</caption>
 
                 <tr>
                     <td colspan="2">
-                        <textarea rows="5" style="width:100%" readonly>[[${faq.content}]]</textarea>
+                        <textarea rows="10" style="width:100%" readonly>[[${faq.content}]]</textarea>
                     </td>
                 </tr>
 
@@ -131,7 +136,7 @@
                             <img th:src="@{/img/down.png}" width="10px">
                             <input type="hidden" th:value="${faq.faq_file}" th:name="filename">
                             <input type="hidden" th:value="${faq.faq_original}" th:name="original">
-                            <input type="submit" th:value="${faq.faq_original}">
+                            <input type="submit" th:value="${faq.faq_original}" class="down">
                         </form>
                     </td>
                     <td th:if="${#strings.isEmpty(faq.faq_file)}"></td>
@@ -139,9 +144,9 @@
             </table>
 
             <div>
-                <a href="faqList" type="button">목록</a>
-                <a th:href="@{faqUpdate(id=${faq.faq_idx})}">수정</a>
-                <a th:href="@{faqDelete(id=${faq.faq_idx})}">삭제</a>
+                <a href="faqList" type="button" class="list">목록</a>
+                <a th:href="@{faqUpdate(id=${faq.faq_idx})}" class="update" type="button">수정</a>
+                <a th:href="@{faqDelete(id=${faq.faq_idx})}" class="delete" type="button">삭제</a>
             </div>
         </div>
     </div>

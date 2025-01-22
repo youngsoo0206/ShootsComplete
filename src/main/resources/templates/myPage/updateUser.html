@@ -62,7 +62,7 @@
             padding: 0;
             border: none;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             border-radius: 20px;
             cursor: pointer;
             display: flex;
@@ -107,6 +107,25 @@
             margin-top: 50px;
         }
 
+        .emailcheck{
+            margin-top: 10px;
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 110px;
+            height: 35px;
+            padding: 0;
+            border: none;
+            background-color: #65A30D;
+        }
+
+        .emailcheck:hover{
+            background-color: white;
+            color: #65A30D;
+            border: 1.5px solid #65A30D;
+        }
+
 
         div.input-field {margin-top: 30px}
     </style>
@@ -118,8 +137,7 @@
             <input type="hidden" name="user_id" th:value="${user.user_id}">
             <div class="input-field">
                 <label for="user_id" style="color: #B0B0B0;">아이디</label>
-                <input type="text" id="user_id" name="user_id" th:value="${user.user_id}">
-                <button type="button" class="idcheck">아이디 확인</button>
+                <input type="text" id="user_id" name="user_id" th:value="${user.user_id}" readonly>
                 <span id="id-message"></span>
             </div>
 

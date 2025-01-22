@@ -60,8 +60,20 @@ public class AdminController {
     }
 
     @GetMapping
-    public String admin(){
-        return "admin/admin";
+    public ModelAndView admin(ModelAndView mv, @RequestParam(defaultValue = "") String search_word){
+        int faqcount = faqService.getListCount();   //faq 개수
+        int noticecount = noticeService.getSearchListCount(search_word);    //공지사항 개수
+        int inquirycount = inquiryService.getAdminListCount();  //문의사항 개수
+        int businesscount = businessUserService.listApprovedCount(search_word);//연계 기업 수
+        int usercount = regularUserService.listCount(search_word);//총 회원 수
+
+        mv.addObject("faqcount", faqcount);
+        mv.addObject("noticecount", noticecount);
+        mv.addObject("inquirycount", inquirycount);
+        mv.addObject("businesscount", businesscount);
+        mv.addObject("usercount", usercount);
+        mv.setViewName("admin/admin");
+        return mv;
     }
 
     //faq 리스트

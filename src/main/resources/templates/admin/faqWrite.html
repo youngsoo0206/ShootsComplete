@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminDashboard.css}" rel="stylesheet" />
+    <link th:href="@{/css/adminList.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>FAQ 작성</title>
@@ -112,20 +113,21 @@
 
                 <div class="form-group">
                 <textarea name="content" id="content" rows="10"
-                          class="form-control" placeholder="내용을 입력해 주세요" required></textarea>
+                          class="form-control" placeholder="내용을 입력해 주세요" style="margin-top: 10px;" required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>
                         파일 첨부
                         <img src="../img/attach.png" alt="파일첨부" width="25px">
-                        <input type="file" id="upfile" name="uploadfile">
+                        <input type="file" id="upfile" name="uploadfile" style="margin-top: 10px; display: none">
                     </label>
                     <span id="fileValue"></span>
+                    <img th:src="@{/img/remove.png}" alt="파일삭제" class="remove" width="15px">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">등록</button>
-                    <button type="reset" class="btn btn-danager">취소</button>
+                    <button type="submit" class="btn btn-primary submit">등록</button>
+                    <button type="reset" class="btn btn-danager cancel">취소</button>
                 </div>
             </form>
         </div>

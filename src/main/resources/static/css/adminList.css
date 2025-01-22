@@ -47,3 +47,127 @@ h1{
 .comP{
     color: #be123c;
 }
+.write{
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 80px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #115FFC;
+}
+
+.write:hover{
+    background-color: white;
+    color: #115FFC;
+    border: 1.5px solid #115FFC;
+}
+
+.update{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #115FFC;
+    text-align: center;
+}
+
+.update:hover{
+    background-color: white;
+    color: #115FFC;
+    border: 1.5px solid #115FFC;
+}
+
+.delete{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #DA0130;
+    text-align: center;
+}
+
+.delete:hover{
+    background-color: white;
+    color: #DA0130;
+    border: 1.5px solid #DA0130;
+}
+
+.list{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #FDBA01;
+    text-align: center;
+}
+
+.list:hover{
+    background-color: white;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
+}
+
+.down{
+    border: none;
+    background-color: white;
+}
+
+.submit{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 80px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #115FFC;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.submit:hover{
+    background-color: white;
+    color: #115FFC;
+    border: 1.5px solid #115FFC;
+}
+
+.cancel{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 80px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #DA0130;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.cancel:hover{
+    background-color: white;
+    color: #DA0130;
+    border: 1.5px solid #DA0130;
+}
