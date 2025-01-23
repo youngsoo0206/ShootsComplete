@@ -19,6 +19,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void setAvailable(int post_idx) {
+        dao.setAvailable(post_idx);
+    }
+
+    @Override
+    public void setCompleted(int post_idx) {
+        dao.setCompleted(post_idx);
+    }
+
+    @Override
     public int getListCount(String category, String search_word) {
         HashMap<String, Object> map = new HashMap<>();
         if(!search_word.isEmpty()){
@@ -168,5 +178,14 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
+//    @Override
+//    public void getAvailable(String status) {
+//        dao.getAvailable(status);
+//    }
+//
+//
+//    @Override
+//    public void getCompleted(String status) {
+//        dao.getCompleted(status);
+//    }
 }

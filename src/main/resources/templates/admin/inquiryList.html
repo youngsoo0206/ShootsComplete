@@ -24,6 +24,30 @@
             })
         })
     </script>
+    <style>
+        tr > th:nth-child(6), tr > td:nth-child(6){
+            text-align: center;
+        }
+        .delete{
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 60px;
+            height: 25px;
+            padding: 0;
+            border: none;
+            background-color: #DA0130;
+            text-align: center;
+        }
+
+        .delete:hover {
+            background-color: white;
+            color: #DA0130;
+            border: 1.5px solid #DA0130;
+        }
+    </style>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -135,7 +159,7 @@
                         <td><span th:if="${i.hasReply}" class="comS"> [답변완료]</span>
                             <span th:if="${!i.hasReply}" class="comP"> [대기중]</span></td>
                         <td th:text="${i.register_date.substring(0, 10)}"></td>
-                        <td><a th:href="@{inquiryDelete(inquiry_idx=${i.inquiry_idx})}">삭제</a></td>
+                        <td><a th:href="@{inquiryDelete(inquiry_idx=${i.inquiry_idx})}" type="button" class="delete">삭제</a></td>
                     </tr>
                     </tbody>
 

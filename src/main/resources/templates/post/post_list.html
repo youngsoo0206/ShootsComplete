@@ -10,10 +10,22 @@
     <link rel="stylesheet" th:href="@{/css/postList.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
+
+<style>
+    .btn.btn-primary.search {
+        background-color: #65A30D;
+        border-color: #65A30D;
+    }
+    .btn.btn-primary.search:hover {
+        background-color: #55810C; /* 호버 시 더 어두운 색상 */
+        border-color: #55810C;
+    }
+</style>
+
 <body>
 
 
-<div class="container">
+<div class="container" style="margin-top: 100px;">
 
     <input type="hidden" name="status" th:value="${status}">
 
@@ -94,4 +106,5 @@
 
 
 </body>
+<th:block th:replace="~{fragments/footer :: footer}" />
 </html>

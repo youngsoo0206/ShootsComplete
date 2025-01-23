@@ -1,5 +1,8 @@
 package com.Shoots.domain;
 
+import lombok.ToString;
+
+@ToString
 public class PostComment {
     private int comment_idx;
     private int post_idx;
@@ -13,14 +16,14 @@ public class PostComment {
     private String post_title;
     private String category;
     private int readcount;
-    private String is_secret;
+    private String isSecret;
 
-    public String getIs_secret() {
-        return is_secret;
+    public String getIsSecret() {
+        return isSecret;
     }
 
-    public void setIs_secret(String is_secret) {
-        this.is_secret = is_secret;
+    public void setIsSecret(String isSecret) {
+        this.isSecret = isSecret;
     }
 
     public int getReadcount() {

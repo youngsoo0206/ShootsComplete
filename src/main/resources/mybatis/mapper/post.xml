@@ -90,7 +90,7 @@
 
     <select id="getDetail" resultType="Post">
         select * from(
-                         select p.*, r.user_id, r.idx, r.user_file
+                         select p.*, r.user_id, r.idx
                          from post p
                                   join regular_user r
                                        on p.writer = r.idx
@@ -148,5 +148,18 @@
     <select id="getMyPostListCount">
         select count(*) from post where writer=#{id}
     </select>
+
+
+    <update id="setAvailable">
+        update post
+        set status='available'
+        where post_idx=#{post_idx}
+    </update>
+
+    <update id="setCompleted">
+        update post
+        set status='completed'
+        where post_idx=#{post_idx}
+    </update>
 
 </mapper>

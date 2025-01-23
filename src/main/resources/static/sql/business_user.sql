@@ -12,7 +12,6 @@ CREATE TABLE business_user(
     post            varchar(7)         NOT NULL,
     address         VARCHAR(100) NOT NULL,
     description     TEXT,
-    business_file   VARCHAR(50),
     register_date   TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
     login_status    VARCHAR(9) DEFAULT 'pending',
     role          VARCHAR(10) DEFAULT 'business' NOT NULL

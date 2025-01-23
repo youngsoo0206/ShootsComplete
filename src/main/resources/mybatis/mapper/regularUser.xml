@@ -12,12 +12,22 @@
         select * from regular_user where user_id = #{id}
     </select>
 
+    <select id="findByKakaoUserId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('k_', #{id})
+    </select>
+
 
     <insert id="insert">
         insert into regular_user (user_id, password, name, jumin, gender, tel, email)
         values (#{user_id}, #{password}, #{name},
                 #{jumin}, #{gender}, #{tel}, #{email}
                 )
+    </insert>
+
+    <insert id="insert2">
+        insert into regular_user (user_id, password, name, email)
+        values (#{user_id}, #{password}, #{name}, #{email}
+               )
     </insert>
 
     <select id="selectByEmail" resultType="regularuser">
@@ -104,8 +114,7 @@
         where idx=#{idx}
     </update>
 
-    <select id="invalidUserId">
-        select user_id from regular_user where user_id != (select user_id from regular_user where user_id=#{id})
-    </select>
+
+
 
 </mapper>

@@ -10,22 +10,28 @@ var connectingElement = document.querySelector('.connecting');
 
 var stompClient = null;
 var username = null;
+var topicName = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-function connect(event) {
-    username = document.querySelector('#name').value.trim();
+usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
+messageForm.addEventListener('submit', sendMessage, true)
 
+function connect(event) {
+    username = $('#name').val().trim();
+    topicName = $('#chatRoomNumber').val();
+    //String(num); 이거 null도 처리
+    
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
         var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
     }
     event.preventDefault();
 }
@@ -33,13 +39,23 @@ function connect(event) {
 
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
-
+    stompClient.subscribe('/topic/'+topicName, onMessageReceived);
+    loadChat()
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN'})
-    )
+
+    // DB설계
+    //
+    // 채팅방 idx
+    // 채팅방 이름
+    // 채팅방 내용들
+    // 채팅방 가입자?
+    // 채팅방
+
+    // 01/23 여기 만지세요
+    stompClient.send("/app/"+topicName,
+                    {},
+                    JSON.stringify({sender: username, type: 'JOIN'})
+                    )
 
     connectingElement.classList.add('hidden');
 }
@@ -59,7 +75,7 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        stompClient.send("/app/chat"+topicName, {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
@@ -113,5 +129,4 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
-messageForm.addEventListener('submit', sendMessage, true)
+

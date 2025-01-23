@@ -16,6 +16,8 @@ $(document).ready(function() {
     //switchCategory('A'); //
 });
 
+
+
 // 검색 버튼 클릭 시 호출되는 함수
 function searchPosts(category, page = 1) {
     //const searchWord = $('input[name="search_word"]').val();  // 입력된 검색어
@@ -178,8 +180,14 @@ function updatePostList(data, category) {
                 + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
                 + '&nbsp;&nbsp;' + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>'
                 + '<br><br>' + post.price + '원' + '<br><br>'
-                + '거래상태: ' + (post.status === 'available' ? '거래 가능' : (post.status === 'completed' ? '판매 완료' : ''))
+                // + '상태: '
+                + (post.status === 'available'
+                    ? '<span style="color: #115FFC;">거래 가능</span>'
+                    : (post.status === 'completed'
+                        ? '<span style="color: #DA0130;">판매 완료</span>'
+                        : ''))
                 + '</td>');
+
             row.append('<td class = "jtdw">' + post.user_id + '</td>');
             row.append('<td class = "jtdr">' + post.register_date + '</td>');
             row.append('<td class = "jtdc">' + post.readcount + '</td>');

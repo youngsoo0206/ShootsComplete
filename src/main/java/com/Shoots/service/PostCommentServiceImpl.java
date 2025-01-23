@@ -2,6 +2,7 @@ package com.Shoots.service;
 
 import com.Shoots.domain.PostComment;
 import com.Shoots.mybatis.mapper.PostCommentMapper;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,17 +27,20 @@ public class PostCommentServiceImpl implements PostCommentService {
 
 
     @Override
-    public List<PostComment> getCommentList(int post_idx, int state) {
+    public List<PostComment> getCommentList(int post_idx, int state, HttpSession session) {
 
         int startrow = 1;
         int endrow=state*3;
 
+        // 페이징 처리용 매핑
         Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("post_idx", post_idx);
         map.put("state", state);
         map.put("start", startrow);
         map.put("end", endrow);
         return dao.getCommentList(map);
+
+
     }
 
 

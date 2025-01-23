@@ -7,8 +7,8 @@
 <body>
     <div class="container">
         <div th:if="${count > 0}">
-            <h1 style="margin-top: 30px; text-align: center">작성 글</h1>
             <table class="table">
+                <caption style="caption-side: top; font-size: 20px; margin-left: 5px">작성 글</caption>
                 <thead>
                 <tr><th colspan="4">작성 글 : [[${count}]]개</th></tr>
                     <tr>
@@ -21,7 +21,8 @@
                 <tbody>
                     <tr th:each="p : ${list}">
                         <td><a th:href="@{/post/detail(num=${p.post_idx})}" th:text="${p.title}"></a></td>
-                        <td th:text="${p.category}"></td>
+                        <td th:if="${p.category.equals('A')}">자유</td>
+                        <td th:if="${p.category.equals('B')}">중고</td>
                         <td th:text="${p.register_date.substring(0, 10)}"></td>
                         <td th:text="${p.readcount}"></td>
                     </tr>
