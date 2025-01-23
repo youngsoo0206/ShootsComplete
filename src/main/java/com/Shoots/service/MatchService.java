@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MatchService {
     void insertMatch(Match match);
-    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit);
+    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit, String business_idx);
 
     int getListCount();
 

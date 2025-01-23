@@ -34,4 +34,6 @@ public interface BusinessUserMapper {
     String getAddressByBusinessIdx(int businessIdx);
 
     List<BusinessUser> getListForLocation(Map<String, Object> map);
+
+    Map<String, Integer> getLocationByCoordinates(String first, String second, String third);
 }

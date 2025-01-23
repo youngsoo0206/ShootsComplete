@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Shoots</title>
     <link th:href="@{/css/home.css}" rel="stylesheet">
+    <script th:src="@{/js/home.js}"></script>
 </head>
 <body>
 <div id="carouselWrapper">
@@ -47,6 +48,113 @@
     </button>
 </div>
 </div>
+
+<div class="card mb-3 card2" style="width: 59%; height: 300px; margin: 0 auto">
+    <div class="card-body">
+        <div style="display: flex; gap: 20px">
+            <div>
+                <h5 class="card-title">오늘의 날씨 <span style="font-size: 13px">(<span th:text="${first}"></span> <span th:text="${second}"></span> <span th:text="${third}"></span>)</span> </h5>
+                <p th:text="|${today.substring(0, 4)}년 ${today.substring(4, 6)}월 ${today.substring(6, 8)}일|"></p>
+            </div>
+            <div style="font-size: 12px">
+                <form th:action="@{/main}" method="get">
+                    <select name="first" id="first" required>
+                        <option value="" disabled selected> 시/도 </option>
+                    </select>
+                    <select name="second" id="second" required>
+                        <option value="" disabled selected> 시/군/구 </option>
+                    </select>
+                    <select name="third" id="third" required>
+                        <option value="" disabled selected> 읍/면/동 </option>
+                    </select>
+                    <button type="submit" class="custom-btn-top"> 조회 </button>
+                </form>
+            </div>
+        </div>
+        <div style="display: flex">
+            <div style="border-right: 1px solid darkgrey; width: 14.8%; font-size: 12px">
+                <div style="text-align: center;">
+                    <span th:if="${currentTime < 17}">
+                        <img th:src="@{/img/sun.png}" style="width: 50px; height: auto">
+                    </span>
+                    <span th:if="${currentTime > 17}">
+                        <img th:src="@{/img/moon.png}" style="width: 50px; height: auto">
+                    </span>
+                </div>
+                <div style="text-align: center">
+                    온도 : <span th:text="${weather.temperature}"></span>°C <br>
+                    강수량 : <span th:text="${weather.precipitation}"></span> mm
+                    (
+                        <span th:if="${weather.precipitationType == '0'}">-</span>
+                        <span th:if="${weather.precipitationType == '1'}"></span>
+                        <span th:if="${weather.precipitationType == '2'}"></span>
+                        <span th:if="${weather.precipitationType == '3' or weather.precipitationType == '7'}"></span>
+                        <span th:if="${weather.precipitationType == '5' or weather.precipitationType == '6'}"></span>
+                    ) <br>
+                    풍향 : <span th:text="${weather.windDirection}"></span> ° &nbsp;
+                    풍속 : <span th:text="${weather.windSpeed}"></span> m/s
+                </div>
+                <br>
+                <div style="text-align: center">
+                    <p id="realTimeClock"></p>
+                </div>
+            </div>
+            <div style="width: 14.2%" th:each="forecast : ${firstSixWeatherData}">
+                <div style="font-size: 12px; text-align: center; margin-top: 22px">
+                    <span th:if="${forecast.sky == '1' && forecast.precipitationType == '0'}">
+                        <img th:src="@{/img/sky1.png}" style="width: 35px; height: auto">
+                    </span>
+                    <span th:if="${forecast.sky == '3' && forecast.precipitationType == '0'}">
+                        <img th:src="@{/img/sky3.png}" style="width: 35px; height: auto">
+                        <span> 구름많음 </span>
+                    </span>
+                    <span th:if="${forecast.sky == '4' && forecast.precipitationType == '0'}">
+                        <img th:src="@{/img/sky4.png}" style="width: 35px; height: auto">
+                        <span> 흐림 </span>
+                    </span>
+                    <span th:if="${forecast.precipitationType == '1'}">
+                        <img th:src="@{/img/precipitationType1.png}" style="width: 35px; height: auto">
+                        <span> 비 </span>
+                    </span>
+                    <span th:if="${forecast.precipitationType == '2'}">
+                        <img th:src="@{/img/precipitationType2.png}" style="width: 35px; height: auto">
+                        <span> 비/눈 </span>
+                    </span>
+                    <span th:if="${forecast.precipitationType == '3' or forecast.precipitationType == '7'}">
+                        <img th:src="@{/img/precipitationType3.png}" style="width: 35px; height: auto">
+                        <span> 눈 </span>
+                    </span>
+                    <span th:if="${forecast.precipitationType == '5' or forecast.precipitationType == '6'}">
+                        <img th:src="@{/img/precipitationType5.png}" style="width: 35px; height: auto">
+                        <span> 빗방울 </span>
+                    </span>
+                    <span th:if="${(forecast.sky == '1' or forecast.sky == '3' or forecast.sky == '4') && forecast.precipitationType == '0' && forecast.windSpeed > '3'}">
+                        <img th:src="@{/img/windSpeed.png}" style="width: 35px; height: auto">
+                        <span> 바람 </span>
+                    </span>
+                    </div>
+                <div class="hr-with-dot">
+                    <span>•</span>
+                </div>
+                <div style="font-size: 10px; text-align: center">
+                    <div style="text-align: center">
+                        <span><span th:text="${forecast.time.substring(0,2)}"></span>시</span>
+                    </div>
+                    <br>
+                    <span>온도 : <span th:text="${forecast.temperature}"></span>°C</span> &nbsp;
+                    <span>습도 : <span th:text="${forecast.humidity}"></span>%</span><br>
+                    <span>강수량 :
+                        <span th:if="${forecast.precipitation == '강수없음'}">0mm</span> &nbsp;
+                        <span th:if="${forecast.precipitation != '강수없음'}">mm</span>
+                    </span>
+                    <span>풍속: <span th:text="${forecast.windSpeed}"></span>m/s</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class = "card-wrapper">
     <div class="card mb-3 card2" style="max-width: 540px;">
         <div class="row g-0">

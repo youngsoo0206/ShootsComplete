@@ -50,7 +50,10 @@
                         <td><span th:text="${businessUser.address}"></span></td>
                         <td><span th:text="${businessUser.tel}"></span></td>
                         <td><span th:text="${businessUser.email}"></span></td>
-                        <td><button type="button" class="btn-apply">신청하러가기</button></td>
+                        <td>
+                            <a th:href="'match/list?business_idx=' + ${businessUser.business_idx}" class="btn-apply">
+                            <button type="button" class="btn-apply">신청하러가기</button></a>
+                        </td>
                     </tr>
                     </th:block>
                 </tbody>
