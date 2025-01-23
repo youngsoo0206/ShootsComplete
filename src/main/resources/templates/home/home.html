@@ -105,7 +105,7 @@
                         <img th:src="@{/img/sky1.png}" style="width: 35px; height: auto">
                     </span>
                     <span th:if="${forecast.sky == '3' && forecast.precipitationType == '0'  && forecast.windSpeedAsNumber < 4}">
-                        <img th:src="@{/img/sky3.png}" style="width: auto; height: 35px">
+                        <img th:src="@{/img/sky3.png}" style="width: auto; height: 28px; margin-top: 7px">
                     </span>
                     <span th:if="${forecast.sky == '4' && forecast.precipitationType == '0'  && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/sky4.png}" style="width: 35px; height: auto">
