@@ -216,22 +216,48 @@ function getList(state) {
 
 
 
-	//버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
-	$(document).on('click', '.commentReportButton', function() {
-		console.log('===============> 모달 button clicked!');
-		
-		// 버튼에서 댓글 ID와 작성자 ID 가져오기
-	    const commentIdx = $(this).data('comment-idx');
-	    // const target = $(this).data('writer');
-        const target = $(this).data('user_id');
-	    console.log('===> commentIdx:', commentIdx);
-	    console.log('===> writer:', target);
-	
-	    // 모달창에 값 설정
-	    $('.report_ref_id').val(commentIdx); // 신고 댓글 ID
-	    $('.target').val(target); // 신고 대상자 ID
-		
-	}) //댓글 선택자 값 부여 함수 끝
+//버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
+$(document).on('click', '.commentReportButton', function() {
+    console.log('===============> 모달 button clicked!');
+    const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
+    if(confirm(commentNickname.text() + " 댓글을 신고하시겠습니까?")){
+        fetchReport(commentNickname.text(), 'COMMENT');
+    }
+    // 버튼에서 댓글 ID와 작성자 ID 가져오기
+    const commentIdx = $(this).data('comment-idx');
+    const target = $(this).data('user_id');
+    console.log('===> commentIdx:', commentIdx);
+    console.log('===> writer:', target);
+
+    // 모달창에 값 설정
+    $('.report_ref_id').val(commentIdx); // 신고 댓글 ID
+    $('.target').val(target); // 신고 대상자 ID
+
+}) //댓글 선택자 값 부여 함수 끝
+
+function fetchReport(reportedUser, category) {
+    //fetch start
+
+    //category in ('POST','COMMENT','USER')
+    const reqData = {
+        reportedUser : String(reportedUser),
+        category : String(category),
+    };
+    fetch('/Shoots/insertReport',{
+        method:'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(reqData)
+    })
+        .then(resp => resp.json())
+        .then(data => {
+            alert(data.msg);
+            location.reload();
+        })
+        .catch(error => alert("에러 뜸 : " + error))
+    //fetch end
+};
 
 
 // 더보기 - 수정 클릭한 경우에 수정 폼을 보여줍니다.
