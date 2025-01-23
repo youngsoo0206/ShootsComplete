@@ -12,6 +12,28 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>마이페이지</title>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <style>
+        .update{
+            width: 110px;
+            height: 35px;
+            padding: 0;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #115FFC;
+        }
+        .update:hover{
+            background-color: white;
+            color: #115FFC;
+            border: 1.5px solid #115FFC;
+        }
+    </style>
 
 </head>
 <body class="sb-nav-fixed">
@@ -50,15 +72,17 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Post
                     </a>
+                    <a class="nav-link" id="Comment">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Comment
+                    </a>
                     <a class="nav-link" id="Inquiry">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Inquiry
                     </a>
+
                     <hr>
-                    <a class="nav-link" id="Settings">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
-                    </a>
+
                 </div>
             </div>
         </nav>

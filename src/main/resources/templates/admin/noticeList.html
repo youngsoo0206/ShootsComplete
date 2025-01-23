@@ -12,6 +12,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>공지사항</title>
   <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+  <link rel="stylesheet" th:href="@{/css/pagination.css}" type = "text/css">
   <script th:src="@{/js/jquery-3.7.1.js}"></script>
   <script th:inline="javascript">
     $(function(){
@@ -148,13 +149,13 @@
             <td><a th:href="@{noticeDetail(id=${n.notice_idx})}" th:text="${n.title}"></a></td>
             <td th:text="${n.register_date.substring(0, 10)}"></td>
             <td th:text="${n.readcount}"></td>
-            <td><a th:href="@{noticeUpdate(id=${n.notice_idx})}">수정</a></td>
-            <td><a th:href="@{noticeDelete(id=${n.notice_idx})}">삭제</a></td>
+            <td><a th:href="@{noticeUpdate(id=${n.notice_idx})}" type="button" class="update1">수정</a></td>
+            <td><a th:href="@{noticeDelete(id=${n.notice_idx})}" type="button" class="delete">삭제</a></td>
           </tr>
           </tbody>
         </table>
         <div class="write-btn-container">
-          <a th:href="@{noticeWrite}" type="button" class="btn btn-primary">글쓰기</a>
+          <a th:href="@{noticeWrite}" type="button" class="btn btn-primary write">글쓰기</a>
         </div>
         <th:block
                 th:replace="~{fragments/paging :: paging('noticeList',|&search_word=${search_word}|)}"/>

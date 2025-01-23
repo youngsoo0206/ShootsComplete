@@ -4,6 +4,7 @@ import com.Shoots.domain.Inquiry;
 import com.Shoots.domain.Post;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.InquiryService;
+import com.Shoots.service.PostCommentService;
 import com.Shoots.service.PostService;
 import com.Shoots.service.RegularUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,10 +29,13 @@ public class MyPageController {
     private final PostService postService;
     private final InquiryService inquiryService;
     private RegularUserService regularUserService;
+    private PostCommentService postCommentService;
 
-    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService) {this.regularUserService = regularUserService;
+    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService, PostCommentService postCommentService ) {
+        this.regularUserService = regularUserService;
         this.postService = postService;
         this.inquiryService = inquiryService;
+        this.postCommentService = postCommentService;
     }
 
     @GetMapping(value="/info")
@@ -51,10 +55,24 @@ public class MyPageController {
     }
 
     @ResponseBody
-    @GetMapping(value="/validId")
-    public int validId(HttpServletRequest request) {
-        String id = (String)request.getSession().getAttribute("id");
-        return regularUserService.invalidUserId(id);
+    @GetMapping(value="/idcheck")
+    public int idcheck(String id, HttpServletRequest request) {
+        String my = (String) request.getSession().getAttribute("id");
+        if(regularUserService.selectById(id) == -1 || id.equals(my)) {
+            System.out.println("반환값: " + regularUserService.selectById(id));
+            return -1;
+        } else return 1;
+    }
+
+    @ResponseBody
+    @GetMapping(value="/emailcheck")
+    public int emailcheck(String email, HttpServletRequest request) {
+        int idx = (Integer) request.getSession().getAttribute("idx");
+        String my = regularUserService.getEmail(idx);
+        if(regularUserService.selectByEmail(email) == -1 || email.equals(my)){
+            System.out.println(regularUserService.selectByEmail(email));
+            return -1;
+        }else return 1;
     }
 
 
@@ -108,4 +126,5 @@ public class MyPageController {
 
         return mv;
     }
+
 }

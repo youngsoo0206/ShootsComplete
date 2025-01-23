@@ -111,8 +111,8 @@
 
     <div id="layoutSidenav_content">
         <div class="container">
-            <h1>FAQ</h1>
             <table class="table" th:if="${listcount > 0}">
+                <caption style="caption-side: top; font-size: 20px; margin-left: 5px">FAQ</caption>
                 <thead>
                 <tr>
                     <th>작성자</th>
@@ -127,8 +127,8 @@
                     <td th:text="${f.name}"></td>
                     <td><a th:href="@{/testAdmin/faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
                     <td th:text="${f.register_date.substring(0, 10)}"></td>
-                    <td><a th:href="@{faqUpdate(id=${f.faq_idx})}">수정</a></td>
-                    <td><a th:href="@{faqDelete(id=${f.faq_idx})}">삭제</a></td>
+                    <td><a th:href="@{faqUpdate(id=${f.faq_idx})}"  type="button" class="update1">수정</a></td>
+                    <td><a th:href="@{faqDelete(id=${f.faq_idx})}"  type="button" class="delete">삭제</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -138,7 +138,7 @@
             </th:block>
 
             <div class="write-btn-container">
-                <a th:href="@{faqWrite}" type="button" class="btn btn-primary">글쓰기</a>
+                <a th:href="@{faqWrite}" type="button" class="btn btn-primary write">글쓰기</a>
             </div>
         </div>
     </div>

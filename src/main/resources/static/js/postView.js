@@ -12,6 +12,8 @@ function getList(state) {
     url: "../comment/list",
     data: {
       "post_idx": $("#post_idx").val(),
+        // "user_id": $(".user_id").val(),
+
       state: state
     },
     dataType: "json", //응답 데이터는 JSON 형식으로 처리됨
@@ -19,7 +21,7 @@ function getList(state) {
       $('#count').text(rdata.listcount).css('font-family', 'arial,sans-serif');
       let red1 = (state === 1) ? 'red' : 'gray'; //등록순
       let red2 = (state === 2) ? 'red' : 'gray'; //최신순
-	
+
       let output =`
         <li class='comment-order-item ${red1}'>
           <a href='javascript:getList(1)' class='comment-order-button'>등록순</a>
@@ -33,6 +35,18 @@ function getList(state) {
       if (rdata.commentlist.length) {
     rdata.commentlist.forEach(Comment => {
 
+        let isSecret = Comment.isSecret === 'Y';
+        let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+        let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
+        let isAdmin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+        let displayContent = isSecret && !(isPostOwner || isCommentOwner || isAdmin)
+            ? '🔒비밀댓글입니다.'
+            : Comment.content;
+
+        // 비밀댓글 스타일 적용
+        let displayContentStyle = isSecret ? 'color: gray;' : '';
+
         // console.log(66);
         // console.log(Comment.comment_ref_id); //   받는 값 확인 >> null
         // console.log(typeof Comment.comment_ref_id);
@@ -42,13 +56,13 @@ function getList(state) {
         let src = Comment.user_file ? `../userupload/${Comment.user_file}` : '../img/info.png';
 
         // 답글 버튼은 원본 댓글에만 표시
-        let replyButton = (!Comment.comment_ref_id) ? 
+        let replyButton = (!Comment.comment_ref_id) ?
             `<a href='javascript:replyform(${Comment.comment_idx})' class='comment-info-button'>답글쓰기</a>` : '';
 
 
         // 댓글 작성자가 로그인한 사용자일 경우, 수정/삭제 버튼 표시
         // let toolButtons = $("#loginid").val() == Comment.user_id ? `
-        let toolButtons = $("#loginid").val() == Comment.user_id ? ` 
+        let toolButtons = ($("#loginid").val() == Comment.user_id || $("#loginid").val() == 'admin')? ` 
             <div class='comment-tool'>
                 <div title='더보기' class='comment-tool-button'> 
                     <div>&#46;&#46;&#46;</div>
@@ -71,14 +85,14 @@ function getList(state) {
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
-		
+
         //댓글은 ref_id 가 null, 답글은 ref_id가 댓글의 comment_id 값을 참조
 		//답글은 ref_id가 null이 아니니까 출력하면 안되지
 		// 댓글 처리
         output += (Comment.comment_ref_id != null) ? '' : `
         <li id='${Comment.comment_idx}' class='comment-list-item ${replyClass}'>
             <div class='comment-nick-area'>
-                <img src='${src}' alt='profile picture' style = "width : 35px; height : 35px">
+                <!-- <img src='${src}' alt='profile picture' style = "width : 35px; height : 35px"> -->
                 <div class='comment-box'>
                     <div class='comment-nick-box'>
                         <div class='comment-nick-info'>
@@ -88,7 +102,7 @@ function getList(state) {
                     <div class='comment-text-box'>
                         <p class='comment-text-view'>
                         
-                            <span class='text-comment'>${Comment.content}</span>
+                            <span class='text-comment' style='${displayContentStyle}'>${displayContent}</span>
                             ${reportButton}
                         </p>
                     </div>
@@ -104,6 +118,14 @@ function getList(state) {
 
         // 답글 처리: 부모 댓글에 대한 답글을 출력
         rdata.commentlist.forEach(childComment => {
+
+            let isSecretC = childComment.isSecret === 'Y';
+            let isPostOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+            let isCommentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
+            let isAdminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+
+
             if (childComment.comment_ref_id === Comment.comment_idx) {
                 let childSrc = childComment.user_file ? `../userupload/${childComment.user_file}` : '../img/info.png';
                 /*
@@ -123,10 +145,16 @@ function getList(state) {
                 */
                  // @parentUsername 부분을 파란색으로 스타일링
         let formattedContent = childComment.content.replace(/(@[\w\u00C0-\u017F\uac00-\ud7af\u4e00-\u9fff.-]+)/g, "<span class='mention'>$1</span>");
-        
-        
+
+                let childDisplayContent = isSecretC && !(isPostOwnerC || isCommentOwnerC || isAdminC)
+                    ? '🔒비밀댓글입니다.'
+                    : formattedContent;
+
+                // 비밀댓글 스타일 적용
+                let childDisplayContentStyle = isSecretC ? 'color: gray;' : '';
+
                 // 답글의 더보기 버튼 및 수정/삭제 버튼 처리
-        let childToolButtons = $("#loginid").val() === childComment.user_id ? ` 
+        let childToolButtons = ($("#loginid").val() === childComment.user_id || $("#loginid").val() == 'admin') ? ` 
             <div class='comment-tool'>
                 <div title='더보기' class='comment-tool-button'> 
                     <div>&#46;&#46;&#46;</div>
@@ -140,11 +168,11 @@ function getList(state) {
                     </ul>
                 </div>
             </div>` : '';
-                
+
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
                     <div class='comment-nick-area'>
-                        <img src='${childSrc}' alt='profile picture' style = "width : 35px; height : 35px">
+                        <!-- <img src='${childSrc}' alt='profile picture' style = "width : 35px; height : 35px"> -->
                         <div class='comment-box'>
                             <div class='comment-nick-box'>
                                 <div class='comment-nick-info'>
@@ -153,7 +181,7 @@ function getList(state) {
                             </div>
                             <div class='comment-text-box'>
                                 <p class='comment-text-view' style="display: inline; align-items: center;">
-                                    <span class='text-comment'>${formattedContent}</span>
+                                    <span class='text-comment' style='${childDisplayContentStyle}'>${childDisplayContent}</span>
                                     ${reportButton}
                                 </p>
                             </div>
@@ -175,35 +203,61 @@ function getList(state) {
 
       console.log(output);
       $('.comment-list').html(output); //댓글 데이터를 HTML로 변환하여 화면에 출력
-      
+
       //댓글이 없으면 댓글 목록과 정렬 메뉴를 비움
       if (!rdata.commentlist.length) {
         $('.comment-list, .comment-order-list').empty();
       }
-      
+
     }
   });
-  
+
 } //getList 함수 끝 (댓글 목록 뽑아오는 함수)
 
 
 
-	//버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
-	$(document).on('click', '.commentReportButton', function() {
-		console.log('===============> 모달 button clicked!');
-		
-		// 버튼에서 댓글 ID와 작성자 ID 가져오기
-	    const commentIdx = $(this).data('comment-idx');
-	    // const target = $(this).data('writer');
-        const target = $(this).data('user_id');
-	    console.log('===> commentIdx:', commentIdx);
-	    console.log('===> writer:', target);
-	
-	    // 모달창에 값 설정
-	    $('.report_ref_id').val(commentIdx); // 신고 댓글 ID
-	    $('.target').val(target); // 신고 대상자 ID
-		
-	}) //댓글 선택자 값 부여 함수 끝
+//버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
+$(document).on('click', '.commentReportButton', function() {
+    console.log('===============> 모달 button clicked!');
+    const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
+    if(confirm(commentNickname.text() + " 댓글을 신고하시겠습니까?")){
+        fetchReport(commentNickname.text(), 'COMMENT');
+    }
+    // 버튼에서 댓글 ID와 작성자 ID 가져오기
+    const commentIdx = $(this).data('comment-idx');
+    const target = $(this).data('user_id');
+    console.log('===> commentIdx:', commentIdx);
+    console.log('===> writer:', target);
+
+    // 모달창에 값 설정
+    $('.report_ref_id').val(commentIdx); // 신고 댓글 ID
+    $('.target').val(target); // 신고 대상자 ID
+
+}) //댓글 선택자 값 부여 함수 끝
+
+function fetchReport(reportedUser, category) {
+    //fetch start
+
+    //category in ('POST','COMMENT','USER')
+    const reqData = {
+        reportedUser : String(reportedUser),
+        category : String(category),
+    };
+    fetch('/Shoots/insertReport',{
+        method:'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(reqData)
+    })
+        .then(resp => resp.json())
+        .then(data => {
+            alert(data.msg);
+            location.reload();
+        })
+        .catch(error => alert("에러 뜸 : " + error))
+    //fetch end
+};
 
 
 // 더보기 - 수정 클릭한 경우에 수정 폼을 보여줍니다.
@@ -300,6 +354,7 @@ function replyform(comment_idx) {
 $(function() {
   getList(option); // 처음 로드될 때는 등록순 정렬
 
+    // 댓글 입력시 글자수 표시
  $('.comment-area').on('keyup','.comment-write-area-text', function() {
 	 const length=$(this).val().length;
 	 $(this).prev().text(length+'/200');
@@ -312,14 +367,29 @@ $(function() {
       alert("댓글을 입력하세요");
       return;
     }
-    
-    $.ajax({
+
+      // $('input[name="isSecret"]').on('change', function() {
+      //     if ($(this).prop('checked')) {
+      //         console.log("비밀댓글이 체크되었습니다.");
+      //     } else {
+      //         console.log("비밀댓글이 체크 해제되었습니다.");
+      //     }
+      // });
+
+
+      // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
+      const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+
+
+      $.ajax({
       url: '../comment/add',
       data: {
-        id: $("#loginid").val(),
+        id: $("#loginid").val(), // 로그인 사용자 ID
         content: content,
-          writer: $("#idx").val(),
-        post_idx: $("#post_idx").val(),
+          writer: $("#idx").val(), // 댓글 작성자 ID
+        post_idx: $("#post_idx").val(), // 게시글 ID
+          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+
         comment_ref_id: null // 원본 댓글은 comment_ref_id가 null
       },
       type: 'post',
@@ -344,8 +414,9 @@ $(function() {
 		// 다른 모든 "더보기" 버튼의 수정/삭제 영역을 숨김
 		$(".comment-tool-button").not(this).next().hide();
 	})
-    
-    
+
+
+
     // 수정 후 수정완료를 클릭한 경우 (댓글 및 답글 공통 처리)
 	$('.comment-area').on('click','.update',function(){
 		const content = $(this).parent().parent().find('textarea').val();
@@ -354,9 +425,16 @@ $(function() {
 			return;
 		}
 		const comment_idx = $(this).attr('data-id');
+
+        // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
+        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+
 		$.ajax({
 			url:'../comment/update',
-			data:{comment_idx:comment_idx, content:content},
+			data:{comment_idx:comment_idx,
+                content:content,
+                isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+            },
             type: 'post',
 			success:function(rdata){
 				if(rdata===1){
@@ -392,8 +470,9 @@ $(function() {
 			alert("답글을 입력하세요");
 			return;
 		}
-		
-		
+
+        // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
+        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
 
     $.ajax({
       type: 'post',
@@ -403,6 +482,7 @@ $(function() {
         writer: $("#idx").val(),
         content: content,
         post_idx: $("#post_idx").val(),
+          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
         comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       },
       success: function(rdata) {
@@ -446,6 +526,8 @@ $(function() {
 
 
 $(document).ready(function() {
+
+
     $('#delete-post-btn').click(function() {
         // 삭제 확인 알림창
         if (confirm("게시글을 삭제하시겠습니까?")) {

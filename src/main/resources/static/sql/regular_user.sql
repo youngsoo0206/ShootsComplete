@@ -5,14 +5,12 @@ CREATE TABLE regular_user
     user_id       VARCHAR(30)                  NOT NULL,
     password      VARCHAR(100)                  NOT NULL,
     name          VARCHAR(20)                  NOT NULL,
-    jumin         VARCHAR(9)                   NOT NULL,
-    gender        TINYINT                      NOT NULL,
-    tel           VARCHAR(15)                  NOT NULL,
-    email         VARCHAR(30)                  NOT NULL,
-    nickname      VARCHAR(20),
-    user_file     VARCHAR(50),
+    jumin         VARCHAR(9),
+    gender        TINYINT,
+    tel           VARCHAR(15),
+    email         VARCHAR(30),
     register_date TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
-    role          VARCHAR(10) DEFAULT 'common' NOT NULL
+    role          VARCHAR(10) DEFAULT 'common'
 ) ENGINE = InnoDB;
 
 -- 아이디가 admin일 경우 role 업데이트
@@ -21,7 +19,7 @@ SET role = 'admin'
 WHERE user_id = 'admin';
 
 -- 테스트 데이터 삽입
-INSERT INTO regular_user (user_id, password, name, jumin, gender, tel, email, nickname, user_file, register_date, role)
+INSERT INTO regular_user (user_id, password, name, jumin, gender, tel, email, register_date, role)
 VALUES
     ('youngsoo1', '1', '일수', '111111', 1, '01012345678', '1@1.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),
     ('youngsoo2', '2', '이수', '222222', 2, '01012345678', '2@2.com', NULL, NULL, CURRENT_TIMESTAMP, 'common'),

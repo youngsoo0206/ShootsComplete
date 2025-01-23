@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,8 +33,16 @@ public class PostCommentController {
 
     @PostMapping(value="/list")
     public Map<String, Object> CommentList(@RequestParam("post_idx") int post_idx,
-                                           @RequestParam("state") int state) {
-        List<PostComment> list = postCommentService.getCommentList(post_idx, state);
+                                           @RequestParam("state") int state,
+//                                           @RequestParam("user_id") String user_id,
+                                           HttpSession session) {
+        List<PostComment> list = postCommentService.getCommentList(post_idx, state, session);
+//        Iterator<PostComment> iterator = list.iterator();
+//        while(iterator.hasNext()){
+//            PostComment postComment = iterator.next();
+//            if(user_id.equals(postComment.getUser_id())) //
+//                postComment.setSecret(true);
+//        }
 
         int listcount = postCommentService.getListCount(post_idx);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -48,7 +57,10 @@ public class PostCommentController {
 
 
     @PostMapping(value = "/add")
-    public int commentAdd(PostComment co) {
+    public int commentAdd(PostComment co, HttpSession session) {
+//        String user_id = (String) session.getAttribute("user_id");
+//        co.setUser_id(user_id);
+        logger.info(String.valueOf(co));
         return postCommentService.commentsInsert(co);
     }
 

@@ -5,17 +5,20 @@ CREATE TABLE post_comment (
               writer INT NOT NULL,                                     -- 작성자(regular_user 테이블 참조)
               content TEXT NOT NULL,                                   -- 내용
               register_date DATETIME DEFAULT CURRENT_TIMESTAMP,        -- 등록일
-              is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N')), -- 비밀 댓글 여부
+              isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N')), -- 비밀 댓글 여부
 -- 외래 키 제약 조건
               CONSTRAINT fk_post FOREIGN KEY (post_idx) REFERENCES post(post_idx) ON DELETE CASCADE,
               CONSTRAINT fk_comment_ref FOREIGN KEY (comment_ref_id) REFERENCES post_comment(comment_idx) ON DELETE CASCADE,
               CONSTRAINT fk_writer_post_comment FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
 
-# is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N')), -- 비밀 댓글 여부
+# isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N')), -- 비밀 댓글 여부
+
+# isSecret BOOLEAN DEFAULT FALSE,  -- 비밀 댓글 여부 (TRUE-비밀댓글(1) / FALSE-일반댓글(0))
 
 ALTER TABLE post_comment
-    ADD is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N'));
+    ADD isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N'));
+
 
 
 drop table post_comment;

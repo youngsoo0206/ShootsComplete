@@ -39,14 +39,14 @@ public class MatchController {
                                   @RequestParam(required = false) String filter,
                                   @RequestParam(required = false) String gender,
                                   @RequestParam(required = false) String level,
+                                  @RequestParam(required = false) String business_idx,
                                   ModelAndView modelAndView, HttpSession session) {
 
         session.setAttribute("refer", "list");
         int limit = 10;
         int listCount = matchService.getListCount();
 
-        List<Match> list = matchService.getMatchList(filter, gender, level, page, limit);
-
+        List<Match> list = matchService.getMatchList(filter, gender, level, page, limit, business_idx);
 
         PaginationResult result = new PaginationResult(page, limit, listCount);
 
@@ -76,7 +76,7 @@ public class MatchController {
 
         }
 
-        logger.info("검색 값 Filter value : " + filter + ", Gender value = " + gender + ", Level value = " + level);
+        logger.info("검색 값 Filter value : " + filter + ", Gender value = " + gender + ", Level value = " + level + ", Business_idx = " + business_idx);
 
         modelAndView.setViewName("match/matchList");
         modelAndView.addObject("page", page);

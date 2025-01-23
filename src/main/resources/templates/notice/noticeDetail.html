@@ -11,6 +11,26 @@
             font-size : 25px;
             font-weight: bold;
             color : black;
+
+        }
+        .list{
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 60px;
+            height: 25px;
+            padding: 0;
+            border: none;
+            background-color: #65A30D;
+            text-align: center;
+        }
+
+        .list:hover{
+            background-color: white;
+            color: #65A30D;
+            border: 1.5px solid #65A30D;
         }
     </style>
 </head>
@@ -35,13 +55,13 @@
                         <img th:src="@{/img/down.png}" width="10px">
                         <input type="hidden" th:value="${noticedata.notice_file}" th:name="filename">
                         <input type="hidden" th:value="${noticedata.notice_original}" th:name="original">
-                        <input type="submit" th:value="${noticedata.notice_original}">
+                        <input type="submit" th:value="${noticedata.notice_original}" style="border:none; background-color: white;">
                     </form>
                 </td>
                 <td th:if="${#strings.isEmpty(noticedata.notice_file)}"></td>
             </tr>
             <tr>
-                <td colspan="3"><a href="list">목록</a></td>
+                <td colspan="3"><a href="list" class="list" type="button">목록</a></td>
             </tr>
         </table>
     </div>

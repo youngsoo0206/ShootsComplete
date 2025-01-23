@@ -22,7 +22,7 @@ public class MatchServiceImpl implements MatchService{
     }
 
     @Override
-    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit) {
+    public List<Match> getMatchList(String filter, String gender, String level, int page, int limit, String business_idx) {
 
         HashMap<String, Object> map = new HashMap<String, Object>();
 
@@ -31,6 +31,7 @@ public class MatchServiceImpl implements MatchService{
         map.put("filter", (filter != null && !filter.isEmpty()) ? filter : null);
         map.put("gender", gender);
         map.put("level", level);
+        map.put("business_idx", business_idx);
 
         map.put("limit", limit);
         map.put("offset", offset);

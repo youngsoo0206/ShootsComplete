@@ -8,10 +8,22 @@
     <meta name="author" content="" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminDashboard.css}" rel="stylesheet" />
+    <link th:href="@{/css/adminList.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>공지사항</title>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript">
+        $(function(){
+            $(".delete").click(function(event){
+                const answer = confirm("정말 삭제하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault();
+                }
+            })
+        })
+    </script>
     <style>
         table caption {
             caption-side: top;
@@ -105,7 +117,7 @@
     </div>
 
     <div id="layoutSidenav_content">
-        <div class="container">
+        <div class="container" style="margin-top: 30px">
             <table class="table">
                 <caption>[[${noticedata.title}]]</caption>
                 <tr>
@@ -125,16 +137,16 @@
                             <img th:src="@{/img/down.png}" width="10px">
                             <input type="hidden" th:value="${noticedata.notice_file}" th:name="filename">
                             <input type="hidden" th:value="${noticedata.notice_original}" th:name="original">
-                            <input type="submit" th:value="${noticedata.notice_original}" >
+                            <input type="submit" th:value="${noticedata.notice_original}" class="down" >
                         </form>
                     </td>
                     <td th:if="${#strings.isEmpty(noticedata.notice_file)}" colspan="3"></td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <a href="noticeList" type="button">목록</a>
-                        <a th:href="@{noticeUpdate(id=${noticedata.notice_idx})}">수정</a>
-                        <a th:href="@{noticeDelete(id=${noticedata.notice_idx})}">삭제</a>
+                        <a href="noticeList" type="button" class="list">목록</a>
+                        <a th:href="@{noticeUpdate(id=${noticedata.notice_idx})}" type="button" class="update">수정</a>
+                        <a th:href="@{noticeDelete(id=${noticedata.notice_idx})}" type="button" class="delete">삭제</a>
                     </td>
 
                 </tr>

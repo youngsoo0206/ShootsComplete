@@ -12,6 +12,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>기업 목록</title>
     <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" type = "text/css">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
     <script th:inline="javascript">
         $(function(){
@@ -38,6 +39,41 @@
         }
         tr > th:nth-child(6) {
             text-align: center;
+        }
+        .approve{
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 60px;
+            height: 25px;
+            padding: 0;
+            border: none;
+            background-color: #115FFC;
+        }
+        .refuse{
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            width: 60px;
+            height: 25px;
+            padding: 0;
+            border: none;
+            background-color: #DA0130;
+            text-align: center;
+        }
+
+        .approve:hover{
+            background-color:white;
+            color: #115FFC;
+            border: 1.5px solid #115FFC
+        }
+
+        .refuse:hover{
+            background-color:white;
+            color: #DA0130;
+            border: 1.5px solid #DA0130
         }
     </style>
 </head>
