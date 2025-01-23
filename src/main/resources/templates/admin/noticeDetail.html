@@ -13,6 +13,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>공지사항</title>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    <script th:inline="javascript">
+        $(function(){
+            $(".delete").click(function(event){
+                const answer = confirm("정말 삭제하시겠습니까?");
+                console.log(answer);
+                if(!answer){
+                    event.preventDefault();
+                }
+            })
+        })
+    </script>
     <style>
         table caption {
             caption-side: top;

@@ -56,14 +56,36 @@ h1{
     height: 25px;
     padding: 0;
     border: none;
-    background-color: #115FFC;
+    background-color: #65A30D;
 }
 
 .write:hover{
     background-color: white;
-    color: #115FFC;
-    border: 1.5px solid #115FFC;
+    color: #65A30D;
+    border: 1.5px solid #65A30D;
 }
+
+.update1{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #1d4ed8;
+    text-align: center;
+}
+
+.update1:hover{
+    background-color: white;
+    color: #1d4ed8;
+    border: 1.5px solid #1d4ed8;
+}
+
+
 
 .update{
     text-decoration: none;
@@ -75,14 +97,14 @@ h1{
     height: 25px;
     padding: 0;
     border: none;
-    background-color: #115FFC;
+    background-color: #FDBA01;
     text-align: center;
 }
 
 .update:hover{
     background-color: white;
-    color: #115FFC;
-    border: 1.5px solid #115FFC;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
 }
 
 .delete{
@@ -115,14 +137,14 @@ h1{
     height: 25px;
     padding: 0;
     border: none;
-    background-color: #FDBA01;
+    background-color: #65A30D;
     text-align: center;
 }
 
 .list:hover{
     background-color: white;
-    color: #FDBA01;
-    border: 1.5px solid #FDBA01;
+    color: #65A30D;
+    border: 1.5px solid #65A30D;
 }
 
 .down{
@@ -143,6 +165,7 @@ h1{
     background-color: #115FFC;
     text-align: center;
     margin-top: 10px;
+
 }
 
 .submit:hover{

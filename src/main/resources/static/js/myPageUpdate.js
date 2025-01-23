@@ -1,32 +1,35 @@
 $(function(){
-	 //아이디의 정규식 체크하기 위한 변수로 기본값은 false, 규칙에 맞게 입력하면 true값을 갖습니다.
-    let checkemail=false;//이메일의 정규식 체크하기 위한 변수로 기본값은 false, 규칙에 맞게 입력하면 true값을 갖습니다.
+    let checkemail=true;
 
     $(function(){
-        $(".emailcheck").click(function(){
-            const email = $("input[name=email]").val();
+        $("input[name=email]").keyup(function(){
+            const email = $(this).val();
             const emailpattern = /^\w+@\w+[.][A-Za-z0-9]{3}$/;
-                if(!emailpattern.test(email)){
-                    alert("잘못된 형식의 이메일입니다.")
-                    checkemail=false;
-                }else { //이메일 형식이 올바를 시, 이메일 중복체크
+            if(!emailpattern.test(email)){
+                $("#email-message").css('color', 'red').html("잘못된 형식의 이메일 입니다.");
+                checkemail=false;
+            }else { //이메일 형식이 올바를 시, 이메일 중복체크
 
-                    checkemail = true;
-                }
+                $("#email-message").css('color', 'green')
+                    .html("이메일이 형식에 맞습니다.");
+                checkemail = true;
 
-                    $.ajax({  //이메일 중복검사 : 개인회원
-                        url: "emailcheck",
-                        data: {"email": email},
-                        success: function (resp) {
-                            if (resp == "-1") {//db에 해당 id가 없는 경우
-                                $("#email-message").css('color', 'green').html("사용 가능한 이메일 입니다.");
-                                checkemail = true;
-                            } else {//db에 해당 id가 있는 경우(1)
-                                $("#email-message").css('color', 'blue').html("사용중인 이메일 입니다.");
-                                checkemail = false;
-                            }
+                $.ajax({  //이메일 중복검사 : 개인회원
+                    url: "emailcheck",
+                    data: {"email": email},
+                    success: function (resp) {
+                        if (resp == "-1") {//db에 해당 id가 없는 경우
+                            $("#email-message").css('color', 'green').html("사용 가능한 이메일 입니다.");
+                            checkemail = true;
+                        } else {//db에 해당 id가 있는 경우(1)
+                            $("#email-message").css('color', 'blue').html("사용중인 이메일 입니다.");
+                            checkemail = false;
                         }
-                    });//이메일 중복검사 ajax 끝
+                    }
+                });//이메일 중복검사 ajax 끝
+            }
+
+
         })
     })
 
@@ -62,7 +65,7 @@ $(function(){
 
 
         if(!checkemail){
-            alert("이메일 형식을 확인해 주세요.");
+            alert("이메일을 확인해 주세요.");
             $("input[name=email]").focus();
             return false;
         }
