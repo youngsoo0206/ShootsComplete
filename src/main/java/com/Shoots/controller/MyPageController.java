@@ -4,6 +4,7 @@ import com.Shoots.domain.Inquiry;
 import com.Shoots.domain.Post;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.InquiryService;
+import com.Shoots.service.PostCommentService;
 import com.Shoots.service.PostService;
 import com.Shoots.service.RegularUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,10 +29,13 @@ public class MyPageController {
     private final PostService postService;
     private final InquiryService inquiryService;
     private RegularUserService regularUserService;
+    private PostCommentService postCommentService;
 
-    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService) {this.regularUserService = regularUserService;
+    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService, PostCommentService postCommentService ) {
+        this.regularUserService = regularUserService;
         this.postService = postService;
         this.inquiryService = inquiryService;
+        this.postCommentService = postCommentService;
     }
 
     @GetMapping(value="/info")
@@ -122,4 +126,5 @@ public class MyPageController {
 
         return mv;
     }
+
 }

@@ -12,10 +12,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/adminList.css}" type = "text/css">
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" type = "text/css">
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
     <script th:inline="javascript">
         $(function(){
-            $("tr > td:nth-child(5) > a").click(function(event){
+            $("tr > td:nth-child(6) > a").click(function(event){
                 const answer = confirm("정말 삭제하시겠습니까?");
                 console.log(answer);
                 if(!answer){

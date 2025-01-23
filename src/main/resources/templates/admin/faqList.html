@@ -127,7 +127,7 @@
                     <td th:text="${f.name}"></td>
                     <td><a th:href="@{/testAdmin/faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
                     <td th:text="${f.register_date.substring(0, 10)}"></td>
-                    <td><a th:href="@{faqUpdate(id=${f.faq_idx})}"  type="button" class="update">수정</a></td>
+                    <td><a th:href="@{faqUpdate(id=${f.faq_idx})}"  type="button" class="update1">수정</a></td>
                     <td><a th:href="@{faqDelete(id=${f.faq_idx})}"  type="button" class="delete">삭제</a></td>
                 </tr>
                 </tbody>
