@@ -101,36 +101,29 @@
             </div>
             <div style="width: 14.2%" th:each="forecast : ${firstSixWeatherData}">
                 <div style="font-size: 12px; text-align: center; margin-top: 22px">
-                    <span th:if="${forecast.sky == '1' && forecast.precipitationType == '0'}">
+                    <span th:if="${forecast.sky == '1' && forecast.precipitationType == '0' && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/sky1.png}" style="width: 35px; height: auto">
                     </span>
-                    <span th:if="${forecast.sky == '3' && forecast.precipitationType == '0'}">
-                        <img th:src="@{/img/sky3.png}" style="width: 35px; height: auto">
-                        <span> 구름많음 </span>
+                    <span th:if="${forecast.sky == '3' && forecast.precipitationType == '0'  && forecast.windSpeedAsNumber < 4}">
+                        <img th:src="@{/img/sky3.png}" style="width: auto; height: 35px">
                     </span>
-                    <span th:if="${forecast.sky == '4' && forecast.precipitationType == '0'}">
+                    <span th:if="${forecast.sky == '4' && forecast.precipitationType == '0'  && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/sky4.png}" style="width: 35px; height: auto">
-                        <span> 흐림 </span>
                     </span>
-                    <span th:if="${forecast.precipitationType == '1'}">
+                    <span th:if="${forecast.precipitationType == '1' && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/precipitationType1.png}" style="width: 35px; height: auto">
-                        <span> 비 </span>
                     </span>
-                    <span th:if="${forecast.precipitationType == '2'}">
+                    <span th:if="${forecast.precipitationType == '2' && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/precipitationType2.png}" style="width: 35px; height: auto">
-                        <span> 비/눈 </span>
                     </span>
-                    <span th:if="${forecast.precipitationType == '3' or forecast.precipitationType == '7'}">
+                    <span th:if="${(forecast.precipitationType == '3' or forecast.precipitationType == '7') && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/precipitationType3.png}" style="width: 35px; height: auto">
-                        <span> 눈 </span>
                     </span>
-                    <span th:if="${forecast.precipitationType == '5' or forecast.precipitationType == '6'}">
+                    <span th:if="${(forecast.precipitationType == '5' or forecast.precipitationType == '6') && forecast.windSpeedAsNumber < 4}">
                         <img th:src="@{/img/precipitationType5.png}" style="width: 35px; height: auto">
-                        <span> 빗방울 </span>
                     </span>
-                    <span th:if="${(forecast.sky == '1' or forecast.sky == '3' or forecast.sky == '4') && forecast.precipitationType == '0' && forecast.windSpeed > '3'}">
+                    <span th:if="${(forecast.sky == '1' or forecast.sky == '3' or forecast.sky == '4') && forecast.precipitationType == '0' && forecast.windSpeedAsNumber > 3}">
                         <img th:src="@{/img/windSpeed.png}" style="width: 35px; height: auto">
-                        <span> 바람 </span>
                     </span>
                     </div>
                 <div class="hr-with-dot">
