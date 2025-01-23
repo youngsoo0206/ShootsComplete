@@ -75,6 +75,10 @@ public class HomeController {
 
         List<Weather> firstSixWeatherData = weatherDataForecast.stream()
                 .limit(6)
+                .map(forecast -> {
+                    forecast.setWindSpeedAsNumber(Double.parseDouble(forecast.getWindSpeed()));
+                    return forecast;
+                })
                 .collect(Collectors.toList());
 
         System.out.println("firstSixWeatherData  = " + firstSixWeatherData.toString());

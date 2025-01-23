@@ -16,6 +16,9 @@ public class Weather {
     private String precipitationType; // 강수형태
     private String windDirection; // 풍향
 
+    private Double windSpeedAsNumber; // 숫자 값 저장
+
+
     @Override
     public String toString() {
         return "Weather{" +
@@ -28,5 +31,13 @@ public class Weather {
                 ", precipitationType=" + precipitationType +
                 ", windDirection=" + windDirection +
                 '}';
+    }
+
+    public Double getWindSpeedAsNumber() {
+        return windSpeedAsNumber;
+    }
+
+    public void setWindSpeedAsNumber(Double windSpeedAsNumber) {
+        this.windSpeedAsNumber = windSpeedAsNumber;
     }
 }
