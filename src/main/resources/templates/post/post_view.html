@@ -83,7 +83,7 @@
 		</tr>
 
 		<tr>
-			<td th:if="${not #strings.isEmpty(postdata.post_file)}">
+			<td th:if="${not #strings.isEmpty(postdata.post_file)}" colspan="2">
 				<form method="post" th:action="@{down}" >
 					<input type="hidden" th:value="${postdata.post_file}" th:name="filename">
 					<input type="hidden" th:value="${postdata.post_original}" th:name="original">
@@ -93,7 +93,7 @@
 		</tr>
 
 		<tr>
-			<td style="padding-right: 0px">
+			<td style="padding-right: 0px" colspan="2">
 				<div class="contentD">
 					<!-- 이미지가 있을 때만 출력되도록 수정 -->
 					<th:block th:if="${not #strings.isEmpty(postdata.post_file)}">
