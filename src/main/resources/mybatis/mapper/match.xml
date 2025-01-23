@@ -26,6 +26,9 @@
             <if test="level != null">
                 AND mp.MATCH_LEVEL = #{level}
             </if>
+            <if test="business_idx != null">
+                AND mp.WRITER = #{business_idx}
+            </if>
         </where>
         ORDER BY
         mp.MATCH_DATE DESC,

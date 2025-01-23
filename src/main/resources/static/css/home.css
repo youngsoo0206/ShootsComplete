@@ -75,3 +75,83 @@ nav.navbar {
 .card-title {font-size: 16px}
 .card-text {font-size: 12px}
 .card-link {font-size: 11px}
+
+
+.hr-with-dot {
+    display: flex;
+    align-items: center;
+    border: none;
+    color: #ccc;
+}
+
+.hr-with-dot::before,
+.hr-with-dot::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid #ccc;
+}
+
+.hr-with-dot::before {
+    margin-right: 10px;
+}
+
+.hr-with-dot::after {
+    margin-left: 10px;
+}
+
+.hr-with-dot span {
+    font-size: 15px;
+    color: #666;
+}
+
+/* 검색 btn */
+.custom-btn-top {
+    width: 60px;
+    height: 23px;
+    border: 2px solid #fdba01;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    color: white;
+    background: #fdba01;
+}
+.custom-btn-top:hover {
+    border: 2px solid #fdba01;
+    color: #fdba01;
+    background: white;
+}
+
+.btn-15-top {
+    background: #fdba01;
+    color: white;
+    z-index: 1;
+    border-radius: 20px;
+}
+.btn-15-top:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+.btn-15-top:hover {
+    color: #fdba01;
+}
+.btn-15-top:hover:after {
+    left: 0;
+    width: 100%;
+}
+
+.btn-15-top:active {
+    top: 2px;
+}
+
+select {width: 90px; height: 23px; border: 2px solid #fdba01; border-radius: 20px; text-align: center; outline: none;}
