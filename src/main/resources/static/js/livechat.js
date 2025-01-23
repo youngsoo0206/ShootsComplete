@@ -7,6 +7,7 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+var chatHeader = $('.chat-header');
 
 var stompClient = null;
 var username = null;
@@ -37,10 +38,14 @@ function connect(event) {
 }
 
 
+function loadChat() {
+}
+
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/'+topicName, onMessageReceived);
-    loadChat()
+    stompClient.subscribe('/topic/' + topicName, onMessageReceived);
+    chatHeader.text("채팅방 이름 : " + topicName);
+    loadChat();
     // Tell your username to the server
 
     // DB설계
@@ -58,6 +63,7 @@ function onConnected() {
                     )
 
     connectingElement.classList.add('hidden');
+
 }
 
 
@@ -90,10 +96,12 @@ function onMessageReceived(payload) {
     if(message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
-    } else if (message.type === 'LEAVE') {
+    }
+    else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
-    } else {
+    }
+    else {
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
@@ -107,13 +115,24 @@ function onMessageReceived(payload) {
         var usernameText = document.createTextNode(message.sender);
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
+
+        var imageElement = document.createElement('img');
+        imageElement.src = '../img/card1.jpg';
+        imageElement.width = 100;
+        imageElement.height = 100;
+        imageElement.style.border = '2px solid #000';
+        imageElement.style.borderRadius = '10px';
     }
 
     var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
+    var messageText = document.createTextNode(message.content);//message 본문
+
+//messageElement에다가 추가할거 추가하면됩니다.
+
     textElement.appendChild(messageText);
 
     messageElement.appendChild(textElement);
+    messageElement.appendChild(imageElement);
 
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;

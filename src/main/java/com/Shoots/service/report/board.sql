@@ -10,5 +10,7 @@ CREATE TABLE board (
 );
 #Not NUll , CHECK (category IN ('A', 'B')), DEFAULT 0
 
+insert
+
 select *
 from board;
