@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -55,7 +56,7 @@ public class WeatherService implements CommandLineRunner {
     }
 
 
-    public List<Weather> getWeatherForecast(String today, int nx, int ny) throws IOException {
+    public List<Weather> getWeatherForecast(String today, int nx, int ny) throws IOException, ParseException {
 
         List<Weather> weatherList = new ArrayList<>();
 
@@ -70,6 +71,13 @@ public class WeatherService implements CommandLineRunner {
             hour--;
             if (hour < 0) {
                 hour = 23;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                Date todayDate = dateFormat.parse(today);
+                Calendar prevDay = Calendar.getInstance();
+                prevDay.setTime(todayDate);
+                prevDay.add(Calendar.DATE, -1);
+                today = dateFormat.format(prevDay.getTime());
             }
             minute = 30;
         } else {
@@ -78,8 +86,9 @@ public class WeatherService implements CommandLineRunner {
 
         String baseTime = String.format("%02d%02d", hour, minute);
 
-        System.out.println("-------------------------------------- baseTime : " + baseTime);
-        System.out.println("-------------------------------------- nx : " + nx + " ny : " + ny);
+        System.out.println("-------------------------------------- Forecast today: " + today);
+        System.out.println("-------------------------------------- Forecast baseTime : " + baseTime);
+        System.out.println("-------------------------------------- Forecast -> nx : " + nx + " ny : " + ny);
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl_Fcst);
 
@@ -182,7 +191,7 @@ public class WeatherService implements CommandLineRunner {
         return weatherList;
     }
 
-    public Weather getWeather(String today, int nx, int ny) throws IOException {
+    public Weather getWeather(String today, int nx, int ny) throws IOException, ParseException {
 
         Weather weather = new Weather();
 
@@ -199,11 +208,18 @@ public class WeatherService implements CommandLineRunner {
             int previousHour = Integer.parseInt(hour) - 1;
             if (previousHour < 0) {
                 previousHour = 23;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                Date todayDate = dateFormat.parse(today);
+                Calendar prevDay = Calendar.getInstance();
+                prevDay.setTime(todayDate);
+                prevDay.add(Calendar.DATE, -1);
+                today = dateFormat.format(prevDay.getTime());
             }
             baseTime = String.format("%02d00", previousHour);
         }
 
-        System.out.println("baseTime: " + baseTime);
+        System.out.println("-------------------------------------- today: " + today);
         System.out.println("-------------------------------------- baseTime : " + baseTime);
         System.out.println("-------------------------------------- nx : " + nx + " ny : " + ny);
 
