@@ -38,10 +38,15 @@ public class SocialLoginController {
 
     @GetMapping("/kakaoCallback")
     public ResponseEntity<?> kakoCallback(@RequestParam("code") String code, HttpServletRequest request, Authentication authentication) {
+        HttpSession session = request.getSession();
+
         // 카카오에서 액세스 토큰과 리프레시 토큰을 가져옴
         KakaoTokenResponseDto tokenResponse = kakaoService.getAccessTokenFromKakao(code);
         String accessToken = tokenResponse.getAccessToken();
         String refreshToken = tokenResponse.getRefreshToken();
+
+        // 카카오 액세스 토큰을 세션에 저장 : 로그아웃 할때 토큰을 만료시키기 위함.
+        session.setAttribute("kakaoAccessToken", accessToken);
 
         /* 사용자 정보를 가져오는 코드. 카카오 로그인 유저는 Shoots 앱에 한번이라도 로그인 한 적이 있다면 해당 로컬에서 처음 가입한다 할지라도
         Shoots app에 이미 인증받은 적이 있는 (카카오 인증 ID) 유저이기에 정보 동의 절차를 받지 않음.
@@ -60,10 +65,9 @@ public class SocialLoginController {
 
             // Spring Security 인증 처리
             UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(existingUser, null, authorities);
+                    new UsernamePasswordAuthenticationToken(existingUser, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-            HttpSession session = request.getSession();
             //로그인을 한 사람의 인증정보가 사라지지 않게 세션에 저장. 아래 코드 없으면 인증정보 받아와도 저장이 안돼서 위의 인증처리 코드가 끝난 직후 다시 인증정보가 사라져서 권한이 사라지는 일이 발생.
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
             session.setAttribute("idx", existingUser.getIdx());
@@ -90,8 +94,29 @@ public class SocialLoginController {
             regularUser.setPassword(passwordEncoder.encode((String.valueOf(randomNumber))));
             regularUserService.insert2(regularUser);
 
-            //아래 return 포함해서 신규 유저정보(regularUser)를 가지고 시큐리티 인증 처리 + 세션 정보 저장 으로 코드 수정
-            return new ResponseEntity<>(HttpStatus.OK);
+            // 위까지 프로젝트에 DB 처리, 아래부터 if문 (=기존유저 있을때) 에서 했던 로그인 처리 그대로 따옴.
+
+            //로그인 유저에게 스프링 시큐리티 권한을 줘야하는데 우리 프로젝트에서 권한을 줄때 기존 스프링에서 사용 하는 방법 (접두사 ROLE_)을 사용하지 않기 때문에 프로젝트의 권한방법과 맞추기 위한 코드
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(existingUser.getRole()));
+
+            // Spring Security 인증 처리
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(regularUser, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            //로그인을 한 사람의 인증정보가 사라지지 않게 세션에 저장. 아래 코드 없으면 인증정보 받아와도 저장이 안돼서 위의 인증처리 코드가 끝난 직후 다시 인증정보가 사라져서 권한이 사라지는 일이 발생.
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+            session.setAttribute("idx", regularUser.getIdx());
+            session.setAttribute("id", regularUser.getUser_id());
+            session.setAttribute("role", regularUser.getRole());
+            session.setAttribute("usertype", "A");
+
+            //이 부분 if / else문으로 분기 나눠서 regularUser.getJumin getGender 써가지고 쟤네가 null 이면
+            // /Shoots/myPage/info 로 리다이렉트, 둘 다 null 아니면 mainBefore로 리다이렉트.
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .header("Location","/Shoots/mainBefore")
+                    .build();
         }
     } //kakaoCallback
 

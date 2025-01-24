@@ -13,15 +13,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,17 +57,22 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                              HttpSession session, Principal userPrincipal) {
+                              HttpSession session, HttpServletRequest request, Principal userPrincipal) {
         session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
         session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
 
 
         //카카오톡 로그인을 위한 경로 설정.
-        String kakaoLoginPath = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        String kakaoLoginPath = String.format(
+                "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
+                client_id, URLEncoder.encode(redirect_uri, StandardCharsets.UTF_8)
+        );
         mv.addObject("kakaoLoginPath", kakaoLoginPath);
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
             logger.info("저장된 아이디 : " + userPrincipal.getName());
+            logger.info("Request URL: " + request.getRequestURL());
+            mv.clear(); // 파라미터 초기화
             mv.setViewName("redirect:/main");
         } else { // 로그인 안된 상태면 로그인 폼 뜸
             mv.setViewName("home/loginForm");
@@ -73,10 +85,44 @@ public class LoginController {
 
     @GetMapping(value = "/logout")
     public String logout(HttpSession session) {
+
+        // 1. 카카오 액세스 토큰 가져오기 (세션 또는 SecurityContextHolder에서 가져올 수 있음)
+        String kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
+
+        if (kakaoAccessToken != null) {
+            // 2. 카카오 API 호출하여 토큰 만료시키기
+            try {
+                String kakaoLogoutUrl = "https://kapi.kakao.com/v1/user/logout";
+                RestTemplate restTemplate = new RestTemplate();
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("Authorization", "Bearer " + kakaoAccessToken);
+
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+                ResponseEntity<String> response = restTemplate.postForEntity(kakaoLogoutUrl, entity, String.class);
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    logger.info("카카오 로그아웃 성공: " + response.getBody());
+                } else {
+                    logger.warn("카카오 로그아웃 실패: " + response.getStatusCode());
+                }
+            } catch (Exception e) {
+                logger.error("카카오 로그아웃 요청 중 에러 발생: ", e);
+            }
+        } else {
+            logger.warn("카카오 액세스 토큰이 존재하지 않음. 카카오 로그아웃 생략.");
+        }
+
         session.invalidate();
 
         return "redirect:/login";
     }
+
+//    @GetMapping(value = "/logout") //카카오톡 get방식 로그아웃 처리
+//    public String logout() {
+//        String logoutRedirectUri = "http://localhost:1000/Shoots/main";
+//        return "redirect:https://kauth.kakao.com/oauth/logout?client_id=" + client_id + "&logout_redirect_uri=" + logoutRedirectUri;
+//    }
 
 
     @GetMapping(value = "/join")
