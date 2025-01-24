@@ -29,14 +29,9 @@ function getList(state) {
         </li>`;
       $('.comment-order-list').html(output);
 
-        let reportButtonPostWriter  = ($('user_id') !== $("#loginid").val()) ? `
-            <button class="PostWriterReportButton" style="color:red; border:none">
-                <img src='../img/report.png' style="width:15px; height:15px">
-            </button>` : '';
-
       output = ''; // 초기화
       if (rdata.commentlist.length) {
-    rdata.commentlist.forEach(Comment => {
+      rdata.commentlist.forEach(Comment => {
 
         let isSecret = Comment.isSecret === 'Y';
         let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
@@ -61,7 +56,6 @@ function getList(state) {
         // 답글 버튼은 원본 댓글에만 표시
         let replyButton = (!Comment.comment_ref_id) ?
             `<a href='javascript:replyform(${Comment.comment_idx})' class='comment-info-button'>답글쓰기</a>` : '';
-
 
         // 댓글 작성자가 로그인한 사용자일 경우, 수정/삭제 버튼 표시
         // let toolButtons = $("#loginid").val() == Comment.user_id ? `
@@ -88,8 +82,6 @@ function getList(state) {
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
-
-
 
         //댓글은 ref_id 가 null, 답글은 ref_id가 댓글의 comment_id 값을 참조
 		//답글은 ref_id가 null이 아니니까 출력하면 안되지
@@ -128,8 +120,6 @@ function getList(state) {
             let isPostOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
             let isCommentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
             let isAdminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
-
-
 
             if (childComment.comment_ref_id === Comment.comment_idx) {
                 let childSrc = childComment.user_file ? `../userupload/${childComment.user_file}` : '../img/info.png';
@@ -219,7 +209,10 @@ function getList(state) {
 
 } //getList 함수 끝 (댓글 목록 뽑아오는 함수)
 
-
+function reportSubmitButton(){
+    alert($('select[name="title"]'));
+    fetchReport(String($('#modalReporter').val()), String($('#modalCategory').val()));
+}
 
 //버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
 $(document).on('click', '.commentReportButton', function() {
@@ -229,7 +222,7 @@ $(document).on('click', '.commentReportButton', function() {
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modalTitle">${commentNickname.text()}댓글 신고</h5>
+                                                <h5 class="modal-title" id="modalTitle">${commentNickname.text()}님의 댓글 신고</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -240,12 +233,13 @@ $(document).on('click', '.commentReportButton', function() {
                                                     <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
                                                     <option value="도배 목적의 댓글">도배 목적의 댓글</option>
                                                     <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 댓글</option>
-                                                    <option value="직접 입력">직접 입력</option>
                                                 </select>
                                             </div>
                                             <div class="modal-footer">
+                                                <input type="hidden" id="modalReporter" value="${commentNickname.text()}">
+                                                <input type="hidden" id="modalCategory" value="COMMENT">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn btn-primary">신고하기</button>
+                                                <button type="button" class="btn btn-primary" onclick="reportSubmitButton()">신고하기</button>
                                             </div>
                                         </div>
                                     </div>
