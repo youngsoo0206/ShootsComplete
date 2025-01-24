@@ -31,4 +31,6 @@ public interface BusinessUserService {
     Map<Integer, String> getBusinessNames(List<Integer> businessIdxList);
 
     List<BusinessUser> getListForLocation(String searchWord, int page, int limit);
+
+    public List<Map<String, Object>> getBusinessUsers();
 }
