@@ -29,6 +29,11 @@ function getList(state) {
         </li>`;
       $('.comment-order-list').html(output);
 
+        let reportButtonPostWriter  = ($('user_id') !== $("#loginid").val()) ? `
+            <button class="PostWriterReportButton" style="color:red; border:none">
+                <img src='../img/report.png' style="width:15px; height:15px">
+            </button>` : '';
+
       output = ''; // 초기화
       if (rdata.commentlist.length) {
     rdata.commentlist.forEach(Comment => {
@@ -83,6 +88,8 @@ function getList(state) {
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
+
+
 
         //댓글은 ref_id 가 null, 답글은 ref_id가 댓글의 comment_id 값을 참조
 		//답글은 ref_id가 null이 아니니까 출력하면 안되지
@@ -253,7 +260,6 @@ $(document).on('click', '.commentReportButton', function() {
     const modalElement = document.getElementById('exampleModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
-
 
     // if(confirm(commentNickname.text() + " 댓글을 신고하시겠습니까?")){
     //     fetchReport(commentNickname.text(), 'COMMENT');
