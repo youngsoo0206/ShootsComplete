@@ -25,7 +25,15 @@ public class RegularUser implements UserDetails {
     private String register_date;
     private String role = "common";
     private int matchId;
+    private int userCount;
 
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
