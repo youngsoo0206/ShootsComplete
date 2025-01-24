@@ -38,10 +38,15 @@ public class SocialLoginController {
 
     @GetMapping("/kakaoCallback")
     public ResponseEntity<?> kakoCallback(@RequestParam("code") String code, HttpServletRequest request, Authentication authentication) {
+        HttpSession session = request.getSession();
+
         // 카카오에서 액세스 토큰과 리프레시 토큰을 가져옴
         KakaoTokenResponseDto tokenResponse = kakaoService.getAccessTokenFromKakao(code);
         String accessToken = tokenResponse.getAccessToken();
         String refreshToken = tokenResponse.getRefreshToken();
+
+        // 카카오 액세스 토큰을 세션에 저장 : 로그아웃 할때 토큰을 만료시키기 위함.
+        session.setAttribute("kakaoAccessToken", accessToken);
 
         /* 사용자 정보를 가져오는 코드. 카카오 로그인 유저는 Shoots 앱에 한번이라도 로그인 한 적이 있다면 해당 로컬에서 처음 가입한다 할지라도
         Shoots app에 이미 인증받은 적이 있는 (카카오 인증 ID) 유저이기에 정보 동의 절차를 받지 않음.
@@ -63,7 +68,6 @@ public class SocialLoginController {
                 new UsernamePasswordAuthenticationToken(existingUser, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-            HttpSession session = request.getSession();
             //로그인을 한 사람의 인증정보가 사라지지 않게 세션에 저장. 아래 코드 없으면 인증정보 받아와도 저장이 안돼서 위의 인증처리 코드가 끝난 직후 다시 인증정보가 사라져서 권한이 사라지는 일이 발생.
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
             session.setAttribute("idx", existingUser.getIdx());
