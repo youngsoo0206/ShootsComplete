@@ -41,6 +41,9 @@ public interface RegularUserMapper {
 
     public void updateRegularUser(RegularUser user);
 
+    public List<Map<String, Object>> getUserCount();
+
+    public int allUsers();
 
 
 

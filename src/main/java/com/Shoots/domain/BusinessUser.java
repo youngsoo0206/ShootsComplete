@@ -23,6 +23,15 @@ public class BusinessUser implements UserDetails {
     private String register_date;
     private String login_status = "pending";
     private String role = "business";
+    private int businessCount;
+
+    public int getBusinessCount() {
+        return businessCount;
+    }
+
+    public void setBusinessCount(int businessCount) {
+        this.businessCount = businessCount;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
