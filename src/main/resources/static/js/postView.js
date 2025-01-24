@@ -209,9 +209,17 @@ function getList(state) {
 
 } //getList 함수 끝 (댓글 목록 뽑아오는 함수)
 
-function reportSubmitButton(){
-    alert($('select[name="title"]'));
-    fetchReport(String($('#modalReporter').val()), String($('#modalCategory').val()));
+function ReportSubmitButton(category){
+    var reportContent = $('select[name="title"]').val() + String($('#modalEtcContent'));
+    var reqData = {
+        reportedUser : String($('#modalReported').val()),
+        category : String(category),
+        content : String(reportContent)
+        //PostIdx
+        //CommentIdx
+    };
+    reqData.PostIdx = "PostIdx";
+    fetchReport("", String($('#modalCategory').val()), String(reportContent));
 }
 
 //버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
@@ -233,13 +241,15 @@ $(document).on('click', '.commentReportButton', function() {
                                                     <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
                                                     <option value="도배 목적의 댓글">도배 목적의 댓글</option>
                                                     <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 댓글</option>
-                                                </select>
+                                                </select><br><br>
+                                                추가 내용(100자 이내)<br>
+                                                <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" id="modalReporter" value="${commentNickname.text()}">
+                                                <input type="hidden" id="modalReported" value="${commentNickname.text()}">
                                                 <input type="hidden" id="modalCategory" value="COMMENT">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn btn-primary" onclick="reportSubmitButton()">신고하기</button>
+                                                <button type="button" class="btn btn-primary" onclick="ReportSubmitButton('COMMENT')">신고하기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -270,13 +280,13 @@ $(document).on('click', '.commentReportButton', function() {
 
 }) //댓글 선택자 값 부여 함수 끝
 
-function fetchReport(reportedUser, category) {
+function fetchReport(reportedUser, category, content) {
     //fetch start
-
     //category in ('POST','COMMENT','USER')
     const reqData = {
         reportedUser : String(reportedUser),
         category : String(category),
+        content : String(content)
     };
     fetch('/Shoots/insertReport',{
         method:'POST',
