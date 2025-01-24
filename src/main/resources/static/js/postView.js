@@ -209,14 +209,17 @@ function getList(state) {
 
 } //getList 함수 끝 (댓글 목록 뽑아오는 함수)
 
-function reportSubmitButton(){
+function ReportSubmitButton(category){
     var reportContent = $('select[name="title"]').val() + String($('#modalEtcContent'));
-    const reqData = {
-        reportedUser : String(reportedUser),
+    var reqData = {
+        reportedUser : String($('#modalReported').val()),
         category : String(category),
-        content : String(content)
+        content : String(reportContent)
+        //PostIdx
+        //CommentIdx
     };
-    fetchReport(String($('#modalReporter').val()), String($('#modalCategory').val()), String(reportContent));
+    reqData.PostIdx = "PostIdx";
+    fetchReport("", String($('#modalCategory').val()), String(reportContent));
 }
 
 //버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
@@ -243,10 +246,10 @@ $(document).on('click', '.commentReportButton', function() {
                                                 <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
                                             </div>
                                             <div class="modal-footer">
-                                                <input type="hidden" id="modalReporter" value="${commentNickname.text()}">
+                                                <input type="hidden" id="modalReported" value="${commentNickname.text()}">
                                                 <input type="hidden" id="modalCategory" value="COMMENT">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn btn-primary" onclick="reportSubmitButton()">신고하기</button>
+                                                <button type="button" class="btn btn-primary" onclick="ReportSubmitButton('COMMENT')">신고하기</button>
                                             </div>
                                         </div>
                                     </div>
