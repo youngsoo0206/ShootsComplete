@@ -24,5 +24,7 @@ public interface RegularUserService {
     public String getEmail(int id);
     public RegularUser regularUserList(String id);
     public void updateRegularUser(RegularUser user);
+    public List<Map<String, Object>> getRegularUser();
+    public int allUsers();
 
 }

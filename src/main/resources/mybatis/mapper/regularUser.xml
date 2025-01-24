@@ -114,6 +114,16 @@
         where idx=#{idx}
     </update>
 
+    <select id="getUserCount">
+        select DATE(register_date) as register_date, count(*) as userCount
+        from regular_user
+        group by DATE(register_date)
+        order by register_date;
+    </select>
+
+    <select id="allUsers">
+        select count(idx) from regular_user;
+    </select>
 
 
 

@@ -39,6 +39,17 @@
         where business_id = #{business_id}
     </update>
 
+    <select id="getBusinessUsers">
+        SELECT
+            DATE(register_date) AS register_date,
+            COUNT(*) AS userCount
+        FROM business_user
+        GROUP BY
+            DATE(register_date)
+        ORDER BY
+            register_date;
+    </select>
+
 
     <sql id="search">
         <if test="search_word != null">
