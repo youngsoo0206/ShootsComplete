@@ -98,7 +98,7 @@ public class SocialLoginController {
 
             //로그인 유저에게 스프링 시큐리티 권한을 줘야하는데 우리 프로젝트에서 권한을 줄때 기존 스프링에서 사용 하는 방법 (접두사 ROLE_)을 사용하지 않기 때문에 프로젝트의 권한방법과 맞추기 위한 코드
             List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(existingUser.getRole()));
+            authorities.add(new SimpleGrantedAuthority(regularUser.getRole()));
 
             // Spring Security 인증 처리
             UsernamePasswordAuthenticationToken authenticationToken =
