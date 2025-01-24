@@ -146,7 +146,7 @@
                         <td th:text="${p.user_id}"></td>
                         <td th:if="${p.category == 'A'}">자유</td>
                         <td th:if="${p.category == 'B'}">중고</td>
-                        <td><a th:href="@{/post/detail(num=${p.post_idx})}">[[${p.title}]]</a></td>
+                        <td><a th:href="@{/post/detail(num=${p.post_idx})}" th:text="${p.title}"></a><span th:text="'  [' + ${p.commentCount} + ']'" style="color:orange"></span></td>
                         <td th:text="${p.register_date.substring(0, 10)}"></td>
                         <td th:text="${p.readcount}"></td>
                         <td><a th:href="@{postDelete(num=${p.post_idx})}" type="button" class="delete">삭제</a></td>

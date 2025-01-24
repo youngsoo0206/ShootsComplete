@@ -37,8 +37,8 @@ public class AdminController {
     private BusinessUserService businessUserService;
     private RegularUserService regularUserService;
     private InquiryService inquiryService;
-    private SendMail sendMail;
     private SendMailText sendMailText;
+    private PostCommentService postCommentService;
 
     public AdminController(
             FaqService faqService,
@@ -47,16 +47,16 @@ public class AdminController {
             BusinessUserService businessUserService,
             RegularUserService regularUserService,
             InquiryService inquiryService,
-            SendMail sendMail,
-            SendMailText sendMailText) {
+            SendMailText sendMailText,
+            PostCommentService postCommentService) {
         this.faqService = faqService;
         this.noticeService = noticeService;
         this.postService = postService;
         this.businessUserService = businessUserService;
         this.regularUserService = regularUserService;
         this.inquiryService = inquiryService;
-        this.sendMail = sendMail;
         this.sendMailText = sendMailText;
+        this.postCommentService = postCommentService;
     }
 
     @GetMapping

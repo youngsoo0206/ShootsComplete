@@ -11,12 +11,17 @@
       });
       calendar.render();
     });
-
   </script>
+  <style>
+    .calendar{
+
+    }
+  </style>
+  <th:block th:replace="~{fragments/header :: header}" />
 </head>
 <body>
   <div class="container">
-    <div id="calendar"></div>
+    <div id="calendar" class="calendar"></div>
   </div>
 
 </body>
