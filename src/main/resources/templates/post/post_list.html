@@ -97,7 +97,10 @@
     <th:block th:if="${session.idx == null}">
         <button type="button" class="btnw" onclick="postWriteN()">글 작성</button>
     </th:block>
-    <th:block th:if="${session.idx != null}">
+
+<!--    <th:block th:if="${session.idx != null}">-->
+
+    <th:block th:if="${session.usertype == 'A'}">
         <button type="button" class="btn btn-info btnw" onclick="postWrite()">글 작성</button>
     </th:block>
 </div>
