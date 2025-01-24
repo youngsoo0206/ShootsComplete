@@ -58,15 +58,22 @@
 	<table class="table">
 		<tr>
 			<td colspan="2">
-				<div class="title" th:text="${postdata.title}"></div>
+				<th:block class="title" th:text="${postdata.title}" >
+				</th:block>
+				<th:block th:if="${postdata.user_id != session.id}">
+					<img src='../img/report.png' id="titleReport" style="width:30px; height:30px; cursor: pointer">
+				</th:block>
+				<br>
 <!--				<th:block th:if="${postdata.user_file}">-->
 <!--					<img th:src="@{/userupload/${postdata.user_file}}" alt="profile picture" style="height:25px; width:25px; border: 1px solid #ccc; border-radius: 50%;">-->
 <!--				</th:block>-->
 <!--				<th:block th:unless="${postdata.user_file}">-->
 <!--					<img th:src="@{/img/info.png}" alt="default profile" style="height:25px; width:25px;">-->
 <!--				</th:block>-->
-				<span class="user_id" th:text="${postdata.user_id}">
-				</span>
+				<span class="user_id" th:text="${postdata.user_id}"/>
+				<th:block th:if="${postdata.user_id != session.id}">
+					<img src='../img/report.png' style="width:20px; height:20px; cursor: pointer" id="user_idReport">
+				</th:block>
 				<span class="register_date" style="margin-left: 30px;" th:text="${postdata.register_date}"></span>
 				<span class="readcount" style="margin-left: 30px;">조회수&nbsp; <span th:text="${postdata.readcount}"></span></span>
 
