@@ -22,8 +22,10 @@
     </select>
 
     <select id="selectReportedCount" resultType="int">
-        select count(*) from report
-        where reportedUser=#{reported} and category=#{category};
+        select count(*)
+        from report
+        where reportedUser=#{reported}
+        and category=#{category}
     </select>
 
 </mapper>
