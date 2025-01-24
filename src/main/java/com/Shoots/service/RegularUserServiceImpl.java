@@ -150,7 +150,15 @@ public class RegularUserServiceImpl implements RegularUserService {
         regularUserMapper.updateRegularUser(user);
     }
 
+    @Override
+    public List<Map<String, Object>> getRegularUser() {
+        return regularUserMapper.getUserCount();
+    }
 
+    @Override
+    public int allUsers() {
+        return regularUserMapper.allUsers();
+    }
 
 
 }
