@@ -86,6 +86,18 @@ $(function() {
 			}
 		} else (history.back())
 	}) //click 끝
+
+	//글쓰기 중 취소 누르면 confirm 창 뜨고 확인 시 뒤로가기, 취소시 현상유지
+	$(".cancelModifyBtn").click(function(){
+		const $title = $("#title");
+		const $content = $("#content");
+
+		if (!($title.val().trim() == "") || !($content.val().trim() == "") ) {
+			if(confirm("정말 문의글 수정을 취소하시겠습니까?")) {
+				history.back();
+			}
+		} else (history.back())
+	}) //click 끝
 	
 	//첨부파일 용량이 10mb 이상이면 경고창 띄우고 첨부 취소
 	$("#upfile").change(function(){
