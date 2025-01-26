@@ -54,6 +54,11 @@ public class ReportController {
         Map<String, Object> resp = new HashMap<>();
         String reporter = String.valueOf(session.getAttribute("id"))    ;
 
+        if(report.getCategory().equals("COMMENT")){
+            //logger.info("CommentIdx 타입: " + report.getCommentIdx().getClass().getSimpleName());
+            logger.info(" Post idx  : " + report.getPostIdx());
+            logger.info(" comment idx  : " + report.getCommentIdx());
+        }
         if(session.getAttribute("id") == null) {
             resp.put("msg", "로그인 후 이용해주세요.");
             return resp;
