@@ -1,5 +1,6 @@
 package com.Shoots.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,9 @@ public class Report {
     private String reporterUser;
     private String reportedUser;
     private String category;
-    private String PostIdx;
-    private String CommentIdx;
+    private String content;
+    @JsonProperty
+    private int PostIdx;
+    @JsonProperty
+    private int CommentIdx;
 }
