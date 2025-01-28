@@ -16,6 +16,10 @@
         select * from regular_user where user_id = CONCAT('k_', #{id})
     </select>
 
+    <select id="findByGoogleUserId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('g_', #{id})
+    </select>
+
 
     <insert id="insert">
         insert into regular_user (user_id, password, name, jumin, gender, tel, email)
@@ -35,7 +39,9 @@
     </select>
 
     <select id="findIdWithEmail" resultType="regularuser">
-        select * from regular_user where email = #{email}
+        select * from regular_user
+        WHERE email = #{email}
+        AND (user_id NOT LIKE 'g_%' AND email NOT LIKE 'k_%' AND email NOT LIKE 'n_%')
     </select>
 
     <select id="selectWithIdAndEmail" resultType="regularuser">

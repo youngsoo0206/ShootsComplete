@@ -48,8 +48,12 @@ public class LoginController {
     @Value("${kakao.redirect_uri}")
     private String redirect_uri;
 
+    @Value("${google.client_id}")
+    private String google_client_id;
+
 
     public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMailText sendMail) {
+
         this.regularUserService = regularUserService;
         this.passwordEncoder = passwordEncoder;
         this.sendMail = sendMail;
@@ -84,7 +88,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletResponse resp) {
 
         // 1. 카카오 액세스 토큰 가져오기 (세션 또는 SecurityContextHolder에서 가져올 수 있음)
         String kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
@@ -113,17 +117,12 @@ public class LoginController {
             logger.warn("카카오 액세스 토큰이 존재하지 않음. 카카오 로그아웃 생략.");
         }
 
+        // 세션 무효화 (로그아웃 처리)
         session.invalidate();
 
+        // 로그인 페이지로 리다이렉트
         return "redirect:/login";
     }
-
-//    @GetMapping(value = "/logout") //카카오톡 get방식 로그아웃 처리
-//    public String logout() {
-//        String logoutRedirectUri = "http://localhost:1000/Shoots/main";
-//        return "redirect:https://kauth.kakao.com/oauth/logout?client_id=" + client_id + "&logout_redirect_uri=" + logoutRedirectUri;
-//    }
-
 
     @GetMapping(value = "/join")
     public String join() {
