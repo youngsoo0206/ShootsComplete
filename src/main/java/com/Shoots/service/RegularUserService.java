@@ -9,6 +9,7 @@ public interface RegularUserService {
     public int selectById(String id);
     public RegularUser selectWithId(String id);
     public RegularUser findByKakaoUserId(String kakaoId);
+    public RegularUser findByGoogleUserId(String googleAuId);
     public int selectByIdPassword(String id, String password);
     public int insert(RegularUser user);
     public int insert2(RegularUser user);     //소셜 로그인을 위한 약식 회원가입

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class SocialLoginController {
     private final RegularUserService regularUserService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    Logger logger = LoggerFactory.getLogger(SocialLoginController.class);
 
     @GetMapping("/kakaoCallback")
     public ResponseEntity<?> kakoCallback(@RequestParam("code") String code, HttpServletRequest request, Authentication authentication) {
@@ -78,7 +82,7 @@ public class SocialLoginController {
             //이 부분 if / else문으로 분기 나눠서 existingUser.getJumin getGender 써가지고 쟤네가 null 이면
             // /Shoots/myPage/info 로 리다이렉트, 둘 다 null 아니면 mainBefore로 리다이렉트.
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .header("Location","/Shoots/mainBefore")
+                    .header("Location", "/Shoots/mainBefore")
                     .build();
 
         } else { //신규 유저인 경우.
@@ -115,9 +119,79 @@ public class SocialLoginController {
             //이 부분 if / else문으로 분기 나눠서 regularUser.getJumin getGender 써가지고 쟤네가 null 이면
             // /Shoots/myPage/info 로 리다이렉트, 둘 다 null 아니면 mainBefore로 리다이렉트.
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .header("Location","/Shoots/mainBefore")
+                    .header("Location", "/Shoots/mainBefore")
                     .build();
         }
     } //kakaoCallback
+
+@PostMapping("/googleCallback")
+    public ModelAndView googleCallback(ModelAndView mv,@RequestParam String googleAuId,
+                                       @RequestParam String googleName,
+                                       @RequestParam String googleEmail,
+                                       HttpSession session, HttpServletRequest request) {
+        // 받은 정보 사용
+        logger.info("구글 고유 인증번호 : " + googleAuId);
+        logger.info("구글 Name: " + googleName);
+        logger.info("구글 Email: " + googleEmail);
+
+        // DB에서 유저를 확인하고, 없다면 신규 회원가입
+        RegularUser existingUser = regularUserService.findByGoogleUserId(googleAuId); // 카카오 ID(고유번호)로 조회
+        if (existingUser != null) {// 기존 사용자 로그인
+
+            //로그인 유저에게 스프링 시큐리티 권한을 줘야하는데 우리 프로젝트에서 권한을 줄때 기존 스프링에서 사용 하는 방법 (접두사 ROLE_)을 사용하지 않기 때문에 프로젝트의 권한방법과 맞추기 위한 코드
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(existingUser.getRole()));
+
+            // Spring Security 인증 처리
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(existingUser, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            //로그인을 한 사람의 인증정보가 사라지지 않게 세션에 저장. 아래 코드 없으면 인증정보 받아와도 저장이 안돼서 위의 인증처리 코드가 끝난 직후 다시 인증정보가 사라져서 권한이 사라지는 일이 발생.
+//            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+            session.setAttribute("idx", existingUser.getIdx());
+            session.setAttribute("id", existingUser.getUser_id());
+            session.setAttribute("role", existingUser.getRole());
+            session.setAttribute("usertype", "A");
+
+        } else { //신규 유저인 경우.
+            //자동 회원가입 처리를 위한 정보 삽입
+            RegularUser regularUser = new RegularUser();
+            regularUser.setUser_id("g_" + googleAuId); //구글 고유 인증번호를 ID로 씀.
+            regularUser.setName(googleName); //회원이름
+            regularUser.setEmail(googleEmail); //이메일에 구글 이메일 삽입
+
+            //난수 5자리를 암호화 후 비밀번호로 설정. 어차피 카카오 로그인은 회원이 있는지만 판별한뒤 자동 로그인이기 때문에 비밀번호 쓸모 x
+            Random random = new Random();
+            int randomNumber = random.nextInt(100000);
+            regularUser.setPassword(passwordEncoder.encode((String.valueOf(randomNumber))));
+            regularUserService.insert2(regularUser);
+
+            // 위까지 프로젝트에 DB 처리, 아래부터 if문 (=기존유저 있을때) 에서 했던 로그인 처리 그대로 따옴.
+
+            //로그인 유저에게 스프링 시큐리티 권한을 줘야하는데 우리 프로젝트에서 권한을 줄때 기존 스프링에서 사용 하는 방법 (접두사 ROLE_)을 사용하지 않기 때문에 프로젝트의 권한방법과 맞추기 위한 코드
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(regularUser.getRole()));
+
+            // Spring Security 인증 처리
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(regularUser, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            //로그인을 한 사람의 인증정보가 사라지지 않게 세션에 저장. 아래 코드 없으면 인증정보 받아와도 저장이 안돼서 위의 인증처리 코드가 끝난 직후 다시 인증정보가 사라져서 권한이 사라지는 일이 발생.
+//            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+            session.setAttribute("idx", regularUser.getIdx());
+            session.setAttribute("id", regularUser.getUser_id());
+            session.setAttribute("role", regularUser.getRole());
+            session.setAttribute("usertype", "A");
+        }
+
+        mv.setViewName("redirect:/mainBefore");
+        return mv;
+
+    }
+
+
+
 
 }
