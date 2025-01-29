@@ -88,7 +88,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/logout")
-    public String logout(HttpSession session, HttpServletResponse resp) {
+    public String logout(HttpSession session, HttpServletResponse resp) throws IOException {
 
         // 1. 카카오 액세스 토큰 가져오기 (세션 또는 SecurityContextHolder에서 가져올 수 있음)
         String kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
@@ -115,6 +115,13 @@ public class LoginController {
             }
         } else {
             logger.warn("카카오 액세스 토큰이 존재하지 않음. 카카오 로그아웃 생략.");
+        }
+
+        //구글 로그아웃 처리를 위한 코드. 구글 로그인 회원은 로그아웃 시 홈페이지 로그아웃 -> 구글 계정 로그아웃 처리로 진행.
+        if (session.getAttribute("id").toString().startsWith("g_")) {
+            session.invalidate();
+            resp.sendRedirect("https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:1000/Shoots/main");
+            return null;
         }
 
         // 세션 무효화 (로그아웃 처리)
