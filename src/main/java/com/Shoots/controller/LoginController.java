@@ -3,7 +3,6 @@ package com.Shoots.controller;
 import com.Shoots.domain.MailVO;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.RegularUserService;
-import com.Shoots.task.SendMail;
 import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,13 +41,17 @@ public class LoginController {
     private SendMailText sendMail;
 
     @Value("${kakao.client_id}")
-    private String client_id;
+    private String kakao_client_id;
 
     @Value("${kakao.redirect_uri}")
-    private String redirect_uri;
+    private String kakao_redirect_uri;
 
-    @Value("${google.client_id}")
-    private String google_client_id;
+    @Value("${naver.client_id}")
+    private String naver_client_id;
+
+    @Value("${naver.redirect_uri}")
+    private String naver_redirect_uri;
+
 
 
     public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMailText sendMail) {
@@ -69,9 +71,20 @@ public class LoginController {
         //카카오톡 로그인을 위한 경로 설정.
         String kakaoLoginPath = String.format(
                 "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
-                client_id, URLEncoder.encode(redirect_uri, StandardCharsets.UTF_8)
+                kakao_client_id, URLEncoder.encode(kakao_redirect_uri, StandardCharsets.UTF_8)
         );
         mv.addObject("kakaoLoginPath", kakaoLoginPath);
+
+
+
+        //네이버 로그인을 위한 경로 설정.
+        Random random = new Random();
+        int state = random.nextInt(10000);
+        String naverLoginPath = String.format(
+                "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
+                naver_client_id, state,URLEncoder.encode(naver_redirect_uri, StandardCharsets.UTF_8)
+        );
+        mv.addObject("naverLoginPath", naverLoginPath);
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
             logger.info("저장된 아이디 : " + userPrincipal.getName());
