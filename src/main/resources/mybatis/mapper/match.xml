@@ -29,6 +29,9 @@
             <if test="business_idx != null">
                 AND mp.WRITER = #{business_idx}
             </if>
+            <if test="filter == null">
+                AND mp.MATCH_DATE >= CURDATE()
+            </if>
         </where>
         ORDER BY
         mp.MATCH_DATE DESC,
