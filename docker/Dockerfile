@@ -4,4 +4,4 @@ COPY ./app.jar /app.jar
 
 EXPOSE 1000
 
-ENTRYPOINT ["java", "-jar", "app.jar", "-Dspring.profiles.active=deploy"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=deploy", "-jar", "app.jar"]
