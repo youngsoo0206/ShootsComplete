@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value="/testAdmin")
@@ -37,8 +38,8 @@ public class AdminController {
     private BusinessUserService businessUserService;
     private RegularUserService regularUserService;
     private InquiryService inquiryService;
-    private SendMail sendMail;
     private SendMailText sendMailText;
+    private PostCommentService postCommentService;
 
     public AdminController(
             FaqService faqService,
@@ -47,16 +48,16 @@ public class AdminController {
             BusinessUserService businessUserService,
             RegularUserService regularUserService,
             InquiryService inquiryService,
-            SendMail sendMail,
-            SendMailText sendMailText) {
+            SendMailText sendMailText,
+            PostCommentService postCommentService) {
         this.faqService = faqService;
         this.noticeService = noticeService;
         this.postService = postService;
         this.businessUserService = businessUserService;
         this.regularUserService = regularUserService;
         this.inquiryService = inquiryService;
-        this.sendMail = sendMail;
         this.sendMailText = sendMailText;
+        this.postCommentService = postCommentService;
     }
 
     @GetMapping
@@ -66,12 +67,18 @@ public class AdminController {
         int inquirycount = inquiryService.getAdminListCount();  //문의사항 개수
         int businesscount = businessUserService.listApprovedCount(search_word);//연계 기업 수
         int usercount = regularUserService.listCount(search_word);//총 회원 수
+        List<Map<String, Object>> userCount = regularUserService.getRegularUser(); //register_date에 따른 가입 회원수
+        int allUsers = regularUserService.allUsers();
+        List<Map<String, Object>> businessCount = businessUserService.getBusinessUsers();
 
         mv.addObject("faqcount", faqcount);
         mv.addObject("noticecount", noticecount);
         mv.addObject("inquirycount", inquirycount);
         mv.addObject("businesscount", businesscount);
         mv.addObject("usercount", usercount);
+        mv.addObject("userCount", userCount);
+        mv.addObject("allUsers", allUsers);
+        mv.addObject("businessCount", businessCount);
         mv.setViewName("admin/admin");
         return mv;
     }

@@ -48,6 +48,12 @@ public class RegularUserServiceImpl implements RegularUserService {
     }
 
     @Override
+    public RegularUser findByGoogleUserId(String googleAuId) {
+        RegularUser user = regularUserMapper.findByGoogleUserId(googleAuId);
+        return user;
+    }
+
+    @Override
     public int selectByIdPassword(String id, String password) {
         RegularUser user = regularUserMapper.selectById(id);
 
@@ -150,7 +156,15 @@ public class RegularUserServiceImpl implements RegularUserService {
         regularUserMapper.updateRegularUser(user);
     }
 
+    @Override
+    public List<Map<String, Object>> getRegularUser() {
+        return regularUserMapper.getUserCount();
+    }
 
+    @Override
+    public int allUsers() {
+        return regularUserMapper.allUsers();
+    }
 
 
 }

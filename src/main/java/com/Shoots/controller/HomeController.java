@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +62,7 @@ public class HomeController {
     @GetMapping(value = "/main")
     public String main(Model model, @RequestParam(defaultValue = "서울특별시") String first,
                        @RequestParam(defaultValue = "강남구") String second,
-                       @RequestParam(defaultValue = "역삼1동") String third) throws IOException {
+                       @RequestParam(defaultValue = "역삼1동") String third) throws IOException, ParseException {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 

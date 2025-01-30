@@ -12,6 +12,8 @@ public interface RegularUserMapper {
 
     public RegularUser findByKakaoUserId(String kakaoId);
 
+    public RegularUser findByGoogleUserId(String googleAuId);
+
     public int insert(RegularUser user);
 
     //소셜 로그인을 위한 약식 회원가입
@@ -41,6 +43,9 @@ public interface RegularUserMapper {
 
     public void updateRegularUser(RegularUser user);
 
+    public List<Map<String, Object>> getUserCount();
+
+    public int allUsers();
 
 
 

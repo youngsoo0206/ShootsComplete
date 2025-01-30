@@ -45,7 +45,16 @@
 		<div class="form-group fade active show" id="price">
 
 			<label for="priceInput">가격</label>
-			<input name="price" id="priceInput" type="text" class="form-control" placeholder="가격을 입력해주세요">
+			<input
+					name="price"
+					id="priceInput"
+					type="number"
+					class="form-control"
+					placeholder="가격을 입력해주세요"
+					min="0"
+					max="10000000"
+					step="1000"
+			>
 <!--			<br>-->
 <!--			<label for="priceInput">거래 표시</label>-->
 <!--			<input type="radio" name="status" id="available" th:value="available" required><span>거래가능</span>-->

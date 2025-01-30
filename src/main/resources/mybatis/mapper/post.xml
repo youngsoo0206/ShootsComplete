@@ -22,7 +22,7 @@
 
 
     <select id="getAdminPostList" resultType="post">
-        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id
+        SELECT p.post_idx, p.writer, p.category, p.title, p.content, p.post_file, p.price, p.register_date, p.readcount, r.user_id, (SELECT COUNT(comment_idx) FROM post_comment c WHERE c.post_idx = p.post_idx) AS commentCount
         FROM post p
         INNER JOIN regular_user r ON p.writer = r.idx
         <include refid="search" />
@@ -141,7 +141,7 @@
     </delete>
 
     <select id="getMyPostList">
-        select * from post
+        select *, (SELECT COUNT(comment_idx) FROM post_comment c WHERE c.post_idx = post.post_idx) AS commentCount from post
                  where writer=#{id} order by post_idx desc
     </select>
 

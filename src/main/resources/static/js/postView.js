@@ -1,7 +1,5 @@
 let option = 1; // 유지할 정렬 옵션
 
-
-
 //선택한 등록순과 최신순을 수정, 삭제, 추가 후에도 유지되도록 하기위한 변수로 사용됩니다
 //댓글 목록을 불러오는 함수
 function getList(state) {
@@ -12,8 +10,6 @@ function getList(state) {
     url: "../comment/list",
     data: {
       "post_idx": $("#post_idx").val(),
-        // "user_id": $(".user_id").val(),
-
       state: state
     },
     dataType: "json", //응답 데이터는 JSON 형식으로 처리됨
@@ -33,7 +29,7 @@ function getList(state) {
 
       output = ''; // 초기화
       if (rdata.commentlist.length) {
-    rdata.commentlist.forEach(Comment => {
+      rdata.commentlist.forEach(Comment => {
 
         let isSecret = Comment.isSecret === 'Y';
         let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
@@ -58,7 +54,6 @@ function getList(state) {
         // 답글 버튼은 원본 댓글에만 표시
         let replyButton = (!Comment.comment_ref_id) ?
             `<a href='javascript:replyform(${Comment.comment_idx})' class='comment-info-button'>답글쓰기</a>` : '';
-
 
         // 댓글 작성자가 로그인한 사용자일 경우, 수정/삭제 버튼 표시
         // let toolButtons = $("#loginid").val() == Comment.user_id ? `
@@ -123,8 +118,6 @@ function getList(state) {
             let isPostOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
             let isCommentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
             let isAdminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
-
-
 
             if (childComment.comment_ref_id === Comment.comment_idx) {
                 let childSrc = childComment.user_file ? `../userupload/${childComment.user_file}` : '../img/info.png';
@@ -216,14 +209,144 @@ function getList(state) {
 
 
 
-//버튼을 누르면 모달창의 특정 선택자들에게 값을 부여해주는 함수
+$(document).on('click', '#titleReport', function() {
+    const reported = $('.title').text();
+    const modalHtml = `
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalTitle">${reported}님의 댓글 신고</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select name="title" required>
+                                                    <option disabled selected hidden>신고 사유를 선택해 주세요</option>
+                                                    <option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 글</option>
+                                                    <option value="갈등 조장하는 댓글">갈등 조장하는 글</option>
+                                                    <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
+                                                    <option value="도배 목적의 댓글">도배 목적의 글</option>
+                                                    <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 글</option>
+                                                </select><br><br>
+                                                추가 내용(100자 이내)<br>
+                                                <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" id="modalReported" value="${reported}">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                
+                                                <button type="button" class="btn btn-primary" 
+                                                onclick="ReportSubmitButton({'category': 'POST'})">
+                                                    신고하기
+                                                </button>                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               `
+    $('#exampleModal').remove();
+
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modalHtml;
+    document.body.appendChild(tempDiv.firstElementChild);
+
+    const modalElement = document.getElementById('exampleModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+});
+
+$(document).on('click', '#user_idReport', function() {
+    const reported = $('.user_id').text();
+    const modalHtml = `
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalTitle">${reported} 님의 댓글 신고</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select name="title" required>
+                                                    <option disabled selected hidden>신고 사유를 선택해 주세요</option>
+                                                    <option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 글</option>
+                                                    <option value="갈등 조장하는 댓글">갈등 조장하는 글</option>
+                                                    <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
+                                                    <option value="도배 목적의 댓글">도배 목적의 글</option>
+                                                    <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 글</option>
+                                                </select><br><br>
+                                                추가 내용(100자 이내)<br>
+                                                <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" id="modalReported" value="${reported}">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                
+                                                <button type="button" class="btn btn-primary" 
+                                                onclick="ReportSubmitButton({'category': 'USER'})">
+                                                    신고하기
+                                                </button>                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               `
+    $('#exampleModal').remove();
+
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modalHtml;
+    document.body.appendChild(tempDiv.firstElementChild);
+
+    const modalElement = document.getElementById('exampleModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+});
+
 $(document).on('click', '.commentReportButton', function() {
-    console.log('===============> 모달 button clicked!');
     const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
-    if(confirm(commentNickname.text() + " 댓글을 신고하시겠습니까?")){
-        fetchReport(commentNickname.text(), 'COMMENT');
-    }
-    // 버튼에서 댓글 ID와 작성자 ID 가져오기
+    const dataCommentIdx= $(this).data('comment-idx');
+    const modalHtml = `
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalTitle">${commentNickname.text()}님의 댓글 신고</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select name="title" required>
+                                                    <option disabled selected hidden>신고 사유를 선택해 주세요</option>
+                                                    <option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 댓글</option>
+                                                    <option value="갈등 조장하는 댓글">갈등 조장하는 댓글</option>
+                                                    <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
+                                                    <option value="도배 목적의 댓글">도배 목적의 댓글</option>
+                                                    <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 댓글</option>
+                                                </select><br><br>
+                                                추가 내용(100자 이내)<br>
+                                                <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="hidden" id="modalReported" value="${commentNickname.text()}">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                
+                                                <button type="button" class="btn btn-primary" 
+                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'commentIdx': ${dataCommentIdx}})">
+                                                    신고하기
+                                                </button>                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               `
+    $('#exampleModal').remove();
+
+    var tempDiv = document.createElement('div');
+    tempDiv.innerHTML = modalHtml;
+    document.body.appendChild(tempDiv.firstElementChild);
+
+    const modalElement = document.getElementById('exampleModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+
     const commentIdx = $(this).data('comment-idx');
     const target = $(this).data('user_id');
     console.log('===> commentIdx:', commentIdx);
@@ -235,14 +358,33 @@ $(document).on('click', '.commentReportButton', function() {
 
 }) //댓글 선택자 값 부여 함수 끝
 
-function fetchReport(reportedUser, category) {
-    //fetch start
+function ReportSubmitButton(paramData){
+    const reportContent = $('select[name="title"]').val() + $('#modalEtcContent').val();
+    const category = paramData?.category ?? '';
+    var reqData = null;
 
+    if(category == "USER"){
+        reqData = {
+            reportedUser : String($('#modalReported').val()),
+            category : category,
+            content : String(reportContent),
+        };
+    }
+    else {
+        reqData = {
+            reportedUser : String($('#modalReported').val()),
+            category : category,
+            content : String(reportContent),
+            PostIdx : $('#post_idx')?.val() ?? 0,
+            CommentIdx : paramData?.commentIdx ?? 0
+        };
+    }
+    fetchReport(reqData);
+}
+
+function fetchReport(reqData) {
+    //fetch start
     //category in ('POST','COMMENT','USER')
-    const reqData = {
-        reportedUser : String(reportedUser),
-        category : String(category),
-    };
     fetch('/Shoots/insertReport',{
         method:'POST',
         headers: {
@@ -252,13 +394,15 @@ function fetchReport(reportedUser, category) {
     })
         .then(resp => resp.json())
         .then(data => {
-            alert(data.msg);
+            var alertMsg = data.msg + "";
+            if(data.reportCnt != null)
+                alertMsg += "\n 신고 누적 횟수 : " + data.reportCnt;
+            alert(alertMsg);
             location.reload();
         })
         .catch(error => alert("에러 뜸 : " + error))
     //fetch end
 };
-
 
 // 더보기 - 수정 클릭한 경우에 수정 폼을 보여줍니다.
 function updateForm(comment_idx) {
@@ -278,11 +422,6 @@ function updateForm(comment_idx) {
   // 글자 수 표시
   $comment_idx.find('.comment-write-area-count').text(`${content.length}/200`);
 }
-
-
-
-
-
 
  //더보기 -> 삭제 클릭한 경우 실행하는 함수
 function del(comment_idx) {//num : 댓글 번호
@@ -347,10 +486,6 @@ function replyform(comment_idx) {
   $("body > div > div.comment-area > div.comment-write").hide(); // 댓글 폼 숨기기
 }
 
-
-
-
-
 $(function() {
   getList(option); // 처음 로드될 때는 등록순 정렬
 
@@ -358,7 +493,7 @@ $(function() {
  $('.comment-area').on('keyup','.comment-write-area-text', function() {
 	 const length=$(this).val().length;
 	 $(this).prev().text(length+'/200');
- }); // keyup','.comment-write-area-text', function() 
+ }); // keyup','.comment-write-area-text', function()
 
   //댓글 등록을 클릭하면 데이터베이스에 저장 -> 저장 성공 후에 리스트 불러옵니다.
   $('ul + .comment-write .btn-register').click(function() {
@@ -409,7 +544,7 @@ $(function() {
 	$(".comment-list").on('click', '.comment-tool-button', function() {
 		//더보기를 클릭하면 수정과 삭제 영역이 나타나고 다시 클릭하면 사라져요
 		$(this).next().toggle();
-		
+
 		//클릭 한 곳만 수정 삭제 영역이 나타나도록 합니다.
 		// 다른 모든 "더보기" 버튼의 수정/삭제 영역을 숨김
 		$(".comment-tool-button").not(this).next().hide();
@@ -419,6 +554,7 @@ $(function() {
 
     // 수정 후 수정완료를 클릭한 경우 (댓글 및 답글 공통 처리)
 	$('.comment-area').on('click','.update',function(){
+
 		const content = $(this).parent().parent().find('textarea').val();
 		if(!content){ //내용없이 등록 클릭한 경우
 			alert("수정할 글을 입력하세요");
@@ -437,32 +573,31 @@ $(function() {
             },
             type: 'post',
 			success:function(rdata){
-				if(rdata===1){
+				if(rdata===1)
 					getList(option);
-				}// if
 			} // success
 		}); //ajax
 	}) // 수정 후 수정완료를 클릭한 경우
-    
-    
+
+
     // 수정 후 취소 버튼을 클릭한 경우
 	$('.comment-area').on('click','.btn-cancel',function(){
 		// 댓글 번호를 구합니다.
 		const comment_idx = $(this).next().attr('data-id');
 		const selector = '#' + comment_idx;
-		
+
 		//.comment-write 영역 삭제 합니다.
 		$(selector + ' .comment-write').remove();
-		
+
 		//숨겨두었던 .comment-nick-area 영역 보여줍니다.
 		$(selector + '>.comment-nick-area').css('display','block');
-		
+
 		// 수정 폼이 있는 상태에서 더보기를 클릭할 수 없도록 더 보기 영역을 숨겼는데 취소를 선택하면 보여주도록 합니다.
 		$(".comment-tool").show();
-		
+
 	}) // 수정 후 취소 버튼을 클릭한 경우
-	
-	
+
+
 	//답글완료 클릭한 경우
 	$('.comment-area').on('click', '.reply', function(){
 		const content= $(this).parent().parent().find('.comment-write-area-text').val();
@@ -486,12 +621,11 @@ $(function() {
         comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       },
       success: function(rdata) {
-        if (rdata === 1) {
+        if (rdata === 1)
           getList(option); // 댓글 리스트 갱신
-        }
       }
     });// ajax
-    
+
 	//답글 폼 보여줍니다.
     $("body > div > div.comment-area > div.comment-write").show(); // 댓글 폼 보이기
   }); //답글완료 클릭한 경우
@@ -500,16 +634,16 @@ $(function() {
 	$('.comment-area').on('click','.reply-cancel', function(){
 		$(this).parent().parent().parent().remove();
 		$(".comment-tool").show(); // 더 보기 영역 보이도록 합니다.
-	
+
 		//댓글 폼 보여줍니다.
 		$("body> div > div.comment-area > div.comment-write").show();
 	})//답글쓰기 후 취소 버튼을 클릭한 경우
-	
+
 	//답글쓰기 클릭 후 계속 누르는 것을 방지하기 위한 작업
 	$('.comment-area').on('click','.comment-info-button', function(event) {
 		//답변쓰기 폼이 있는 상태에서 더보기를 클릭할 수 없도록 더 보기 영역을 숨겨요
 		$(".comment-tool").hide();
-	
+
 		//답글쓰기 폼의 갯수를 구합니다.
 		const length=$(".comment-area .btn-register.reply").length;
 		if(length===1){ //답글쓰기 폼이 한 개가 존재하면 anchor 태그(<a>)의 기본 이벤트를 막아
@@ -517,8 +651,8 @@ $(function() {
 		event.preventDefault();
 		}
 	})//답글쓰기 클릭 후 계속 누르는 것을 방지하기 위한 작업
-  
-  
+
+
 });
 
 

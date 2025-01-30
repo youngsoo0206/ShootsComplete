@@ -8,6 +8,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -67,11 +70,11 @@ public class RedisService {
 
 
     public void importLocationsToRedis() throws IOException {
-        FileInputStream file = new FileInputStream(new File(getClass().getClassLoader().getResource("location.xlsx").getFile()));
-
+        ClassPathResource classPathResource = new ClassPathResource("location.xlsx");
         ZipSecureFile.setMinInflateRatio(0.001);
 
-        Workbook workbook = new XSSFWorkbook(file);
+        InputStream inputStream = classPathResource.getInputStream();
+        Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
 
         Iterator<Row> rowIterator = ((Sheet) sheet).iterator();
@@ -119,7 +122,7 @@ public class RedisService {
         }
 
         workbook.close();
-        file.close();
+        inputStream.close();
     }
 
 
@@ -146,10 +149,11 @@ public class RedisService {
     }
 
     public Map<String, Map<String, List<String>>> getLocationOptions() throws IOException {
-        FileInputStream file = new FileInputStream(new File(getClass().getClassLoader().getResource("location.xlsx").getFile()));
+        ClassPathResource classPathResource = new ClassPathResource("location.xlsx");
         ZipSecureFile.setMinInflateRatio(0.001);
 
-        Workbook workbook = new XSSFWorkbook(file);
+        InputStream inputStream = classPathResource.getInputStream();
+        Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
 
         Iterator<Row> rowIterator = sheet.iterator();
@@ -180,7 +184,7 @@ public class RedisService {
         }
 
         workbook.close();
-        file.close();
+        inputStream.close();
 
         return locationMap;
     }

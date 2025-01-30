@@ -184,4 +184,9 @@ public class BusinessUserServiceImpl implements BusinessUserService {
         map.put("pageSize", pageSize);
         return businessUserMapper.getListForLocation(map);
     }
+
+    @Override
+    public List<Map<String, Object>> getBusinessUsers() {
+        return businessUserMapper.getBusinessUsers();
+    }
 }

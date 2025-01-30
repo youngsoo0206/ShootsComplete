@@ -5,8 +5,8 @@
 <mapper namespace="com.Shoots.service.report.ReportMapper">
 
     <insert id="insertReport">
-        insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
-        values( #{reporterUser}, #{reportedUser}, #{category}, COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
+        insert into report(reporterUser, reportedUser, category, content, PostIdx, CommentIdx)
+        values( #{reporterUser}, #{reportedUser}, #{category}, #{content}, COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
     </insert>
 
     <select id="selectReportedUsers" resultType="Report">
@@ -22,8 +22,10 @@
     </select>
 
     <select id="selectReportedCount" resultType="int">
-        select count(*) from report
-        where reportedUser=#{reported} and category=#{category};
+        select count(*)
+        from report
+        where reportedUser=#{reported}
+        and category=#{category}
     </select>
 
 </mapper>

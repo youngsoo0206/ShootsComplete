@@ -226,6 +226,8 @@ function postWriteN() {
 
 
 
+
+
 // 게시글 목록 요청 및 업데이트 함수
 function ajax(sdata) {
     console.log(sdata);

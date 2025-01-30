@@ -54,6 +54,11 @@ public class ReportController {
         Map<String, Object> resp = new HashMap<>();
         String reporter = String.valueOf(session.getAttribute("id"))    ;
 
+        if(report.getCategory().equals("COMMENT")){
+            //logger.info("CommentIdx 타입: " + report.getCommentIdx().getClass().getSimpleName());
+            logger.info(" Post idx  : " + report.getPostIdx());
+            logger.info(" comment idx  : " + report.getCommentIdx());
+        }
         if(session.getAttribute("id") == null) {
             resp.put("msg", "로그인 후 이용해주세요.");
             return resp;
@@ -61,13 +66,15 @@ public class ReportController {
 
         report.setReporterUser((String) session.getAttribute("id"));
         logger.info("insertReport 정보 : "+String.valueOf(report));
-        logger.info(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory()).toString());
+            logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory())));
         logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory())!= null));
 
         if(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory()) != null)
             resp.put("msg", "이미 접수된 신고입니다.");
-        else if(reportService.insertReport(report) == 1)
+        else if(reportService.insertReport(report) == 1){
             resp.put("msg", report.getReportedUser() + "님의 신고가 접수되었습니다.");
+            resp.put("reportCnt", reportService.selectReportedCount(report.getReportedUser(), report.getCategory()));
+        }
         else
             resp.put("msg", "신고에 실패했습니다.");
         return resp;
