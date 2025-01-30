@@ -50,4 +50,9 @@ public class PaymentServiceImpl implements PaymentService {
     public void updatePayment(int payment_idx) {
         dao.updatePayment(payment_idx);
     }
+
+    @Override
+    public List<Payment> getPaymentListByMatchIdx(int match_idx) {
+        return dao.getPaymentListByMatchIdx(match_idx);
+    }
 }

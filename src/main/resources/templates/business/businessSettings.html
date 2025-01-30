@@ -61,11 +61,10 @@
                     </caption>
                     <tr>
                         <th> 주차장 </th>
-                        <td><span th:switch="${businessInfo.parking}">
-                                <span th:case="'yesPaid'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">유료주차</span></span>
-                                <span th:case="'yesFree'"><span style="color: #0147d5">O</span> <span style="font-size: 13px">무료주차</span></span>
-                                <span th:case="'none'"><span style="color: #da0130">X</span></span>
-                            </span>
+                        <td>
+                            <span th:if="${businessInfo.parking == 'yesPaid'}"><span style="color: #0147d5">O</span> <span style="font-size: 13px">유료주차</span></span>
+                            <span th:if="${businessInfo.parking == 'yesFree'}"><span style="color: #0147d5">O</span> <span style="font-size: 13px">무료주차</span></span>
+                            <span th:if="${businessInfo.parking == 'none'}"><span style="color: #da0130">X</span></span>
                         </td>
                     </tr>
                     <tr>
@@ -258,135 +257,137 @@
         </div>
     </div>
 
-    <div class="modal fade" id="businessInfoUpdateBtn" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <p class="modal-p"> 구장 정보 수정 </p>
-                    <button type="button" class="btn-closeModal" data-bs-dismiss="modal">X</button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/business/updateInfo}" method="post" id="updateBusinessInfoForm">
-                        <input type="hidden" name="business_idx" th:value="${businessUser.business_idx}">
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 주차장 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="radio" name="parking" value="yesPaid" th:checked="${businessInfo.parking == 'yesPaid'}" required> <span style="color: #0147d5">O</span><span style="font-size: 13px">(유료)</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="parking" value="yesFree" th:checked="${businessInfo.parking == 'yesFree'}" > <span style="color: #0147d5">O</span><span style="font-size: 13px">(무료)</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="parking" value="none" th:checked="${businessInfo.parking == 'none'}"> <span style="color: #da0130">X</span>
-                                </label>
+    <th:block th:if="${businessInfo != null}">
+        <div class="modal fade" id="businessInfoUpdateBtn" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-p"> 구장 정보 수정 </p>
+                        <button type="button" class="btn-closeModal" data-bs-dismiss="modal">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/business/updateInfo}" method="post" id="updateBusinessInfoForm">
+                            <input type="hidden" name="business_idx" th:value="${businessUser.business_idx}">
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 주차장 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="parking" value="yesPaid" th:checked="${businessInfo.parking == 'yesPaid'}" required> <span style="color: #0147d5">O</span><span style="font-size: 13px">(유료)</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="parking" value="yesFree" th:checked="${businessInfo.parking == 'yesFree'}" > <span style="color: #0147d5">O</span><span style="font-size: 13px">(무료)</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="parking" value="none" th:checked="${businessInfo.parking == 'none'}"> <span style="color: #da0130">X</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 샤워장 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="radio" name="shower" value="true" th:checked="${businessInfo.shower == true}" required> <span style="color: #0147d5">O</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="shower" value="false" th:checked="${businessInfo.shower == false}"> <span style="color: #da0130">X</span>
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 샤워장 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="shower" value="true" th:checked="${businessInfo.shower == true}" required> <span style="color: #0147d5">O</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="shower" value="false" th:checked="${businessInfo.shower == false}"> <span style="color: #da0130">X</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 휴게실 / 락커룸 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="radio" name="lounge" value="true" th:checked="${businessInfo.lounge == true}" required> <span style="color: #0147d5">O</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="lounge" value="false" th:checked="${businessInfo.lounge == false}"> <span style="color: #da0130">X</span>
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 휴게실 / 락커룸 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="lounge" value="true" th:checked="${businessInfo.lounge == true}" required> <span style="color: #0147d5">O</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="lounge" value="false" th:checked="${businessInfo.lounge == false}"> <span style="color: #da0130">X</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 잔디 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="checkbox" name="field_type" value="인조잔디" th:checked="${businessInfo.field_type.contains('인조잔디')}"> 인조잔디
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="field_type" value="자연잔디" th:checked="${businessInfo.field_type.contains('자연잔디')}"> 자연잔디
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 잔디 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="checkbox" name="field_type" value="인조잔디" th:checked="${businessInfo.field_type.contains('인조잔디')}"> 인조잔디
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="field_type" value="자연잔디" th:checked="${businessInfo.field_type.contains('자연잔디')}"> 자연잔디
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> CCTV / 보안 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="radio" name="cctv" value="true" th:checked="${businessInfo.cctv == true}" required> <span style="color: #0147d5">O</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="cctv" value="false" th:checked="${businessInfo.cctv == false}"> <span style="color: #da0130">X</span>
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> CCTV / 보안 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="cctv" value="true" th:checked="${businessInfo.cctv == true}" required> <span style="color: #0147d5">O</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="cctv" value="false" th:checked="${businessInfo.cctv == false}"> <span style="color: #da0130">X</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 매점 / 자판기 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="radio" name="kiosk" value="true" th:checked="${businessInfo.kiosk == true}" required> <span style="color: #0147d5">O</span>
-                                </label>
-                                <label>
-                                    <input type="radio" name="kiosk" value="false" th:checked="${businessInfo.kiosk == false}"> <span style="color: #da0130">X</span>
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 매점 / 자판기 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="radio" name="kiosk" value="true" th:checked="${businessInfo.kiosk == true}" required> <span style="color: #0147d5">O</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="kiosk" value="false" th:checked="${businessInfo.kiosk == false}"> <span style="color: #da0130">X</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 물품 대여 </span>
-                            <div class="form-control">
-                                <label>
-                                    <input type="checkbox" name="rental" value="축구공" th:checked="${businessInfo.rental.contains('축구공')}"> 축구공
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="풋살화" th:checked="${businessInfo.rental.contains('풋살화')}"> 풋살화
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="팀 조끼" th:checked="${businessInfo.rental.contains('팀 조끼')}"> 팀 조끼
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="골기퍼 장갑" th:checked="${businessInfo.rental.contains('골기퍼 장갑')}"> 골기퍼 장갑
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="심판 휘슬" th:checked="${businessInfo.rental.contains('심판 휘슬')}"> 심판 휘슬
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="보호대" th:checked="${businessInfo.rental.contains('보호대')}"> 보호대
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="스코어보드" th:checked="${businessInfo.rental.contains('스코어보드')}"> 스코어보드
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="쿨러박스" th:checked="${businessInfo.rental.contains('쿨러박스')}"> 쿨러박스
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="rental" value="응급키트" th:checked="${businessInfo.rental.contains('응급키트')}"> 응급키트
-                                </label>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 물품 대여 </span>
+                                <div class="form-control">
+                                    <label>
+                                        <input type="checkbox" name="rental" value="축구공" th:checked="${businessInfo.rental.contains('축구공')}"> 축구공
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="풋살화" th:checked="${businessInfo.rental.contains('풋살화')}"> 풋살화
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="팀 조끼" th:checked="${businessInfo.rental.contains('팀 조끼')}"> 팀 조끼
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="골기퍼 장갑" th:checked="${businessInfo.rental.contains('골기퍼 장갑')}"> 골기퍼 장갑
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="심판 휘슬" th:checked="${businessInfo.rental.contains('심판 휘슬')}"> 심판 휘슬
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="보호대" th:checked="${businessInfo.rental.contains('보호대')}"> 보호대
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="스코어보드" th:checked="${businessInfo.rental.contains('스코어보드')}"> 스코어보드
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="쿨러박스" th:checked="${businessInfo.rental.contains('쿨러박스')}"> 쿨러박스
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="rental" value="응급키트" th:checked="${businessInfo.rental.contains('응급키트')}"> 응급키트
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <span style="margin-left: 5px"> 운영시간 </span>
-                            <div class="form-control" style="display: flex; gap: 10px">
-                                <select class="form-control" name="open_time" id="updateOpen_time" th:data-saved-open-time="${businessInfo.open_time}" required>
-                                    <option value="" disabled selected> 오픈 시간 </option>
-                                </select>
-                                <select class="form-control" name="close_time" id="updateClose_time" th:data-saved-close-time="${businessInfo.close_time}" required>
-                                    <option value="" disabled selected> 마감 시간 </option>
-                                </select>
+                            <div class="form-group">
+                                <span style="margin-left: 5px"> 운영시간 </span>
+                                <div class="form-control" style="display: flex; gap: 10px">
+                                    <select class="form-control" name="open_time" id="updateOpen_time" th:data-saved-open-time="${businessInfo.open_time}" required>
+                                        <option value="" disabled selected> 오픈 시간 </option>
+                                    </select>
+                                    <select class="form-control" name="close_time" id="updateClose_time" th:data-saved-close-time="${businessInfo.close_time}" required>
+                                        <option value="" disabled selected> 마감 시간 </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="btn-bottom">
-                            <button type="submit" class="btn-save"> 수정 </button>
-                        </div>
-                    </form>
+                            <div class="btn-bottom">
+                                <button type="submit" class="btn-save"> 수정 </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </th:block>
 </body>
 </html>

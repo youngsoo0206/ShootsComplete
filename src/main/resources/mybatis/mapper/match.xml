@@ -117,6 +117,10 @@
             mp.MATCH_IDX = #{match_idx};
     </select>
 
+    <select id="getMatchListByMatchTime" resultType="Match">
+        select * from MATCH_POST where match_date = #{matchDate} and match_time = #{matchTime}
+    </select>
+
     <update id="updateMatch">
         update MATCH_POST set MATCH_DATE = #{match_date}, MATCH_TIME = #{match_time}, MATCH_LEVEL = #{match_level}, TEAM_STYLE = #{team_style},
                               PLAYER_MIN = #{player_min},  PLAYER_MAX = #{player_max},  PLAYER_GENDER = #{player_gender}, PRICE = #{price}

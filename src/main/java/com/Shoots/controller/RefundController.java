@@ -87,6 +87,7 @@ public class RefundController {
                     logger.info("환불 성공");
                     paymentService.updatePayment(payment.getPayment_idx());
 
+                    payment.setPayment_status("refunded");
                     paymentHistoryService.insertHistory(payment);
 
                     JSONObject response = new JSONObject();

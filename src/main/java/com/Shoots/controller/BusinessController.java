@@ -287,6 +287,8 @@ public class BusinessController {
 
         logger.info("businessUser : " + businessUser.toString());
 
+        logger.info("businessInfo : " + businessInfo);
+
         modelAndView.setViewName("business/businessSettings");
         modelAndView.addObject("businessUser", businessUser);
         modelAndView.addObject("businessInfo", businessInfo);

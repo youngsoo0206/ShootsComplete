@@ -4,6 +4,9 @@ import com.Shoots.domain.Match;
 import com.Shoots.mybatis.mapper.MatchMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,5 +100,10 @@ public class MatchServiceImpl implements MatchService{
         map.put("level", level);
 
         return dao.getMatchListByIdForSales(map);
+    }
+
+    @Override
+    public List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime) {
+        return dao.getMatchListByMatchTime(matchDate, matchTime);
     }
 }
