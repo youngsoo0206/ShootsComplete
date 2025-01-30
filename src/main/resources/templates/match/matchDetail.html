@@ -178,7 +178,7 @@
                     </button>
                     <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !hasPaid && !isBlock}" class="button button--refund button--text-upper button--size-s" onclick="limitedMatch()">마감
                     </button>
-                    <button th:if="${session.role == 'business' or isBlock}" class="button button--no button--text-upper button--size-s">신청불가
+                    <button th:if="${session.role == 'business' or isBlock or session.role == 'admin'}" class="button button--no button--text-upper button--size-s">신청불가
                     </button>
                     <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == true && playerCount < match.player_min && !isBlock}" class="button button--no button--text-upper button--size-s" onclick="closedMatch()">마감
                     </button>
@@ -187,7 +187,7 @@
                     <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount < match.player_max && !isBlock}" class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
                     <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !isBlock}" class="btn-status"> * 신청인원이 꽉 찼습니다 * </p>
                     <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == true && !isBlock}" class="btn-status"> * 마감된 매칭입니다 * </p>
-                    <p th:if="${session.role == 'business' || isBlock}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
+                    <p th:if="${session.role == 'business' || isBlock || session.role == 'admin'}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
                 </div>
             </div>
         </div>
