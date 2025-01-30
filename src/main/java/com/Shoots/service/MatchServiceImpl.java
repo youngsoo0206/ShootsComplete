@@ -106,4 +106,10 @@ public class MatchServiceImpl implements MatchService{
     public List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime) {
         return dao.getMatchListByMatchTime(matchDate, matchTime);
     }
+
+    @Override
+    public List<Match> getMatchListByDeadline(LocalDateTime deadline, int i) {
+        return dao.getMatchListByDeadline(deadline, i);
+    }
+
 }

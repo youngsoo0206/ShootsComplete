@@ -148,6 +148,83 @@
     </div>
 </div>
 
+<div class="card mb-3 card2" style="width: 59%; height: 315px; margin: 0 auto">
+    <div class="card-body">
+        <div>
+            <h5 class="card-title">마감 임박 매치</h5>
+            <div style="margin-top: 20px">
+            <th:block th:if="${matchList != null}">
+                <table class="table">
+                    <tbody>
+                        <th:block th:each="match : ${matchList}">
+                            <tr>
+                                <td><div th:text="${match.formattedDate}"></div></td>
+                                <td><div th:text="${match.match_time}"></div></td>
+                                <td th:if="${match.isMatchPast() == false}">
+                                    <a class="table-a" th:href="@{'match/detail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a>
+                                </td>
+                                <td th:if="${match.isMatchPast() == true}">
+                                    <a class="table-a2" th:href="@{'match/detail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a> <span style="font-size: 13px; color: #da0130">[마감]</span>
+                                </td>
+                                <td>
+                                    <div th:switch="${match.player_gender}">
+                                        <span th:case="'f'">여성</span>
+                                        <span th:case="'m'">남성</span>
+                                        <span th:case="a">남녀무관</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:switch="${match.match_level}">
+                                        <span th:case="'고급'" style="color: #da0130">고급</span>
+                                        <span th:case="'중급'" style="color: #fdba01">중급</span>
+                                        <span th:case="'초급'" style="color: #65a30d">초급</span>
+                                        <span th:case="'전체'" style="color: dimgray">난이도 무관</span>
+                                    </div>
+                                </td>
+                                <td th:if="${match.playerCount > 0 && match.playerCount < match.player_max}">
+                                    <b th:text="${match.playerCount}" style="color: #115ffc"></b> / <span th:text="${match.player_max}"></span>인
+                                </td>
+                                <td th:if="${match.playerCount == 0}">
+                                    <span th:text="${match.player_max}"></span>인
+                                </td>
+                                <td th:if="${match.playerCount == match.player_max}">
+                                    <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
+                                </td>
+
+                                <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                    <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
+                                </td>
+                                <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                    <button type="button" class="custom-btnS btn-5 btn-limited">마감임박</button></a>
+                                </td>
+                                <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                    <button type="button" class="custom-btnS btn-5 btn-closed">마감</button></a>
+                                </td>
+                                <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                    <button type="button" class="custom-btnS btn-5 btn-confirm">매칭확정</button></a>
+                                </td>
+                                <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                    <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+            </th:block>
+                <div style="text-align: center; margin-top: 15px">
+                    <img th:src="@{/img/dots.png}" style="width: 15px!important;">
+                </div>
+                <div class="btnD">
+                    <button class="custom-btn btn-15" id="matchList">더 구경하기</button>
+                </div>
+            </div>
+            <th:block th:if="${matchList == null}">
+                <div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>
+            </th:block>
+        </div>
+    </div>
+</div>
+
 <div class = "card-wrapper">
     <div class="card mb-3 card2" style="max-width: 540px;">
         <div class="row g-0">

@@ -65,3 +65,8 @@ fetch('http://localhost:1000/Shoots/getOptions')
         console.error("Error fetching location data:", error);
     });
 
+$(function () {
+    $("#matchList").click(function () {
+        location.href = "match/list";
+    })
+})
