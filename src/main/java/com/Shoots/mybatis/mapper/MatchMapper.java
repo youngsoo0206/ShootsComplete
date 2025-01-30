@@ -30,4 +30,8 @@ public interface MatchMapper {
     List<Match> getMatchListByIdForSales(HashMap<String, Object> map);
 
     List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime);
+
+    List<Match> getMatchListByToday();
+
+    List<Match> getMatchListByDeadline(LocalDateTime deadline, int i);
 }
