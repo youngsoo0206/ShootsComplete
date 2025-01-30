@@ -19,4 +19,6 @@ public interface PaymentMapper {
     Payment getPaymentInfoById(Integer idx, int match_idx);
 
     void updatePayment(int payment_idx);
+
+    List<Payment> getPaymentListByMatchIdx(int match_idx);
 }

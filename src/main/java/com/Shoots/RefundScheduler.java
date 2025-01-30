@@ -1,0 +1,80 @@
+package com.Shoots;
+
+import com.Shoots.controller.RefundController;
+import com.Shoots.domain.Match;
+import com.Shoots.domain.Payment;
+import com.Shoots.service.MatchService;
+import com.Shoots.service.PaymentService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+
+@Slf4j
+@Component
+@AllArgsConstructor
+public class RefundScheduler {
+
+    private final MatchService matchService;
+    private final PaymentService paymentService;
+    private final RestTemplate restTemplate;
+
+    @Scheduled(cron = "0 0/30 9-23 * * ?")
+    private void refundMatches(){
+
+        log.info("=== 자동 환불 체크 시작 ===");
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowPlusHours = now.plusHours(2);
+
+        LocalDate matchDate = nowPlusHours.toLocalDate();
+        LocalTime matchTime = nowPlusHours.toLocalTime().withSecond(0).withNano(0);
+
+        System.out.println("Match Date: " + matchDate);
+        System.out.println("Match Time: " + matchTime);
+
+        List<Match> matchList = matchService.getMatchListByMatchTime(matchDate, matchTime);
+
+        System.out.println("Match List: " + matchList.toString());
+
+        for (Match match : matchList) {
+            int playerCount = paymentService.getPlayerCount(match.getMatch_idx());
+            int playerMin = match.getPlayer_min();
+
+            log.info("매치 IDX : {}, 현재 신청 인원 : {}, 최소 필요 인원 : {}", match.getMatch_idx(), playerCount, playerMin);
+
+
+            if (playerCount < playerMin) {
+                List<Payment> paymentList = paymentService.getPaymentListByMatchIdx(match.getMatch_idx());
+
+                for (Payment payment : paymentList) {
+                    processRefund(payment);
+                }
+            }
+        }
+
+        log.info("=== 자동 환불 체크 종료 ===");
+    }
+
+    private void processRefund(Payment payment) {
+        System.out.println("=============================================================");
+        log.info("자동 환불 진행 : 결제 ID {}", payment.getPayment_idx());
+
+        String refundApiUrl = "http://localhost:1000/Shoots/refund/refundProcess";
+        // String refundApiUrl = "http://3.36.152.102:1111/refund/refundProcess";
+
+        try {
+            restTemplate.postForEntity(refundApiUrl, payment, String.class);
+            log.info("자동 환불 성공 : 결제 IDX {}", payment.getPayment_idx());
+        } catch (Exception e) {
+            log.error("자동 환불 실패 : 결제 IDX {}, 오류: {}", payment.getPayment_idx(), e.getMessage());
+        }
+    }
+
+}

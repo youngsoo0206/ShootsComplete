@@ -18,4 +18,6 @@ public interface PaymentService {
     Payment getPaymentInfoById(Integer idx, int matchIdx);
 
     void updatePayment(int payment_idx);
+
+    List<Payment> getPaymentListByMatchIdx(int match_idx);
 }
