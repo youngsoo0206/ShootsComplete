@@ -54,6 +54,10 @@
         order by PAYMENT_DATE desc LIMIT 1
     </select>
 
+    <select id="getPaymentListByMatchIdx" resultType="Payment">
+        select * from PAYMENT where MATCH_IDX = #{match_idx} and PAYMENT_STATUS = 'paid';
+    </select>
+
     <update id="updatePayment">
         update PAYMENT set PAYMENT_STATUS = 'refunded' where payment_idx = #{payment_idx}
     </update>
