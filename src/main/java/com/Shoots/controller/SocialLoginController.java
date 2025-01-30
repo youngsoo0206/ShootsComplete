@@ -2,9 +2,12 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.KakaoTokenResponseDto;
 import com.Shoots.domain.KakaoUserInfoResponseDto;
+import com.Shoots.domain.NaverOAuthToken;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.KakaoService;
 import com.Shoots.service.RegularUserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,9 +24,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +44,12 @@ import java.util.Random;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class SocialLoginController {
+    @Value("${naver.client_id}")
+    private String naver_client_id;
 
+    @Value("${naver.client_secret}")
+    private String naver_client_secret;
+    
     private final KakaoService kakaoService;
     private final RegularUserService regularUserService;
     @Autowired
@@ -188,7 +204,42 @@ public class SocialLoginController {
 
         mv.setViewName("redirect:/mainBefore");
         return mv;
+    } //googleCallback 끝
 
+
+    @GetMapping("/naverCallback")
+    public ResponseEntity naverCallback(String code, String state) throws JsonProcessingException {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type","authorization_code");
+        params.add("client_id", naver_client_id);
+        params.add("client_secret", naver_client_secret);
+        params.add("code", code);
+        params.add("state", state);
+        // Parameter로 전달할 속성들 추가
+
+        HttpEntity<MultiValueMap<String, String>> naverTokenRequest = makeTokenRequest(params);
+        // Http 메시지 생성
+
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> tokenResponse = rt.exchange(
+                "https://nid.naver.com/oauth2.0/token",
+                HttpMethod.POST,
+                naverTokenRequest,
+                String.class
+        );
+        // TOKEN_REQUEST_URL로 Http 요청 전송
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverOAuthToken naverToken = objectMapper.readValue(tokenResponse.getBody(), NaverOAuthToken.class);
+        // ObjectMapper를 통해 NaverOAuthToken 객체로 매핑
+        return null;
+    }
+
+    private HttpEntity<MultiValueMap<String, String>> makeTokenRequest(MultiValueMap<String, String> params) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        HttpEntity<MultiValueMap<String, String>> naverTokenRequest = new HttpEntity<>(params, headers);
+        return naverTokenRequest;
     }
 
 

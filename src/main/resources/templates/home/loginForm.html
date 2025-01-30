@@ -202,6 +202,11 @@
         <li> <!-- 구글 로그인 버튼 -->
             <div id="buttonDiv"></div>
         </li>
+        <li> <!-- 네이버 로그인 버튼 -->
+            <a class="nav-link" id="naverLogin" th:href="${naverLoginPath}">
+                <img th:src="@{/img/naver_login.png}" style="width: 100px;"/>
+            </a>
+        </li>
     </ul>
     <form id="googleSignUpForm" method="post" th:action="@{/googleCallback}">
         <input type="hidden" id="googleId" name="googleId">
