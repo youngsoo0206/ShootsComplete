@@ -124,6 +124,14 @@
         select * from MATCH_POST where match_date = #{matchDate} and match_time = #{matchTime}
     </select>
 
+    <select id="getMatchListByDeadline" resultType="Match">
+        SELECT mp.*, b.business_name
+        FROM MATCH_POST mp
+                 LEFT JOIN BUSINESS_USER b ON mp.writer = b.business_idx
+        WHERE TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) >= #{deadline}
+        ORDER BY ABS(TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) - #{deadline}) LIMIT 3
+    </select>
+
     <update id="updateMatch">
         update MATCH_POST set MATCH_DATE = #{match_date}, MATCH_TIME = #{match_time}, MATCH_LEVEL = #{match_level}, TEAM_STYLE = #{team_style},
                               PLAYER_MIN = #{player_min},  PLAYER_MAX = #{player_max},  PLAYER_GENDER = #{player_gender}, PRICE = #{price}
