@@ -32,6 +32,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("idx", regularUser.getIdx());
             session.setAttribute("id", regularUser.getUser_id());
             session.setAttribute("role", regularUser.getRole());
+            session.setAttribute("gender", regularUser.getGender());
             session.setAttribute("usertype", "A");
 
 

@@ -114,6 +114,7 @@ public class MatchController {
     public ModelAndView matchDetail(HttpSession session, int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
 
         Integer idx = (Integer) session.getAttribute("idx");
+        Integer gender = (Integer) session.getAttribute("gender");
 
         Match match = matchService. getDetail(match_idx);
         BusinessInfo businessInfo = businessInfoService.getInfoById(match.getWriter());
@@ -184,6 +185,7 @@ public class MatchController {
             modelAndView.addObject("isBlock", isBlock);
             modelAndView.addObject("playerCount", playerCount);
             modelAndView.addObject("businessInfo", businessInfo);
+            modelAndView.addObject("gender", gender);
         }
         return modelAndView;
     }

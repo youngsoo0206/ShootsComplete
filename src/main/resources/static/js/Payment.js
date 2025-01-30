@@ -231,6 +231,14 @@
         alert("신청인원이 다 찼습니다");
     }
 
+    function genderBlock(){
+        alert("신청 가능한 성별이 아닙니다");
+    }
+
+    function roleBlock(){
+        alert("신청 가능한 대상이 아닙니다");
+    }
+
 
     function requestRefund() {
 
