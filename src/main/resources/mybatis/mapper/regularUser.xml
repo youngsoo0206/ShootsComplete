@@ -20,6 +20,10 @@
         select * from regular_user where user_id = CONCAT('g_', #{id})
     </select>
 
+    <select id="findByNaverAuId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('n_', #{id})
+    </select>
+
 
     <insert id="insert">
         insert into regular_user (user_id, password, name, jumin, gender, tel, email)
@@ -33,6 +37,20 @@
         values (#{user_id}, #{password}, #{name}, #{email}
                )
     </insert>
+
+    <insert id="insert3">
+        insert into regular_user (user_id, password, name, email
+        <if test="tel != null">, tel</if>
+        <if test="jumin != null">, jumin</if>
+        <if test="gender != null">, gender</if>
+        )
+        values (#{user_id}, #{password}, #{name}, #{email}
+        <if test="tel != null">, #{tel}</if>
+        <if test="jumin != null">, #{jumin}</if>
+        <if test="gender != null">, #{gender}</if>
+        )
+    </insert>
+
 
     <select id="selectByEmail" resultType="regularuser">
         select * from regular_user where email = #{email}
