@@ -73,7 +73,7 @@ public class HomeController {
 
         String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        System.out.println("first: " + first + "second: " + second + "third: " + third);
+        System.out.println("first: " + first + ", second: " + second + ", third: " + third);
 
         Map<String, Integer> weather = redisService.getLocationData(first, second, third);
         System.out.println("weather = x : " + weather.get("nx") + " / y : " + weather.get("ny"));
@@ -88,8 +88,6 @@ public class HomeController {
                     return forecast;
                 })
                 .collect(Collectors.toList());
-
-        System.out.println("firstSixWeatherData  = " + firstSixWeatherData.toString());
 
         int currentTime = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH")));
         System.out.println("Current Time = " + currentTime);
