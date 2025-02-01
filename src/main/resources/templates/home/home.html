@@ -49,10 +49,10 @@
 </div>
 </div>
 
-<div class="card mb-3 card2" style="width: 59%; height: 300px; margin: 0 auto">
+<div class="card mb-3 card2" style="width: 59%; height: 280px; margin: 0 auto">
     <div class="card-body">
         <div style="display: flex; gap: 20px">
-            <div>
+            <div style="margin-bottom: 10px">
                 <h5 class="card-title">오늘의 날씨 <span style="font-size: 13px">(<span th:text="${first}"></span> <span th:text="${second}"></span> <span th:text="${third}"></span>)</span> </h5>
                 <p th:text="|${today.substring(0, 4)}년 ${today.substring(4, 6)}월 ${today.substring(6, 8)}일|"></p>
             </div>
@@ -74,7 +74,7 @@
         <div style="display: flex">
             <div style="border-right: 1px solid darkgrey; width: 14.8%; font-size: 12px">
                 <div style="text-align: center;">
-                    <span th:if="${currentTime < 17}">
+                    <span th:if="${currentTime <= 17}">
                         <img th:src="@{/img/sun.png}" style="width: 50px; height: auto">
                     </span>
                     <span th:if="${currentTime > 17}">

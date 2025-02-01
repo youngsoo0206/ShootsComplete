@@ -88,7 +88,7 @@ public class WeatherService implements CommandLineRunner {
 
         System.out.println("-------------------------------------- Forecast today: " + today);
         System.out.println("-------------------------------------- Forecast baseTime : " + baseTime);
-        System.out.println("-------------------------------------- Forecast -> nx : " + nx + " ny : " + ny);
+        System.out.println("-------------------------------------- Forecast = nx : " + nx + " ny : " + ny);
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl_Fcst);
 
@@ -123,7 +123,6 @@ public class WeatherService implements CommandLineRunner {
         rd.close();
         conn.disconnect();
 
-        System.out.println("Forecast Raw response: " + sb.toString());
         System.out.println("Response code: " + conn.getResponseCode());
 
         try {
@@ -177,7 +176,6 @@ public class WeatherService implements CommandLineRunner {
                         weather.setWindDirection(value);
                         break;
                     default:
-                        System.out.println("Unrecognized Category: " + category);
                         break;
                 }
 
@@ -256,7 +254,6 @@ public class WeatherService implements CommandLineRunner {
         rd.close();
         conn.disconnect();
 
-        System.out.println("Raw response: " + sb.toString());
         System.out.println("Response code: " + conn.getResponseCode());
 
         try {
@@ -294,7 +291,6 @@ public class WeatherService implements CommandLineRunner {
                         weather.setWindDirection(value);
                         break;
                     default:
-                        System.out.println("Unrecognized Category: " + category);
                         break;
                 }
             }
