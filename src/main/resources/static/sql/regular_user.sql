@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS regular_user;
 CREATE TABLE regular_user
 (
     idx           INT AUTO_INCREMENT PRIMARY KEY,
-    user_id       VARCHAR(30)                  NOT NULL,
+    user_id       VARCHAR(60)                  NOT NULL,
     password      VARCHAR(100)                  NOT NULL,
     name          VARCHAR(20)                  NOT NULL,
     jumin         VARCHAR(9),

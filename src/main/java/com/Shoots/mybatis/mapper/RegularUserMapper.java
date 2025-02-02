@@ -14,10 +14,15 @@ public interface RegularUserMapper {
 
     public RegularUser findByGoogleUserId(String googleAuId);
 
+    public RegularUser findByNaverAuId(String naverAuId);
+
     public int insert(RegularUser user);
 
     //소셜 로그인을 위한 약식 회원가입
     public int insert2(RegularUser user);
+
+    //네이버 로그인을 위한 회원가입
+    public int insert3(RegularUser user);
 
     public RegularUser selectByEmail(String email);
 

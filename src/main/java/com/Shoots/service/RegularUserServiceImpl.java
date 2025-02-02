@@ -54,6 +54,12 @@ public class RegularUserServiceImpl implements RegularUserService {
     }
 
     @Override
+    public RegularUser findByNaverAuId(String naverAuId) {
+        RegularUser user = regularUserMapper.findByNaverAuId(naverAuId);
+        return user;
+    }
+
+    @Override
     public int selectByIdPassword(String id, String password) {
         RegularUser user = regularUserMapper.selectById(id);
 
@@ -76,6 +82,9 @@ public class RegularUserServiceImpl implements RegularUserService {
 
     @Override
     public int insert2(RegularUser user) {return regularUserMapper.insert2(user);}
+
+    @Override
+    public int insert3(RegularUser user) {return regularUserMapper.insert3(user);}
 
     @Override
     public int selectByEmail(String email) {
