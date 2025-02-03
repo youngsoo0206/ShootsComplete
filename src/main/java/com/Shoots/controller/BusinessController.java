@@ -2,17 +2,20 @@ package com.Shoots.controller;
 
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,17 +32,22 @@ import static java.util.Locale.filter;
 
 @Controller
 @RequestMapping("/business")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BusinessController {
 
     private static final Logger logger = LoggerFactory.getLogger(BusinessController.class);
 
-    private RegularUserService regularUserService;
-    private PaymentService paymentService;
-    private MatchService matchService;
-    private BcBlacklistService bcBlacklistService;
-    private BusinessUserService businessUserService;
-    private BusinessInfoService businessInfoService;
+    private final RegularUserService regularUserService;
+    private final PaymentService paymentService;
+    private final MatchService matchService;
+    private final BcBlacklistService bcBlacklistService;
+    private final BusinessUserService businessUserService;
+    private final BusinessInfoService businessInfoService;
+    private final InquiryService inquiryService;
+    private final InquiryCommentService inquiryCommentService;
+
+    @Value("${my.savefolder}")
+    private String saveFolder;
 
     @GetMapping("/dashboardBefore")
     public String beforeBusinessDashboard(@AuthenticationPrincipal Object principal, HttpSession session) {
@@ -51,7 +59,11 @@ public class BusinessController {
     }
 
     @GetMapping("/dashboard")
-    public String businessDashboard() {
+    public String businessDashboard(Model model) {
+
+        List<Integer> monthlyData = paymentService.getPlayerCountByMonth();
+        model.addAttribute("monthlyData", monthlyData);
+
         return "business/businessDashboard";
     }
 
@@ -107,6 +119,134 @@ public class BusinessController {
         modelAndView.addObject("limit", limit);
 
         return modelAndView;
+    }
+
+    @GetMapping("/postWrite")
+    public ModelAndView matchWrite(HttpSession session, ModelAndView modelAndView) {
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+        BusinessInfo businessInfo = businessInfoService.getInfoById(business_idx);
+
+        modelAndView.setViewName("business/businessMatchForm");
+        modelAndView.addObject("businessInfo", businessInfo);
+        return modelAndView;
+    }
+
+    @PostMapping("/postAdd")
+    public String matchAdd(Match match) {
+
+        matchService.insertMatch(match);
+        logger.info(match.toString());
+
+        return "redirect:dashboard?tab=matchPost";
+    }
+
+    @GetMapping("/postDetail")
+    public ModelAndView postDetail(int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
+
+        Match match = matchService. getDetail(match_idx);
+        BusinessInfo businessInfo = businessInfoService.getInfoById(match.getWriter());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+        DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("HH시 mm분");
+
+        // 날짜 포맷
+        String formattedDate = match.getMatch_date().format(formatter);
+        match.setFormattedDate(formattedDate);
+
+        // 시간 포맷
+        String formattedTime = match.getMatch_time().format(formatterT);
+        match.setFormattedTime(formattedTime);
+
+        // isMatchPast
+        String a = match.getMatch_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ' ' + match.getMatch_time();
+
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime matchDateTime = LocalDateTime.parse(a, formatter1);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime twoHoursBeforeMatch = matchDateTime.minusHours(2);
+
+        boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
+        match.setMatchPast(isMatchPast);
+
+        logger.info("isMatchPast : " + match.isMatchPast());
+
+        int playerCount = paymentService.getPlayerCount(match_idx);
+        logger.info("신청 플레이어 수 playerCount : " + playerCount);
+
+        if (match == null) {
+            logger.info("상세보기 실패");
+
+            modelAndView.setViewName("error/error");
+            modelAndView.addObject("url", request.getRequestURL());
+            modelAndView.addObject("message", "상세보기 실패");
+        } else {
+            logger.info("상세보기 성공");
+
+            modelAndView.setViewName("business/businessMatchDetail");
+            modelAndView.addObject("match", match);
+            modelAndView.addObject("playerCount", playerCount);
+            modelAndView.addObject("businessInfo", businessInfo);
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("/postUpdateForm")
+    public ModelAndView postUpdateForm(int match_idx, ModelAndView modelAndView, HttpServletRequest request) {
+        Match match = matchService. getDetail(match_idx);
+
+        if(match == null) {
+            logger.info("수정 보기 실패");
+            modelAndView.setViewName("error/error");
+            modelAndView.addObject("url", request.getRequestURL());
+            modelAndView.addObject("message", "수정보기 실패입니다");
+        } else {
+            logger.info("(수정)상세보기 성공");
+            modelAndView.addObject("match", match);
+            modelAndView.setViewName("business/businessMatchUpdateForm");
+        }
+        return modelAndView;
+    }
+
+    @PostMapping("/postUpdate")
+    public String postUpdate(Match match, Model model, HttpServletRequest request, RedirectAttributes rattr) {
+
+        int result = matchService.updateMatch(match);
+
+        logger.info("update match data : " + match.toString());
+        logger.info("update result : " + result);
+
+        String url = "";
+
+        if (result == 0) {
+            logger.info("게시판 수정 실패");
+            model.addAttribute("url", request.getRequestURL());
+            model.addAttribute("message", "게시판 수정 실패");
+            url = "error/error";
+        } else {
+            logger.info("게시판 수정 완료");
+            url = "redirect:postDetail";
+            rattr.addAttribute("match_idx", match.getMatch_idx());
+        }
+        return url;
+    }
+
+    @PostMapping("/postDelete")
+    public String postDelete(int match_idx, RedirectAttributes rattr, HttpServletRequest request, Model model) {
+
+        int result = matchService.deleteMatch(match_idx);
+
+        if (result == 0) {
+            logger.info("게시판 삭제 실패");
+            model.addAttribute("url", request.getRequestURL());
+            model.addAttribute("message", "삭제 실패");
+            return "error/error";
+        } else {
+            logger.info("게시판 삭제 성공");
+            rattr.addFlashAttribute("result", "deleteSuccess");
+            return "redirect:dashboard?tab=matchPost";
+        }
     }
 
     @GetMapping("/sales")
@@ -246,7 +386,7 @@ public class BusinessController {
 
             user.put("age", period.getYears());
 
-            String status = bcBlacklistService.getStatusById(user.get("idx"));
+            String status = bcBlacklistService.getStatusById(user.get("idx"), business_idx);
             user.put("status", status);
         }
 
@@ -277,6 +417,152 @@ public class BusinessController {
         return modelAndView;
     }
 
+    @GetMapping("/inquiry")
+    public ModelAndView inquiry(@RequestParam(defaultValue = "1") int page, HttpSession session, ModelAndView modelAndView){
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+        String usertype = (String) session.getAttribute("usertype");
+
+        session.setAttribute("referer", "list");
+        int limit = 10;
+
+        int listcount = inquiryService.getListCount(usertype, business_idx);
+        List<Inquiry> inquiryList = inquiryService.getInquiryList(page, limit, business_idx, usertype);
+
+        for (Inquiry inquiry : inquiryList) {
+            boolean replyExist = inquiryService.replyComplete(inquiry.getInquiry_idx());
+            inquiry.setHasReply(replyExist);
+        }
+
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+
+        modelAndView.setViewName("business/businessInquiryList");
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("maxpage", result.getMaxpage());
+        modelAndView.addObject("startpage", result.getStartpage());
+        modelAndView.addObject("endpage", result.getEndpage());
+        modelAndView.addObject("listcount", listcount);
+        modelAndView.addObject("inquiryList", inquiryList);
+        modelAndView.addObject("limit", limit);
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/inquiryForm")//board/write
+    public String inquiryForm() {
+        return "business/businessInquiryForm";
+    }
+
+    @PostMapping("/inquiryAdd")
+    public String inquiryAdd(Inquiry inquiry) throws Exception {
+        MultipartFile uploadfile = inquiry.getUploadfile();
+
+        if (!uploadfile.isEmpty()) {
+            String fileDBName = inquiryService.saveUploadedFile(uploadfile, saveFolder);
+            inquiry.setInquiry_file(fileDBName);
+            inquiry.setOriginal_file(uploadfile.getOriginalFilename());
+        }
+
+        inquiryService.insertInquiry(inquiry);
+        return "redirect:dashboard?tab=inquiry";
+    }
+
+    @GetMapping("/inquiryDetail")
+    public ModelAndView inquiryDetail(
+            int inquiry_idx, ModelAndView mv, @RequestHeader(value = "referer", required = false) String beforeURL,
+            HttpSession session) {
+
+        String sessionReferer = (String) session.getAttribute("referer");
+        logger.info("referer: " + beforeURL);
+
+        if(sessionReferer != null && sessionReferer.equals("list")){
+            session.removeAttribute("referer");
+        }
+
+        Inquiry inquiryData = inquiryService.getDetail(inquiry_idx);
+        boolean replyExist = inquiryService.replyComplete(inquiryData.getInquiry_idx()); //답변유무에 따른 수정,삭제 버튼 나타냄/없앰
+        inquiryData.setHasReply(replyExist);
+
+        List<InquiryComment> icList = inquiryCommentService.getInquiryCommentList(inquiry_idx);
+
+        if(inquiryData == null){
+            logger.info("상세보기 실패");
+            mv.setViewName("403");
+        }else{
+            logger.info("상세보기 성공");
+            int icListCount = inquiryCommentService.getListCount(inquiry_idx);
+            mv.setViewName("business/businessInquiryDetail");
+            mv.addObject("icListCount", icListCount);
+            mv.addObject("inquiryData", inquiryData);
+            mv.addObject("icList", icList);
+        }
+        return mv;
+    }
+
+    @GetMapping("/inquiryModifyView")
+    public ModelAndView businessModifyView(
+            int inquiry_idx, ModelAndView mv, HttpServletRequest request ){
+
+        Inquiry inquiryData = inquiryService.getDetail(inquiry_idx);
+
+        //글 내용 불러오기 실패한 경우입니다.
+        if(inquiryData == null){
+            logger.info("수정보기 실패");
+            mv.setViewName("403");
+        }else{
+            logger.info("(수정)상세보기 성공");
+            //수정 홈 페이지로 이동할 때 원문 글 내용을 보여주기 때문에 inquiryData 객체를
+            //ModelAndView 객체에 저장합니다.
+            mv.addObject("inquiryData", inquiryData);
+            //글 수정 폼 페이지로 이동하기 위해 경로를 설정합니다.
+            mv.setViewName("business/businessInquiryModify");
+        }
+        return mv;
+    }
+
+
+    @PostMapping("/inquiryModifyAction")
+    public String businessModifyAction(
+            Inquiry inquiryData, String check, RedirectAttributes rattr) throws Exception{
+
+        logger.info("inquiry = " + inquiryData.getInquiry_idx());
+
+        String url = "";
+        MultipartFile uploadfile = inquiryData.getUploadfile();
+
+
+        if(check != null && !check.equals("")){ //기본 파일 그대로 사용하는 경우
+            inquiryData.setOriginal_file(check); //원래 넣어놓은 file은 modifyForm 에 input hidden으로 file값을 입력해놔서 db에 저장이 됨.
+        }else{
+            if(uploadfile != null && !uploadfile.isEmpty()){ //업로드 한 파일이 있을때.
+                logger.info("파일 변경되었습니다.");
+                String fileDBName = inquiryService.saveUploadedFile(uploadfile, saveFolder);
+                inquiryData.setInquiry_file(fileDBName);    //바뀐 파일명으로 저장
+                inquiryData.setOriginal_file(uploadfile.getOriginalFilename());//원래 파일명 저장
+            }else{//기존에 파일이 없는데 파일 선택하지 않은 경우 + 기존 파일이 있었는데 삭제한 경우
+                logger.info("선택 파일 없음.");
+                inquiryData.setInquiry_file("");
+                inquiryData.setOriginal_file("");
+            }
+        }
+
+        //DAO에서 수정 메서드 호출하여 수정합니다.
+        int result = inquiryService.inquiryModify(inquiryData);
+
+        //수정에 실패한 경우
+        if(result == 0){
+            logger.info("게시판 수정 실패");
+            url = "error/error";
+        }else{//수정 성공의 경우
+            logger.info("게시판 수정 완료");
+            //수정한 글 내용을 보여주기 위해 글 내용 보기 보기 페이지로 이동하기 위해 경로를 설정합니다.
+            url = "redirect:dashboard?tab=inquiry";
+            rattr.addAttribute("inquiry_idx", inquiryData.getInquiry_idx());
+        }
+        return url;
+    }
+
+
     @GetMapping("/Settings")
     public ModelAndView settings(HttpSession session, ModelAndView modelAndView){
 
@@ -301,7 +587,7 @@ public class BusinessController {
 
         businessInfoService.insertBusinessInfo(businessInfo);
 
-        return "redirect:/business/dashboard";
+        return "redirect:/business/dashboard?tab=Settings";
     }
 
     @PostMapping("/updateInfo")
@@ -309,6 +595,6 @@ public class BusinessController {
 
         businessInfoService.updateBusinessInfo(businessInfo);
 
-        return "redirect:/business/dashboard";
+        return "redirect:/business/dashboard?tab=Settings";
     }
 }

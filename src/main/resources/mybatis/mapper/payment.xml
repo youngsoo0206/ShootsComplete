@@ -58,6 +58,23 @@
         select * from PAYMENT where MATCH_IDX = #{match_idx} and PAYMENT_STATUS = 'paid';
     </select>
 
+    <select id="getPlayerCountByMonth" resultType="map">
+        SELECT
+            MONTH(m.match_date) AS month,
+            COUNT(p.payment_idx) AS player_count
+        FROM
+            MATCH_POST m
+            JOIN
+            PAYMENT p ON m.match_idx = p.match_idx
+        WHERE
+            p.payment_status = 'paid'
+          AND YEAR(m.match_date) = YEAR(CURDATE())
+        GROUP BY
+            MONTH(m.match_date)
+        ORDER BY
+            month;
+    </select>
+
     <update id="updatePayment">
         update PAYMENT set PAYMENT_STATUS = 'refunded' where payment_idx = #{payment_idx}
     </update>
