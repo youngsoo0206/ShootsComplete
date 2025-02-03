@@ -25,7 +25,7 @@ public class BcblacklistController {
 
         bcBlacklistService.insertBcBlacklist(bcBlacklist);
 
-        return "redirect:/business/dashboard";
+        return "redirect:/business/dashboard?tab=customerList";
 
     }
 
@@ -37,7 +37,7 @@ public class BcblacklistController {
 
         bcBlacklistService.updateBcBlacklist(idx, business_idx);
 
-        return "redirect:/business/dashboard";
+        return "redirect:/business/dashboard?tab=blackList";
 
     }
 }

@@ -100,5 +100,31 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedTab = urlParams.get('tab');
+
+    if (selectedTab) {
+        if (selectedTab === "blackList") {
+            $("#BlackList").trigger("click");
+        }
+    }
+
+    if (selectedTab) {
+        if (selectedTab === "customerList") {
+            $("#CustomerList").trigger("click");
+        }
+    }
+
+    if (selectedTab) {
+        if (selectedTab === "Settings") {
+            $("#Settings").trigger("click");
+        }
+    }
+
+    if (selectedTab) {
+        if (selectedTab === "matchPost") {
+            $("#MatchPost").trigger("click");
+        }
+    }
 });
 

@@ -35,8 +35,8 @@ public class BcBlacklistServiceImpl implements BcBlacklistService{
     }
 
     @Override
-    public String getStatusById(Object user_idx) {
-        return dao.getStatusById(user_idx);
+    public String getStatusById(Object user_idx, int business_idx) {
+        return dao.getStatusById(user_idx, business_idx);
     }
 
     @Override
