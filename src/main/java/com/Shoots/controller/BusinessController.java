@@ -59,7 +59,11 @@ public class BusinessController {
     }
 
     @GetMapping("/dashboard")
-    public String businessDashboard() {
+    public String businessDashboard(Model model) {
+
+        List<Integer> monthlyData = paymentService.getPlayerCountByMonth();
+        model.addAttribute("monthlyData", monthlyData);
+
         return "business/businessDashboard";
     }
 

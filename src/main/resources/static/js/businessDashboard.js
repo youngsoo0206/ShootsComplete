@@ -150,5 +150,30 @@ window.addEventListener('DOMContentLoaded', event => {
             $("#Inquiry").trigger("click");
         }
     }
+
+
+    var ctx = document.getElementById("myAreaChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",],
+            datasets: [{
+                label: "신청 인원",
+                data: window.monthlyData,
+                borderColor: "rgba(75, 192, 192, 1)",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 });
 
