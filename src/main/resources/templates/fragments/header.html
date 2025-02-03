@@ -29,12 +29,16 @@
                 <a class="navbar-brand" th:href="@{/main}" style="margin:0 0 0 100px">SHOOTS</a>
             </div>
             <ul class="navbar-nav ms-auto">
+                <div th:if="${session.id == null}">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}" style="color: rgb(0,0,0,0.0)">위치때문에</a>
+                    </li>
+                </div>
                 <li class="nav-item">
                     <div th:if="${session.id == null}">
                         <span class="nav-item">
-                            <a class="nav-link" th:href="@{/login}" style="color: rgb(0,0,0,0.0);">위치때문에</a> <!-- SHOOTS 중앙 위치 때문에 임시로 넣음 -->
+                            <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
                         </span>
-                        <a class="nav-link active" aria-current="page" th:href="@{/login}">로그인</a>
                     </div>
                     <div th:if="${session.id != null}">
                         <a class="nav-link active" aria-current="page" th:if="${session.businessAccess}" th:href="@{/business/dashboard}">[[${session.id}]]님</a>
@@ -47,7 +51,6 @@
                         <a class="nav-link" th:href="@{/logout}">로그아웃</a>
                     </li>
                 </div>
-
             </ul>
         </div>
     </nav>
