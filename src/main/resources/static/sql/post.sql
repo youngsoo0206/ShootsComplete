@@ -10,6 +10,7 @@ CREATE TABLE post (
       register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 등록일
       readcount INT DEFAULT 0, -- 조회수
       status VARCHAR(20) DEFAULT 'available' CHECK (status IN ('available', 'completed')), -- 거래 상태
+      report_status varchar(10) default 'unblock', -- 신고 후 차단 상태
       CONSTRAINT fk_writer FOREIGN KEY (writer) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
 
