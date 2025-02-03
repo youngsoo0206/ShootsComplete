@@ -27,4 +27,7 @@ public interface PostCommentMapper {
     public int commentsUpdate(PostComment co);
 
 
+    List<PostComment> getMyCommentList(int id);
+
+    int getMyCommentListCount(int id);
 }

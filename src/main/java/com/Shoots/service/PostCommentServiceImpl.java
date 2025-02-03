@@ -66,4 +66,7 @@ public class PostCommentServiceImpl implements PostCommentService {
     public int commentsDelete(int num) {
         return dao.commentsDelete(num);
     }
+
+
+
 }
