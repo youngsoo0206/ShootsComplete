@@ -6,6 +6,7 @@ CREATE TABLE post_comment (
               content TEXT NOT NULL,                                   -- 내용
               register_date DATETIME DEFAULT CURRENT_TIMESTAMP,        -- 등록일
               isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N')), -- 비밀 댓글 여부
+              report_status varchar(10) default 'unblock', -- 신고 후 차단 상태,
 -- 외래 키 제약 조건
               CONSTRAINT fk_post FOREIGN KEY (post_idx) REFERENCES post(post_idx) ON DELETE CASCADE,
               CONSTRAINT fk_comment_ref FOREIGN KEY (comment_ref_id) REFERENCES post_comment(comment_idx) ON DELETE CASCADE,

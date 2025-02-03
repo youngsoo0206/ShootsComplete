@@ -1,13 +1,27 @@
 DROP TABLE IF EXISTS Report;
+
+-- CREATE TABLE Report (
+--     reportIdx INT AUTO_INCREMENT PRIMARY KEY,
+--     reporterUser varchar(30) NOT NULL ,
+--     reportedUser varchar(30) NOT NULL ,
+--     category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT','USER')),
+--     content text DEFAULT '',
+--     PostIdx INT DEFAULT 0,
+--     CommentIdx INT DEFAULT 0
+-- )CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+
 CREATE TABLE Report (
-    reportIdx INT AUTO_INCREMENT PRIMARY KEY,
-    reporterUser varchar(30) NOT NULL ,
-    reportedUser varchar(30) NOT NULL ,
-    category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT','USER')),
-    content text DEFAULT '',
-    PostIdx INT DEFAULT 0,
-    CommentIdx INT DEFAULT 0
+reportIdx INT AUTO_INCREMENT PRIMARY KEY,
+reporter varchar(30) NOT NULL ,
+reportedUser varchar(30) NOT NULL ,
+category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT')),
+content text,
+detail text,
+PostIdx INT DEFAULT 0,
+CommentIdx INT DEFAULT 0
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 
 SHOW TABLE STATUS WHERE Name = 'report';
 SHOW FULL COLUMNS FROM report;

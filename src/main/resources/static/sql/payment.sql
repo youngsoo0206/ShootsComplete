@@ -18,4 +18,5 @@ CREATE TABLE PAYMENT (
 select * from PAYMENT;
 
 
-delete from PAYMENT where PAYMENT_IDX = 99;
+delete from PAYMENT where PAYMENT_IDX =
+                          99;
