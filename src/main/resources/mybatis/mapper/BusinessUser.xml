@@ -42,8 +42,8 @@
     <select id="getBusinessUsers">
         SELECT
             DATE(register_date) AS register_date,
-            COUNT(*) AS userCount
-        FROM business_user
+            COUNT(*) AS businessCount
+        FROM business_user where login_status = 'access'
         GROUP BY
             DATE(register_date)
         ORDER BY
@@ -75,7 +75,7 @@
     </select>
 
     <update id="approveStatus">
-        update business_user set login_status = "approved" where business_idx=#{id}
+        update business_user set login_status = "access" where business_idx=#{id}
     </update>
 
     <update id="refuseStatus">
@@ -83,12 +83,12 @@
     </update>
 
     <select id="getApprovedList">
-        select * from business_user where login_status = "approved" <include refid="searchApproved" /> order by business_idx desc
+        select * from business_user where login_status = "access" <include refid="searchApproved" /> order by business_idx desc
             LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="listApprovedCount">
-        select count(*) from business_user where login_status = "approved" <include refid="searchApproved" />
+        select count(*) from business_user where login_status = "access" <include refid="searchApproved" />
     </select>
 
     <select id="getEmail">

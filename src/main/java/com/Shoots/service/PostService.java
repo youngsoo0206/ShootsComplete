@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public interface PostService {
@@ -134,5 +135,8 @@ public interface PostService {
 
     //MyPage 내가 쓴 post count
     int getMyPostListCount(int id);
+
+    //admin chart용 count, register_date
+    public List<Map<String, Object>> getPostCount();
 
 }

@@ -28,4 +28,12 @@
         and category=#{category}
     </select>
 
+    <select id="getReportList">
+    select * from report order by reportIdx
+    </select>
+
+    <select id="getReportCount">
+        select count(*) from report
+    </select>
+
 </mapper>

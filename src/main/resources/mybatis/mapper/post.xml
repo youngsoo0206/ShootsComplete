@@ -162,4 +162,13 @@
         where post_idx=#{post_idx}
     </update>
 
+    <select id="getPostCount">
+        select
+            DATE(register_date) as register_date,
+            count(*) as postCount
+        from post
+        group by DATE(register_date)
+        order by register_date
+    </select>
+
 </mapper>
