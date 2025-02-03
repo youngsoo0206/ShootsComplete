@@ -1,6 +1,6 @@
 $(function () {
     $("#matchForm").click(function () {
-        location.href = "../match/write";
+        location.href = "../business/postWrite";
     })
 
     $(".today").click(function () {

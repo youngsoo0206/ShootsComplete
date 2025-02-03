@@ -20,7 +20,7 @@
     </select>
 
     <select id="getStatusById" resultType="String">
-        select status from bc_blacklist where target_idx = #{user_idx}
+        select status from bc_blacklist where target_idx = #{user_idx} and business_idx = #{business_idx}
         order by blocked_at desc
         LIMIT 1
     </select>

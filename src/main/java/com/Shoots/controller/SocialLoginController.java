@@ -229,6 +229,10 @@ public class SocialLoginController {
         JsonNode jsonNode = objectMapper.readTree(tokenResponse.getBody());
         String accessToken = jsonNode.get("access_token").asText();
 
+        //네이버 로그아웃처리를 하기위해 토큰을 세션에 저장해둠
+        session.setAttribute("naverAccessToken", accessToken);
+
+
         // 액세스 토큰을 사용하여 사용자 정보 가져오기
         String userInfo = getUserProfile(accessToken);
 

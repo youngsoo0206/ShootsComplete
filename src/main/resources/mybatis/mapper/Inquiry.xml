@@ -84,7 +84,7 @@
                       on i.inquiry_ref_idx = r.idx
                 left join business_user b
                     on i.inquiry_ref_idx = b.business_idx
-            order by inquiry_idx
+            order by inquiry_idx desc
         LIMIT #{offset}, #{pageSize}
     </select>
 

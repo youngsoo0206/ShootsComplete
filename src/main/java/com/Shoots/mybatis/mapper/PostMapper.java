@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
 
@@ -51,4 +52,7 @@ public interface PostMapper {
 
     // available >> completed
     public void setCompleted(int post_idx);
+
+    //admin chart용   register_date와  count
+    List<Map<String, Object>> getPostCount();
 }
