@@ -31,4 +31,14 @@ public class ReportServiceImpl implements ReportService {
     public int selectReportedCount(String reported, String category) {
         return dao.selectReportedCount(reported, category);
     }
+
+    @Override
+    public List<Report> getReportList() {
+        return dao.getReportList();
+    }
+
+    @Override
+    public int getReportCount() {
+        return dao.getReportCount();
+    }
 }

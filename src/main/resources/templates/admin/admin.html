@@ -86,9 +86,9 @@
                             </nav>
                         </div>
                         <hr>
-                        <a class="nav-link" id="Settings">
+                        <a class="nav-link" id="Report" th:href="@{testAdmin/reportList}">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Settings
+                            Report
                         </a>
                     </div>
                 </div>
@@ -112,18 +112,49 @@
                                     총 회원 : [[${allUsers}]] 명
                                 </div>
                                 <div class="card-body">
-                                    <canvas id="userChart" width="300" height="200"></canvas>
+                                    <canvas id="userChart" width="200" height="100"></canvas>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
-                            <div class="card sm-2">
+                        <div class="col-md-5">
+                            <div class="card md-4">
                                 <div class="card-header">
                                     <i class="fas fa-chart-area me-1"></i>
                                     총 연계 기업 : 총 [[${businesscount}]]개 기업이 함께하고 있습니다.
                                 </div>
-                                <div class="card-body">총 [[${businesscount}]]개 기업이 함께하고 있습니다.</div>
+                                <div class="card-body">
+                                    <canvas id="businessChart" width="200" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top: 20px; margin-bottom: 20px">
+                        <div class="col-md-5">
+                            <div class="card md-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area me-1"></i>
+                                    총 게시글 수 : [[${postcount}]]개
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="postChart" width="200" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px; margin-bottom: 20px">
+                        <div class="col-md-5">
+                            <div class="card md-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area me-1"></i>
+                                    관리 기록
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="barChart" width="200" height="100"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -135,16 +166,43 @@
 
     <script th:inline="javascript">
         var userCountData = [[${userCount}]];
+        var businessCountData = [[${businessCount}]];
+        var postCountData = [[${postCount}]];
+        var faqcount = [[${faqcount}]];
+        var noticecount = [[${noticecount}]];
+        var inquirycount = [[${inquirycount}]];
+        var postcount = [[${postcount}]];
+        var businesscount = [[${businesscount}]];
+        var usercount = [[${usercount}]];
 
         var udates = userCountData.map(function(item) {
             return item.register_date;
         });
+        var bdates = businessCountData.map(function(item) {
+            return item.register_date;
+        });
+        var pdates = postCountData.map(function(item) {
+            return item.register_date;
+        });
+
 
         var ucounts = userCountData.map(function(item) {
             return item.userCount;
         });
+        var bcounts = businessCountData.map(function(item) {
+            return item.businessCount;
+        });
+        var pcounts = postCountData.map(function(item) {
+            return item.postCount;
+        });
+
+
 
         var ctx = document.getElementById('userChart').getContext('2d');
+        var btx = document.getElementById('businessChart').getContext('2d');
+        var ptx = document.getElementById('postChart').getContext('2d');
+        var barCtx = document.getElementById('barChart').getContext('2d');
+
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -163,7 +221,95 @@
                         type: 'category'
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,  // Y축의 숫자가 정수로만 표시되도록 설정
+                            precision: 0  // 소수점 자리수를 없앰
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(btx, {
+            type: 'line',
+            data: {
+                labels: bdates,
+                datasets: [{
+                    label: 'business Registration Count',
+                    data: bcounts,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'category'
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,  // Y축의 숫자가 정수로만 표시되도록 설정
+                            precision: 0  // 소수점 자리수를 없앰
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(ptx, {
+            type: 'line',
+            data: {
+                labels: pdates,
+                datasets: [{
+                    label: 'Post Registration Count',
+                    data: pcounts,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'category'
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,  // Y축의 숫자가 정수로만 표시되도록 설정
+                            precision: 0  // 소수점 자리수를 없앰
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(barCtx, {
+            type: 'bar', // 막대 그래프 타입
+            data: {
+                labels: ['FAQ', '공지사항', '문의사항', '게시글', '연계기업', '전체회원'], // X축에 표시될 정수 값
+                datasets: [{
+                    label: 'Counts', // 범례 이름
+                    data: [faqcount, noticecount, inquirycount, postcount, businesscount, usercount], // Y축 값
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor:
+                        'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    barThickness: 15
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1, // 정수값으로만 표시되도록 설정
+                            precision: 0 // 소수점 자리수를 없앰
+                        }
                     }
                 }
             }

@@ -89,9 +89,9 @@
                         </nav>
                     </div>
                     <hr>
-                    <a class="nav-link" id="Settings">
+                    <a class="nav-link" id="Report" th:href="@{reportList}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
+                        Report
                     </a>
                 </div>
             </div>
@@ -102,7 +102,6 @@
         <div class="container">
 
             <div th:if="${listcount > 0}">
-                <h1>승인된 기업 목록</h1>
                 <form th:action="@{businessApprovedList}">
                     <div class="input-group">
                         <button class="btn btn-primary search" type="submit">검색</button>
@@ -110,6 +109,7 @@
                     </div>
                 </form>
                 <table class="table">
+                    <caption style="caption-side: top; font-size: 20px; margin-left: 5px">승인된 기업 목록</caption>
                     <thead>
                     <tr><th th:colspan="5">기업 수 : [[${listcount}]]</th></tr>
                     <tr>

@@ -11,4 +11,6 @@ public interface ReportMapper {
     public List<Report> selectReportedUsers(String reporter);
     public Report selectCheckReportDuplicate(String reporter,String reported,String category);
     public int selectReportedCount(String reported,String category);
+    public List<Report> getReportList(); //report list 가져오기
+    public int getReportCount(); //총 신고 개수
 }

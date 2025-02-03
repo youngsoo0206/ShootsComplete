@@ -58,9 +58,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <div th:each="result : ${results}">
-                                    <div th:if="${result['MATCH_IDX'] == match.match_idx}">
-                                    <tr>
+                                    <tr th:each="result : ${results}" th:if="${result['MATCH_IDX'] == match.match_idx}">
                                         <td><span th:text="${result['user_id']}"></span></td>
                                         <td><span th:text="${result['name']}"></span></td>
                                         <td><span th:text="${result['jumin']}"></span></td>
@@ -83,8 +81,6 @@
                                             <button type="button" class="btn-refund-no">환불</button>
                                         </td>
                                     </tr>
-                                    </div>
-                                    </div>
                                 </tbody>
                             </table>
                             </th:block>

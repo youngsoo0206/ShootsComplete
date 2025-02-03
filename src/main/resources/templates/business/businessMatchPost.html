@@ -51,10 +51,10 @@
                             <td><div th:text="${match.formattedDate}"></div></td>
                             <td><div th:text="${match.match_time}"></div></td>
                             <td th:if="${match.isMatchPast() == false}">
-                                <a class="table-a" th:href="@{'detail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a>
+                                <a class="table-a" th:href="@{'postDetail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a>
                             </td>
                             <td th:if="${match.isMatchPast() == true}">
-                                <a class="table-a2" th:href="@{'detail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a> <span style="font-size: 13px; color: #da0130">[마감]</span>
+                                <a class="table-a2" th:href="@{'postDetail?match_idx=' + ${match.match_idx}}"><span th:text="${match.business_name}"></span></a> <span style="font-size: 13px; color: #da0130">[마감]</span>
                             </td>
                             <td>
                                 <div th:switch="${match.player_gender}">
@@ -81,26 +81,26 @@
                                 <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
                             </td>
 
-                            <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
                             </td>
-                            <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-limited">마감임박</button></a>
                             </td>
-                            <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-closed">마감</button></a>
                             </td>
-                            <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-confirm">매칭확정</button></a>
                             </td>
-                            <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
                             </td>
                             <td style="display: flex; gap: 10px">
-                                <a th:href="@{'/match/updateForm?match_idx=' + ${match.match_idx}}">
+                                <a th:href="@{'postUpdateForm?match_idx=' + ${match.match_idx}}">
                                     <button class="custom-btn-ud btn-15 btn-update">V</button>
                                 </a>
-                                <form th:action="@{/match/delete}" method="post" id="deleteForm">
+                                <form th:action="@{postDelete}" method="post" id="deleteForm">
                                     <input type="hidden" name="match_idx" th:value="${match.match_idx}">
                                     <button type="submit" class="custom-btn-ud btn-15 btn-delete">X</button>
                                 </form>

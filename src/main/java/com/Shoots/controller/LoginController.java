@@ -49,6 +49,9 @@ public class LoginController {
     @Value("${naver.client_id}")
     private String naver_client_id;
 
+    @Value("${naver.client_secret}")
+    private String naver_client_secret;
+
     @Value("${naver.redirect_uri}")
     private String naver_redirect_uri;
 
@@ -136,6 +139,43 @@ public class LoginController {
             resp.sendRedirect("https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:1000/Shoots/main");
             return null;
         }
+
+
+        // 네이버 액세스 토큰 가져오기
+        String naverAccessToken = (String) session.getAttribute("naverAccessToken");
+
+        if (naverAccessToken != null) {
+            // 네이버 API 호출하여 토큰 만료시키기
+            try {
+                String naverLogoutUrl = "https://nid.naver.com/oauth2.0/token?grant_type=delete"
+                        + "&client_id=" + naver_client_id
+                        + "&client_secret=" + naver_client_secret
+                        + "&access_token=" + naverAccessToken
+                        + "&service_provider=NAVER";
+
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<String> response = restTemplate.getForEntity(naverLogoutUrl, String.class);
+
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    logger.info("네이버 로그아웃 성공: " + response.getBody());
+                } else {
+                    logger.warn("네이버 로그아웃 실패: " + response.getStatusCode());
+                }
+            } catch (Exception e) {
+                logger.error("네이버 로그아웃 요청 중 에러 발생: ", e);
+            }
+        } else {
+            logger.warn("네이버 액세스 토큰이 존재하지 않음. 네이버 로그아웃 생략.");
+        }
+
+        /* //기존 네이버 로그아웃 경로는 로그아웃하고 재 로그인 시 개인정보 수집항목 동의를 다시 받아야하는데, 아래의 방법을 사용하면 그냥 세션 로그아웃 처리만 됨.
+            if (session.getAttribute("id") != null && session.getAttribute("id").toString().startsWith("n_")) {
+            session.invalidate(); // 세션 초기화
+            resp.sendRedirect("https://nid.naver.com/nidlogin.logout");
+            return null;
+        }
+        */
+
 
         // 세션 무효화 (로그아웃 처리)
         session.invalidate();

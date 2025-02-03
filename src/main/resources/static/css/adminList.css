@@ -194,3 +194,11 @@ h1{
     color: #DA0130;
     border: 1.5px solid #DA0130;
 }
+
+.link{
+    text-decoration: none;
+    color: black;
+}
+.link:hover{
+    color: #65A30D;
+}

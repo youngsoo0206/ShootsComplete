@@ -13,7 +13,7 @@ public interface BcBlacklistMapper {
 
     void insertBcBlacklist(BcBlacklist bcBlacklist);
 
-    String getStatusById(Object user_idx);
+    String getStatusById(Object user_idx, int business_idx);
 
     void updateBcBlacklist(int idx, Integer business_idx);
 
