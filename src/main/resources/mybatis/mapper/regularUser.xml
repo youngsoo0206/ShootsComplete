@@ -16,6 +16,14 @@
         select * from regular_user where user_id = CONCAT('k_', #{id})
     </select>
 
+    <select id="findByGoogleUserId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('g_', #{id})
+    </select>
+
+    <select id="findByNaverAuId" resultType="regularuser">
+        select * from regular_user where user_id = CONCAT('n_', #{id})
+    </select>
+
 
     <insert id="insert">
         insert into regular_user (user_id, password, name, jumin, gender, tel, email)
@@ -30,12 +38,28 @@
                )
     </insert>
 
+    <insert id="insert3">
+        insert into regular_user (user_id, password, name, email
+        <if test="tel != null">, tel</if>
+        <if test="jumin != null">, jumin</if>
+        <if test="gender != null">, gender</if>
+        )
+        values (#{user_id}, #{password}, #{name}, #{email}
+        <if test="tel != null">, #{tel}</if>
+        <if test="jumin != null">, #{jumin}</if>
+        <if test="gender != null">, #{gender}</if>
+        )
+    </insert>
+
+
     <select id="selectByEmail" resultType="regularuser">
         select * from regular_user where email = #{email}
     </select>
 
     <select id="findIdWithEmail" resultType="regularuser">
-        select * from regular_user where email = #{email}
+        select * from regular_user
+        WHERE email = #{email}
+        AND (user_id NOT LIKE 'g_%' AND email NOT LIKE 'k_%' AND email NOT LIKE 'n_%')
     </select>
 
     <select id="selectWithIdAndEmail" resultType="regularuser">
@@ -114,6 +138,16 @@
         where idx=#{idx}
     </update>
 
+    <select id="getUserCount">
+        select DATE(register_date) as register_date, count(*) as userCount
+        from regular_user
+        group by DATE(register_date)
+        order by register_date;
+    </select>
+
+    <select id="allUsers">
+        select count(idx) from regular_user;
+    </select>
 
 
 

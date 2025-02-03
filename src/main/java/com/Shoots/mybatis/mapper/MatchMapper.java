@@ -3,6 +3,9 @@ package com.Shoots.mybatis.mapper;
 import com.Shoots.domain.Match;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,4 +28,10 @@ public interface MatchMapper {
     int getListCountById(Integer idx);
 
     List<Match> getMatchListByIdForSales(HashMap<String, Object> map);
+
+    List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime);
+
+    List<Match> getMatchListByToday();
+
+    List<Match> getMatchListByDeadline(LocalDateTime deadline, int i);
 }

@@ -154,6 +154,12 @@ $(function(){
             return false;
         }
 
+        if ($("input[name='tel']").val().length !== 11) {
+            alert("전화번호가 11자리가 맞는지 확인해 주세요.");
+            $("input[name='tel']").val('').focus();
+            return false;
+        }
+
         if(!checkid){
             alert("사용 가능한 id를 입력해 주세요.");
             $("input[name=user_id]").val('').focus();

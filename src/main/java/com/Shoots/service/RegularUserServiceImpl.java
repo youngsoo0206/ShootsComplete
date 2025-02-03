@@ -48,6 +48,18 @@ public class RegularUserServiceImpl implements RegularUserService {
     }
 
     @Override
+    public RegularUser findByGoogleUserId(String googleAuId) {
+        RegularUser user = regularUserMapper.findByGoogleUserId(googleAuId);
+        return user;
+    }
+
+    @Override
+    public RegularUser findByNaverAuId(String naverAuId) {
+        RegularUser user = regularUserMapper.findByNaverAuId(naverAuId);
+        return user;
+    }
+
+    @Override
     public int selectByIdPassword(String id, String password) {
         RegularUser user = regularUserMapper.selectById(id);
 
@@ -70,6 +82,9 @@ public class RegularUserServiceImpl implements RegularUserService {
 
     @Override
     public int insert2(RegularUser user) {return regularUserMapper.insert2(user);}
+
+    @Override
+    public int insert3(RegularUser user) {return regularUserMapper.insert3(user);}
 
     @Override
     public int selectByEmail(String email) {
@@ -150,7 +165,15 @@ public class RegularUserServiceImpl implements RegularUserService {
         regularUserMapper.updateRegularUser(user);
     }
 
+    @Override
+    public List<Map<String, Object>> getRegularUser() {
+        return regularUserMapper.getUserCount();
+    }
 
+    @Override
+    public int allUsers() {
+        return regularUserMapper.allUsers();
+    }
 
 
 }

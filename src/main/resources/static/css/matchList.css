@@ -8,8 +8,21 @@ nav.navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.top-img-p{
+    text-align: left!important;
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    color: dimgray;
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+
 /* 검색 btn */
-.btn-top {text-align: left; margin-top: 100px; font-size: 14px}
+.btn-top {text-align: left; margin-top: 50px; font-size: 14px}
 .custom-btn-top {
     width: 95px;
     height: 35px;

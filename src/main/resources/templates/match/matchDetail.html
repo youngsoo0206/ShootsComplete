@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <th:block th:replace="~{fragments/header :: header}" />
     <meta charset="UTF-8">
@@ -163,6 +163,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="div2">
                 <div><span th:text="${match.formattedDate}"></span>&nbsp;<span th:text="${match.formattedTime}"></span></div>
                 <div class="place"><span th:text="${match.business_name}"></span></div>
@@ -170,7 +172,10 @@
                 <hr style="width: 98%; margin: 0 auto; margin-top: 20px">
                 <div class="price"><span th:text="${match.price}"></span>원 <span class="span-time"> / 2시간</span></div>
                 <div class="btn-div">
-                    <button id="paymentButton" th:if="${(session.role == 'common' or session.idx == null) && !hasPaid &&  match.isMatchPast() == false && playerCount != match.player_max && !isBlock}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
+                    <button id="paymentButton" th:if="${(session.role == 'common' or session.idx == null) && !hasPaid &&  match.isMatchPast() == false && playerCount != match.player_max && !isBlock
+                    && ((match.player_gender == 'f' && (session.gender == 2 or session.gender == 4))
+                    or (match.player_gender == 'm' && (session.gender == 1 or session.gender == 3))
+                    or (match.player_gender == 'a') )}" class="button button--payment button--text-upper button--size-s" onclick="requestPayment()"
                             th:data-matchIdx="${match.match_idx}" th:data-price="${match.price}" th:data-seller="${match.writer}" th:data-buyer="${session.idx}">신청하기
                     </button>
                     <button id="refundButton" th:if="${session.role == 'common' && hasPaid && match.isMatchPast() == false}" class="button button--refund button--text-upper button--size-s" onclick="requestRefund()"
@@ -178,16 +183,32 @@
                     </button>
                     <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !hasPaid && !isBlock}" class="button button--refund button--text-upper button--size-s" onclick="limitedMatch()">마감
                     </button>
-                    <button th:if="${session.role == 'business' or isBlock}" class="button button--no button--text-upper button--size-s">신청불가
+                    <button th:if="${session.role == 'business' or isBlock or session.role == 'admin'}" onclick="roleBlock()" class="button button--no button--text-upper button--size-s">신청불가
+                    </button>
+                    <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount != match.player_max && !isBlock &&
+                                !((match.player_gender == 'f' && (session.gender == 2 or session.gender == 4))
+                                or (match.player_gender == 'm' && (session.gender == 1 or session.gender == 3))
+                                or (match.player_gender == 'a'))}"
+                            onclick="genderBlock()" class="button button--no button--text-upper button--size-s">신청불가
                     </button>
                     <button th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == true && playerCount < match.player_min && !isBlock}" class="button button--no button--text-upper button--size-s" onclick="closedMatch()">마감
                     </button>
                     <button th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == true && playerCount >= match.player_min}" class="button button--confirm button--text-upper button--size-s" onclick="closedMatch()">매칭확정
                     </button>
-                    <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount < match.player_max && !isBlock}" class="btn-status"> * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 * </p>
+                    <p th:if="${(session.role == 'common' or session.idx == null) && !hasPaid &&  match.isMatchPast() == false && playerCount != match.player_max && !isBlock
+                        && ((match.player_gender == 'f' && (session.gender == 2 or session.gender == 4))
+                        or (match.player_gender == 'm' && (session.gender == 1 or session.gender == 3))
+                        or (match.player_gender == 'a') )}" class="btn-status">
+                        * 마감까지 <b th:text="${match.player_max - playerCount}" style="color: #115ffc "></b>자리 남았습니다 *
+                    </p>
+                    <p th:if="${session.role == 'common' && hasPaid && match.isMatchPast() == false}" class="btn-status"> * 환불은 매치 시작 시간 <b style="color:#da0130;"> 2시간 이전</b>까지 가능합니다 * </p>
                     <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == false && playerCount == match.player_max && !isBlock}" class="btn-status"> * 신청인원이 꽉 찼습니다 * </p>
                     <p th:if="${(session.role == 'common' || session.idx == null) && match.isMatchPast() == true && !isBlock}" class="btn-status"> * 마감된 매칭입니다 * </p>
-                    <p th:if="${session.role == 'business' || isBlock}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
+                    <p th:if="${session.role == 'business' || isBlock || session.role == 'admin'}" class="btn-status"> * 신청 가능한 대상이 아닙니다 * </p>
+                    <p th:if="${(session.role == 'common' or session.idx == null) && match.isMatchPast() == false && playerCount != match.player_max && !isBlock &&
+                                !((match.player_gender == 'f' && (session.gender == 2 or session.gender == 4))
+                                or (match.player_gender == 'm' && (session.gender == 1 or session.gender == 3))
+                                or (match.player_gender == 'a'))}" class="btn-status"> * 신청 가능한 성별이 아닙니다 * </p>
                 </div>
             </div>
         </div>

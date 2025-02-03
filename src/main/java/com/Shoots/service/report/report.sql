@@ -4,9 +4,15 @@ CREATE TABLE Report (
     reporterUser varchar(30) NOT NULL ,
     reportedUser varchar(30) NOT NULL ,
     category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT','USER')),
+    content text DEFAULT '',
     PostIdx INT DEFAULT 0,
     CommentIdx INT DEFAULT 0
-);
+)CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+SHOW TABLE STATUS WHERE Name = 'report';
+SHOW FULL COLUMNS FROM report;
+
+
 insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
 values('admin', 'userA', 'USER', 0, 0);
 
@@ -24,3 +30,7 @@ where reporterUser='admin';
 
 # <컬럼추가 안함>
 # Content - 신고당한 내용 select content from post where postidx 해서 content만 가져옴
+
+CREATE USER 'shoots'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'shoots'@'localhost' WITH GRANT OPTION;
+CREATE DATABASE shoots;

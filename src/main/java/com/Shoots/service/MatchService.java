@@ -2,6 +2,9 @@ package com.Shoots.service;
 
 import com.Shoots.domain.Match;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface MatchService {
@@ -22,4 +25,7 @@ public interface MatchService {
 
     List<Match> getMatchListByIdForSales(Integer idx, String month, String year, String gender, String level);
 
+    List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime);
+
+    List<Match> getMatchListByDeadline(LocalDateTime deadline, int i);
 }

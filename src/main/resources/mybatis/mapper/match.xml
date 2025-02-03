@@ -29,6 +29,9 @@
             <if test="business_idx != null">
                 AND mp.WRITER = #{business_idx}
             </if>
+            <if test="filter == null">
+                AND mp.MATCH_DATE >= CURDATE()
+            </if>
         </where>
         ORDER BY
         mp.MATCH_DATE DESC,
@@ -115,6 +118,18 @@
             ON mp.writer = b.business_idx
         WHERE
             mp.MATCH_IDX = #{match_idx};
+    </select>
+
+    <select id="getMatchListByMatchTime" resultType="Match">
+        select * from MATCH_POST where match_date = #{matchDate} and match_time = #{matchTime}
+    </select>
+
+    <select id="getMatchListByDeadline" resultType="Match">
+        SELECT mp.*, b.business_name
+        FROM MATCH_POST mp
+                 LEFT JOIN BUSINESS_USER b ON mp.writer = b.business_idx
+        WHERE TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) >= #{deadline}
+        ORDER BY ABS(TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) - #{deadline}) LIMIT 3
     </select>
 
     <update id="updateMatch">

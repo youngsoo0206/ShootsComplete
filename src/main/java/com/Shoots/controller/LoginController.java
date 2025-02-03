@@ -3,7 +3,6 @@ package com.Shoots.controller;
 import com.Shoots.domain.MailVO;
 import com.Shoots.domain.RegularUser;
 import com.Shoots.service.RegularUserService;
-import com.Shoots.task.SendMail;
 import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,10 +22,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,13 +41,21 @@ public class LoginController {
     private SendMailText sendMail;
 
     @Value("${kakao.client_id}")
-    private String client_id;
+    private String kakao_client_id;
 
     @Value("${kakao.redirect_uri}")
-    private String redirect_uri;
+    private String kakao_redirect_uri;
+
+    @Value("${naver.client_id}")
+    private String naver_client_id;
+
+    @Value("${naver.redirect_uri}")
+    private String naver_redirect_uri;
+
 
 
     public LoginController(RegularUserService regularUserService, BCryptPasswordEncoder passwordEncoder, SendMailText sendMail) {
+
         this.regularUserService = regularUserService;
         this.passwordEncoder = passwordEncoder;
         this.sendMail = sendMail;
@@ -55,17 +63,33 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public ModelAndView login(ModelAndView mv, @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                              HttpSession session, Principal userPrincipal) {
+                              HttpSession session, HttpServletRequest request, Principal userPrincipal) {
         session.removeAttribute("verifyNumber"); //비밀번호 찾을때 저장했던 인증번호 session을 지움
         session.removeAttribute("promptId"); //비밀번호 변경때 사용한 임시 id session을 지움
 
 
         //카카오톡 로그인을 위한 경로 설정.
-        String kakaoLoginPath = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        String kakaoLoginPath = String.format(
+                "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
+                kakao_client_id, URLEncoder.encode(kakao_redirect_uri, StandardCharsets.UTF_8)
+        );
         mv.addObject("kakaoLoginPath", kakaoLoginPath);
+
+
+
+        //네이버 로그인을 위한 경로 설정.
+        Random random = new Random();
+        int state = random.nextInt(10000);
+        String naverLoginPath = String.format(
+                "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
+                naver_client_id, state,URLEncoder.encode(naver_redirect_uri, StandardCharsets.UTF_8)
+        );
+        mv.addObject("naverLoginPath", naverLoginPath);
 
         if (userPrincipal != null) { // 로그인 상태면 강제로 main으로 보냄
             logger.info("저장된 아이디 : " + userPrincipal.getName());
+            logger.info("Request URL: " + request.getRequestURL());
+            mv.clear(); // 파라미터 초기화
             mv.setViewName("redirect:/main");
         } else { // 로그인 안된 상태면 로그인 폼 뜸
             mv.setViewName("home/loginForm");
@@ -77,7 +101,7 @@ public class LoginController {
     }
 
     @GetMapping(value = "/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletResponse resp) throws IOException {
 
         // 1. 카카오 액세스 토큰 가져오기 (세션 또는 SecurityContextHolder에서 가져올 수 있음)
         String kakaoAccessToken = (String) session.getAttribute("kakaoAccessToken");
@@ -106,17 +130,19 @@ public class LoginController {
             logger.warn("카카오 액세스 토큰이 존재하지 않음. 카카오 로그아웃 생략.");
         }
 
+        //구글 로그아웃 처리를 위한 코드. 구글 로그인 회원은 로그아웃 시 홈페이지 로그아웃 -> 구글 계정 로그아웃 처리로 진행.
+        if (session.getAttribute("id") != null && session.getAttribute("id").toString().startsWith("g_")) {
+            session.invalidate();
+            resp.sendRedirect("https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:1000/Shoots/main");
+            return null;
+        }
+
+        // 세션 무효화 (로그아웃 처리)
         session.invalidate();
 
+        // 로그인 페이지로 리다이렉트
         return "redirect:/login";
     }
-
-//    @GetMapping(value = "/logout") //카카오톡 get방식 로그아웃 처리
-//    public String logout() {
-//        String logoutRedirectUri = "http://localhost:1000/Shoots/main";
-//        return "redirect:https://kauth.kakao.com/oauth/logout?client_id=" + client_id + "&logout_redirect_uri=" + logoutRedirectUri;
-//    }
-
 
     @GetMapping(value = "/join")
     public String join() {
