@@ -3,7 +3,7 @@
 
 .div-t1, .div-t2 {width: 50%; margin : 100px 0 0 0;}
 
-.table {width: 50%; font-size: 15px}
+.table {width: 70%; font-size: 15px}
 .infoTable {width: 70%!important;}
 
 /* btn */
@@ -55,7 +55,7 @@ button {font-size: 15px}
 
 /* 구장 정보 추가 btn */
 .custom-btn {
-    width: 110px;
+    width: 120px;
     height: 35px;
     border: 2px solid #65a30d;
     border-radius: 20px;
