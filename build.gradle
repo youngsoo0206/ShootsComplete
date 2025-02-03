@@ -41,6 +41,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security' //시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-mail' //메일
 
+	//sms
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'net.nurigo:sdk:4.3.0'
+
+
 	//chat
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
