@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
+import com.Shoots.service.report.ReportService;
 import com.Shoots.task.SendMail;
 import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class AdminController {
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+
     @Value("${my.savefolder}")
     private String saveFolder;
 
@@ -39,6 +41,7 @@ public class AdminController {
     private RegularUserService regularUserService;
     private InquiryService inquiryService;
     private SendMailText sendMailText;
+    private ReportService reportService;
     private PostCommentService postCommentService;
 
     public AdminController(
@@ -49,7 +52,8 @@ public class AdminController {
             RegularUserService regularUserService,
             InquiryService inquiryService,
             SendMailText sendMailText,
-            PostCommentService postCommentService) {
+            PostCommentService postCommentService,
+            ReportService reportService) {
         this.faqService = faqService;
         this.noticeService = noticeService;
         this.postService = postService;
@@ -58,6 +62,7 @@ public class AdminController {
         this.inquiryService = inquiryService;
         this.sendMailText = sendMailText;
         this.postCommentService = postCommentService;
+        this.reportService = reportService;
     }
 
     @GetMapping
@@ -65,20 +70,24 @@ public class AdminController {
         int faqcount = faqService.getListCount();   //faq 개수
         int noticecount = noticeService.getSearchListCount(search_word);    //공지사항 개수
         int inquirycount = inquiryService.getAdminListCount();  //문의사항 개수
+        int postcount = postService.getAdminListCount(search_word);
         int businesscount = businessUserService.listApprovedCount(search_word);//연계 기업 수
         int usercount = regularUserService.listCount(search_word);//총 회원 수
         List<Map<String, Object>> userCount = regularUserService.getRegularUser(); //register_date에 따른 가입 회원수
         int allUsers = regularUserService.allUsers();
-        List<Map<String, Object>> businessCount = businessUserService.getBusinessUsers();
+        List<Map<String, Object>> businessCount = businessUserService.getBusinessUsers(); //register_date에 따른 승인 기업 수
+        List<Map<String, Object>> postCount = postService.getPostCount();   //reigser_date에 따른 게시글 수
 
         mv.addObject("faqcount", faqcount);
         mv.addObject("noticecount", noticecount);
         mv.addObject("inquirycount", inquirycount);
+        mv.addObject("postcount", postcount);
         mv.addObject("businesscount", businesscount);
         mv.addObject("usercount", usercount);
         mv.addObject("userCount", userCount);
         mv.addObject("allUsers", allUsers);
         mv.addObject("businessCount", businessCount);
+        mv.addObject("postCount", postCount);
         mv.setViewName("admin/admin");
         return mv;
     }
@@ -518,4 +527,17 @@ public class AdminController {
         return "redirect:userList";
     }
 
+
+    //report 리스트
+    @GetMapping(value="/reportList")
+    public ModelAndView reportList(
+            ModelAndView mv){
+        int listcount = reportService.getReportCount();
+        List<Report> list = reportService.getReportList();
+
+        mv.setViewName("admin/reportList");
+        mv.addObject("list", list);
+        mv.addObject("listcount", listcount);
+        return mv;
+    }
 }

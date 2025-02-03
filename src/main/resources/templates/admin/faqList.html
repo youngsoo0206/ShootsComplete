@@ -100,9 +100,9 @@
                         </nav>
                     </div>
                     <hr>
-                    <a class="nav-link" id="Settings">
+                    <a class="nav-link" id="Report" th:href="@{reportList}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
+                        Report
                     </a>
                 </div>
             </div>
@@ -125,7 +125,7 @@
                 <tbody>
                 <tr th:block th:each="f, interStat :${list}">
                     <td th:text="${f.name}"></td>
-                    <td><a th:href="@{/testAdmin/faqDetail(id=${f.faq_idx})}" th:text="${f.title}"></a></td>
+                    <td><a th:href="@{/testAdmin/faqDetail(id=${f.faq_idx})}" th:text="${f.title}" class="link"></a></td>
                     <td th:text="${f.register_date.substring(0, 10)}"></td>
                     <td><a th:href="@{faqUpdate(id=${f.faq_idx})}"  type="button" class="update1">수정</a></td>
                     <td><a th:href="@{faqDelete(id=${f.faq_idx})}"  type="button" class="delete">삭제</a></td>

@@ -9,4 +9,6 @@ public interface ReportService {
     List<Report> selectReportedUsers(String reporter);
     public Report selectCheckReportDuplicate(String reporter,String reported,String category);
     public int selectReportedCount(String reported,String category);
+    public List<Report> getReportList();
+    public int getReportCount();
 }

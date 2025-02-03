@@ -123,9 +123,9 @@
                         </nav>
                     </div>
                     <hr>
-                    <a class="nav-link" id="Settings">
+                    <a class="nav-link" id="Report" th:href="@{reportList}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
+                        Report
                     </a>
                 </div>
             </div>
@@ -135,8 +135,8 @@
     <div id="layoutSidenav_content">
         <div class="container">
             <div th:if="${listcount > 0}">
-                <h1>문의글 관리</h1>
                 <table class="table">
+                    <caption style="caption-side: top; font-size: 20px; margin-left: 5px">문의글 관리</caption>
                     <thead>
                     <tr>
                     </tr>
@@ -156,7 +156,7 @@
                         <td th:if="${i.inquiry_type == 'B'}" th:text="${i.business_id}"></td>
                         <td th:if="${i.inquiry_type == 'A'}">개인 회원 문의</td>
                         <td th:if="${i.inquiry_type == 'B'}">기업 회원 문의</td>
-                        <td><a th:href="@{/inquiry/detail(inquiry_idx=${i.inquiry_idx})}">[[${i.title}]]</a></td>
+                        <td><a th:href="@{/inquiry/detail(inquiry_idx=${i.inquiry_idx})}" class="link">[[${i.title}]]</a></td>
                         <td><span th:if="${i.hasReply}" class="comS"> [답변완료]</span>
                             <span th:if="${!i.hasReply}" class="comP"> [대기중]</span></td>
                         <td th:text="${i.register_date.substring(0, 10)}"></td>

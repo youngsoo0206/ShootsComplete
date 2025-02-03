@@ -150,9 +150,9 @@
                         </nav>
                     </div>
                     <hr>
-                    <a class="nav-link" id="Settings">
+                    <a class="nav-link" id="Report" th:href="@{reportList}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
+                        Report
                     </a>
                 </div>
             </div>
@@ -162,7 +162,6 @@
     <div id="layoutSidenav_content">
         <div class="container">
             <div th:if="${listcount > 0}">
-                <h1>기업 상태 관리</h1>
                 <form th:action="@{businessList}">
                     <div class="input-group">
                         <button class="btn btn-primary search" type="submit">검색</button>
@@ -170,6 +169,7 @@
                     </div>
                 </form>
                 <table class="table">
+                    <caption style="caption-side: top; font-size: 20px; margin-left: 5px">기업 상태 관리</caption>
                     <thead>
                     <tr><th th:colspan="7">기업 수 : [[${listcount}]]</th></tr>
                     <tr>
@@ -194,7 +194,7 @@
                             <span th:if="${b.login_status == 'pending'}">
                                 <b class="pending">대기중</b>
                             </span>
-                            <span th:if="${b.login_status == 'approved'}">
+                            <span th:if="${b.login_status == 'access'}">
                                 <a th:href="@{businessRefuse(id=${b.business_idx})}" id="refuse"><b class="approved">승인됨</b></a>
                             </span>
                             <span th:if="${b.login_status == 'refused'}">

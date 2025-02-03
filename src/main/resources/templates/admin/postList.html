@@ -108,9 +108,9 @@
                         </nav>
                     </div>
                     <hr>
-                    <a class="nav-link" id="Settings">
+                    <a class="nav-link" id="Report" th:href="@{reportList}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Settings
+                        Report
                     </a>
                 </div>
             </div>
@@ -120,7 +120,7 @@
     <div id="layoutSidenav_content">
         <div class="container">
             <div th:if="${listcount > 0}">
-                <h1>게시물 관리</h1>
+                <!--<h1>게시물 관리</h1> -->
                 <form th:action="@{postList}">
                     <div class="input-group">
                         <button class="btn btn-primary search" type="submit">검색</button>
@@ -128,6 +128,7 @@
                     </div>
                 </form>
                 <table class="table">
+                    <caption style="caption-side: top; font-size: 20px; margin-left: 5px">게시물 목록</caption>
                     <thead>
                     <tr>
                     </tr>
@@ -146,7 +147,7 @@
                         <td th:text="${p.user_id}"></td>
                         <td th:if="${p.category == 'A'}">자유</td>
                         <td th:if="${p.category == 'B'}">중고</td>
-                        <td><a th:href="@{/post/detail(num=${p.post_idx})}" th:text="${p.title}"></a><span th:text="'  [' + ${p.commentCount} + ']'" style="color:orange"></span></td>
+                        <td><a th:href="@{/post/detail(num=${p.post_idx})}" th:text="${p.title}" class="link"></a><span th:text="'  [' + ${p.commentCount} + ']'" style="color:orange"></span></td>
                         <td th:text="${p.register_date.substring(0, 10)}"></td>
                         <td th:text="${p.readcount}"></td>
                         <td><a th:href="@{postDelete(num=${p.post_idx})}" type="button" class="delete">삭제</a></td>
