@@ -21,5 +21,5 @@ public interface PaymentService {
 
     List<Payment> getPaymentListByMatchIdx(int match_idx);
 
-    List<Integer> getPlayerCountByMonth();
+    List<Integer> getPlayerCountByMonth(Integer business_idx);
 }

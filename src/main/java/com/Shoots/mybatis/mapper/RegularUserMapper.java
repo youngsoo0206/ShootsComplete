@@ -52,7 +52,5 @@ public interface RegularUserMapper {
 
     public int allUsers();
 
-
-
-
+    Map<String, Object> getPlayerGenderCount(Integer business_idx);
 }

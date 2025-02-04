@@ -2,7 +2,7 @@ function BrequestRefund(button) {
 
     const name = button.getAttribute('data-name');
 
-    const userConfirmed = confirm(name + "님의 매칭 신청을 취소하시겠습니까?");
+    const userConfirmed = confirm(name + "님의 매치 신청을 취소하시겠습니까?");
 
     if (!userConfirmed) {
         return;
