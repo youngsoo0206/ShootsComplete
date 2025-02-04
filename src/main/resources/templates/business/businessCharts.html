@@ -11,29 +11,64 @@
         var recruitmentPercentage = /*[[${recruitmentPercentage}]]*/ [];
         var femalePercentage = /*[[${femalePercentage}]]*/ [];
         var malePercentage = /*[[${malePercentage}]]*/ [];
+        var roundedAvgPriceByIdx = /*[[${roundedAvgPriceByIdx}]]*/ [];
+        var roundedAvgPrice = /*[[${roundedAvgPrice}]]*/ [];
     </script>
     <link th:href="@{/css/businessCharts.css}" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-    <div style="margin-top: 80px">
-        <div style="width: 75%; height: 400px; margin: 0 auto">
+    <div style="margin-top: 60px">
+        <div style="width: 75%; height: 380px; margin: 0 auto">
             <h6 th:text="${#dates.format(#dates.createNow(), 'yyyy') + '년도 월 별 매치 확정 그래프'}"></h6><br>
             <canvas id="myBarChart" width="100%" height="30"></canvas>
         </div>
     </div>
-    <div>
-        <div style="text-align: center">
-            <canvas id="myChart1" height="30"></canvas><br>
-            <p style="font-size: 12px">매치확률 <span th:text="${recruitmentPercentage}"></span>%</p>
-            <p>전체 <span style="font-size: 18px;" th:text="${totalMatch}"></span> 개의 매치 중 확정된 매치는
-                <span style="font-size: 18px;" th:text="${completedRecruitmentCount}"></span>개
-            </p>
+    <hr>
+    <div style="display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column">
+        <div style="display: flex; gap: 60px; text-align: center">
+            <div>
+                <p style="font-size: 18px; margin-bottom: 10px"> 총 매치 </p>
+                <span style="font-size: 18px;" th:text="${totalMatch}"></span>
+            </div>
+            <div>
+                <p style="font-size: 18px; margin-bottom: 10px"> 모집 중 </p>
+                <span style="font-size: 18px;" th:text="${recruitingMatchCount}"></span><span style="font-size: 12px; color: gray" th:text="${' / ' + totalMatch}"></span>
+            </div>
+            <div>
+                <p style="font-size: 18px; margin-bottom: 10px"> 매치확정 </p>
+                <span style="font-size: 18px;" th:text="${completedRecruitmentCount}"></span><span style="font-size: 12px; color: gray" th:text="${' / ' + totalMatch}"></span>
+            </div>
         </div>
-        <div style="text-align: center">
-            <canvas id="myChart2" height="30"></canvas><br>
-            <p>전체 매치 신청인원 <span th:text="${totalMatch}"></span>명</p>
-            여자<span th:text="${femalePercentage}">%</span>, 남자<span th:text="${malePercentage}">%</span>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: space-around; align-items: center; margin: 40px 0 40px 0">
+        <div style="text-align: center; width: 33%;">
+            <canvas id="myChart1" height="70"></canvas><br>
+            <p style="font-size: 12px">
+                전체 <b style="font-size: 15px; color: #65A30D" th:text="${totalMatch}"></b> 개의 매치 중 확정된 매치는
+                <b style="font-size: 15px; color: #115FFC" th:text="${completedRecruitmentCount}"></b>개
+            </p>
+            <p>매치확률 <b th:text="${recruitmentPercentage}"></b>%</p>
+        </div>
+
+        <div style="text-align: center; width: 33%;">
+            <canvas id="myChart2" height="70"></canvas><br>
+            <p style="font-size: 12px">전체 매치 신청인원 <span th:text="${totalPlayers}"></span>명</p>
+            여성 <b th:text="${femalePercentage}"></b>% &nbsp; 남성 <b th:text="${malePercentage}"></b>%
+        </div>
+
+        <div style="text-align: center; width: 33%;">
+            <canvas id="myChart3" height="70"></canvas><br>
+            <p style="font-size: 12px">
+                우리 구장 평균가 <b style="font-size: 15px; color: #65A30D" th:text="${roundedAvgPriceByIdx}"></b>원 / 평균 가
+                <b style="font-size: 15px; color: gray" th:text="${roundedAvgPrice}"></b>원
+            </p>
+            <p>우리 매장은 평균가 보다
+                <b th:text="${comparison}"
+                   th:style="${comparison < 0 ? 'color: #115FFC;' : 'color: rgba(255, 0, 0, 0.9);'}"></b>
+                <span>원</span>
+            </p>
         </div>
     </div>
 </div>

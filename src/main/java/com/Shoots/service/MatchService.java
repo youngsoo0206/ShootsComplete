@@ -32,4 +32,8 @@ public interface MatchService {
     int getTotalMatchById(Integer businessIdx);
 
     List<Integer> getTotalMatchByMonth(Integer business_idx);
+
+    Double getAvgPrice();
+
+    Double getAvgPriceByIdx(Integer business_idx);
 }

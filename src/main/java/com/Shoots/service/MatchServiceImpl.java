@@ -129,5 +129,15 @@ public class MatchServiceImpl implements MatchService{
         return monthlyData;
     }
 
+    @Override
+    public Double getAvgPrice() {
+        return dao.getAvgPrice();
+    }
+
+    @Override
+    public Double getAvgPriceByIdx(Integer business_idx) {
+        return dao.getAvgPriceByIdx(business_idx);
+    }
+
 
 }
