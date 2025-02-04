@@ -66,4 +66,13 @@
         where comment_idx = #{comment_idx}
     </delete>
 
+    <select id="getMyCommentList">
+        select pc.*, p.content post_content, p.category from
+            post_comment pc join post p on pc.post_idx = p.post_idx where pc.writer =  #{id}
+    </select>
+
+    <select id="getMyCommentListCount">
+        select count(*) from post_comment
+        where writer = #{id}
+    </select>
 </mapper>
