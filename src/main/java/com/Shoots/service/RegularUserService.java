@@ -30,4 +30,5 @@ public interface RegularUserService {
     public List<Map<String, Object>> getRegularUser();
     public int allUsers();
 
+    Map<String, Object> getPlayerGenderCount(Integer business_idx);
 }

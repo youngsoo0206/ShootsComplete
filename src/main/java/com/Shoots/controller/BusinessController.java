@@ -635,16 +635,31 @@ public class BusinessController {
         List<Integer> monthlyData = paymentService.getPlayerCountByMonth(business_idx);
         List<Integer> monthlyMatchData = matchService.getTotalMatchByMonth(business_idx);
 
+        Map<String, Object> playerGenderCount = regularUserService.getPlayerGenderCount(business_idx);
+
+        int playerFemale = (int) playerGenderCount.get("group_2_4");
+        int playerMale = (int) playerGenderCount.get("group_1_3");
+
+        int totalPlayers = playerFemale + playerMale;
+
+        double femalePercentage = 0;
+        double malePercentage = 0;
+
+        if (totalPlayers > 0) {
+            femalePercentage = ((double) playerFemale / totalPlayers) * 100;
+            malePercentage = ((double) playerMale / totalPlayers) * 100;
+        }
+
+        femalePercentage = Math.round(femalePercentage * 10) / 10.0;
+        malePercentage = Math.round(malePercentage * 10) / 10.0;
+
         int totalMatch = matchService.getTotalMatchById(business_idx);
 
         session.setAttribute("refer", "list");
 
-        int limit = 10;
-        int listCount = matchService.getListCountById(business_idx);
+        int limit = 20;
 
         List<Match> list = matchService.getMatchListById(business_idx, filter, gender, level, page, limit);
-
-        PaginationResult result = new PaginationResult(page, limit, listCount);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 
@@ -684,6 +699,14 @@ public class BusinessController {
             }
         }
 
+        double recruitmentPercentage = 0;
+        double percentage = 0;
+
+        if (totalMatch > 0) {
+            recruitmentPercentage = Math.round(((double) completedRecruitmentCount / totalMatch) * 1000.0) / 10.0;
+            percentage = 100 - recruitmentPercentage;
+        }
+
         model.addAttribute("monthlyData", monthlyData);
         model.addAttribute("totalMatch", totalMatch);
 
@@ -691,7 +714,14 @@ public class BusinessController {
         model.addAttribute("completedRecruitmentCount", completedRecruitmentCount);
 
         model.addAttribute("monthlyMatchData", monthlyMatchData);
-        model.addAttribute("monthlyCompletedRecruitmentCount", monthlyCompletedRecruitmentCount); // 월별 확정된 매칭글
+        model.addAttribute("monthlyCompletedRecruitmentCount", monthlyCompletedRecruitmentCount);
+
+        model.addAttribute("recruitmentPercentage", recruitmentPercentage);
+        model.addAttribute("percentage", percentage);
+
+        model.addAttribute("playerGenderCount", playerGenderCount);
+        model.addAttribute("femalePercentage", femalePercentage);
+        model.addAttribute("malePercentage", malePercentage);
 
         return "business/businessCharts";
     }

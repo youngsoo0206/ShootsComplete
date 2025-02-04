@@ -100,6 +100,21 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+    $('#Charts').on('click', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/business/charts',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
 
     $('#Settings').on('click', function (e) {
         e.preventDefault();
