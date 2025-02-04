@@ -31,9 +31,9 @@ function getList(state) {
       if (rdata.commentlist.length) {
       rdata.commentlist.forEach(Comment => {
 
-        let isSecret = Comment.isSecret === 'Y';
+        let isSecret = Comment.isSecret === 'Y'; //비밀 댓글
         let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
-        let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
+        let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
         let isAdmin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
 
         let displayContent = isSecret && !(isPostOwner || isCommentOwner || isAdmin)
@@ -167,6 +167,7 @@ function getList(state) {
                     <div class='comment-nick-area'>
                         <!-- <img src='${childSrc}' alt='profile picture' style = "width : 35px; height : 35px"> -->
                         <div class='comment-box'>
+                        
                             <div class='comment-nick-box'>
                                 <div class='comment-nick-info'>
                                     <div class='comment-nickname'>${childComment.user_id}</div>
@@ -277,6 +278,9 @@ $(document).on('click', '#user_idReport', function() {
                                                 추가 내용(100자 이내)<br>
                                                 <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
                                             </div>
+                                            
+                                            
+                                            
                                             <div class="modal-footer">
                                                 <input type="hidden" id="modalReported" value="${reported}">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
