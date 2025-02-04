@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         else {
-            if(confirm("매칭글을 수정하시겠습니까?")) {
-                alert("매칭글이 수정되었습니다");
+            if(confirm("매치글을 수정하시겠습니까?")) {
+                alert("매치글이 수정되었습니다");
                 return true;
             } else {
                 return false;

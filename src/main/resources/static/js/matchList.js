@@ -66,7 +66,7 @@ $(function () {
                         matchListContainer.appendChild(newTable);
                         document.querySelector('caption').textContent = "전체 매치";
                     } else {
-                        matchListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>';
+                        matchListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 매치글이 존재하지 않습니다 </p></div>';
                     }
                 })
                 .catch(error => {

@@ -69,6 +69,7 @@
         WHERE
             p.payment_status = 'paid'
           AND YEAR(m.match_date) = YEAR(CURDATE())
+          AND p.seller_idx = #{business_idx}
         GROUP BY
             MONTH(m.match_date)
         ORDER BY
