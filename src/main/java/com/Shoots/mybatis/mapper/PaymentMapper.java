@@ -22,5 +22,5 @@ public interface PaymentMapper {
 
     List<Payment> getPaymentListByMatchIdx(int match_idx);
 
-    List<Map<String, Object>> getPlayerCountByMonth();
+    List<Map<String, Object>> getPlayerCountByMonth(Integer business_idx);
 }

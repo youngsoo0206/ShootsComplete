@@ -175,6 +175,24 @@ public class RegularUserServiceImpl implements RegularUserService {
         return regularUserMapper.allUsers();
     }
 
+    @Override
+    public Map<String, Object>  getPlayerGenderCount(Integer business_idx) {
+
+        Map<String, Object> result = regularUserMapper.getPlayerGenderCount(business_idx);
+        Map<String, Object> genderCount = new HashMap<>();
+
+        int gender1 = ((Number) result.getOrDefault("gender_1_count", 0)).intValue();
+        int gender2 = ((Number) result.getOrDefault("gender_2_count", 0)).intValue();
+        int gender3 = ((Number) result.getOrDefault("gender_3_count", 0)).intValue();
+        int gender4 = ((Number) result.getOrDefault("gender_4_count", 0)).intValue();
+
+        genderCount.put("group_1_3", gender1 + gender3);
+
+        genderCount.put("group_2_4", gender2 + gender4);
+
+        return genderCount;
+    }
+
 
 }
 

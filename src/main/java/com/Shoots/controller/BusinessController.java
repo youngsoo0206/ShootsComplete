@@ -21,11 +21,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.LinkedHashMap;
 
 import static java.util.Locale.filter;
 
@@ -59,10 +56,74 @@ public class BusinessController {
     }
 
     @GetMapping("/dashboard")
-    public String businessDashboard(Model model) {
+    public String businessDashboard(Model model, HttpSession session,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(required = false) String filter,
+                                    @RequestParam(required = false) String gender,
+                                    @RequestParam(required = false) String level) {
 
-        List<Integer> monthlyData = paymentService.getPlayerCountByMonth();
+        Integer business_idx = (Integer) session.getAttribute("idx");
+
+        List<Integer> monthlyData = paymentService.getPlayerCountByMonth(business_idx);
+        List<Integer> monthlyMatchData = matchService.getTotalMatchByMonth(business_idx);
+
+        int totalMatch = matchService.getTotalMatchById(business_idx);
+
+        session.setAttribute("refer", "list");
+
+        int limit = 10;
+        int listCount = matchService.getListCountById(business_idx);
+
+        List<Match> list = matchService.getMatchListById(business_idx, filter, gender, level, page, limit);
+
+        PaginationResult result = new PaginationResult(page, limit, listCount);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+
+        int recruitingMatchCount = 0;
+        int completedRecruitmentCount = 0;
+        List<Integer> monthlyCompletedRecruitmentCount = new ArrayList<>(Collections.nCopies(12, 0));
+
+        for (Match match : list) {
+
+            int playerCount = paymentService.getPlayerCount(match.getMatch_idx());
+            match.setPlayerCount(playerCount);
+
+            String formattedDate = match.getMatch_date().format(formatter);
+            match.setFormattedDate(formattedDate);
+
+            String a = match.getMatch_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ' ' + match.getMatch_time();
+
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime matchDateTime = LocalDateTime.parse(a, formatter1);
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            LocalDateTime twoHoursBeforeMatch = matchDateTime.minusHours(2);
+
+            boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
+            match.setMatchPast(isMatchPast);
+
+            if (!isMatchPast) {
+                recruitingMatchCount++;
+            }
+
+            if (isMatchPast && playerCount >= match.getPlayer_min()) {
+                completedRecruitmentCount++;
+
+                int month = match.getMatch_date().getMonthValue();
+                monthlyCompletedRecruitmentCount.set(month - 1, monthlyCompletedRecruitmentCount.get(month - 1) + 1);
+            }
+        }
+
         model.addAttribute("monthlyData", monthlyData);
+        model.addAttribute("totalMatch", totalMatch);
+
+        model.addAttribute("recruitingMatchCount", recruitingMatchCount);
+        model.addAttribute("completedRecruitmentCount", completedRecruitmentCount);
+
+        model.addAttribute("monthlyMatchData", monthlyMatchData);
+        model.addAttribute("monthlyCompletedRecruitmentCount", monthlyCompletedRecruitmentCount); // 월별 확정된 매칭글
 
         return "business/businessDashboard";
     }
@@ -78,7 +139,7 @@ public class BusinessController {
 
         session.setAttribute("refer", "list");
 
-        int limit = 10;
+        int limit = 20;
         int listCount = matchService.getListCountById(idx);
 
         List<Match> list = matchService.getMatchListById(idx, filter, gender, level, page, limit);
@@ -562,6 +623,108 @@ public class BusinessController {
         return url;
     }
 
+    @GetMapping("/charts")
+    public String businessCharts(Model model, HttpSession session,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(required = false) String filter,
+                                    @RequestParam(required = false) String gender,
+                                    @RequestParam(required = false) String level) {
+
+        Integer business_idx = (Integer) session.getAttribute("idx");
+
+        List<Integer> monthlyData = paymentService.getPlayerCountByMonth(business_idx);
+        List<Integer> monthlyMatchData = matchService.getTotalMatchByMonth(business_idx);
+
+        Map<String, Object> playerGenderCount = regularUserService.getPlayerGenderCount(business_idx);
+
+        int playerFemale = (int) playerGenderCount.get("group_2_4");
+        int playerMale = (int) playerGenderCount.get("group_1_3");
+
+        int totalPlayers = playerFemale + playerMale;
+
+        double femalePercentage = 0;
+        double malePercentage = 0;
+
+        if (totalPlayers > 0) {
+            femalePercentage = ((double) playerFemale / totalPlayers) * 100;
+            malePercentage = ((double) playerMale / totalPlayers) * 100;
+        }
+
+        femalePercentage = Math.round(femalePercentage * 10) / 10.0;
+        malePercentage = Math.round(malePercentage * 10) / 10.0;
+
+        int totalMatch = matchService.getTotalMatchById(business_idx);
+
+        session.setAttribute("refer", "list");
+
+        int limit = 20;
+
+        List<Match> list = matchService.getMatchListById(business_idx, filter, gender, level, page, limit);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+
+        int recruitingMatchCount = 0;
+        int completedRecruitmentCount = 0;
+        List<Integer> monthlyCompletedRecruitmentCount = new ArrayList<>(Collections.nCopies(12, 0));
+
+        for (Match match : list) {
+
+            int playerCount = paymentService.getPlayerCount(match.getMatch_idx());
+            match.setPlayerCount(playerCount);
+
+            String formattedDate = match.getMatch_date().format(formatter);
+            match.setFormattedDate(formattedDate);
+
+            String a = match.getMatch_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ' ' + match.getMatch_time();
+
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime matchDateTime = LocalDateTime.parse(a, formatter1);
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            LocalDateTime twoHoursBeforeMatch = matchDateTime.minusHours(2);
+
+            boolean isMatchPast = twoHoursBeforeMatch.isBefore(currentDateTime);
+            match.setMatchPast(isMatchPast);
+
+            if (!isMatchPast) {
+                recruitingMatchCount++;
+            }
+
+            if (isMatchPast && playerCount >= match.getPlayer_min()) {
+                completedRecruitmentCount++;
+
+                int month = match.getMatch_date().getMonthValue();
+                monthlyCompletedRecruitmentCount.set(month - 1, monthlyCompletedRecruitmentCount.get(month - 1) + 1);
+            }
+        }
+
+        double recruitmentPercentage = 0;
+        double percentage = 0;
+
+        if (totalMatch > 0) {
+            recruitmentPercentage = Math.round(((double) completedRecruitmentCount / totalMatch) * 1000.0) / 10.0;
+            percentage = 100 - recruitmentPercentage;
+        }
+
+        model.addAttribute("monthlyData", monthlyData);
+        model.addAttribute("totalMatch", totalMatch);
+
+        model.addAttribute("recruitingMatchCount", recruitingMatchCount);
+        model.addAttribute("completedRecruitmentCount", completedRecruitmentCount);
+
+        model.addAttribute("monthlyMatchData", monthlyMatchData);
+        model.addAttribute("monthlyCompletedRecruitmentCount", monthlyCompletedRecruitmentCount);
+
+        model.addAttribute("recruitmentPercentage", recruitmentPercentage);
+        model.addAttribute("percentage", percentage);
+
+        model.addAttribute("playerGenderCount", playerGenderCount);
+        model.addAttribute("femalePercentage", femalePercentage);
+        model.addAttribute("malePercentage", malePercentage);
+
+        return "business/businessCharts";
+    }
 
     @GetMapping("/Settings")
     public ModelAndView settings(HttpSession session, ModelAndView modelAndView){

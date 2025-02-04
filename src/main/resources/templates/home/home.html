@@ -211,7 +211,7 @@
                                     <button type="button" class="custom-btnS btn-5 btn-closed">마감</button></a>
                                 </td>
                                 <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
-                                    <button type="button" class="custom-btnS btn-5 btn-confirm">매칭확정</button></a>
+                                    <button type="button" class="custom-btnS btn-5 btn-confirm">매치확정</button></a>
                                 </td>
                                 <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
@@ -229,7 +229,7 @@
                 </div>
             </div>
             <th:block th:if="${matchList == null}">
-                <div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>
+                <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치글이 존재하지 않습니다 </p></div>
             </th:block>
         </div>
     </div>

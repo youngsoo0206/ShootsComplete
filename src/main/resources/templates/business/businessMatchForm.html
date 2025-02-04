@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h4> 매칭 글 올리기 </h4>
+        <h4> 매치 글 올리기 </h4>
         <hr>
         <form th:action="@{postAdd}" method="post" enctype="multipart/form-data" name="matchForm">
             <div class="form-group">
@@ -21,20 +21,20 @@
             <hr>
             <div class="form-group">
                 <div class="divF">
-                    <span> 매칭 날짜 </span>
+                    <span> 매치 날짜 </span>
                     <input name="match_date" id="match_date" type="date" maxlength="100"
                            class="form-control">
                 </div>
                 <div class="divF">
-                    <span> 매칭 시간 </span>
+                    <span> 매치 시간 </span>
                     <select class="form-control" name="match_time" id="match_time" required>
                         <option value="" disabled selected> 시간을 선택해주세요 </option>
                     </select>
                 </div>
                 <div class="divF">
-                    <span> 매칭 레벨 </span>
+                    <span> 매치 레벨 </span>
                     <select class="form-control" name="match_level" id="match_level" required>
-                        <option value="" disabled selected> 매칭 레벨 </option>
+                        <option value="" disabled selected> 매치 레벨 </option>
                         <option value="초급">초급</option>
                         <option value="중급">중급</option>
                         <option value="고급">고급</option>
@@ -80,7 +80,7 @@
                 <div class="divS">
                     <span> 구장정보 </span>
                     <button type="button" style="border: none; background: none" data-bs-container="body" data-bs-toggle="popover"
-                            data-bs-placement="right" data-bs-content="구장 정보는 매칭글 업로드 시 사용되는 정보입니다. 기업페이지 내 settings 탭 에서 등록/수정해 주시길 바랍니다.">
+                            data-bs-placement="right" data-bs-content="구장 정보는 매치글 업로드 시 사용되는 정보입니다. 기업페이지 내 settings 탭 에서 등록/수정해 주시길 바랍니다.">
                         <img th:src="@{/img/btn-info.png}" style="width: 15px; padding-bottom: 3px"/>
                     </button>
                     <th:block th:if="${businessInfo != null}">
@@ -139,7 +139,7 @@
                     <th:block th:if="${businessInfo == null}">
                         <div style="text-align: center; margin: 100px 0 100px 0">
                             <span> 저장된 구장 정보가 존재 하지 않습니다. </span><br>
-                            <span> 매칭글을 간편하게 올리기 위해 기업페이지 내 settings 탭 에서 구장 정보를 등록해주시길 바랍니다. </span>
+                            <span> 매치글을 간편하게 올리기 위해 기업페이지 내 settings 탭 에서 구장 정보를 등록해주시길 바랍니다. </span>
                         </div>
                     </th:block>
                 </div>
