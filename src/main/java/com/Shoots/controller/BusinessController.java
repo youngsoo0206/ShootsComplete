@@ -707,6 +707,16 @@ public class BusinessController {
             percentage = 100 - recruitmentPercentage;
         }
 
+        Double avgPrice = matchService.getAvgPrice();
+        Double avgPriceByIdx = matchService.getAvgPriceByIdx(business_idx);
+
+        avgPriceByIdx = (avgPriceByIdx == null) ? 0.0 : avgPriceByIdx;
+
+        Long roundedAvgPrice = (long) Math.floor(avgPrice);
+        Long roundedAvgPriceByIdx = (long) Math.floor(avgPriceByIdx);
+
+        Long comparison = roundedAvgPriceByIdx - roundedAvgPrice;
+
         model.addAttribute("monthlyData", monthlyData);
         model.addAttribute("totalMatch", totalMatch);
 
@@ -719,9 +729,14 @@ public class BusinessController {
         model.addAttribute("recruitmentPercentage", recruitmentPercentage);
         model.addAttribute("percentage", percentage);
 
-        model.addAttribute("playerGenderCount", playerGenderCount);
+        model.addAttribute("totalPlayers", totalPlayers);
         model.addAttribute("femalePercentage", femalePercentage);
         model.addAttribute("malePercentage", malePercentage);
+
+        model.addAttribute("roundedAvgPrice", roundedAvgPrice);
+        model.addAttribute("roundedAvgPriceByIdx", roundedAvgPriceByIdx);
+
+        model.addAttribute("comparison", comparison);
 
         return "business/businessCharts";
     }

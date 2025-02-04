@@ -55,6 +55,15 @@ public class PostCommentServiceImpl implements PostCommentService {
         return dao.commentsReply(c);
     }
 
+    @Override
+    public List<PostComment> getMyCommentList(int id) {
+        return dao.getMyCommentList(id);
+    }
+
+    @Override
+    public int getMyCommentListCount(int id) {
+        return dao.getMyCommentListCount(id);
+    }
 
 
     @Override

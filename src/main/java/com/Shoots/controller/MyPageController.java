@@ -1,12 +1,7 @@
 package com.Shoots.controller;
 
-import com.Shoots.domain.Inquiry;
-import com.Shoots.domain.Post;
-import com.Shoots.domain.RegularUser;
-import com.Shoots.service.InquiryService;
-import com.Shoots.service.PostCommentService;
-import com.Shoots.service.PostService;
-import com.Shoots.service.RegularUserService;
+import com.Shoots.domain.*;
+import com.Shoots.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -28,14 +23,16 @@ public class MyPageController {
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
     private final PostService postService;
     private final InquiryService inquiryService;
+    private final PaymentService paymentService;
     private RegularUserService regularUserService;
     private PostCommentService postCommentService;
 
-    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService, PostCommentService postCommentService ) {
+    public MyPageController(RegularUserService regularUserService, PostService postService, InquiryService inquiryService, PostCommentService postCommentService, PaymentService paymentService) {
         this.regularUserService = regularUserService;
         this.postService = postService;
         this.inquiryService = inquiryService;
         this.postCommentService = postCommentService;
+        this.paymentService = paymentService;
     }
 
     @GetMapping(value="/info")
@@ -109,6 +106,19 @@ public class MyPageController {
         return mv;
     }
 
+    @GetMapping(value="/myCommentList")
+    public ModelAndView myCommentList(ModelAndView mv, HttpServletRequest request) {
+        Integer id = (Integer)request.getSession().getAttribute("idx");
+        List<PostComment> list = postCommentService.getMyCommentList(id);
+        int count = postCommentService.getMyCommentListCount(id);
+
+        mv.setViewName("myPage/myCommentList");
+        mv.addObject("list", list);
+        mv.addObject("count", count);
+
+        return mv;
+    }
+
     @GetMapping(value="/myInquiryList")
     public ModelAndView myInquiryList(ModelAndView mv, HttpServletRequest request) {
         Integer id = (Integer)request.getSession().getAttribute("idx");
@@ -121,6 +131,20 @@ public class MyPageController {
         }
 
         mv.setViewName("myPage/myInquiryList");
+        mv.addObject("list", list);
+        mv.addObject("count", count);
+
+        return mv;
+    }
+
+    @GetMapping(value="/myMatchList")
+    public ModelAndView myMatchList(ModelAndView mv, HttpServletRequest request) {
+        Integer id = (Integer)request.getSession().getAttribute("idx");
+        List<Payment> list = paymentService.userPaymentList(id);
+        int count = paymentService.getPaymentCount(id);
+
+
+        mv.setViewName("myPage/myMatchList");
         mv.addObject("list", list);
         mv.addObject("count", count);
 

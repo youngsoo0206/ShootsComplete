@@ -44,9 +44,18 @@ $(function () {
         options: {}
     });
 
+    let backgroundColor;
+    if (malePercentage > femalePercentage) {
+        backgroundColor = ['rgba(0, 0, 255, 0.8)', 'rgba(128, 128, 128, 0.2)'];
+    } else if (malePercentage < femalePercentage) {
+        backgroundColor = ['rgba(128, 128, 128, 0.2)', 'rgba(255, 0, 0, 0.7)'];
+    } else {
+        backgroundColor = ['rgba(0, 0, 255, 0.7)', 'rgba(255, 0, 0, 0.7)'];
+    }
+
     data2 = {
         datasets: [{
-            backgroundColor: ['rgba(0, 0, 255, 0.7)','rgba(255, 0, 0, 0.5)'],
+            backgroundColor: backgroundColor,
             data: [malePercentage, femalePercentage]
         }],
         labels: ['남성','여성']
@@ -58,4 +67,36 @@ $(function () {
         data: data2,
         options: {}
     });
+
+
+    var ctx3 = document.getElementById('myChart3');
+    var myChart3 = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: ['우리구장', '평균가'],
+            datasets: [{
+                label: '평균가',
+                data: [roundedAvgPriceByIdx, roundedAvgPrice],
+                backgroundColor: [
+                    'rgba(101, 163, 13, 0.2)',
+                    'rgba(128, 128, 128, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(101, 163, 13, 1)',
+                    'rgba(128, 128, 128, 1)'
+                ],
+                borderWidth: 0.7,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
 });

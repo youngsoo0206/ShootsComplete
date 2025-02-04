@@ -27,4 +27,8 @@ public interface PostCommentService {
 
     int commentsReply(PostComment co);
 
+    public List<PostComment> getMyCommentList(int id);
+
+    public int getMyCommentListCount(int id);
+
 }
