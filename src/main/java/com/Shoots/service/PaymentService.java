@@ -26,4 +26,7 @@ public interface PaymentService {
     List<Payment> userPaymentList(int id);
 
     int getPaymentCount(int id);
+
+    List<Integer> getPlayerCountByMonth(Integer business_idx);
+
 }

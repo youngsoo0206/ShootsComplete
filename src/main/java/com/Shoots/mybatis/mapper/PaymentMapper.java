@@ -27,4 +27,7 @@ public interface PaymentMapper {
     List<Payment> userPaymentList(int id); // 사용자 id로 결제(매칭) 기록을 가져온다
 
     int getPaymentCount(int id);
+
+    List<Map<String, Object>> getPlayerCountByMonth(Integer business_idx);
+
 }

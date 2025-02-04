@@ -20,3 +20,13 @@ select * from PAYMENT;
 
 delete from PAYMENT where PAYMENT_IDX =
                           99;
+
+insert into PAYMENT (
+    MATCH_IDX, SELLER_IDX, BUYER_IDX, PAYMENT_METHOD, PAYMENT_AMOUNT,
+    PAYMENT_DATE, PAYMENT_STATUS, MERCHANT_UID, IMP_UID
+)
+values (27, 1, 4, 'card', 1000,
+                   CURRENT_TIMESTAMP, 'paid', 'merchant_27_1', 'imp_111'
+       );
+
+select * from PAYMENT where PAYMENT_STATUS='paid' and SELLER_IDX = 1;

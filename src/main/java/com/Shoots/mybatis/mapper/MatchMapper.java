@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MatchMapper {
@@ -34,4 +35,12 @@ public interface MatchMapper {
     List<Match> getMatchListByToday();
 
     List<Match> getMatchListByDeadline(LocalDateTime deadline, int i);
+
+    int getTotalMatchById(Integer business_idx);
+
+    List<Map<String, Object>> getTotalMatchByMonth(Integer business_idx);
+
+    Double getAvgPrice();
+
+    Double getAvgPriceByIdx(Integer business_idx);
 }
