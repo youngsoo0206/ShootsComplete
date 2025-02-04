@@ -71,4 +71,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         return monthlyData;
     }
+
+    @Override
+    public List<Payment> userPaymentList(int id) {
+        return dao.userPaymentList(id);
+    }
+
+    @Override
+    public int getPaymentCount(int id) {
+        return dao.getPaymentCount(id);
+    }
 }

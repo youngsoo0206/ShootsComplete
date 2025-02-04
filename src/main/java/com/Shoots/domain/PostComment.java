@@ -17,6 +17,15 @@ public class PostComment {
     private String category;
     private int readcount;
     private String isSecret;
+    private String post_content;
+
+    public String getPost_content() {
+        return post_content;
+    }
+
+    public void setPost_content(String post_content) {
+        this.post_content = post_content;
+    }
 
     public String getIsSecret() {
         return isSecret;
