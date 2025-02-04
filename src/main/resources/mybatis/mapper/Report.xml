@@ -29,7 +29,7 @@
     </select>
 
     <select id="getReportList">
-    select * from report order by reportIdx
+    select * from report order by reportIdx desc
     </select>
 
     <select id="getReportCount">

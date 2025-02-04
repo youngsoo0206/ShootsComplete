@@ -9,6 +9,23 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     }
 
+    $('#Match').on('click', function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/myPage/myMatchList',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
+
     $('#Post').on('click', function (e) {
 
         e.preventDefault();
@@ -24,6 +41,23 @@ window.addEventListener('DOMContentLoaded', event => {
             }
         });
     });
+
+    $('#Comment').on('click', function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/myPage/myCommentList',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
 
     $('#Inquiry').on('click', function (e) {
 

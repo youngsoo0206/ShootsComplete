@@ -78,4 +78,16 @@
     <update id="updatePayment">
         update PAYMENT set PAYMENT_STATUS = 'refunded' where payment_idx = #{payment_idx}
     </update>
+
+    <select id="userPaymentList">
+        select p.*, b.address, b.business_name, m.match_time, m.match_date
+        from payment p
+                 join business_user b on p.seller_idx = b.business_idx
+                 join match_post m on p.match_idx = m.match_idx
+            where p.buyer_idx = #{id}
+    </select>
+
+    <select id="getPaymentCount">
+        select count(*) from payment;
+    </select>
 </mapper>
