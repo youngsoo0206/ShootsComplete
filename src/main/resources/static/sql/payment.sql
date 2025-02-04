@@ -28,3 +28,5 @@ insert into PAYMENT (
 values (27, 1, 4, 'card', 1000,
                    CURRENT_TIMESTAMP, 'paid', 'merchant_27_1', 'imp_111'
        );
+
+select * from PAYMENT where PAYMENT_STATUS='paid' and SELLER_IDX = 1;

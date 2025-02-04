@@ -147,6 +147,14 @@
         ORDER BY month;
     </select>
 
+    <select id="getAvgPrice" resultType="double">
+        SELECT AVG(PRICE) AS avg_price FROM MATCH_POST;
+    </select>
+
+    <select id="getAvgPriceByIdx" resultType="double">
+        SELECT AVG(PRICE) AS avg_price FROM MATCH_POST WHERE writer = #{business_idx};
+    </select>
+
     <update id="updateMatch">
         update MATCH_POST set MATCH_DATE = #{match_date}, MATCH_TIME = #{match_time}, MATCH_LEVEL = #{match_level}, TEAM_STYLE = #{team_style},
                               PLAYER_MIN = #{player_min},  PLAYER_MAX = #{player_max},  PLAYER_GENDER = #{player_gender}, PRICE = #{price}

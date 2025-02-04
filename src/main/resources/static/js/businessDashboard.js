@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
-    $('#Charts').on('click', function (e) {
+    $('#Charts, #chartsTab').on('click', function (e) {
         e.preventDefault();
 
         $.ajax({

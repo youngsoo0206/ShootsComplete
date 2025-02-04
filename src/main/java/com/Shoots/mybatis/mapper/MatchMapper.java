@@ -39,4 +39,8 @@ public interface MatchMapper {
     int getTotalMatchById(Integer business_idx);
 
     List<Map<String, Object>> getTotalMatchByMonth(Integer business_idx);
+
+    Double getAvgPrice();
+
+    Double getAvgPriceByIdx(Integer business_idx);
 }

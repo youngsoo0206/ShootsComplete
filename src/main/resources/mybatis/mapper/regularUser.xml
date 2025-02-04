@@ -158,5 +158,6 @@
         FROM regular_user r
         JOIN payment p ON r.idx = p.buyer_idx
         WHERE p.seller_idx = #{business_idx}
+        AND p.payment_status = 'paid'
     </select>
 </mapper>
