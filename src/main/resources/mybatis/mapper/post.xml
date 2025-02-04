@@ -51,7 +51,7 @@
 
 
     <select id="getPostList" resultType="post">
-        SELECT sub.post_idx, sub.writer, sub.category, sub.title, sub.content, sub.post_file, sub.price, sub.register_date, sub.readcount, sub.status, sub.user_id, sub.commentCount
+        SELECT sub.post_idx, sub.writer, sub.category, sub.title, sub.content, sub.post_file, sub.price, sub.register_date, sub.readcount, sub.status, sub.user_id, sub.report_status, sub.commentCount
         FROM (
                  SELECT p.*, r.user_id, (SELECT COUNT(comment_idx) FROM post_comment c WHERE c.post_idx = p.post_idx) AS commentCount
                  FROM post p

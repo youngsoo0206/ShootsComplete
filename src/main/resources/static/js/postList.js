@@ -164,6 +164,7 @@ function updatePostList(data, category) {
         var row = $('<tr>');
         row.append('<td>' + post.post_idx + '</td>');
 
+
         // 중고게시판(카테고리B)의 경우 -> 파일첨부(미리보기),가격 추가
         if (category === 'B') {
 
@@ -176,8 +177,15 @@ function updatePostList(data, category) {
                 row.append('<td class="jtdI">-</td>');  // 이미지가 없으면 대시(-)로 표시
             }
 
-            row.append('<td class="jtdt"><a href="detail?num=' + post.post_idx + '">'
-                + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
+            //var postTitle = (post.report_status !== 'unblock')
+            //var postTitle = ($("#report_status").val() !== 'unblock')
+            var postUnblock = (post.report_status !== 'unblock')
+                ? '<span style="color: #DA0130;">차단된 게시글 입니다.</span>'
+                : '<td class="jtdt"><a href="detail?num=' + post.post_idx + '">' +
+                (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title);
+
+
+            row.append(postUnblock
                 + '&nbsp;&nbsp;' + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a>'
                 + '<br><br>' + post.price + '원' + '<br><br>'
                 // + '상태: '
@@ -196,9 +204,14 @@ function updatePostList(data, category) {
         } // if (category === 'B')
 
         else {  // category A
-            row.append('<td><a href="detail?num=' + post.post_idx + '">'
-                + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title)
+            var postUnblock = (post.report_status !== 'unblock')
+                ? '<span style="color: #DA0130;">차단된 게시글 입니다.</span>'
+                : '<a href="detail?num=' + post.post_idx + '">'
+                    + (post.title.length > 20 ? post.title.substring(0, 20) + '...' : post.title);
+
+            row.append('<td>' + postUnblock
                 + '&nbsp;&nbsp;'  + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a></td>');
+
             row.append('<td>' + post.user_id + '</td>');
             row.append('<td>' + post.register_date + '</td>');
             row.append('<td>' + post.readcount + '</td>');
@@ -206,8 +219,10 @@ function updatePostList(data, category) {
 
         row.append('</tr>');
         tableBody.append(row);
-    });
-}
+    }); //postList.forEach(function(post) end
+
+
+} //function updatePostList(data, category) end
 
 
 
