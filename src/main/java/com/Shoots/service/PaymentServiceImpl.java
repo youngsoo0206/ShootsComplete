@@ -59,6 +59,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public List<Integer> getPlayerCountByMonth() {
+        return List.of();
+    }
+
+    @Override
     public List<Integer> getPlayerCountByMonth(Integer business_idx) {
         List<Map<String, Object>> results = dao.getPlayerCountByMonth(business_idx);
         List<Integer> monthlyData = new ArrayList<>(Collections.nCopies(12, 0));
