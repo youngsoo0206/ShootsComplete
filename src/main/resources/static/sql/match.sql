@@ -18,5 +18,5 @@ select * from MATCH_POST;
 delete from MATCH_POST;
 drop table MATCH_POST;
 
-update MATCH_POST set MATCH_TIME = '06:05:00', PLAYER_MIN = 5 where MATCH_IDX = 28;
-update MATCH_POST set MATCH_TIME = '06:05:00' where MATCH_IDX = 29;
+update MATCH_POST set MATCH_TIME = '14:03:00' where MATCH_IDX = 36;
+
