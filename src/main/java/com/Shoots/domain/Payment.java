@@ -20,10 +20,6 @@ public class Payment {
     private String payment_status;
     private String merchant_uid;
     private String imp_uid;
-    private String address;
-    private String business_name;
-    private String match_date;
-    private String match_time;
 
     @Override
     public String toString() {

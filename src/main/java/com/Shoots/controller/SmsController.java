@@ -4,10 +4,10 @@ package com.Shoots.controller;
 import com.Shoots.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -26,10 +26,9 @@ public class SmsController {
     }
 
 
-    @GetMapping("/send-many")
-    public ResponseEntity<String> sendSmsMany() {
-        ResponseEntity<String> response = smsService.sendMany();
-        return response;
+    @PostMapping("/send-many")
+    public ResponseEntity<?> sendSmsMany(@RequestBody List<Map<String, Object>> userList) {
+        return smsService.sendMany(userList);
     }
 
 

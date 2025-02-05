@@ -201,19 +201,19 @@
                                     <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
                                 </td>
 
-                                <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
                                 </td>
-                                <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-limited">마감임박</button></a>
                                 </td>
-                                <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-closed">마감</button></a>
                                 </td>
-                                <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-confirm">매치확정</button></a>
                                 </td>
-                                <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
                                 </td>
                             </tr>
@@ -253,7 +253,7 @@
             <img th:src="@{/img/card4.jpg}" style="width: 100%; height: 250px; border-radius: 10px; position: relative; overflow: hidden;">
             <div class="card-body cardBody1">
                 <div style="margin-top: 60px">
-                    <h5 class="card-title">슛매칭</h5>
+                    <h5 class="card-title">슛매치</h5>
                     <p class="card-text"> 원하는 시간과 장소를 선택하세요 <br> 간편한 예약으로 언제든지 편리하게 이용할 수 있습니다</p>
                     <p class="card-text card-link"><a th:href="@{/match/list}" class="cardA">매칭하러 가기</a></p>
                 </div>
