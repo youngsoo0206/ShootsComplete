@@ -27,8 +27,8 @@ public class RefundScheduler {
     private final PaymentService paymentService;
     private final RestTemplate restTemplate;
 
-    //@Scheduled(cron = "0 0/30 9-23 * * ?")
-    @Scheduled(cron = "0 * * * * ?")
+    //@Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0/30 9-23 * * ?")
     private void refundMatches(){
 
         log.info("=== 자동 환불 체크 시작 ===");
