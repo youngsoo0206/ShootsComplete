@@ -37,7 +37,6 @@
 <body>
   <div class="container">
     <div th:if="${listcount > 0}">
-      <h1>공지사항</h1>
       <form th:action="@{list}">
         <div class="input-group">
           <button class="btn btn-primary search" type="submit">검색</button>
@@ -45,6 +44,7 @@
         </div>
       </form>
       <table class="table">
+        <caption style="caption-side: top; font-size: 20px; margin-left: 5px">공지사항</caption>
         <thead>
           <tr>
             <th colspan="4">공지글 수 : [[${listcount}]]</th>
