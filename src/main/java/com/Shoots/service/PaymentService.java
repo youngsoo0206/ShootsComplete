@@ -29,4 +29,5 @@ public interface PaymentService {
 
     List<Integer> getPlayerCountByMonth(Integer business_idx);
 
+    List<Map<String, Object>> getUserPaymentListByMatchIdx(int match_idx);
 }

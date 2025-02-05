@@ -31,4 +31,6 @@ public interface PostCommentService {
 
     public int getMyCommentListCount(int id);
 
+    void setBlock(int id);
+
 }

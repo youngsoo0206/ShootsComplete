@@ -75,4 +75,9 @@
         select count(*) from post_comment
         where writer = #{id}
     </select>
+
+    <update id="setBlock">
+        update post_comment set report_status = 'block'
+        where comment_idx = #{id}
+    </update>
 </mapper>

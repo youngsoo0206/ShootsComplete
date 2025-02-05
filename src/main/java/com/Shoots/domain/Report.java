@@ -10,10 +10,11 @@ import lombok.ToString;
 @ToString
 public class Report {
     private int reportIdx;
-    private String reporterUser;
+    private String reporter;
     private String reportedUser;
     private String category;
     private String content;
+    private String detail;
     @JsonProperty
     private int PostIdx;
     @JsonProperty

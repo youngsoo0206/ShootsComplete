@@ -5,19 +5,19 @@
 <mapper namespace="com.Shoots.service.report.ReportMapper">
 
     <insert id="insertReport">
-        insert into report(reporterUser, reportedUser, category, content, PostIdx, CommentIdx)
-        values( #{reporterUser}, #{reportedUser}, #{category}, #{content}, COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
+        insert into report(reporter, reportedUser, category, content, detail, PostIdx, CommentIdx)
+        values( #{reporter}, #{reportedUser}, #{category}, #{content}, COALESCE(#{detail}, ''), COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
     </insert>
 
     <select id="selectReportedUsers" resultType="Report">
         select * from report
-        where reporterUser=#{reporter};
+        where reporter=#{reporter};
     </select>
 
     <select id="selectCheckReportDuplicate" resultType="Report">
         select *
         from report
-        where reporterUser=#{reporter} and reportedUser=#{reported} and category=#{category}
+        where reporter=#{reporter} and PostIdx=#{PostIdx} and CommentIdx=#{CommentIdx} and category=#{category}
         LIMIT 1
     </select>
 
@@ -29,7 +29,13 @@
     </select>
 
     <select id="getReportList">
-    select * from report order by reportIdx desc
+        select r.*, p.report_status p_status, c.report_status c_status
+        from report r
+                 left outer join post p on r.postIdx = p.post_idx
+                 left outer join post_comment c
+                                 on r.commentidx = c.comment_idx
+        order by reportIdx desc
+            LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="getReportCount">

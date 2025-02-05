@@ -78,6 +78,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public List<Map<String, Object>> getUserPaymentListByMatchIdx(int match_idx) {
+        return dao.getUserPaymentListByMatchIdx(match_idx);
+    }
+
+    @Override
     public List<Payment> userPaymentList(int id) {
         return dao.userPaymentList(id);
     }

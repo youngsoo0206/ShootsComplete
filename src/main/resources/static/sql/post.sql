@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS post;
 CREATE TABLE post (
       post_idx INT AUTO_INCREMENT PRIMARY KEY, -- 게시글 식별 번호 (글번호)
       writer INT NOT NULL, -- 작성자 (regular_user 테이블 참조)
