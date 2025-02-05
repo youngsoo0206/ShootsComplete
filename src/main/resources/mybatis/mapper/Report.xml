@@ -29,7 +29,13 @@
     </select>
 
     <select id="getReportList">
-    select * from report order by reportIdx desc
+        select r.*, p.report_status p_status, c.report_status c_status
+        from report r
+                 left outer join post p on r.postIdx = p.post_idx
+                 left outer join post_comment c
+                                 on r.commentidx = c.comment_idx
+        order by reportIdx desc
+            LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="getReportCount">
