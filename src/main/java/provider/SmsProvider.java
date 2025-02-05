@@ -63,14 +63,25 @@ public class SmsProvider {
 
             String businessName = (String) user.get("business_name");
 
+            String messageType = (String) user.get("messageType");
+
             if (phoneNumber == null || phoneNumber.isEmpty()) {
+                continue;
+            }
+
+            String messageText;
+            if ("cancel".equals(messageType)) {
+                messageText = userName + "님! " + businessName + " " + formattedMatchTime + " 예정된 매치는 신청 인원 미달로 취소되어 환불이 진행되었습니다. * 문의는 Shoots 페이지 내의 1:1문의를 이용해 주시길 바랍니다 *";
+            } else if ("confirm".equals(messageType)) {
+                messageText = userName + "님! " + businessName + " " + formattedMatchTime + " 예정된 매치가 확정되었습니다. 즐거운 경기 되세요! (신청 취소 및 환불 불가) * 문의는 Shoots 페이지 내의 1:1문의를 이용해 주시길 바랍니다 *";
+            } else {
                 continue;
             }
 
             Message message = new Message();
             message.setFrom(FROM);
             message.setTo(phoneNumber);
-            message.setText(userName + "님! " + businessName + " " + formattedMatchTime + " 에 예정된 매치는 신청 인원 미달로 취소되어 환불이 진행되었습니다. * 문의는 Shoots 페이지 내의 1:1문의를 이용해 주시길 바랍니다 *");
+            message.setText(messageText);
             messageList.add(message);
 
             System.out.println("message = " + message.getText());

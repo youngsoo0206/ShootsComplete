@@ -27,7 +27,6 @@ public class RefundScheduler {
     private final PaymentService paymentService;
     private final RestTemplate restTemplate;
 
-    //@Scheduled(cron = "0 * * * * ?")
     @Scheduled(cron = "0 0/30 9-23 * * ?")
     private void refundMatches(){
 
@@ -61,7 +60,15 @@ public class RefundScheduler {
                     processRefund(payment);
                 }
                 for (Map<String, Object> user : userList) {
-                    sendRefundNotification(user);
+                    sendRefundNotification(user, "cancel");
+                }
+            }
+
+            if (playerCount >= playerMin) {
+                List<Map<String, Object>> userList = paymentService.getUserPaymentListByMatchIdx(match.getMatch_idx());
+
+                for (Map<String, Object> user : userList) {
+                    sendRefundNotification(user, "confirm");
                 }
             }
         }
@@ -84,14 +91,16 @@ public class RefundScheduler {
         }
     }
 
-    private void sendRefundNotification(Map<String, Object> user) {
+    private void sendRefundNotification(Map<String, Object> user, String messageType) {
         System.out.println("=============================================================");
-        log.info("자동 환불로 매치 취소 SMS 문자 전송");
+        log.info("매치 취소 및 확정 SMS 문자 전송");
 
         String phoneNumber = (String) user.get("tel");
         log.info("phoneNumber =  {}", phoneNumber);
 
         String smsApiUrl = "http://localhost:1000/Shoots/test/send-many";
+
+        user.put("messageType", messageType);
 
         List<Map<String, Object>> userList = new ArrayList<>();
         userList.add(user);
