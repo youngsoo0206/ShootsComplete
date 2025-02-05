@@ -161,7 +161,15 @@ function getList(state) {
                     </ul>
                 </div>
             </div>` : '';
-
+        
+        //reportButton 답글쪽
+                reportButton = (childComment.user_id !== $("#loginid").val()) ? `
+            <button class="commentReportButton" data-comment-idx="${childComment.comment_idx}" 
+                    data-writer="${childComment.writer}" data-tidx="${childComment.writer}" 
+                    data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
+                <img src='../img/report.png' style="width:15px; height:15px">
+            </button>` : '';
+                
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
                     <div class='comment-nick-area'>
@@ -259,6 +267,7 @@ $(document).on('click', '#titleReport', function() {
 $(document).on('click', '.commentReportButton', function() {
     const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
     const dataCommentIdx= $(this).data('comment-idx');
+    alert(dataCommentIdx);
     const modalHtml = `
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
                                     <div class="modal-dialog">
@@ -301,7 +310,7 @@ $(document).on('click', '.commentReportButton', function() {
     const modalElement = document.getElementById('exampleModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
-
+    comment_idx
     const commentIdx = $(this).data('comment-idx');
     const target = $(this).data('user_id');
     console.log('===> commentIdx:', commentIdx);
@@ -315,15 +324,19 @@ $(document).on('click', '.commentReportButton', function() {
 
 function ReportSubmitButton(paramData){
     const category = paramData?.category ?? '';
+    const selectedOption = $('select[name="title"]').val();
+    if(selectedOption == null){
+        alert('신고 사유를 선택해주세요.');
+        return false;
+    }
     var reqData = {
         reportedUser : String($('#modalReported').val()),
         category : category,
-        content : $('select[name="title"]').val(),
+        content : selectedOption,
         detail : $('#modalEtcContent').val(),
         PostIdx : $('#post_idx')?.val() ?? 0,
         CommentIdx : paramData?.commentIdx ?? 0
     };
-    alert(reqData.content);
     fetchReport(reqData);
 }
 

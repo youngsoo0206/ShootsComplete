@@ -7,7 +7,7 @@ import java.util.List;
 public interface ReportService {
     int insertReport(Report report);
     List<Report> selectReportedUsers(String reporter);
-    public Report selectCheckReportDuplicate(String reporter,String reported,String category);
+    public Report selectCheckReportDuplicate(String reporter,int PostIdx, int CommentIdx, String category);
     public int selectReportedCount(String reported,String category);
     public List<Report> getReportList();
     public int getReportCount();
