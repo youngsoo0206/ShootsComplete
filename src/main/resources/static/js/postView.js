@@ -36,16 +36,23 @@ function getList(state) {
         let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
         let isAdmin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
 
-        let displayContent = isSecret && !(isPostOwner || isCommentOwner || isAdmin)
-            ? '🔒비밀댓글입니다.'
-            : Comment.content;
+
+
+          let commentUnblock = (Comment.report_status !== 'unblock')
+              ? '<span style="color: #DA0130;">차단된 댓글 입니다.</span>'
+              : Comment.content;
+
+
+          let displayContent = isSecret && !(isPostOwner || isCommentOwner || isAdmin)
+              ? '🔒비밀댓글입니다.'
+              : commentUnblock;
+
+          // 비밀댓글인지(displayContent) 먼저 판단 후 >> commentUnblock
 
         // 비밀댓글 스타일 적용
         let displayContentStyle = isSecret ? 'color: gray;' : '';
 
-        // console.log(66);
-        // console.log(Comment.comment_ref_id); //   받는 값 확인 >> null
-        // console.log(typeof Comment.comment_ref_id);
+
 
         // 부모 댓글 처리
         let replyClass = (Comment.comment_ref_id) ? 'comment-list-item--reply' : ''; // 답글 여부
@@ -74,7 +81,7 @@ function getList(state) {
 
 		//신고버튼은 댓글 작성자와 로그인한 사람이 같을시 안뜨도록 설정하기 위해 미리 선언함
 		// let reportButton = (Comment.user_id !== $("#loginid").val() && role === 'common') ? `
-        let reportButton = (Comment.user_id !== $("#loginid").val()) ? `
+        let reportButton = (Comment.user_id !== $("#loginid").val() && Comment.report_status === 'unblock')  ? `
             <button class="commentReportButton" data-comment-idx="${Comment.comment_idx}" 
                     data-writer="${Comment.writer}" data-tidx="${Comment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
@@ -139,9 +146,19 @@ function getList(state) {
                  // @parentUsername 부분을 파란색으로 스타일링
         let formattedContent = childComment.content.replace(/(@[\w\u00C0-\u017F\uac00-\ud7af\u4e00-\u9fff.-]+)/g, "<span class='mention'>$1</span>");
 
+
+                let childCommentUnblock = (Comment.report_status !== 'unblock')
+                    ? '<span style="color: #DA0130;">차단된 댓글 입니다.</span>'
+                    : formattedContent;
+
+
                 let childDisplayContent = isSecretC && !(isPostOwnerC || isCommentOwnerC || isAdminC)
                     ? '🔒비밀댓글입니다.'
-                    : formattedContent;
+                    : childCommentUnblock;
+
+
+                //  비밀댓글인지 판단 >> 차단 댓글인지 판단 >> formattedContent 적용
+
 
                 // 비밀댓글 스타일 적용
                 let childDisplayContentStyle = isSecretC ? 'color: gray;' : '';
