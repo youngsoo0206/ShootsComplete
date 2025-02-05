@@ -30,4 +30,7 @@ public interface PostCommentMapper {
     List<PostComment> getMyCommentList(int id);
 
     int getMyCommentListCount(int id);
+
+    //comment 차단
+    void setBlock(int id);
 }

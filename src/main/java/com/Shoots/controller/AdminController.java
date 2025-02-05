@@ -531,13 +531,37 @@ public class AdminController {
     //report 리스트
     @GetMapping(value="/reportList")
     public ModelAndView reportList(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit,
             ModelAndView mv){
         int listcount = reportService.getReportCount();
-        List<Report> list = reportService.getReportList();
+        List<Map<String, Object>> list = reportService.getReportList(page, limit);
+        PaginationResult result = new PaginationResult(page, limit, listcount);
+        System.out.println(list);
 
         mv.setViewName("admin/reportList");
+        mv.addObject("page", page);
+        mv.addObject("maxpage", result.getMaxpage());
+        mv.addObject("startpage", result.getStartpage());
+        mv.addObject("endpage", result.getEndpage());
         mv.addObject("list", list);
         mv.addObject("listcount", listcount);
+        mv.addObject("limit", limit);
+
         return mv;
+    }
+
+    //report post block
+    @GetMapping(value="/postBlock")
+    public String postBlock(int id){
+        postService.setBlock(id);
+        return "redirect:reportList";
+    }
+
+    //report post_comment block
+    @GetMapping(value="/commentBlock")
+    public String commentBlock(int id){
+        postCommentService.setBlock(id);
+        return "redirect:reportList";
     }
 }

@@ -65,6 +65,11 @@ public class PostCommentServiceImpl implements PostCommentService {
         return dao.getMyCommentListCount(id);
     }
 
+    @Override
+    public void setBlock(int id) {
+        dao.setBlock(id);
+    }
+
 
     @Override
     public int commentsUpdate(PostComment co) {

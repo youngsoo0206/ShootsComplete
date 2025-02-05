@@ -4,7 +4,9 @@ import com.Shoots.domain.Report;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +35,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> getReportList() {
-        return dao.getReportList();
+    public List<Map<String, Object>> getReportList(int page, int limit) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        int offset = (page - 1) * limit;
+        map.put("offset", offset);
+        int pageSize = limit;
+        map.put("pageSize", pageSize);
+        return dao.getReportList(map);
     }
 
     @Override

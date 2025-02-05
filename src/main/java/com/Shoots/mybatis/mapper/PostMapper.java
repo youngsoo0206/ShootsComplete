@@ -55,4 +55,7 @@ public interface PostMapper {
 
     //admin chart용   register_date와  count
     List<Map<String, Object>> getPostCount();
+
+    //admin에서 report_status를 block으로 update해준다
+    void setBlock(int id);
 }

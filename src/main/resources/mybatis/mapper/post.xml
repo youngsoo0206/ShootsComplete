@@ -171,4 +171,9 @@
         order by register_date
     </select>
 
+    <select id="setBlock">
+        update post set report_status = 'block'
+        where post_idx = #{id}
+    </select>
+
 </mapper>
