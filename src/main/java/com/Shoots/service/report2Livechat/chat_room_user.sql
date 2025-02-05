@@ -4,6 +4,6 @@ CREATE TABLE chat_room_user (
     user_idx BIGINT NOT NULL,
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (chat_room_idx, user_idx),
-    FOREIGN KEY (chat_room_idx) REFERENCES chat_room(chatRoom_idx) ON DELETE CASCADE,
+    FOREIGN KEY (chat_room_idx) REFERENCES chat_room(chat_room_idx) ON DELETE CASCADE,
     FOREIGN KEY (user_idx) REFERENCES regular_user(idx) ON DELETE CASCADE
 );
