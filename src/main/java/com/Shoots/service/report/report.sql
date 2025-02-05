@@ -19,7 +19,8 @@ category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT')),
 content text, -- DEFAULT '' << 제거
 detail text, -- 신고 시 추가내용 작성 >> 얘 추가하면 신고후 알림창 undefined 뜨고 신고 안됨
 PostIdx INT DEFAULT 0,
-CommentIdx INT DEFAULT 0
+CommentIdx INT DEFAULT 0,
+registryDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 
