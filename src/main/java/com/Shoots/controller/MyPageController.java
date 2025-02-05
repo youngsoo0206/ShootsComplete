@@ -153,6 +153,7 @@ public class MyPageController {
     @PostMapping(value = "/deleteRegularUser")
     public String deleteRegularUser(@RequestParam int idx, RedirectAttributes redirectAttributes, HttpSession session) {
         int result = regularUserService.deleteRegularUser(idx);
+        session.removeAttribute("idx");
         session.invalidate();
 
         if (result == 0) {
@@ -161,7 +162,7 @@ public class MyPageController {
         } else {
             logger.info("회원탈퇴 됨.");
             redirectAttributes.addFlashAttribute("message", "경기장에서 다시 만날 날을 기다릴게요!");
-            return "redirect:/Shoots/main";
+            return "redirect:/main";
         }
     }
 
