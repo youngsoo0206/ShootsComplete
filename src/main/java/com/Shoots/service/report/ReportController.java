@@ -71,7 +71,7 @@ public class ReportController {
             resp.put("msg", "이미 접수된 신고입니다.");
         else if(reportService.insertReport(report) == 1){
             resp.put("msg", report.getReportedUser() + "님의 신고가 접수되었습니다.");
-            resp.put("reportCnt", reportService.selectReportedCount(report.getReportedUser(), report.getCategory()));
+            //resp.put("reportCnt", reportService.selectReportedCount(report.getReportedUser(), report.getCategory()));
         }
         else
             resp.put("msg", "신고에 실패했습니다.");
