@@ -18,6 +18,15 @@ public class PostComment {
     private int readcount;
     private String isSecret;
     private String post_content;
+    private String report_status;
+
+    public String getReport_status() {
+        return report_status;
+    }
+
+    public void setReport_status(String report_status) {
+        this.report_status = report_status;
+    }
 
     public String getPost_content() {
         return post_content;
