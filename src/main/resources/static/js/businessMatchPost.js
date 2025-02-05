@@ -53,7 +53,7 @@ $(function () {
                     matchListContainer.appendChild(newTable);
                     document.querySelector('caption').textContent = "전체 매치";
                 } else {
-                    matchListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>';
+                    matchListContainer.innerHTML = '<div style="text-align: center; margin: 100px 0 100px 0"><p> 매치글이 존재하지 않습니다 </p></div>';
                 }
             })
             .catch(error => {
@@ -126,10 +126,10 @@ $(function () {
 
     $('.btn-delete').click(function(event) {
         event.preventDefault();
-        const userConfirmed = confirm("매칭글을 삭제하시겠습니까?");
+        const userConfirmed = confirm("매치글을 삭제하시겠습니까?");
 
         if (userConfirmed) {
-            alert("매칭글이 삭제되었습니다");
+            alert("매치글이 삭제되었습니다");
             $(this).closest("form").submit();
         }
     });

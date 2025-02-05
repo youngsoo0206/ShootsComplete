@@ -149,6 +149,15 @@
         select count(idx) from regular_user;
     </select>
 
-
-
+    <select id="getPlayerGenderCount" resultType="java.util.Map">
+        SELECT
+            SUM(CASE WHEN r.gender = 1 THEN 1 ELSE 0 END) AS gender_1_count,
+            SUM(CASE WHEN r.gender = 2 THEN 1 ELSE 0 END) AS gender_2_count,
+            SUM(CASE WHEN r.gender = 3 THEN 1 ELSE 0 END) AS gender_3_count,
+            SUM(CASE WHEN r.gender = 4 THEN 1 ELSE 0 END) AS gender_4_count
+        FROM regular_user r
+        JOIN payment p ON r.idx = p.buyer_idx
+        WHERE p.seller_idx = #{business_idx}
+        AND p.payment_status = 'paid'
+    </select>
 </mapper>

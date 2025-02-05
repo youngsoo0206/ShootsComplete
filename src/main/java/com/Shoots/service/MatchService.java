@@ -28,4 +28,12 @@ public interface MatchService {
     List<Match> getMatchListByMatchTime(LocalDate matchDate, LocalTime matchTime);
 
     List<Match> getMatchListByDeadline(LocalDateTime deadline, int i);
+
+    int getTotalMatchById(Integer businessIdx);
+
+    List<Integer> getTotalMatchByMonth(Integer business_idx);
+
+    Double getAvgPrice();
+
+    Double getAvgPriceByIdx(Integer business_idx);
 }

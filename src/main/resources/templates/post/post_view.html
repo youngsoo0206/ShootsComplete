@@ -99,13 +99,13 @@
 					<!-- 이미지가 있을 때만 출력되도록 수정 -->
 					<th:block th:if="${not #strings.isEmpty(postdata.post_file)}">
 						<img th:src="@{'/upload' + ${#strings.replace(postdata.post_file, '\\', '/')}}"
-							 style="width: 300px">
+							 style="width: 300px; margin-top: 20px;">
 					</th:block>
 					<!-- 이미지가 없을 때는 아무 것도 출력하지 않음 -->
 					<th:block th:unless="${not #strings.isEmpty(postdata.post_file)}">
 						<!-- 이미지 자리 비워둠 (아무 내용도 출력하지 않음) -->
 					</th:block>
-					<pre th:text="${postdata.content}"></pre>
+					<pre th:text="${postdata.content}" style="margin-top: 20px; margin-bottom: 60px"></pre>
 				</div>
 			</td>
 		</tr>

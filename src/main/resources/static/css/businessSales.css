@@ -45,7 +45,7 @@
 
 select {width: 95px; height: 35px; border: 2px solid #fdba01; border-radius: 20px; text-align: center; outline: none}
 
-.table {margin : 30px 0 0 0; width: 100%}
+.table {margin : 30px 0 100px 0; width: 100%}
 td {font-size: 15px}
 
 .table-a {text-decoration: none; color: dimgray}

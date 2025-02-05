@@ -100,6 +100,21 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+    $('#Charts, #chartsTab').on('click', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/Shoots/business/charts',
+            method: 'GET',
+            success: function (data) {
+                $('#layoutSidenav_content').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error loading content: ', error);
+            }
+        });
+    });
+
 
     $('#Settings').on('click', function (e) {
         e.preventDefault();
@@ -160,8 +175,8 @@ window.addEventListener('DOMContentLoaded', event => {
             datasets: [{
                 label: "신청 인원",
                 data: window.monthlyData,
-                borderColor: "rgba(75, 192, 192, 1)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "red", // "rgba(75, 192, 192, 1)",
+                backgroundColor: "rgba(255, 0, 0, 0.2)",
                 borderWidth: 2,
                 fill: true
             }]
@@ -175,5 +190,37 @@ window.addEventListener('DOMContentLoaded', event => {
             }
         }
     });
+
+
+    var ctx = document.getElementById("myBarChart");
+
+    var mixedChart = {
+        type: 'bar',
+        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",],
+        datasets : [
+            {
+                label: '월 별 매치',
+                data : window.monthlyMatchData,
+                backgroundColor: 'rgba(128, 128, 128, 0.1)'
+            },
+            {
+                label: '매치 확정',
+                data: window.monthlyCompletedRecruitmentCount,
+                backgroundColor: 'transparent',
+                borderColor: 'blue',
+                type: 'line'
+            }
+        ]
+    };
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: mixedChart,
+        options: {
+            legend: {
+                display: true
+            }
+        }
+    });
+
 });
 

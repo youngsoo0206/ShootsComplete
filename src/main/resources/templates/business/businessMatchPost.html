@@ -20,7 +20,7 @@
             <option value="a">혼성</option>
         </select>
         <select name="match_level" id="match_level">
-            <option value="" disabled selected> 매칭 레벨 </option>
+            <option value="" disabled selected> 매치 레벨 </option>
             <option value="초급">초급</option>
             <option value="중급">중급</option>
             <option value="고급">고급</option>
@@ -34,11 +34,11 @@
                 <caption style="caption-side: top; font-size: 20px; margin-left: 5px">전체 매치</caption>
                 <thead>
                 <tr>
-                    <th> 매칭 날짜 </th>
-                    <th> 매칭 시간 </th>
+                    <th> 매치 날짜 </th>
+                    <th> 매치 시간 </th>
                     <th> 장소 </th>
                     <th> 플레이어 성별 </th>
-                    <th> 매칭 난이도 </th>
+                    <th> 매치 난이도 </th>
                     <th> 참여인원 </th>
                     <th> 신청현황 </th>
                     <th> 수정 / 삭제 </th>
@@ -91,7 +91,7 @@
                                 <button type="button" class="custom-btnS btn-5 btn-closed">마감</button></a>
                             </td>
                             <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
-                                <button type="button" class="custom-btnS btn-5 btn-confirm">매칭확정</button></a>
+                                <button type="button" class="custom-btnS btn-5 btn-confirm">매치확정</button></a>
                             </td>
                             <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
@@ -113,12 +113,12 @@
         </th:block>
 
         <th:block th:if="${listcount == 0}">
-            <div style="text-align: center; margin: 100px 0 100px 0"><p> 매칭글이 존재하지 않습니다 </p></div>
+            <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치글이 존재하지 않습니다 </p></div>
         </th:block>
     </div>
 
     <div class="btnD" th:if="${session.role == 'business'}">
-        <button class="custom-btn btn-15" id="matchForm">매칭 글 작성</button>
+        <button class="custom-btn btn-15" id="matchForm">매치 글 작성</button>
     </div>
 </div>
 </body>

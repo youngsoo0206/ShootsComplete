@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PostCommentService {
 
-    // 글의 갯수 구하기
+    // 댓글 갯수 구하기
     public int getListCount(int post_idx);
 
     // 댓글 목록 가져오기
@@ -26,4 +26,9 @@ public interface PostCommentService {
     public int commentsUpdate(PostComment co);
 
     int commentsReply(PostComment co);
+
+    public List<PostComment> getMyCommentList(int id);
+
+    public int getMyCommentListCount(int id);
+
 }

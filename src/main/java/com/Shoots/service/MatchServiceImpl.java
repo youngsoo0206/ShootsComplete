@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MatchServiceImpl implements MatchService{
@@ -111,5 +110,34 @@ public class MatchServiceImpl implements MatchService{
     public List<Match> getMatchListByDeadline(LocalDateTime deadline, int i) {
         return dao.getMatchListByDeadline(deadline, i);
     }
+
+    @Override
+    public int getTotalMatchById(Integer business_idx) {
+        return dao.getTotalMatchById(business_idx);
+    }
+
+    @Override
+    public List<Integer> getTotalMatchByMonth(Integer business_idx) {
+        List<Map<String, Object>> results = dao.getTotalMatchByMonth(business_idx);
+        List<Integer> monthlyData = new ArrayList<>(Collections.nCopies(12, 0));
+
+        for (Map<String, Object> row : results) {
+            Integer month = (Integer) row.get("month");
+            Integer matchCount = ((Number) row.get("match_count")).intValue();
+            monthlyData.set(month - 1, matchCount);
+        }
+        return monthlyData;
+    }
+
+    @Override
+    public Double getAvgPrice() {
+        return dao.getAvgPrice();
+    }
+
+    @Override
+    public Double getAvgPriceByIdx(Integer business_idx) {
+        return dao.getAvgPriceByIdx(business_idx);
+    }
+
 
 }

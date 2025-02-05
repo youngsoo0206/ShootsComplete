@@ -26,7 +26,7 @@
         console.log("merchant_uid = " + merchant_uid);
 
         if (!buyerIdx) {
-            alert("매칭신청은 로그인 후 이용 가능합니다.");
+            alert("매치신청은 로그인 후 이용 가능합니다.");
             window.location.href = "/Shoots/login";
             return;
         }
@@ -79,7 +79,7 @@
                         .then((result) => {
                             console.log("DB 저장 결과:", result);
                             if (result.success) {
-                                alert("결제가 완료되었습니다. 매칭 신청이 완료되었습니다.");
+                                alert("결제가 완료되었습니다. 매치 신청이 완료되었습니다.");
                                 window.location.reload();
                             } else {
                                 alert("결제 처리에 실패했습니다. 관리자에게 문의해주세요.");
@@ -135,7 +135,7 @@
                                         console.log("서버 응답 데이터:", result);
 
                                         if (result.success) {
-                                            alert("결제가 완료되었습니다. 매칭 신청이 완료되었습니다.");
+                                            alert("결제가 완료되었습니다. 매치 신청이 완료되었습니다.");
                                             window.location.reload();
                                         } else {
                                             alert("결제 처리에 실패했습니다. 관리자에게 문의해주세요.");
@@ -191,7 +191,7 @@
                                     console.log("서버 응답 데이터:", result);
 
                                     if (result.success) {
-                                        alert("결제가 완료되었습니다. 매칭 신청이 완료되었습니다.");
+                                        alert("결제가 완료되었습니다. 매치 신청이 완료되었습니다.");
                                         window.location.reload();
                                     } else {
                                         alert("결제 처리에 실패했습니다. 관리자에게 문의해주세요.");
@@ -224,7 +224,7 @@
 
 
     function closedMatch(){
-        alert("마감된 매칭입니다");
+        alert("마감된 매치입니다");
     }
 
     function limitedMatch(){
@@ -242,7 +242,7 @@
 
     function requestRefund() {
 
-        const userConfirmed = confirm("매칭 신청을 취소하시겠습니까?");
+        const userConfirmed = confirm("매치 신청을 취소하시겠습니까?");
 
         if (!userConfirmed) {
             return;

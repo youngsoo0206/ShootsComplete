@@ -21,6 +21,15 @@ public class Post {
     private String user_file;
     private String post_original; //첨부될 파일의 이름
     private String status;
+    private String report_status;
+
+    public String getReport_status() {
+        return report_status;
+    }
+
+    public void setReport_status(String report_status) {
+        this.report_status = report_status;
+    }
 
     private String is_secret;
 
