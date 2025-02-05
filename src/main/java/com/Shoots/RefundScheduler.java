@@ -1,12 +1,12 @@
 package com.Shoots;
 
-import com.Shoots.controller.RefundController;
 import com.Shoots.domain.Match;
 import com.Shoots.domain.Payment;
 import com.Shoots.service.MatchService;
 import com.Shoots.service.PaymentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +14,9 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -52,9 +54,21 @@ public class RefundScheduler {
 
             if (playerCount < playerMin) {
                 List<Payment> paymentList = paymentService.getPaymentListByMatchIdx(match.getMatch_idx());
+                List<Map<String, Object>> userList = paymentService.getUserPaymentListByMatchIdx(match.getMatch_idx());
 
                 for (Payment payment : paymentList) {
                     processRefund(payment);
+                }
+                for (Map<String, Object> user : userList) {
+                    sendRefundNotification(user, "cancel");
+                }
+            }
+
+            if (playerCount >= playerMin) {
+                List<Map<String, Object>> userList = paymentService.getUserPaymentListByMatchIdx(match.getMatch_idx());
+
+                for (Map<String, Object> user : userList) {
+                    sendRefundNotification(user, "confirm");
                 }
             }
         }
@@ -74,6 +88,28 @@ public class RefundScheduler {
             log.info("자동 환불 성공 : 결제 IDX {}", payment.getPayment_idx());
         } catch (Exception e) {
             log.error("자동 환불 실패 : 결제 IDX {}, 오류: {}", payment.getPayment_idx(), e.getMessage());
+        }
+    }
+
+    private void sendRefundNotification(Map<String, Object> user, String messageType) {
+        System.out.println("=============================================================");
+        log.info("매치 취소 및 확정 SMS 문자 전송");
+
+        String phoneNumber = (String) user.get("tel");
+        log.info("phoneNumber =  {}", phoneNumber);
+
+        String smsApiUrl = "http://localhost:1000/Shoots/test/send-many";
+
+        user.put("messageType", messageType);
+
+        List<Map<String, Object>> userList = new ArrayList<>();
+        userList.add(user);
+
+        try {
+            restTemplate.postForEntity(smsApiUrl, userList, String.class);
+            log.info("SMS 전송 성공");
+        } catch (Exception e) {
+            log.error("SMS 전송 실패 : 오류 = {}", e.getMessage());
         }
     }
 

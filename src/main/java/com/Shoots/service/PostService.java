@@ -16,6 +16,9 @@ public interface PostService {
 
     public void setCompleted(int post_idx);
 
+    //report_status block으로 바꾸기
+    void setBlock(int id);
+
 
 //    static void getCompleted(String status) {
 //    }

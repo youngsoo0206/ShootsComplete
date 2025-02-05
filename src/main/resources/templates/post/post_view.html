@@ -71,9 +71,10 @@
 <!--					<img th:src="@{/img/info.png}" alt="default profile" style="height:25px; width:25px;">-->
 <!--				</th:block>-->
 				<span class="user_id" th:text="${postdata.user_id}"/>
-				<th:block th:if="${postdata.user_id != session.id}">
-					<img src='../img/report.png' style="width:20px; height:20px; cursor: pointer" id="user_idReport">
-				</th:block>
+<!--				유저신고임 아래 주석은 -->
+<!--				<th:block th:if="${postdata.user_id != session.id}">-->
+<!--					<img src='../img/report.png' style="width:20px; height:20px; cursor: pointer" id="user_idReport">-->
+<!--				</th:block>-->
 				<span class="register_date" style="margin-left: 30px;" th:text="${postdata.register_date}"></span>
 				<span class="readcount" style="margin-left: 30px;">조회수&nbsp; <span th:text="${postdata.readcount}"></span></span>
 

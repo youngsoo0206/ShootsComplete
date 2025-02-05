@@ -29,6 +29,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void setBlock(int id) {
+        dao.setBlock(id);
+    }
+
+    @Override
     public int getListCount(String category, String search_word) {
         HashMap<String, Object> map = new HashMap<>();
         if(!search_word.isEmpty()){

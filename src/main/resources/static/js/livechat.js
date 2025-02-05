@@ -90,7 +90,7 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-
+    makeMessageElement(message);
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
@@ -102,42 +102,46 @@ function onMessageReceived(payload) {
         message.content = message.sender + ' left!';
     }
     else {
-        messageElement.classList.add('chat-message');
-
         var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
-        avatarElement.appendChild(avatarText);
+        avatarElement.appendChild(document.createTextNode(message.sender[0]));
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
-        messageElement.appendChild(avatarElement);
-
         var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
+        usernameElement.appendChild(document.createTextNode(message.sender));
 
-        var imageElement = document.createElement('img');
-        imageElement.src = '../img/card1.jpg';
-        imageElement.width = 100;
-        imageElement.height = 100;
-        imageElement.style.border = '2px solid #000';
-        imageElement.style.borderRadius = '10px';
+        messageElement.classList.add('chat-message');
+        messageElement.classList.add(message.sender === username ? 'my-message' : 'other-message');
+        messageElement.appendChild(avatarElement);
+        messageElement.appendChild(usernameElement);
     }
 
     var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);//message 본문
-
-//messageElement에다가 추가할거 추가하면됩니다.
-
-    textElement.appendChild(messageText);
+    textElement.appendChild(document.createTextNode(message.content));
 
     messageElement.appendChild(textElement);
-    messageElement.appendChild(imageElement);
-
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
+function makeMessageElement(message){
+    var avatarElement = document.createElement('i');
+    avatarElement.appendChild(document.createTextNode(message.sender[0]));
+    avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
+    var usernameElement = document.createElement('span');
+    usernameElement.appendChild(document.createTextNode(message.sender));
+
+    var textElement = document.createElement('p');
+    textElement.appendChild(document.createTextNode("asdsadad"));
+
+    var messageElement = document.createElement('li');
+    messageElement.classList.add('chat-message');
+    messageElement.classList.add(message.sender === username ? 'my-message' : 'other-message');
+    messageElement.appendChild(avatarElement);
+    messageElement.appendChild(usernameElement);
+    messageElement.appendChild(textElement);
+    messageArea.appendChild(messageElement);
+    messageArea.scrollTop = messageArea.scrollHeight;
+}
 
 function getAvatarColor(messageSender) {
     var hash = 0;

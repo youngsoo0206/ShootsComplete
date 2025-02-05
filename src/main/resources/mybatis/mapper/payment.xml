@@ -58,6 +58,17 @@
         select * from PAYMENT where MATCH_IDX = #{match_idx} and PAYMENT_STATUS = 'paid';
     </select>
 
+    <select id="getUserPaymentListByMatchIdx" resultType="java.util.HashMap">
+        SELECT p.*, r.*, b.business_name, m.*
+        FROM PAYMENT p
+                 JOIN regular_user r ON p.buyer_idx = r.idx
+                 JOIN business_user b ON p.seller_idx = b.business_idx
+                 JOIN MATCH_POST m ON p.match_idx = m.match_idx
+        WHERE p.MATCH_IDX = #{match_idx}
+          AND p.PAYMENT_STATUS = 'paid';
+    </select>
+
+
     <select id="getPlayerCountByMonth" resultType="map">
         SELECT
             MONTH(m.match_date) AS month,

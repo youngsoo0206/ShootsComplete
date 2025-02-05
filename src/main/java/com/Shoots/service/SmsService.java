@@ -2,6 +2,9 @@ package com.Shoots.service;
 
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+import java.util.Map;
+
 public interface SmsService {
     ResponseEntity<String> sendSms();
 
@@ -9,5 +12,5 @@ public interface SmsService {
 
     //MultipleDetailMessageSentResponse sendSmsMany(ArrayList<Message> messageList, boolean b, boolean b1);
 
-    ResponseEntity<String> sendMany();
+    ResponseEntity<String> sendMany(List<Map<String, Object>> userList);
 }

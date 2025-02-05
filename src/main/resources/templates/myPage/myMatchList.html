@@ -23,8 +23,8 @@
                 <tbody>
                     <tr th:each="m : ${list}">
                         <td th:text="${m.match_date}"></td>
-                        <td th:text="${m.match_time}"></td>
-                        <td><a th:href="@{/match/detail(id=${m.match_idx})}" th:text="${m.business_name}"></a></td>
+                        <td th:text="${m.match_time.substring(0,5)}"></td>
+                        <td><a th:href="@{/match/detail(match_idx=${m.match_idx})}" th:text="${m.business_name}"></a></td>
                         <td th:text="${m.address}"></td>
                         <td>[[${m.payment_amount}]]원</td>
                         <td th:text="${m.payment_date}"></td>
