@@ -256,55 +256,6 @@ $(document).on('click', '#titleReport', function() {
     modal.show();
 });
 
-$(document).on('click', '#user_idReport', function() {
-    const reported = $('.user_id').text();
-    const modalHtml = `
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modalTitle">${reported} 님의 댓글 신고</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <select name="title" required>
-                                                    <option disabled selected hidden>신고 사유를 선택해 주세요</option>
-                                                    <option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 글</option>
-                                                    <option value="갈등 조장하는 댓글">갈등 조장하는 글</option>
-                                                    <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
-                                                    <option value="도배 목적의 댓글">도배 목적의 글</option>
-                                                    <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 글</option>
-                                                </select><br><br>
-                                                추가 내용(100자 이내)<br>
-                                                <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 300px; height: 100px;"> </textarea>
-                                            </div>
-                                            
-                                            
-                                            
-                                            <div class="modal-footer">
-                                                <input type="hidden" id="modalReported" value="${reported}">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                
-                                                <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'USER'})">
-                                                    신고하기
-                                                </button>                                            
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               `
-    $('#exampleModal').remove();
-
-    var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = modalHtml;
-    document.body.appendChild(tempDiv.firstElementChild);
-
-    const modalElement = document.getElementById('exampleModal');
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
-});
-
 $(document).on('click', '.commentReportButton', function() {
     const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
     const dataCommentIdx= $(this).data('comment-idx');
@@ -363,26 +314,16 @@ $(document).on('click', '.commentReportButton', function() {
 }) //댓글 선택자 값 부여 함수 끝
 
 function ReportSubmitButton(paramData){
-    const reportContent = $('select[name="title"]').val() + $('#modalEtcContent').val();
     const category = paramData?.category ?? '';
-    var reqData = null;
-
-    if(category == "USER"){
-        reqData = {
-            reportedUser : String($('#modalReported').val()),
-            category : category,
-            content : String(reportContent),
-        };
-    }
-    else {
-        reqData = {
-            reportedUser : String($('#modalReported').val()),
-            category : category,
-            content : String(reportContent),
-            PostIdx : $('#post_idx')?.val() ?? 0,
-            CommentIdx : paramData?.commentIdx ?? 0
-        };
-    }
+    var reqData = {
+        reportedUser : String($('#modalReported').val()),
+        category : category,
+        content : $('select[name="title"]').val(),
+        detail : $('#modalEtcContent').val(),
+        PostIdx : $('#post_idx')?.val() ?? 0,
+        CommentIdx : paramData?.commentIdx ?? 0
+    };
+    alert(reqData.content);
     fetchReport(reqData);
 }
 

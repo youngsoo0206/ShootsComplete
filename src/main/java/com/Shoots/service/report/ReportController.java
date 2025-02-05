@@ -64,12 +64,12 @@ public class ReportController {
             return resp;
         }
 
-        report.setReporterUser((String) session.getAttribute("id"));
+        report.setReporter((String) session.getAttribute("id"));
         logger.info("insertReport 정보 : "+String.valueOf(report));
-            logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory())));
-        logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory())!= null));
+            logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporter(), report.getReportedUser(), report.getCategory())));
+        logger.info(String.valueOf(reportService.selectCheckReportDuplicate(report.getReporter(), report.getReportedUser(), report.getCategory())!= null));
 
-        if(reportService.selectCheckReportDuplicate(report.getReporterUser(), report.getReportedUser(), report.getCategory()) != null)
+        if(reportService.selectCheckReportDuplicate(report.getReporter(), report.getReportedUser(), report.getCategory()) != null)
             resp.put("msg", "이미 접수된 신고입니다.");
         else if(reportService.insertReport(report) == 1){
             resp.put("msg", report.getReportedUser() + "님의 신고가 접수되었습니다.");

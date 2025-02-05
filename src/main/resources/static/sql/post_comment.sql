@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS post_comment;
 CREATE TABLE post_comment (
               comment_idx INT PRIMARY KEY AUTO_INCREMENT,             -- 댓글 식별 번호 (자동 증가)
               post_idx INT NOT NULL,                                  -- 게시글 식별 번호
