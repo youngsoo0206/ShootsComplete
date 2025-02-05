@@ -79,9 +79,18 @@ function getList(state) {
                 </div>
             </div>` : '';
 
+
+          let Secret = Comment.isSecret === 'Y';
+          let postOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+          let commentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
+          let admin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+          let commentReport = !Secret || (Secret && (postOwner || commentOwner || admin));
+
+
 		//신고버튼은 댓글 작성자와 로그인한 사람이 같을시 안뜨도록 설정하기 위해 미리 선언함
 		// let reportButton = (Comment.user_id !== $("#loginid").val() && role === 'common') ? `
-        let reportButton = (Comment.user_id !== $("#loginid").val() && Comment.report_status === 'unblock')  ? `
+        let reportButton = (commentReport && Comment.report_status === 'unblock')  ? `
             <button class="commentReportButton" data-comment-idx="${Comment.comment_idx}" 
                     data-comment-content="${Comment.content}"
                     data-writer="${Comment.writer}" data-tidx="${Comment.writer}" 
@@ -178,16 +187,27 @@ function getList(state) {
                     </ul>
                 </div>
             </div>` : '';
-        
+
+
         //reportButton 답글쪽
-                reportButton = (childComment.user_id !== $("#loginid").val() && childComment.report_status === 'unblock') ? `
+
+                let secretC = childComment.isSecret === 'Y';
+                let postOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+                let commentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
+                let adminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+                let childReport = !secretC || (secretC && (postOwnerC || commentOwnerC || adminC));
+
+
+                reportButton = (childReport && childComment.report_status === 'unblock') ? `
             <button class="commentReportButton" data-comment-idx="${childComment.comment_idx}" 
                     data-comment-content="${childComment.content}"
                     data-writer="${childComment.writer}" data-tidx="${childComment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
-                
+
+
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
                     <div class='comment-nick-area'>
