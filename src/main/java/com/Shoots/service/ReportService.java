@@ -1,4 +1,4 @@
-package com.Shoots.service.report;
+package com.Shoots.service;
 
 import com.Shoots.domain.Report;
 
