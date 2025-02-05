@@ -197,6 +197,28 @@ button.accent {
     text-transform: uppercase;
 }
 
+.my-message{
+    text-align: right;
+    float: right;
+    background-color: #d1f7c4;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+    clear: both;
+}
+
+.other-message {
+    text-align: left;
+    float: left;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 60%;
+    clear: both;
+    word-wrap: break-word;
+}
+
 #chat-page .chat-message span {
     color: #333;
     font-weight: 600;
