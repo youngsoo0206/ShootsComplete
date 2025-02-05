@@ -147,7 +147,7 @@ function getList(state) {
         let formattedContent = childComment.content.replace(/(@[\w\u00C0-\u017F\uac00-\ud7af\u4e00-\u9fff.-]+)/g, "<span class='mention'>$1</span>");
 
 
-                let childCommentUnblock = (Comment.report_status !== 'unblock')
+                let childCommentUnblock = (childComment.report_status !== 'unblock')
                     ? '<span style="color: #DA0130;">차단된 댓글 입니다.</span>'
                     : formattedContent;
 
@@ -180,7 +180,7 @@ function getList(state) {
             </div>` : '';
         
         //reportButton 답글쪽
-                reportButton = (childComment.user_id !== $("#loginid").val()) ? `
+                reportButton = (childComment.user_id !== $("#loginid").val() && childComment.report_status === 'unblock') ? `
             <button class="commentReportButton" data-comment-idx="${childComment.comment_idx}" 
                     data-writer="${childComment.writer}" data-tidx="${childComment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
