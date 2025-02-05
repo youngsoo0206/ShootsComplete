@@ -25,8 +25,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report selectCheckReportDuplicate(String reporter, String reported, String category) {
-        return dao.selectCheckReportDuplicate(reporter, reported, category);
+    public Report selectCheckReportDuplicate(String reporter,int PostIdx, int CommentIdx, String category) {
+        return dao.selectCheckReportDuplicate(reporter, PostIdx, CommentIdx, category);
     }
 
     @Override
