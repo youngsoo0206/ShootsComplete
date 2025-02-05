@@ -42,7 +42,8 @@
                     </div>
                     <div th:if="${session.id != null}">
                         <a class="nav-link active" aria-current="page" th:if="${session.businessAccess}" th:href="@{/business/dashboard}">[[${session.id}]]님</a>
-                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null && session.role == 'common'}" th:href="@{/myPage/info}">[[${session.id}]]님</a>
+                        <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null && session.role == 'common'}" th:href="@{/myPage/info}">
+                            [[${session.id.length() > 15 ? #strings.substring(session.id, 0, 15) + '...' : session.id}]]님</a>
                         <a class="nav-link active" aria-current="page" th:if="${session.businessAccess == null && session.role == 'admin'}" th:href="@{/testAdmin}">[[${session.id}]]님</a>
                     </div>
                 </li>

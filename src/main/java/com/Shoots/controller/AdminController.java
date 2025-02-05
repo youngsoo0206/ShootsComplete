@@ -4,12 +4,10 @@ import java.io.File;
 
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
-import com.Shoots.service.report.ReportService;
-import com.Shoots.task.SendMail;
+import com.Shoots.service.ReportService;
 import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

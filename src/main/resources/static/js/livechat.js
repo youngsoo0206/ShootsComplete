@@ -125,13 +125,13 @@ function onMessageReceived(payload) {
 function makeMessageElement(message){
     var avatarElement = document.createElement('i');
     avatarElement.appendChild(document.createTextNode(message.sender[0]));
-    avatarElement.style['background-color'] = getAvatarColor(message.sender);
+    avatarElement.style['background-color'] = getAvatarColor("아바타임");
 
     var usernameElement = document.createElement('span');
-    usernameElement.appendChild(document.createTextNode(message.sender));
+    usernameElement.appendChild(document.createTextNode("나는 보낸이"));
 
     var textElement = document.createElement('p');
-    textElement.appendChild(document.createTextNode("asdsadad"));
+    textElement.appendChild(document.createTextNode("나는 텍스트엘레먼트"));
 
     var messageElement = document.createElement('li');
     messageElement.classList.add('chat-message');

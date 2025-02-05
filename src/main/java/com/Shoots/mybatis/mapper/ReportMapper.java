@@ -1,4 +1,4 @@
-package com.Shoots.service.report;
+package com.Shoots.mybatis.mapper;
 
 import com.Shoots.domain.Report;
 import org.apache.ibatis.annotations.Mapper;

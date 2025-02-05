@@ -115,22 +115,24 @@
           <thead>
           <tr>
             <th>신고자</th>
-            <th>신고 대상</th>
+            <th>신고 글</th>
             <th>분류</th>
             <th>신고 내용</th>
+            <th>신고 날짜</th>
             <th>차단</th>
           </tr>
           </thead>
           <tbody>
           <tr th:block th:each="r, interStat : ${list}">
-            <td th:text="${r.reporterUser}"></td>
+            <td th:text="${r.reporter}"></td>
             <td th:if="${r.category == 'POST'}"><a th:href="@{/post/detail(num=${r.PostIdx})}" th:text="${r.reportedUser}" ></a></td>
             <td th:if="${r.category == 'COMMENT'}" th:text="${r.reportedUser}"></td>
             <td th:text="${r.category}"></td>
             <td th:text="${r.content}"></td>
+            <td th:text="${#strings.substring(r.registryDate, 0, 10)}"></td>
             <td th:if="${r.category == 'POST'}">
               <span th:if="${r.p_status == 'unblock'}">
-                <a th:href="@{postBlock(id=${r.PostIdx})}" id ="pblock"><b class="pblock">차단</b></a>
+                <a th:href="@{postBlock(id=${r.PostIdx})}" id ="pblock" class="block"><b>차단</b></a>
               </span>
               <span th:if="${r.p_status == 'block'}">
                 <b class="pblocked">차단됨</b>
@@ -138,7 +140,7 @@
             </td>
             <td th:if="${r.category == 'COMMENT'}">
               <span th:if="${r.c_status == 'unblock'}">
-                <a th:href="@{commentBlock(id=${r.CommentIdx})}" id ="cblock"><b class="cblock">차단</b></a>
+                <a th:href="@{commentBlock(id=${r.CommentIdx})}" id ="cblock" class="block"><b>차단</b></a>
               </span>
               <span th:if="${r.c_status == 'block'}">
                 <b class="cblocked">차단됨</b>

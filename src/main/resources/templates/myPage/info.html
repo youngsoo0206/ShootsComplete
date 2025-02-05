@@ -28,10 +28,33 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             background-color: #115FFC;
         }
+
         .update:hover{
             background-color: white;
             color: #115FFC;
             border: 1.5px solid #115FFC;
+        }
+
+        #deleteUser{
+            width: 110px;
+            height: 35px;
+            padding: 0;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #DA0130;
+        }
+
+        #deleteUser:hover{
+            background-color: white;
+            color: #DA0130;
+            border: 1.5px solid #DA0130;
         }
     </style>
 
@@ -135,6 +158,10 @@
         </table>
 
         <a th:href="@{updateUser(id=${user.user_id})}" type="button" class="btn btn-primary update">정보수정</a>
+        <form id="deleteUserForm" th:action="@{'deleteRegularUser?idx=' +${session.idx}}" method="post">
+            <input type="hidden" th:value="${session.idx}">
+            <button class="btn btn-danger" id="deleteUser">회원탈퇴</button>
+        </form>
 
     </div>
     </div>
