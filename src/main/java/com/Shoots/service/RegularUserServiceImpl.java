@@ -198,6 +198,9 @@ public class RegularUserServiceImpl implements RegularUserService {
         return genderCount;
     }
 
-
+    @Override
+    public int deleteRegularUser(int idx) {
+        return regularUserMapper.deleteRegularUser(idx);
+    }
 }
 
