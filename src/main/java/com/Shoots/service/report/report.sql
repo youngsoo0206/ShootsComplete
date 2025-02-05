@@ -28,11 +28,11 @@ SHOW TABLE STATUS WHERE Name = 'report';
 SHOW FULL COLUMNS FROM report;
 
 
-insert into report(reporterUser, reportedUser, category, PostIdx, CommentIdx)
+insert into report(reporter, reportedUser, category, PostIdx, CommentIdx)
 values('admin', 'userA', 'USER', 0, 0);
 
 select * from report
-where reporterUser='admin';
+where reporter='admin';
 # 신고 누름 > DB 등록
 # List 조회시 if board.username == List foreach(reportUser) 면 List 안뜸
 
