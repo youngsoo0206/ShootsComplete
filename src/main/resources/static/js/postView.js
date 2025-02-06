@@ -31,7 +31,7 @@ function getList(state) {
       if (rdata.commentlist.length) {
       rdata.commentlist.forEach(Comment => {
 
-        let isSecret = Comment.isSecret === 'Y'; //비밀 댓글
+        let isSecret = Comment.is_secret === 'Y'; //비밀 댓글
         let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
         let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
         let isAdmin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
@@ -81,18 +81,19 @@ function getList(state) {
 
         //reportButton 댓글쪽
 
-          let Secret = Comment.isSecret === 'Y';
+          let Secret = Comment.is_secret === 'Y';
           let postOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
           let commentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
           let admin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
 
-          //신고 버튼이 보이는 사람
+          // 가독성을 위해 풀어쓰기?
+          //댓글 신고 버튼이 보이는 조건1 (commentReport)
           let commentReport = (!Secret && !commentOwner) || (Secret && (!commentOwner && (postOwner || admin)));
+          // 일반댓글인경우 - 로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+          // 비밀댓글인 경우 - 로그인한 사람 아이디와 댓글 작성자의 아이디가 다르고,(and) 로그인한 사람 아이디와 게시글 작성자의 아이디가 같거나(or) 로그인한 사람 아이디가 관리자일때
 
-
-
-          //신고버튼은 댓글 작성자와 로그인한 사람이 같을시 안뜨도록 설정하기 위해 미리 선언함
-		// let reportButton = (Comment.user_id !== $("#loginid").val() && role === 'common') ? `
+          //댓글 신고 버튼이 보이는 조건2 (Comment.report_status === 'unblock') / unblock: 댓글상태가 차단이 아닌경우
+          // 신고버튼이 보이는 조건1,조건2 모두 해당하는 경우 >> 신고버튼이 보임
         let reportButton = (commentReport && Comment.report_status === 'unblock')  ? `
             <button class="commentReportButton" data-comment-idx="${Comment.comment_idx}" 
                     data-comment-content="${Comment.content}"
@@ -134,7 +135,7 @@ function getList(state) {
         // 답글 처리: 부모 댓글에 대한 답글을 출력
         rdata.commentlist.forEach(childComment => {
 
-            let isSecretC = childComment.isSecret === 'Y';
+            let isSecretC = childComment.is_secret === 'Y';
             let isPostOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
             let isCommentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
             let isAdminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
@@ -194,23 +195,26 @@ function getList(state) {
 
         //reportButton 답글쪽
 
-                let secretC = childComment.isSecret === 'Y';
+                let secretC = childComment.is_secret === 'Y';
                 let postOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
-                let commentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
+                let commentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 댓글(답글) 작성자의 아이디가 같을때
                 let adminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
 
-                //신고 버튼이 보이는 사람
+                // 가독성을 위해 풀어쓰기?
+                //답글 신고 버튼이 보이는 조건1 (childReport)
                 let childReport = (!secretC && !commentOwnerC) || (secretC && (!commentOwnerC && (postOwnerC || adminC)));
+                // 일반답글인경우 - 로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+                // 비밀답글인 경우 - 로그인한 사람 아이디와 답글 작성자의 아이디가 다르고,(and) 로그인한 사람 아이디와 게시글 작성자의 아이디가 같거나(or) 로그인한 사람 아이디가 관리자일때
 
-
-                reportButton = (childReport && childComment.report_status === 'unblock') ? `
+                //답글 신고 버튼이 보이는 조건2 (childComment.report_status === 'unblock') / unblock: 댓글상태가 차단이 아닌경우
+                // 신고버튼이 보이는 조건1,조건2 모두 해당하는 경우 >> 신고버튼이 보임
+            reportButton = (childReport && childComment.report_status === 'unblock') ? `
             <button class="commentReportButton" data-comment-idx="${childComment.comment_idx}" 
                     data-comment-content="${childComment.content}"
                     data-writer="${childComment.writer}" data-tidx="${childComment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
-
 
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
@@ -514,7 +518,7 @@ $(function() {
 
 
       // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-      const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+      const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
 
       $.ajax({
@@ -524,7 +528,7 @@ $(function() {
         content: content,
           writer: $("#idx").val(), // 댓글 작성자 ID
         post_idx: $("#post_idx").val(), // 게시글 ID
-          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+          is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
 
         comment_ref_id: null // 원본 댓글은 comment_ref_id가 null
       },
@@ -564,13 +568,13 @@ $(function() {
 		const comment_idx = $(this).attr('data-id');
 
         // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+        const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
 		$.ajax({
 			url:'../comment/update',
 			data:{comment_idx:comment_idx,
                 content:content,
-                isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+                is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
             },
             type: 'post',
 			success:function(rdata){
@@ -608,7 +612,7 @@ $(function() {
 		}
 
         // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+        const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
     $.ajax({
       type: 'post',
@@ -618,7 +622,7 @@ $(function() {
         writer: $("#idx").val(),
         content: content,
         post_idx: $("#post_idx").val(),
-          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+          is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
         comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       },
       success: function(rdata) {
