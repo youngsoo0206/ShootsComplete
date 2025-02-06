@@ -22,4 +22,9 @@
         ORDER BY sent_at ASC
     </select>
 
+    <insert id="join_user" parameterType="map">
+        INSERT INTO chat_participants (chat_room_idx, user_idx)
+        VALUES (#{chat_room_idx}, #{user_idx});
+    </insert>
+
 </mapper>

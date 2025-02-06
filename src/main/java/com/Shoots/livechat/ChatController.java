@@ -34,6 +34,22 @@ public class ChatController {
     }
 
     @ResponseBody
+    @PostMapping(value = "/join_chat_room")
+    public Map<String, Object> join_chat_room(@RequestBody chat_room_log room_log) {
+        logger.info(room_log.toString());
+
+        Map<String, Object> resp = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("chat_room_idx", room_log.getChat_room_idx());
+        map.put("content", room_log.getContent());
+        map.put("sender", room_log.getSender());
+        chatService.insert_chat_log(map);
+
+        resp.put("status", "success");
+        return resp;
+    }
+
+    @ResponseBody
     @PostMapping(value = "/makelog")
     public Map<String, Object> makelog(@RequestBody chat_room_log room_log) {
         logger.info(room_log.toString());

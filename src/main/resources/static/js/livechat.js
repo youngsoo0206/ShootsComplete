@@ -91,11 +91,11 @@ function onMessageReceived(payload) {
 
     if(message.type === 'JOIN') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+        message.content = message.sender + ' 님이 참여했습니다.';
     }
     else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+        message.content = message.sender + ' 님이 떠났습니다.';
     }
     else {
         var avatarElement = document.createElement('i');
@@ -176,9 +176,9 @@ function fetchInsert(reqData) {
 };
 
 async function loadChat() {
-    let datas = get_chat_log({chat_room_idx : '1'}); //datas = chat_log 도메인클래스의 리스트
+    let datas = await get_chat_log({chat_room_idx : '1'}); //datas = chat_log 도메인클래스의 리스트
+    console.log('datas : ' + datas);
     datas.forEach(data =>{
-        console.log('data : ' + data);
         makeMessageElement(data);
     });
 }
@@ -187,7 +187,7 @@ async function get_chat_log(paramData){
     var reqData = {
         chat_room_idx : paramData?.chat_room_idx
     };
-    return fetchGetChat(reqData);
+    return await fetchGetChat(reqData);
 }
 
 async function fetchGetChat(reqData) {
@@ -220,6 +220,7 @@ async function fetchGetChat(reqData) {
             throw new Error('Network response was not ok');
 
         const datas = await response.json();  // 비동기적으로 데이터 받아오기
+        console.log('Received datas from server:', datas);
         return datas;  // 받아온 데이터를 반환
     }
     catch (error) {

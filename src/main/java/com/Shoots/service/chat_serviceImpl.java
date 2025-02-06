@@ -6,6 +6,7 @@ import com.Shoots.mybatis.mapper.chat_mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,12 @@ public class chat_serviceImpl implements chat_service {
         chat_room chatRoom = new chat_room();
         dao.make_chat_room(chatRoom); // 채팅방 생성. chatRoom domain에 매핑
         return chatRoom.getChat_room_idx(); 
+    }
+
+    public void join_chat_room(List<Integer> user_idx_list){
+        int chat_room_idx = create_chat_room();
+        for (int user_idx : user_idx_list)
+            dao.join_user(chat_room_idx, user_idx);
     }
 
     @Override
