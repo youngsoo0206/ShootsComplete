@@ -9,6 +9,8 @@
 <body>
     <div class="container">
         <th:block th:if="${list > 0}">
+        <p style="caption-side: top; font-size: 20px; margin-left: 5px; color: #6c757d">매치 별 고객리스트</p>
+        <div class="scroll">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <th:block th:each="match : ${matchList}">
@@ -89,7 +91,7 @@
                 </th:block>
             </div>
         </div>
-        </th:block>
+        </div>
         <th:block th:if="${list == 0}">
             <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치리스트와 고객리스트가 존재하지 않습니다 </p></div>
         </th:block>

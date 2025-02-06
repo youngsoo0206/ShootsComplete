@@ -10,8 +10,8 @@
 <body>
     <div class="container">
         <div style="margin-top: 100px; position: relative; border: 1px solid lightgray;; border-radius: 10px; text-align: right">
-            <img th:src="@{/img/card2.jpg}" style="width: 70%; height: 230px; object-fit: cover; border-radius: 0 10px 10px 0;">
-            <div class="top-img-p">
+            <img th:src="@{/img/card2.jpg}" style="width: 65%; height: 230px; object-fit: cover; border-radius: 0 10px 10px 0;">
+            <div class="top-img-p" style="width: 35%; padding-left: 5%">
                 <b>슛매치</b> <br>
                 <span style="font-size: 16px;">원하는 시간과 장소의 풋살장을 선택하세요!
                     <span style="font-size: 12px">⚽️</span><span style="font-size: 25px"> 🏃🏻‍♀️🏃🏻</span> <br>
@@ -56,7 +56,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <th:block th:with="num=${listcount - (page - 1) * limit}">
                         <th:block th:each="match : ${matchList}">
                             <tr>
                                 <td><div th:text="${match.formattedDate}"></div></td>
@@ -109,7 +108,6 @@
                                 </td>
                             </tr>
                         </th:block>
-                        </th:block>
                     </tbody>
                 </table>
             </th:block>
@@ -117,7 +115,6 @@
                 <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치글이 존재하지 않습니다 </p></div>
             </th:block>
         </div>
-
         <div class="btnD" th:if="${session.role == 'business'}">
             <button class="custom-btn btn-15" id="matchForm">매치 글 작성</button>
         </div>

@@ -36,4 +36,5 @@ public interface MatchService {
     Double getAvgPrice();
 
     Double getAvgPriceByIdx(Integer business_idx);
+
 }

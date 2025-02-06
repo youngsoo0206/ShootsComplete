@@ -43,4 +43,6 @@ public interface MatchMapper {
     Double getAvgPrice();
 
     Double getAvgPriceByIdx(Integer business_idx);
+
+    List<Match> getMatchListByIdForParticipants(HashMap<String, Object> map);
 }
