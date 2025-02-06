@@ -1,32 +1,30 @@
-CREATE TABLE PAYMENT (
-     PAYMENT_IDX INT AUTO_INCREMENT PRIMARY KEY,
-     MATCH_IDX INT NOT NULL,
-     SELLER_IDX INT NOT NULL,
-     BUYER_IDX INT NOT NULL,
-     PAYMENT_METHOD VARCHAR(10) NOT NULL,
-     PAYMENT_AMOUNT DECIMAL(10, 2) NOT NULL,
-     PAYMENT_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     PAYMENT_STATUS VARCHAR(10) NOT NULL,
-     MERCHANT_UID VARCHAR(30) NOT NULL,
-     IMP_UID VARCHAR(30) NOT NULL
+CREATE TABLE payment (
+     payment_idx INT AUTO_INCREMENT PRIMARY KEY,
+     match_idx INT NOT NULL,
+     seller_idx INT NOT NULL,
+     buyer_idx INT NOT NULL,
+     payment_method VARCHAR(10) NOT NULL,
+     payment_amount DECIMAL(10, 2) NOT NULL,
+     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     payment_status VARCHAR(10) NOT NULL,
+     merchant_uid VARCHAR(30) NOT NULL,
+     imp_uid VARCHAR(30) NOT NULL
 );
 
 #                          FOREIGN KEY (match_idx) REFERENCES match_post(match_idx),  -- 외래 키 제약
 #                          FOREIGN KEY (buyer_idx) REFERENCES regular_user(idx),  -- 외래 키 제약
 #                          FOREIGN KEY (seller_idx) REFERENCES business_user(business_idx)  -- 외래 키 제약
 
-select * from PAYMENT;
+select * from payment where match_idx = 24;
 
-
-delete from PAYMENT where PAYMENT_IDX =
-                          99;
-
-insert into PAYMENT (
-    MATCH_IDX, SELLER_IDX, BUYER_IDX, PAYMENT_METHOD, PAYMENT_AMOUNT,
-    PAYMENT_DATE, PAYMENT_STATUS, MERCHANT_UID, IMP_UID
+insert into payment (
+    match_idx, seller_idx, buyer_idx, payment_method, payment_amount,
+    payment_date, payment_status, merchant_uid, imp_uid
 )
 values (27, 1, 4, 'card', 1000,
                    CURRENT_TIMESTAMP, 'paid', 'merchant_27_1', 'imp_111'
        );
 
-select * from PAYMENT where PAYMENT_STATUS='paid' and SELLER_IDX = 1;
+select * from payment where payment_status='paid' and seller_idx = 1;
+
+

@@ -3,8 +3,8 @@
 <mapper namespace="com.Shoots.mybatis.mapper.PaymentHistoryMapper">
 
     <insert id="insertHistory" parameterType="Payment">
-        insert into PAYMENT_HISTORY
-            (PAYMENT_IDX, MERCHANT_UID, PAYMENT_STATUS, ACTION_DATE)
+        insert into payment_history
+            (payment_idx, merchant_uid, payment_status, action_date)
         values (#{payment_idx}, #{merchant_uid}, #{payment_status}, CURRENT_TIMESTAMP);
     </insert>
 

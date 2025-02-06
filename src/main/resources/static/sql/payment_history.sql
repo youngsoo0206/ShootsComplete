@@ -1,9 +1,9 @@
-CREATE TABLE PAYMENT_HISTORY (
-     PAYMENT_HISTORY_IDX INT AUTO_INCREMENT PRIMARY KEY,
-     PAYMENT_IDX INT NOT NULL,
-     PAYMENT_STATUS VARCHAR(10) NOT NULL,
-     ACTION_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     MERCHANT_UID VARCHAR(30) NOT NULL
+CREATE TABLE payment_history (
+     payment_history_idx INT AUTO_INCREMENT PRIMARY KEY,
+     payment_idx INT NOT NULL,
+     payment_status VARCHAR(10) NOT NULL,
+     action_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     merchant_uid VARCHAR(30) NOT NULL
 );
 
 
@@ -14,16 +14,14 @@ CREATE TRIGGER update_payment_idx_in_history
     AFTER INSERT ON PAYMENT
     FOR EACH ROW
 BEGIN
-    UPDATE PAYMENT_HISTORY
-    SET PAYMENT_IDX = NEW.PAYMENT_IDX
-    WHERE MERCHANT_UID = NEW.MERCHANT_UID;
+    UPDATE payment_history
+    SET payment_idx = NEW.payment_idx
+    WHERE merchant_uid = NEW.merchant_uid;
 END $$
 
 DELIMITER ;
 
 SHOW TRIGGERS;
 
-select * from PAYMENT_HISTORY;
-
-delete from PAYMENT_HISTORY where PAYMENT_HISTORY_IDX = 138;
+select * from payment_history;
 
