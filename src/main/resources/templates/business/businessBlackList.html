@@ -17,6 +17,7 @@
 
         <div id="blacklistContainer">
             <th:block th:if="${blackListSize > 0}">
+                <div class="scroll">
                 <table class="table">
                     <caption style="caption-side: top; font-size: 20px; margin-left: 5px">전체 차단 기록</caption>
                     <thead>
@@ -58,6 +59,7 @@
                     </th:block>
                     </tbody>
                 </table>
+                </div>
             </th:block>
 
             <th:block th:if="${blackListSize == 0}">
