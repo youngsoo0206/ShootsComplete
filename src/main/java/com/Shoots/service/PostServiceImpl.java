@@ -67,6 +67,11 @@ public class PostServiceImpl implements PostService {
         return dao.getPostCount();
     }
 
+    @Override
+    public List<Map<String, Object>> getCategoryCount() {
+        return dao.getCategoryCount();
+    }
+
 
     @Override
     public List<Post> getPostList(int page, int limit, String category, String status, String search_word) {

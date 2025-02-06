@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -139,10 +140,10 @@ public class MyPageController {
     @GetMapping(value = "/myMatchList")
     public ModelAndView myMatchList(ModelAndView mv, HttpServletRequest request) {
         Integer id = (Integer) request.getSession().getAttribute("idx");
-        List<Payment> list = paymentService.userPaymentList(id);
+        List<HashMap<String, Object>> list = paymentService.userPaymentList(id);
         int count = paymentService.getPaymentCount(id);
 
-
+        System.out.println(list);
         mv.setViewName("myPage/myMatchList");
         mv.addObject("list", list);
         mv.addObject("count", count);

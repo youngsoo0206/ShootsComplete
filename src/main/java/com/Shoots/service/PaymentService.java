@@ -3,6 +3,7 @@ package com.Shoots.service;
 import com.Shoots.domain.Payment;
 import com.Shoots.domain.RegularUser;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public interface PaymentService {
 
     List<Integer> getPlayerCountByMonth();
 
-    List<Payment> userPaymentList(int id);
+    List<HashMap<String, Object>> userPaymentList(int id);
 
     int getPaymentCount(int id);
 

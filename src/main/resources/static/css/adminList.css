@@ -202,3 +202,83 @@ h1{
 .link:hover{
     color: #65A30D;
 }
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-control .search-bar{
+    width: auto;
+    max-width: 100px;
+}
+.form-control{
+    width: 40%;
+}
+
+
+
+.search{
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 95px;
+    height: 35px;
+    padding: 0;
+    border: none;
+    background-color: #FDBA01;
+    text-align: center;
+    display: inline-block;
+}
+
+.search:hover{
+    background-color: white;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
+}
+
+.common{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #65A30D;
+    text-align: center;
+}
+
+.common:hover{
+    background-color: white;
+    color: #65A30D;
+    border: 1.5px solid #65A30D;
+}
+
+.admin{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #FDBA01;
+    text-align: center;
+}
+
+.admin:hover{
+    background-color: white;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
+}

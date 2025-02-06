@@ -3,6 +3,7 @@ package com.Shoots.mybatis.mapper;
 import com.Shoots.domain.Payment;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +25,12 @@ public interface PaymentMapper {
 
     List<Map<String, Object>> getPlayerCountByMonth();
 
-    List<Payment> userPaymentList(int id); // 사용자 id로 결제(매칭) 기록을 가져온다
+    List<HashMap<String, Object>> userPaymentList(int id); // 사용자 id로 결제(매칭) 기록을 가져온다
 
     int getPaymentCount(int id);
 
     List<Map<String, Object>> getPlayerCountByMonth(Integer business_idx);
 
     List<Map<String, Object>> getUserPaymentListByMatchIdx(int match_idx);
+
 }
