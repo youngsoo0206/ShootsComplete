@@ -87,9 +87,10 @@
 		<tr>
 			<td th:if="${not #strings.isEmpty(postdata.post_file)}" colspan="2">
 				<form method="post" th:action="@{down}" >
+					<img th:src="@{/img/down.png}" width="10px">
 					<input type="hidden" th:value="${postdata.post_file}" th:name="filename">
 					<input type="hidden" th:value="${postdata.post_original}" th:name="original">
-					<input type="submit" th:value="${postdata.post_original}">
+					<input type="submit" th:value="${postdata.post_original}" style="border:none; background-color: white;">
 				</form>
 			</td>
 		</tr>
