@@ -97,6 +97,7 @@
                  join business_user b on p.seller_idx = b.business_idx
                  join match_post m on p.match_idx = m.match_idx
             where p.buyer_idx = #{id}
+        order by payment_idx desc
     </select>
 
     <select id="getPaymentCount">

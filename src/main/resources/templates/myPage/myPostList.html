@@ -18,13 +18,16 @@
                         <th>조회수</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="p : ${list}">
+                <tbody th:each="p : ${list}">
+                    <tr th:if="${p.report_status.equals('unblock')}">
                         <td><a th:href="@{/post/detail(num=${p.post_idx})}" th:text="${p.title}"></a> <span th:text="'  [' + ${p.commentCount} + ']'" style="color:orange"></span></td>
                         <td th:if="${p.category.equals('A')}">자유</td>
                         <td th:if="${p.category.equals('B')}">중고</td>
                         <td th:text="${p.register_date.substring(0, 10)}"></td>
                         <td th:text="${p.readcount}"></td>
+                    </tr>
+                    <tr th:if="${p.report_status.equals('block')}">
+                        <td colspan="4" style="text-align: center; color:  #DA0130">신고된 게시글 입니다!</td>
                     </tr>
                 </tbody>
             </table>

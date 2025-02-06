@@ -34,47 +34,7 @@
     })
   </script>
 
-  <style>
-    .common{
-      text-decoration: none;
-      color: white;
-      font-size: 15px;
-      border-radius: 20px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      width: 60px;
-      height: 25px;
-      padding: 0;
-      border: none;
-      background-color: #65A30D;
-      text-align: center;
-    }
 
-    .common:hover{
-      background-color: white;
-      color: #65A30D;
-      border: 1.5px solid #65A30D;
-    }
-
-    .admin{
-      text-decoration: none;
-      color: white;
-      font-size: 15px;
-      border-radius: 20px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      width: 60px;
-      height: 25px;
-      padding: 0;
-      border: none;
-      background-color: #FDBA01;
-      text-align: center;
-    }
-
-    .admin:hover{
-      background-color: white;
-      color: #FDBA01;
-      border: 1.5px solid #FDBA01;
-    }
-  </style>
 
 </head>
 <body class="sb-nav-fixed">
@@ -163,9 +123,9 @@
     <div class="container">
       <div th:if="${listcount > 0}">
         <form th:action="@{userList}">
-          <div class="input-group">
-            <button class="btn btn-primary search" type="submit">검색</button>
+          <div class="search-bar" style="display: flex; justify-content: center; gap: 20px">
             <input name="search_word" type="text" class="form-control" placeholder="이름 또는 아이디" th:value="${search_word}">
+            <button class="custom-btn-top btn-15-top search" type="submit">검색</button>
           </div>
         </form>
         <table class="table">

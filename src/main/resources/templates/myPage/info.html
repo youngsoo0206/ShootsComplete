@@ -8,55 +8,12 @@
     <meta name="author" content="" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/userDashboard.css}" rel="stylesheet" />
+    <link th:href="@{/css/userInfo.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>마이페이지</title>
     <script th:src="@{/js/jquery-3.7.1.js}"></script>
-    <style>
-        .update{
-            width: 110px;
-            height: 35px;
-            padding: 0;
-            border: none;
-            color: white;
-            font-size: 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            background-color: #115FFC;
-        }
 
-        .update:hover{
-            background-color: white;
-            color: #115FFC;
-            border: 1.5px solid #115FFC;
-        }
-
-        #deleteUser{
-            width: 110px;
-            height: 35px;
-            padding: 0;
-            border: none;
-            color: white;
-            font-size: 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            background-color: #DA0130;
-        }
-
-        #deleteUser:hover{
-            background-color: white;
-            color: #DA0130;
-            border: 1.5px solid #DA0130;
-        }
-    </style>
 
 </head>
 <body class="sb-nav-fixed">
@@ -119,9 +76,9 @@
     <!--  메인  -->
     <div id="layoutSidenav_content">
 
-    <div class="container" style="width:50%">
-        <h1 style="text-align: center; margin-top: 30px; margin-bottom: 20px">내 정보</h1>
-        <table class="table" style="text-align: center">
+    <div class="container" style="width:50%; margin-top:30px">
+        <table class="table info" style="text-align: center">
+            <caption style="caption-side: top; font-size: 20px; margin-left: 5px">내 정보</caption>
             <tr>
                 <th>아이디</th>
                 <td th:text="${user.user_id}"></td>
@@ -157,11 +114,14 @@
             </tr>
         </table>
 
-        <a th:href="@{updateUser(id=${user.user_id})}" type="button" class="btn btn-primary update">정보수정</a>
-        <form id="deleteUserForm" th:action="@{'deleteRegularUser?idx=' +${session.idx}}" method="post">
-            <input type="hidden" th:value="${session.idx}">
-            <button class="btn btn-danger" id="deleteUser">회원탈퇴</button>
-        </form>
+        <div class="button-container">
+            <a th:href="@{updateUser(id=${user.user_id})}" type="button" class="btn btn-primary update">정보수정</a>
+            <form id="deleteUserForm" th:action="@{'deleteRegularUser?idx=' +${session.idx}}" method="post">
+                <input type="hidden" th:value="${session.idx}">
+                <button class="btn btn-danger" id="deleteUser">회원탈퇴</button>
+            </form>
+        </div>
+
 
     </div>
     </div>

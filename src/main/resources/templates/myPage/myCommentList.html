@@ -18,13 +18,16 @@
                         <th>작성일</th>
                     </tr>
                 </thead>
-                <tbody>
-                <tr th:each="c : ${list}">
+                <tbody th:each="c : ${list}">
+                <tr th:if="${c.report_status.equals('unblock')}">
                     <td th:text="${c.content}"></td>
                     <td><a th:href="@{/post/detail(num=${c.post_idx})}" th:text="${c.post_content}"></a> </td>
                     <td th:if="${c.category.equals('A')}">자유</td>
                     <td th:if="${c.category.equals('B')}">중고</td>
                     <td th:text="${c.register_date.substring(0, 10)}"></td>
+                </tr>
+                <tr th:if="${c.report_status.equals('block')}">
+                    <td colspan="4" style="text-align: center; color: #DA0130">신고된 댓글 입니다!</td>
                 </tr>
                 </tbody>
             </table>

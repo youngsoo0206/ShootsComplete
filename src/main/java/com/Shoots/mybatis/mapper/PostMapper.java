@@ -58,4 +58,7 @@ public interface PostMapper {
 
     //admin에서 report_status를 block으로 update해준다
     void setBlock(int id);
+
+    //admin chart용 카테고리별 게시글 개수
+    List<Map<String, Object>> getCategoryCount();
 }

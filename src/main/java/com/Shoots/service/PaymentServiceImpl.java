@@ -5,10 +5,7 @@ import com.Shoots.mybatis.mapper.PaymentMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -83,7 +80,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<Payment> userPaymentList(int id) {
+    public List<HashMap<String, Object>> userPaymentList(int id) {
         return dao.userPaymentList(id);
     }
 
