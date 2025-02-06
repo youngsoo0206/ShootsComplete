@@ -38,9 +38,6 @@ function connect(event) {
 }
 
 
-function loadChat() {
-}
-
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + topicName, onMessageReceived);
@@ -90,20 +87,19 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    makeMessageElement(message);
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+        message.content = message.sender + ' 님이 참여했습니다.';
     }
     else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+        message.content = message.sender + ' 님이 떠났습니다.';
     }
     else {
         var avatarElement = document.createElement('i');
-        avatarElement.appendChild(document.createTextNode(message.sender[0]));
+        avatarElement.appendChild(document.createTextNode(message.sender[0])); //sender의 맨 첫글자
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
         var usernameElement = document.createElement('span');
@@ -121,17 +117,18 @@ function onMessageReceived(payload) {
     messageElement.appendChild(textElement);
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
+    insert_chat_log({'sender' : message.sender, 'content' : message.content});
 }
 function makeMessageElement(message){
     var avatarElement = document.createElement('i');
     avatarElement.appendChild(document.createTextNode(message.sender[0]));
-    avatarElement.style['background-color'] = getAvatarColor("아바타임");
+    avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
     var usernameElement = document.createElement('span');
-    usernameElement.appendChild(document.createTextNode("나는 보낸이"));
+    usernameElement.appendChild(document.createTextNode(message.sender));
 
     var textElement = document.createElement('p');
-    textElement.appendChild(document.createTextNode("나는 텍스트엘레먼트"));
+    textElement.appendChild(document.createTextNode(message.content));
 
     var messageElement = document.createElement('li');
     messageElement.classList.add('chat-message');
@@ -151,5 +148,84 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
+function insert_chat_log(paramData){
+    var reqData = {
+        chat_room_idx : '1',
+        sender : paramData?.sender,
+        content : paramData?.content
+    };
+    fetchInsert(reqData);
+}
+
+function fetchInsert(reqData) {
+    //fetch start
+    //category in ('POST','COMMENT','USER')
+    fetch('/Shoots/livechat/makelog',{
+        method:'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(reqData)
+    })
+        .then(resp => resp.json())
+        .then(data => {
+        })
+        .catch(error => alert("에러 뜸 : " + error))
+    //fetch end
+};
+
+async function loadChat() {
+    let datas = await get_chat_log({chat_room_idx : '1'}); //datas = chat_log 도메인클래스의 리스트
+    console.log('datas : ' + datas);
+    datas.forEach(data =>{
+        makeMessageElement(data);
+    });
+}
+
+async function get_chat_log(paramData){
+    var reqData = {
+        chat_room_idx : paramData?.chat_room_idx
+    };
+    return await fetchGetChat(reqData);
+}
+
+async function fetchGetChat(reqData) {
+    // //fetch start
+    // //category in ('POST','COMMENT','USER')
+    // fetch('/Shoots/livechat/getlog',{
+    //     method:'POST',
+    //     headers: {
+    //         'Content-Type' : 'application/json'
+    //     },
+    //     body : JSON.stringify(reqData)
+    // })
+    //     .then(resp => resp.json())
+    //     .then(datas => {
+    //         return datas;
+    //     })
+    //     .catch(error => alert("에러 뜸 : " + error))
+    // //fetch end
+
+    try {
+        const response = await fetch('/Shoots/livechat/getlog', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqData)
+        });
+
+        if (!response.ok)
+            throw new Error('Network response was not ok');
+
+        const datas = await response.json();  // 비동기적으로 데이터 받아오기
+        console.log('Received datas from server:', datas);
+        return datas;  // 받아온 데이터를 반환
+    }
+    catch (error) {
+        alert("에러 뜸 : " + error);
+    }
+};
 
 
