@@ -165,4 +165,5 @@
         delete from regular_user
         where idx = #{idx}
     </delete>
+
 </mapper>

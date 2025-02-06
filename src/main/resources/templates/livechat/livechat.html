@@ -34,14 +34,14 @@
                     <input type="text" id="name" placeholder="Nickname" autocomplete="off" class="form-control" />
                 </div>
                 <div class="form-group">
-                    채팅방 이름? <input type="text" id="chatRoomNumber" value="1">
-                </div>
-                <div class="form-group">
                     <button type="submit" class="accent username-submit">Connect</button>
                 </div>
             </form>
         </div>
+        <input type="hidden" id="session_id" th:value="${session.id}">
+        <input type="hidden" id="chatRoomNumber" th:value="${chatRoomNumber}">
     </div>
+
 <!--  usernmae 입력 end -->
     <div id="chat-page" class="hidden">
         <div class="chat-container">
