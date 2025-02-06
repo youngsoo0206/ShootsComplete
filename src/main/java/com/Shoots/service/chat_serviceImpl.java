@@ -23,10 +23,14 @@ public class chat_serviceImpl implements chat_service {
         return chatRoom.getChat_room_idx(); 
     }
 
-    public void join_chat_room(List<Integer> user_idx_list){
-        int chat_room_idx = create_chat_room();
+    public void join_chat_room(List<Integer> user_idx_list, int chat_room_idx, int match_idx){
         for (int user_idx : user_idx_list)
-            dao.join_user(chat_room_idx, user_idx);
+            dao.join_user(chat_room_idx, user_idx, match_idx);
+    }
+
+    @Override
+    public Integer get_match_chat_room_idx(int match_idx) {
+        return dao.get_match_chat_room_idx(match_idx);
     }
 
     @Override

@@ -11,6 +11,7 @@ var chatHeader = $('.chat-header');
 
 var stompClient = null;
 var username = null;
+//topicName이 chat_room_idx
 var topicName = null;
 
 var colors = [
@@ -20,12 +21,12 @@ var colors = [
 
 usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
 messageForm.addEventListener('submit', sendMessage, true)
+connect();
 
 function connect(event) {
-    username = $('#name').val().trim();
-    topicName = $('#chatRoomNumber').val();
-    //String(num); 이거 null도 처리
-    
+    username = $('#session_id').val().trim();
+    topicName = $('#chatRoomNumber').val().trim();
+
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
@@ -44,14 +45,6 @@ function onConnected() {
     chatHeader.text("채팅방 이름 : " + topicName);
     loadChat();
     // Tell your username to the server
-
-    // DB설계
-    //
-    // 채팅방 idx
-    // 채팅방 이름
-    // 채팅방 내용들
-    // 채팅방 가입자?
-    // 채팅방
 
     // 01/23 여기 만지세요
     stompClient.send("/app/"+topicName,
@@ -90,12 +83,14 @@ function onMessageReceived(payload) {
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' 님이 참여했습니다.';
+        // messageElement.classList.add('event-message');
+        // message.content = message.sender + ' 님이 참여했습니다.';
+        return;
     }
     else if (message.type === 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' 님이 떠났습니다.';
+        // messageElement.classList.add('event-message');
+        // message.content = message.sender + ' 님이 떠났습니다.';
+        return;
     }
     else {
         var avatarElement = document.createElement('i');
@@ -151,7 +146,7 @@ function getAvatarColor(messageSender) {
 
 function insert_chat_log(paramData){
     var reqData = {
-        chat_room_idx : '1',
+        chat_room_idx : topicName,
         sender : paramData?.sender,
         content : paramData?.content
     };
@@ -176,7 +171,7 @@ function fetchInsert(reqData) {
 };
 
 async function loadChat() {
-    let datas = await get_chat_log({chat_room_idx : '1'}); //datas = chat_log 도메인클래스의 리스트
+    let datas = await get_chat_log({chat_room_idx : topicName}); //datas = chat_log 도메인클래스의 리스트
     console.log('datas : ' + datas);
     datas.forEach(data =>{
         makeMessageElement(data);

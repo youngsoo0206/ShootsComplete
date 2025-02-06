@@ -12,5 +12,6 @@ public interface chat_mapper {
     void make_chat_room(chat_room chat_room);
     void insert_chat_log(Map<String, Object> map);
     List<chat_room_log> get_chat_log(Map<String, Object> map);
-    void join_user(int chat_room_idx, int user_idx);
+    void join_user(int chat_room_idx, int user_idx, int match_idx);
+    Integer get_match_chat_room_idx(int match_idx);
 }
