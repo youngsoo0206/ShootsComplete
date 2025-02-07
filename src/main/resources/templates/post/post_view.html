@@ -87,9 +87,10 @@
 		<tr>
 			<td th:if="${not #strings.isEmpty(postdata.post_file)}" colspan="2">
 				<form method="post" th:action="@{down}" >
+					<img th:src="@{/img/down.png}" width="10px">
 					<input type="hidden" th:value="${postdata.post_file}" th:name="filename">
 					<input type="hidden" th:value="${postdata.post_original}" th:name="original">
-					<input type="submit" th:value="${postdata.post_original}">
+					<input type="submit" th:value="${postdata.post_original}" style="border:none; background-color: white;">
 				</form>
 			</td>
 		</tr>
@@ -169,7 +170,7 @@
 						<b class="comment-write-area-name" th:text="${session.id}"></b>
 						<span class="comment-write-area-count">0/200</span>
 						<textarea placeholder="댓글을 남겨보세요" rows="1" class="comment-write-area-text" maxlength="200"></textarea>
-						<input type="checkbox" name="isSecret" id="isSecret"> 비밀댓글
+						<input type="checkbox" name="is_secret" id="is_secret"> 비밀댓글
 					</div>
 					<div class="register-box">
 						<div class="button btn-cancel">취소</div>

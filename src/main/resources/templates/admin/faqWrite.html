@@ -13,6 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>FAQ 작성</title>
     <script th:src = "@{/js/faqWriteForm.js}" charset="utf-8"></script>
+    <style>h1{font-size:1.5rem; text-align:center; color:#1a92b9}</style>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -99,7 +100,7 @@
     <div id="layoutSidenav_content">
         <div class="container">
             <form th:action="@{/testAdmin/faqAdd}" method="post" enctype="multipart/form-data" name="faqform">
-                <h1>FAQ 등록 페이지</h1>
+                <h1>FAQ 등록</h1>
                 <div class="form-group">
                     <!--<label for="faqName">작성자</label>-->
                     <input name="writer" id="faqName" type="hidden" class="form-control" th:value="${session.idx}" readonly>
@@ -113,7 +114,7 @@
 
                 <div class="form-group">
                 <textarea name="content" id="content" rows="10"
-                          class="form-control" placeholder="내용을 입력해 주세요" style="margin-top: 10px;" required></textarea>
+                          class="form-control" placeholder="내용을 입력해 주세요" style="margin-top: 20px; resize: none;" required></textarea>
                 </div>
 
                 <div class="form-group">

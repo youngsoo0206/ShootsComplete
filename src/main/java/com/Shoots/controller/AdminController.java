@@ -75,6 +75,7 @@ public class AdminController {
         int allUsers = regularUserService.allUsers();
         List<Map<String, Object>> businessCount = businessUserService.getBusinessUsers(); //register_date에 따른 승인 기업 수
         List<Map<String, Object>> postCount = postService.getPostCount();   //reigser_date에 따른 게시글 수
+        List<Map<String, Object>> categoryCount = postService.getCategoryCount();
 
         mv.addObject("faqcount", faqcount);
         mv.addObject("noticecount", noticecount);
@@ -86,6 +87,7 @@ public class AdminController {
         mv.addObject("allUsers", allUsers);
         mv.addObject("businessCount", businessCount);
         mv.addObject("postCount", postCount);
+        mv.addObject("categoryCount", categoryCount);
         mv.setViewName("admin/admin");
         return mv;
     }

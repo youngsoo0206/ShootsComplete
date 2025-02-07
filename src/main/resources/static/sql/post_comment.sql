@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS post_comment;
+
 CREATE TABLE post_comment (
               comment_idx INT PRIMARY KEY AUTO_INCREMENT,             -- 댓글 식별 번호 (자동 증가)
               post_idx INT NOT NULL,                                  -- 게시글 식별 번호
@@ -6,7 +7,7 @@ CREATE TABLE post_comment (
               writer INT NOT NULL,                                     -- 작성자(regular_user 테이블 참조)
               content TEXT NOT NULL,                                   -- 내용
               register_date DATETIME DEFAULT CURRENT_TIMESTAMP,        -- 등록일
-              isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N')), -- 비밀 댓글 여부
+              is_secret CHAR(1) DEFAULT 'N' CHECK (is_secret IN ('Y', 'N')), -- 비밀 댓글 여부
               report_status varchar(10) default 'unblock', -- 신고 후 차단 상태,
 -- 외래 키 제약 조건
               CONSTRAINT fk_post FOREIGN KEY (post_idx) REFERENCES post(post_idx) ON DELETE CASCADE,
@@ -18,8 +19,6 @@ CREATE TABLE post_comment (
 
 # isSecret BOOLEAN DEFAULT FALSE,  -- 비밀 댓글 여부 (TRUE-비밀댓글(1) / FALSE-일반댓글(0))
 
-ALTER TABLE post_comment
-    ADD isSecret CHAR(1) DEFAULT 'N' CHECK (isSecret IN ('Y', 'N'));
 
 
 

@@ -43,7 +43,7 @@ public class MatchController {
                                   ModelAndView modelAndView, HttpSession session) {
 
         session.setAttribute("refer", "list");
-        int limit = 20;
+        int limit = 15;
         int listCount = matchService.getListCount();
 
         List<Match> list = matchService.getMatchList(filter, gender, level, page, limit, business_idx);
