@@ -42,10 +42,10 @@ public class WeatherService implements CommandLineRunner {
     private RedisService redisService;
 
     // 초단기실황
-    private String apiUrl_Ncst = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
+    private String apiUrl_Ncst = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
 
     // 초단기예보
-    private String apiUrl_Fcst = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
+    private String apiUrl_Fcst = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 
     @Value("${weather.api.key}")
     private String apiKey;
