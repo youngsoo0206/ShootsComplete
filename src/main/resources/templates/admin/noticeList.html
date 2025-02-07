@@ -169,9 +169,9 @@
 
       <div th:if="${listcount == 0 && search_word != ''}" class="container notfound">
         <form th:action="@{noticeList}">
-          <div class="input-group">
-            <button class="btn btn-primary search" type="submit">검색</button>
+          <div class="search-bar" style="display: flex; justify-content: center; gap: 20px">
             <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+            <button class="btn btn-primary search" type="submit">검색</button>
           </div>
         </form>
         <h1>

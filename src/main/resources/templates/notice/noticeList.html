@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <th:block th:replace="~{fragments/header :: header}" />
   <meta charset="UTF-8">
   <title>공지사항</title>
-  <th:block th:replace="~{fragments/header :: header}" />
   <script th:src="@{/js/jquery-3.7.1.js}"></script>
   <link rel="stylesheet" th:href="@{/css/pagination.css}" type = "text/css">
+  <link rel="stylesheet" th:href="@{/css/noticeList.css}" type = "text/css">
   <script>
     $(function(){
       $(".search").click(function(){
@@ -18,29 +19,25 @@
       })
     })
   </script>
+
   <style>
-    h1{
-      text-align:center;
-      margin-top: 30px;
+    a{
+      text-decoration: none;
+      color: black;
     }
-    .input-group{
-      width: 30%;
-      text-align: center;
-      margin-right: 50px;
-      margin-top : 30px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: flex-end;
+    a:hover{
+      color: #65A30D;
     }
   </style>
+
 </head>
 <body>
   <div class="container">
     <div th:if="${listcount > 0}">
       <form th:action="@{list}">
-        <div class="input-group">
-          <button class="btn btn-primary search" type="submit">검색</button>
+        <div class="search-bar" style="display: flex; justify-content: center; gap: 20px">
           <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+          <button class="btn btn-primary search" type="submit">검색</button>
         </div>
       </form>
       <table class="table">
@@ -73,14 +70,13 @@
     <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>
 
     <div th:if="${listcount == 0 && search_word != ''}">
-      <h1>공지사항</h1>
       <form th:action="@{list}">
-        <div class="input-group">
-          <button class="btn btn-primary search" type="submit">검색</button>
+        <div class="search-bar" style="display: flex; justify-content: center; gap: 20px">
           <input name="search_word" type="text" class="form-control" placeholder="검색어를 입력하세요" th:value="${search_word}">
+          <button class="btn btn-primary search" type="submit">검색</button>
         </div>
       </form>
-      <h1>검색 결과가 없습니다.</h1>
+      <h1 style="text-align: center; margin-top:30px;">검색 결과가 없습니다.</h1>
     </div>
 
   </div>
