@@ -1,6 +1,6 @@
 /* 공통 스타일 */
 
-.container { width: 60%;     margin-top: 50px;}
+.container { width: 60%;     margin-top: 100px;}
 label { font-weight: bold; }
 #upfile { display: none; }
 
