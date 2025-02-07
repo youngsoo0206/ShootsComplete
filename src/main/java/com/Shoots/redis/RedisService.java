@@ -70,10 +70,9 @@ public class RedisService {
 
 
     public void importLocationsToRedis() throws IOException {
-        ClassPathResource classPathResource = new ClassPathResource("location.xlsx");
         ZipSecureFile.setMinInflateRatio(0.001);
 
-        InputStream inputStream = classPathResource.getInputStream();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("location.xlsx");
         Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
 
@@ -149,10 +148,9 @@ public class RedisService {
     }
 
     public Map<String, Map<String, List<String>>> getLocationOptions() throws IOException {
-        ClassPathResource classPathResource = new ClassPathResource("location.xlsx");
         ZipSecureFile.setMinInflateRatio(0.001);
 
-        InputStream inputStream = classPathResource.getInputStream();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("location.xlsx");
         Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
 
