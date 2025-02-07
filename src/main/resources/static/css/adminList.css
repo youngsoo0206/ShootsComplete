@@ -282,3 +282,58 @@ h1{
     color: #FDBA01;
     border: 1.5px solid #FDBA01;
 }
+
+.block{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: #DA0130;
+    text-align: center;
+}
+
+.block:hover{
+    background-color: white;
+    color: #DA0130;
+    border: 1.5px solid #DA0130;
+}
+
+.blocked{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 60px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    background-color: dimgray;
+    text-align: center;
+}
+
+.reportContent {
+    text-decoration: none;
+    color:black;
+}
+
+.report-link {
+    text-decoration: none;
+    color:black;
+}
+
+.reportContent:hover{
+    text-decoration: none;
+    color:#65A30D;
+}
+
+.report-link:hover{
+    text-decoration: none;
+    color:#65A30D;
+}
+
