@@ -196,7 +196,10 @@ function updatePostList(data, category) {
                         : ''))
                 + '</td>');
 
-            row.append('<td class = "jtdw">' + post.user_id + '</td>');
+            //row.append('<td class = "jtdw">' + post.user_id + '</td>');
+            let userId = post.user_id.length > 12 ? post.user_id.substring(0, 12) + '...' : post.user_id;
+            row.append('<td class="jtdw">' + userId + '</td>');
+
             row.append('<td class = "jtdr">' + post.register_date + '</td>');
             row.append('<td class = "jtdc">' + post.readcount + '</td>');
 
@@ -212,7 +215,9 @@ function updatePostList(data, category) {
             row.append('<td>' + postUnblock
                 + '&nbsp;&nbsp;'  + '<span style="color: orange;">[' + post.commentCount + ']</span>' + '</a></td>');
 
-            row.append('<td>' + post.user_id + '</td>');
+            //row.append('<td>' + post.user_id + '</td>');
+            let userId = post.user_id.length > 12 ? post.user_id.substring(0, 12) + '...' : post.user_id;
+            row.append('<td class="jtdw">' + userId + '</td>');
             row.append('<td>' + post.register_date + '</td>');
             row.append('<td>' + post.readcount + '</td>');
         }
