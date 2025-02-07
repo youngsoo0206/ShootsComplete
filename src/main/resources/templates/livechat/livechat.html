@@ -44,12 +44,23 @@
 
 <!--  usernmae 입력 end -->
     <div id="chat-page" class="hidden">
+
         <div class="chat-container">
             <div class="chat-header">
 
             </div>
             <div class="connecting">
                 Connecting...
+            </div>
+            <div style="left: 30px">
+                <button type="button" class="primary btn" id="back_btn">돌아가기</button>
+                <script>
+                    $(function (){
+                       $('#back_btn').on('click', function (){
+                         history.back();
+                       });
+                    });
+                </script>
             </div>
             <ul id="messageArea">
 
