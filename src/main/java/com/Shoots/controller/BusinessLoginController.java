@@ -5,6 +5,7 @@ import com.Shoots.domain.MailVO;
 import com.Shoots.redis.RedisService;
 import com.Shoots.service.BusinessUserService;
 import com.Shoots.task.SendMail;
+import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,11 +32,11 @@ public class BusinessLoginController {
     private static final Logger logger = LoggerFactory.getLogger(BusinessLoginController.class);
     private final BusinessUserService businessUserService;
     private BCryptPasswordEncoder passwordEncoder;
-    private SendMail sendMail;
+    private SendMailText sendMail;
 
     private final RedisService redisService;
 
-    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMail sendMail, RedisService redisService) {
+    public BusinessLoginController(BusinessUserService businessUserService, BCryptPasswordEncoder passwordEncoder, SendMailText sendMail, RedisService redisService) {
         this.businessUserService = businessUserService;
         this.passwordEncoder = passwordEncoder;
         this.sendMail = sendMail;
