@@ -18,7 +18,7 @@ select * from match_post;
 delete from match_post;
 drop table match_post;
 
-update match_post set match_time = '14:49:00' where match_idx = 36;
+update match_post set player_max = 6 where match_idx = 33;
 update match_post set match_time = '14:49:00' where match_idx = 37;
 
 
