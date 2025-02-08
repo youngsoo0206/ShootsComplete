@@ -91,10 +91,10 @@
                                     <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
                                 </td>
 
-                                <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount < match.player_min && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
                                 </td>
-                                <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount >= match.player_min && match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-limited">마감임박</button></a>
                                 </td>
                                 <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
@@ -103,7 +103,7 @@
                                 <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-confirm">매치확정</button></a>
                                 </td>
-                                <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount < match.player_min && match.isMatchPast() == true}"><a th:href="@{'detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
                                 </td>
                             </tr>

@@ -21,10 +21,12 @@ insert into payment (
     match_idx, seller_idx, buyer_idx, payment_method, payment_amount,
     payment_date, payment_status, merchant_uid, imp_uid
 )
-values (27, 1, 4, 'card', 1000,
+values (33, 1, 4, 'card', 1000,
                    CURRENT_TIMESTAMP, 'paid', 'merchant_27_1', 'imp_111'
        );
 
 select * from payment where payment_status='paid' and seller_idx = 1;
+
+
 
 
