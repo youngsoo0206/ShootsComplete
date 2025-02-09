@@ -134,8 +134,8 @@ public class RedisService {
         String nxStr = (String) stringRedisTemplate.opsForHash().get(key, "x");
         String nyStr = (String) stringRedisTemplate.opsForHash().get(key, "y");
 
-        Integer nx = Integer.parseInt(nxStr);
-        Integer ny = Integer.parseInt(nyStr);
+        Integer nx = (nxStr != null) ? Integer.parseInt(nxStr) : 61;
+        Integer ny = (nyStr != null) ? Integer.parseInt(nyStr) : 125;
 
         System.out.println("nx : " + nx);
         System.out.println("ny : " + ny);
