@@ -23,30 +23,28 @@ usernameForm.addEventListener('submit', connect, true) //true는 캡처링. fals
 messageForm.addEventListener('submit', sendMessage, true)
 connect();
 
-function connect(event) {
+function connect() {
     username = $('#session_id').val().trim();
     topicName = $('#chatRoomNumber').val().trim();
 
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
-
-        var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        // var socket = new SockJS('https://www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        var socket = new SockJS('https://goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        // var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
 
 
 function onConnected() {
-    // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + topicName, onMessageReceived);
-    chatHeader.text("채팅방 이름 : " + topicName);
+    chatHeader.text(topicName + "번 매치");
     loadChat();
-    // Tell your username to the server
 
-    // 01/23 여기 만지세요
     stompClient.send("/app/"+topicName,
                     {},
                     JSON.stringify({sender: username, type: 'JOIN'})
@@ -186,21 +184,6 @@ async function get_chat_log(paramData){
 }
 
 async function fetchGetChat(reqData) {
-    // //fetch start
-    // //category in ('POST','COMMENT','USER')
-    // fetch('/Shoots/livechat/getlog',{
-    //     method:'POST',
-    //     headers: {
-    //         'Content-Type' : 'application/json'
-    //     },
-    //     body : JSON.stringify(reqData)
-    // })
-    //     .then(resp => resp.json())
-    //     .then(datas => {
-    //         return datas;
-    //     })
-    //     .catch(error => alert("에러 뜸 : " + error))
-    // //fetch end
 
     try {
         const response = await fetch('/Shoots/livechat/getlog', {
