@@ -1,6 +1,7 @@
 package com.Shoots;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,5 +13,14 @@ public class WebConfig implements WebMvcConfigurer {
         // /upload/** 요청을 C 드라이브의 c:/upload/ 디렉토리로 매핑
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations("file:///c:/upload/");  // 절대 경로
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("https://www.goshoots.site") // 허용할 도메인
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true)
+                .allowedHeaders("*");
     }
 }
