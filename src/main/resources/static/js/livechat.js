@@ -23,19 +23,20 @@ usernameForm.addEventListener('submit', connect, true) //true는 캡처링. fals
 messageForm.addEventListener('submit', sendMessage, true)
 connect();
 
-function connect(event) {
+function connect() {
     username = $('#session_id').val().trim();
     topicName = $('#chatRoomNumber').val().trim();
 
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
-
-        var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        var socket = new SockJS('https://www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        // var socket = new SockJS('https://goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        // var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
 
 

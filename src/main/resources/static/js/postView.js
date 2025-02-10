@@ -339,7 +339,7 @@ $(document).on('click', '.commentReportButton', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'comment_idx': ${dataCommentIdx}, 'reportedUser' : '${dataCommentContent}'})">
+                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'comment_idx': ${dataCommentIdx}, 'reported_user' : '${dataCommentContent}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
