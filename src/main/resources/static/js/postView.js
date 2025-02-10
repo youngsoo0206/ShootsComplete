@@ -339,7 +339,7 @@ $(document).on('click', '.commentReportButton', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'commentIdx': ${dataCommentIdx}, 'reportedUser' : '${dataCommentContent}'})">
+                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'comment_idx': ${dataCommentIdx}, 'reportedUser' : '${dataCommentContent}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -356,14 +356,13 @@ $(document).on('click', '.commentReportButton', function() {
     const modalElement = document.getElementById('exampleModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
-    comment_idx
-    const commentIdx = $(this).data('comment-idx');
+    const comment_idx = $(this).data('comment-idx');
     const target = $(this).data('user_id');
-    console.log('===> commentIdx:', commentIdx);
+    console.log('===> commentIdx:', comment_idx);
     console.log('===> writer:', target);
 
     // 모달창에 값 설정
-    $('.report_ref_id').val(commentIdx); // 신고 댓글 ID
+    $('.report_ref_id').val(comment_idx); // 신고 댓글 ID
     $('.target').val(target); // 신고 대상자 ID
 
 }) //댓글 선택자 값 부여 함수 끝
@@ -381,8 +380,8 @@ function ReportSubmitButton(paramData){
         category : category,
         content : selectedOption,
         detail : $('#modalEtcContent').val(),
-        PostIdx : $('#post_idx')?.val() ?? 0,
-        CommentIdx : paramData?.commentIdx ?? 0
+        post_idx : $('#post_idx')?.val() ?? 0,
+        comment_idx : paramData?.comment_idx ?? 0
     };
     fetchReport(reqData);
 }
