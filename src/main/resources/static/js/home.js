@@ -9,7 +9,7 @@ setInterval(updateClock, 1000);
 
 
 
-fetch('https://goshoots.site/Shoots/getOptions')
+fetch('https://www.goshoots.site/Shoots/getOptions')
     .then(response => response.json())
     .then(data => {
         const firstSelect = document.getElementById("first");
