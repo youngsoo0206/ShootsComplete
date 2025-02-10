@@ -40,6 +40,12 @@
         </div>
         <input type="hidden" id="session_id" th:value="${session.id}">
         <input type="hidden" id="chatRoomNumber" th:value="${chatRoomNumber}">
+        <input type="hidden" id="match_idx" th:value="${match_idx}">
+        <script>
+            $(function (){
+                alert("match idx : " + $('#match_idx').val());
+            });
+        </script>
     </div>
 
 <!--  usernmae 입력 end -->
