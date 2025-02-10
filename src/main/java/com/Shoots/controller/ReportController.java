@@ -38,7 +38,7 @@ public class ReportController {
         if(reportService.selectCheckReportDuplicate(report.getReporter(), report.getPost_idx(), report.getComment_idx(), report.getCategory()) != null)
             resp.put("msg", "이미 접수된 신고입니다.");
         else if(reportService.insertReport(report) == 1){
-            resp.put("msg",  "신고가 접수되었습니다. " + " [신고 댓글]: " + report.getReportedUser());
+            resp.put("msg",  "신고가 접수되었습니다. " + " [신고 댓글]: " + report.getReported_user());
             //resp.put("reportCnt", reportService.selectReportedCount(report.getReportedUser(), report.getCategory()));
         }
         else
