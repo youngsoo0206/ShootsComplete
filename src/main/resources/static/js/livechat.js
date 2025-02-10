@@ -30,7 +30,7 @@ function connect() {
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
-        // var socket = new SockJS('https://www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+        // var socket = new SockJS('https://www.www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         var socket = new SockJS('https://www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         // var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         stompClient = Stomp.over(socket);
