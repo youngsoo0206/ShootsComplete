@@ -23,4 +23,15 @@ public class WebConfig implements WebMvcConfigurer {
 //                .allowCredentials(true)
 //                .allowedHeaders("*");
 //    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/upload/**")
+                .allowedOrigins("https://www.goshoots.site", "https://goshoots.site")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+
+
 }
