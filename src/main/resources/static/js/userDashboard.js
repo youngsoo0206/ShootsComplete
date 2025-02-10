@@ -94,7 +94,7 @@ window.addEventListener('DOMContentLoaded', event => {
     //회원탈퇴 기능
     $('#deleteUser').click(function(event){ //문의글 삭제 버튼 누르면 삭제하는 메서드
         event.preventDefault();
-        if (confirm("정말 문의글을 삭제하시겠습니까?")) {
+        if (confirm("정말 계정을 삭제하시겠습니까?")) {
             $("#deleteUserForm").submit();
         }
     });

@@ -5,8 +5,8 @@
 <mapper namespace="com.Shoots.mybatis.mapper.ReportMapper">
 
     <insert id="insertReport">
-        insert into report(reporter, reportedUser, category, content, detail, PostIdx, CommentIdx)
-        values( #{reporter}, #{reportedUser}, #{category}, #{content}, COALESCE(#{detail}, ''), COALESCE(#{PostIdx}, 0), COALESCE(#{CommentIdx}, 0) );
+        insert into report(reporter, reported_user, category, content, detail, post_idx, comment_idx)
+        values( #{reporter}, #{reportedUser}, #{category}, #{content}, COALESCE(#{detail}, ''), COALESCE(#{post_idx}, 0), COALESCE(#{comment_idx}, 0) );
     </insert>
 
     <select id="selectReportedUsers" resultType="Report">
@@ -17,24 +17,24 @@
     <select id="selectCheckReportDuplicate" resultType="Report">
         select *
         from report
-        where reporter=#{reporter} and PostIdx=#{PostIdx} and CommentIdx=#{CommentIdx} and category=#{category}
+        where reporter=#{reporter} and post_idx=#{post_idx} and comment_idx=#{comment_idx} and category=#{category}
         LIMIT 1
     </select>
 
     <select id="selectReportedCount" resultType="int">
         select count(*)
         from report
-        where reportedUser=#{reported}
+        where report.reported_user=#{reported}
         and category=#{category}
     </select>
 
     <select id="getReportList">
         select r.*, p.report_status p_status, c.report_status c_status
         from report r
-                 left outer join post p on r.postIdx = p.post_idx
+                 left outer join post p on r.post_idx = p.post_idx
                  left outer join post_comment c
-                                 on r.commentidx = c.comment_idx
-        order by reportIdx desc
+                                 on r.comment_idx = c.comment_idx
+        order by report_idx desc
             LIMIT #{offset}, #{pageSize}
     </select>
 

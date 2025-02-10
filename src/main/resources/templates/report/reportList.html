@@ -22,7 +22,7 @@
         $(function () {
             $('.report').on('click', function (){
                 var tr = $(this).closest('tr');
-                if(confirm(tr.find('.reportIdx').text() + "번 게시글을 신고하시겠습니까?")){
+                if(confirm(tr.find('.report_idx').text() + "번 게시글을 신고하시겠습니까?")){
                     //fetch start
 
                     //category in ('POST','COMMENT','USER')
@@ -57,7 +57,7 @@
     <table>
         <tbody th:each="board : ${boardList}" id="tbody1">
             <tr>
-                <td><a th:href="@{'boardView?num='+${board.board_idx}}" class="reportIdx">[[${board.board_idx}]]</a></td>
+                <td><a th:href="@{'boardView?num='+${board.board_idx}}" class="report_idx">[[${board.board_idx}]]</a></td>
                 <td>[[${board.title}]]</td>
                 <td class="boardWriter">[[${board.writer}]]</td>
                 <td>[[${board.content}]]</td>
