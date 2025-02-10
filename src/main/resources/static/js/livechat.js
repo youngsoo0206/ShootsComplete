@@ -40,13 +40,10 @@ function connect(event) {
 
 
 function onConnected() {
-    // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + topicName, onMessageReceived);
-    chatHeader.text("채팅방 이름 : " + topicName);
+    chatHeader.text(topicName + "번 매치");
     loadChat();
-    // Tell your username to the server
 
-    // 01/23 여기 만지세요
     stompClient.send("/app/"+topicName,
                     {},
                     JSON.stringify({sender: username, type: 'JOIN'})
@@ -186,21 +183,6 @@ async function get_chat_log(paramData){
 }
 
 async function fetchGetChat(reqData) {
-    // //fetch start
-    // //category in ('POST','COMMENT','USER')
-    // fetch('/Shoots/livechat/getlog',{
-    //     method:'POST',
-    //     headers: {
-    //         'Content-Type' : 'application/json'
-    //     },
-    //     body : JSON.stringify(reqData)
-    // })
-    //     .then(resp => resp.json())
-    //     .then(datas => {
-    //         return datas;
-    //     })
-    //     .catch(error => alert("에러 뜸 : " + error))
-    // //fetch end
 
     try {
         const response = await fetch('/Shoots/livechat/getlog', {

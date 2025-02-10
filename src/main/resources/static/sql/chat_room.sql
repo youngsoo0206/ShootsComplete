@@ -16,8 +16,8 @@ CREATE TABLE chat_participants
     joined_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (chat_room_idx, user_idx),
     FOREIGN KEY (chat_room_idx) REFERENCES chat_room (chat_room_idx) ON DELETE CASCADE,
-    FOREIGN KEY (user_idx) REFERENCES payment(BUYER_IDX) ON DELETE CASCADE,
-    FOREIGN KEY (match_idx) REFERENCES match_post(MATCH_IDX) ON DELETE CASCADE
+    FOREIGN KEY (user_idx) REFERENCES payment(buyer_idx) ON DELETE CASCADE,
+    FOREIGN KEY (match_idx) REFERENCES match_post(match_idx) ON DELETE CASCADE
 );
 CREATE TABLE chat_room_log
 (
