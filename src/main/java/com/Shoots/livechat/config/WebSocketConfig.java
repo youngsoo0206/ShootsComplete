@@ -10,7 +10,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint("/livechat/livechat/ws").setAllowedOrigins("*").withSockJS();
         registry.addEndpoint("/livechat/livechat/ws").withSockJS();
         //SockJS를 사용하면 WebSocket을 지원하지 않는 클라이언트도 HTTP 기반의 폴백 프로토콜로 연결
 
