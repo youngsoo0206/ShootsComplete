@@ -23,7 +23,7 @@ usernameForm.addEventListener('submit', connect, true) //true는 캡처링. fals
 messageForm.addEventListener('submit', sendMessage, true)
 connect();
 
-function connect(event) {
+function connect() {
     username = $('#session_id').val().trim();
     topicName = $('#chatRoomNumber').val().trim();
 
