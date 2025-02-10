@@ -384,11 +384,15 @@ public class BusinessController {
     }
 
     @GetMapping("/MatchParticipants")
-    public ModelAndView businessMatchParticipants(ModelAndView modelAndView, HttpSession session) {
+    public ModelAndView businessMatchParticipants(ModelAndView modelAndView, HttpSession session, @RequestParam(defaultValue = "1") int page) {
 
         Integer idx = (Integer) session.getAttribute("idx");
 
-        List<Match> list = matchService.getMatchListByIdForSales(idx, null, null, null, null);
+        int limit = 10;
+
+        int listCount = matchService.getListCountById(idx);
+
+        List<Match> list = matchService.getMatchListByIdForSales(idx,  null, null, null, null);
         List<Map<String, Object>> results = paymentService.getPaymentListById(idx);
 
         for (Match match : list) {
@@ -413,10 +417,14 @@ public class BusinessController {
             match.setMatchPast(isMatchPast);
         }
 
+
         modelAndView.setViewName("business/businessMatchParticipants");
         modelAndView.addObject("matchList", list);
         modelAndView.addObject("list", list.size());
         modelAndView.addObject("results", results);
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("listcount", listCount);
+        modelAndView.addObject("limit", limit);
 
         return modelAndView;
     }

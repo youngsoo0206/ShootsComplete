@@ -143,9 +143,22 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-5" style="width: 370px;">
+                            <div class="card md-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area me-1"></i>
+                                    자유 게시판 / 중고 게시판 이용 비율
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="categoryChart" width="50" height="50"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
-                    <div class="row" style="margin-top: 20px; margin-bottom: 20px">
+                    <div class="row" style="margin-top: 20px; margin-bottom: 20px;" >
                         <div class="col-md-5">
                             <div class="card md-4">
                                 <div class="card-header">
@@ -159,6 +172,7 @@
                         </div>
                     </div>
 
+
                 </div>
             </main>
         </div>
@@ -168,6 +182,7 @@
         var userCountData = [[${userCount}]];
         var businessCountData = [[${businessCount}]];
         var postCountData = [[${postCount}]];
+        var categoryCountData = [[${categoryCount}]];
         var faqcount = [[${faqcount}]];
         var noticecount = [[${noticecount}]];
         var inquirycount = [[${inquirycount}]];
@@ -196,11 +211,18 @@
             return item.postCount;
         });
 
+        var acount = categoryCountData.map(function(item) {
+            return item.a_count;
+        });
+        var bcount = categoryCountData.map(function(item) {
+            return item.b_count;
+        });
 
 
         var ctx = document.getElementById('userChart').getContext('2d');
         var btx = document.getElementById('businessChart').getContext('2d');
         var ptx = document.getElementById('postChart').getContext('2d');
+        var pieCtx = document.getElementById('categoryChart').getContext('2d');
         var barCtx = document.getElementById('barChart').getContext('2d');
 
         new Chart(ctx, {
@@ -281,6 +303,35 @@
                         ticks: {
                             stepSize: 1,  // Y축의 숫자가 정수로만 표시되도록 설정
                             precision: 0  // 소수점 자리수를 없앰
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['자유게시판', '중고게시판'],
+                datasets: [{
+                    label: 'Category rate',
+                    data: [acount, bcount],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],  // 색상
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],  // 테두리 색상
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,  // 반응형 그래프
+                plugins: {
+                    legend: {
+                        position: 'right', // 범례 위치
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' 개';  // 툴팁 텍스트 수정
+                            }
                         }
                     }
                 }

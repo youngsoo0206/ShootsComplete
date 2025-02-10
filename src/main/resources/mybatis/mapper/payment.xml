@@ -5,9 +5,9 @@
 <mapper namespace="com.Shoots.mybatis.mapper.PaymentMapper">
 
     <insert id="insertPayment" >
-        insert into PAYMENT (
-            MATCH_IDX, SELLER_IDX, BUYER_IDX, PAYMENT_METHOD, PAYMENT_AMOUNT,
-            PAYMENT_DATE, PAYMENT_STATUS, MERCHANT_UID, IMP_UID
+        insert into payment (
+            match_idx, seller_idx, buyer_idx, payment_method, payment_amount,
+            payment_date, payment_status, merchant_uid, imp_uid
         )
         values (
             #{match_idx}, #{seller_idx}, #{buyer_idx}, #{payment_method}, #{payment_amount},
@@ -16,14 +16,14 @@
     </insert>
 
     <select id="hasPaidForMatch" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM PAYMENT
-        WHERE BUYER_IDX = #{idx}
-          AND MATCH_IDX = #{match_idx}
-          AND PAYMENT_STATUS = 'paid'
+        SELECT COUNT(*) > 0 FROM payment
+        WHERE buyer_idx = #{idx}
+          AND match_idx = #{match_idx}
+          AND payment_status = 'paid'
     </select>
 
     <select id="getPlayerCount" resultType="int">
-        select COUNT(*) from PAYMENT p
+        select COUNT(*) from payment p
         where match_idx = #{match_idx}
         and payment_status = 'paid'
     </select>
@@ -32,40 +32,42 @@
         SELECT p.*,
                r.*,
                CASE
-                   WHEN p.PAYMENT_STATUS = 'refunded' THEN h.ACTION_DATE
+                   WHEN p.payment_status = 'refunded' THEN h.action_date
                    ELSE NULL
-                   END AS ACTION_DATE
-        FROM PAYMENT p
-                 LEFT JOIN regular_user r ON p.BUYER_IDX = r.idx
-                 LEFT JOIN PAYMENT_HISTORY h ON p.PAYMENT_IDX = h.PAYMENT_IDX
+                   END AS action_date
+        FROM payment p
+                 LEFT JOIN regular_user r ON p.buyer_idx = r.idx
+                 LEFT JOIN payment_history h ON p.payment_idx = h.payment_idx
         WHERE NOT EXISTS (
             SELECT 1
-            FROM PAYMENT p2
-                     LEFT JOIN PAYMENT_HISTORY h2 ON p2.PAYMENT_IDX = h2.PAYMENT_IDX
-            WHERE p2.BUYER_IDX = p.BUYER_IDX
-              AND COALESCE(h2.ACTION_DATE, p2.PAYMENT_DATE) > COALESCE(h.ACTION_DATE, p.PAYMENT_DATE)
+            FROM payment p2
+                     LEFT JOIN payment_history h2 ON p2.payment_idx = h2.payment_idx
+            WHERE p2.buyer_idx = p.buyer_idx
+              AND p2.match_idx = p.match_idx
+              AND COALESCE(h2.action_date, p2.payment_date) > COALESCE(h.action_date, p.payment_date)
         )
-           OR h.ACTION_DATE IS NULL
-        ORDER BY p.PAYMENT_DATE DESC;
+           OR h.action_date IS NULL
+        ORDER BY p.payment_date DESC;
+
     </select>
 
     <select id="getPaymentInfoById" resultType="Payment">
-        select * from PAYMENT where BUYER_IDX = #{idx} and MATCH_IDX = #{match_idx}
-        order by PAYMENT_DATE desc LIMIT 1
+        select * from payment where buyer_idx = #{idx} and match_idx = #{match_idx}
+        order by payment_date desc LIMIT 1
     </select>
 
     <select id="getPaymentListByMatchIdx" resultType="Payment">
-        select * from PAYMENT where MATCH_IDX = #{match_idx} and PAYMENT_STATUS = 'paid';
+        select * from payment where match_idx = #{match_idx} and payment_status = 'paid';
     </select>
 
     <select id="getUserPaymentListByMatchIdx" resultType="java.util.HashMap">
         SELECT p.*, r.*, b.business_name, m.*
-        FROM PAYMENT p
+        FROM payment p
                  JOIN regular_user r ON p.buyer_idx = r.idx
                  JOIN business_user b ON p.seller_idx = b.business_idx
                  JOIN MATCH_POST m ON p.match_idx = m.match_idx
-        WHERE p.MATCH_IDX = #{match_idx}
-          AND p.PAYMENT_STATUS = 'paid';
+        WHERE p.match_idx = #{match_idx}
+          AND p.payment_status = 'paid';
     </select>
 
 
@@ -74,9 +76,9 @@
             MONTH(m.match_date) AS month,
             COUNT(p.payment_idx) AS player_count
         FROM
-            MATCH_POST m
+            match_post m
             JOIN
-            PAYMENT p ON m.match_idx = p.match_idx
+            payment p ON m.match_idx = p.match_idx
         WHERE
             p.payment_status = 'paid'
           AND YEAR(m.match_date) = YEAR(CURDATE())
@@ -88,7 +90,7 @@
     </select>
 
     <update id="updatePayment">
-        update PAYMENT set PAYMENT_STATUS = 'refunded' where payment_idx = #{payment_idx}
+        update payment set payment_status = 'refunded' where payment_idx = #{payment_idx}
     </update>
 
     <select id="userPaymentList">
@@ -97,6 +99,7 @@
                  join business_user b on p.seller_idx = b.business_idx
                  join match_post m on p.match_idx = m.match_idx
             where p.buyer_idx = #{id}
+        order by match_date desc, match_time desc
     </select>
 
     <select id="getPaymentCount">

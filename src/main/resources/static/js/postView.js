@@ -31,7 +31,7 @@ function getList(state) {
       if (rdata.commentlist.length) {
       rdata.commentlist.forEach(Comment => {
 
-        let isSecret = Comment.isSecret === 'Y'; //비밀 댓글
+        let isSecret = Comment.is_secret === 'Y'; //비밀 댓글
         let isPostOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
         let isCommentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
         let isAdmin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
@@ -79,10 +79,24 @@ function getList(state) {
                 </div>
             </div>` : '';
 
-		//신고버튼은 댓글 작성자와 로그인한 사람이 같을시 안뜨도록 설정하기 위해 미리 선언함
-		// let reportButton = (Comment.user_id !== $("#loginid").val() && role === 'common') ? `
-        let reportButton = (Comment.user_id !== $("#loginid").val() && Comment.report_status === 'unblock')  ? `
+        //reportButton 댓글쪽
+
+          let Secret = Comment.is_secret === 'Y';
+          let postOwner = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+          let commentOwner = $("#loginid").val() === Comment.user_id; //로그인한 사람 아이디와 댓글 작성자의 아이디가 같을때
+          let admin = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+          // 가독성을 위해 풀어쓰기?
+          //댓글 신고 버튼이 보이는 조건1 (commentReport)
+          let commentReport = (!Secret && !commentOwner) || (Secret && (!commentOwner && (postOwner || admin)));
+          // 일반댓글인경우 - 로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+          // 비밀댓글인 경우 - 로그인한 사람 아이디와 댓글 작성자의 아이디가 다르고,(and) 로그인한 사람 아이디와 게시글 작성자의 아이디가 같거나(or) 로그인한 사람 아이디가 관리자일때
+
+          //댓글 신고 버튼이 보이는 조건2 (Comment.report_status === 'unblock') / unblock: 댓글상태가 차단이 아닌경우
+          // 신고버튼이 보이는 조건1,조건2 모두 해당하는 경우 >> 신고버튼이 보임
+        let reportButton = (commentReport && Comment.report_status === 'unblock')  ? `
             <button class="commentReportButton" data-comment-idx="${Comment.comment_idx}" 
+                    data-comment-content="${Comment.content}"
                     data-writer="${Comment.writer}" data-tidx="${Comment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
@@ -121,7 +135,7 @@ function getList(state) {
         // 답글 처리: 부모 댓글에 대한 답글을 출력
         rdata.commentlist.forEach(childComment => {
 
-            let isSecretC = childComment.isSecret === 'Y';
+            let isSecretC = childComment.is_secret === 'Y';
             let isPostOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
             let isCommentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 비밀댓글 작성자의 아이디가 같을때
             let isAdminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
@@ -147,7 +161,7 @@ function getList(state) {
         let formattedContent = childComment.content.replace(/(@[\w\u00C0-\u017F\uac00-\ud7af\u4e00-\u9fff.-]+)/g, "<span class='mention'>$1</span>");
 
 
-                let childCommentUnblock = (Comment.report_status !== 'unblock')
+                let childCommentUnblock = (childComment.report_status !== 'unblock')
                     ? '<span style="color: #DA0130;">차단된 댓글 입니다.</span>'
                     : formattedContent;
 
@@ -162,7 +176,6 @@ function getList(state) {
 
                 // 비밀댓글 스타일 적용
                 let childDisplayContentStyle = isSecretC ? 'color: gray;' : '';
-
                 // 답글의 더보기 버튼 및 수정/삭제 버튼 처리
         let childToolButtons = ($("#loginid").val() === childComment.user_id || $("#loginid").val() == 'admin') ? ` 
             <div class='comment-tool'>
@@ -178,15 +191,31 @@ function getList(state) {
                     </ul>
                 </div>
             </div>` : '';
-        
+
+
         //reportButton 답글쪽
-                reportButton = (childComment.user_id !== $("#loginid").val()) ? `
+
+                let secretC = childComment.is_secret === 'Y';
+                let postOwnerC = $("#loginid").val() === $(".user_id").text(); //로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+                let commentOwnerC = $("#loginid").val() === childComment.user_id; //로그인한 사람 아이디와 댓글(답글) 작성자의 아이디가 같을때
+                let adminC = $("#loginid").val() === 'admin'; //로그인한 사람 아이디가 관리자일때
+
+                // 가독성을 위해 풀어쓰기?
+                //답글 신고 버튼이 보이는 조건1 (childReport)
+                let childReport = (!secretC && !commentOwnerC) || (secretC && (!commentOwnerC && (postOwnerC || adminC)));
+                // 일반답글인경우 - 로그인한 사람 아이디와 게시글 작성자의 아이디가 같을때
+                // 비밀답글인 경우 - 로그인한 사람 아이디와 답글 작성자의 아이디가 다르고,(and) 로그인한 사람 아이디와 게시글 작성자의 아이디가 같거나(or) 로그인한 사람 아이디가 관리자일때
+
+                //답글 신고 버튼이 보이는 조건2 (childComment.report_status === 'unblock') / unblock: 댓글상태가 차단이 아닌경우
+                // 신고버튼이 보이는 조건1,조건2 모두 해당하는 경우 >> 신고버튼이 보임
+            reportButton = (childReport && childComment.report_status === 'unblock') ? `
             <button class="commentReportButton" data-comment-idx="${childComment.comment_idx}" 
+                    data-comment-content="${childComment.content}"
                     data-writer="${childComment.writer}" data-tidx="${childComment.writer}" 
                     data-toggle="modal" data-target=".c-report-modal" style="color:red; border:none">
                 <img src='../img/report.png' style="width:15px; height:15px">
             </button>` : '';
-                
+
                 output += `
                 <li id='${childComment.comment_idx}' class='comment-list-item comment-list-item--reply'>
                     <div class='comment-nick-area'>
@@ -242,7 +271,7 @@ $(document).on('click', '#titleReport', function() {
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modalTitle">${reported}님의 댓글 신고</h5>
+                                                <h5 class="modal-title" id="modalTitle">${reported} 신고</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -262,7 +291,7 @@ $(document).on('click', '#titleReport', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'POST'})">
+                                                onclick="ReportSubmitButton({'category': 'POST', 'reportedUser' : '${reported}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -284,7 +313,7 @@ $(document).on('click', '#titleReport', function() {
 $(document).on('click', '.commentReportButton', function() {
     const commentNickname = $(this).closest('.comment-box').find('.comment-nickname');
     const dataCommentIdx= $(this).data('comment-idx');
-    alert(dataCommentIdx);
+    const dataCommentContent = $(this).data('comment-content');
     const modalHtml = `
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalTitle">
                                     <div class="modal-dialog">
@@ -310,7 +339,7 @@ $(document).on('click', '.commentReportButton', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'commentIdx': ${dataCommentIdx}})">
+                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'commentIdx': ${dataCommentIdx}, 'reportedUser' : '${dataCommentContent}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -342,12 +371,13 @@ $(document).on('click', '.commentReportButton', function() {
 function ReportSubmitButton(paramData){
     const category = paramData?.category ?? '';
     const selectedOption = $('select[name="title"]').val();
+
     if(selectedOption == null){
         alert('신고 사유를 선택해주세요.');
         return false;
     }
     var reqData = {
-        reportedUser : String($('#modalReported').val()),
+        reportedUser : paramData?.reportedUser,
         category : category,
         content : selectedOption,
         detail : $('#modalEtcContent').val(),
@@ -488,7 +518,7 @@ $(function() {
 
 
       // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-      const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+      const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
 
       $.ajax({
@@ -498,7 +528,7 @@ $(function() {
         content: content,
           writer: $("#idx").val(), // 댓글 작성자 ID
         post_idx: $("#post_idx").val(), // 게시글 ID
-          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+          is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
 
         comment_ref_id: null // 원본 댓글은 comment_ref_id가 null
       },
@@ -538,13 +568,13 @@ $(function() {
 		const comment_idx = $(this).attr('data-id');
 
         // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+        const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
 		$.ajax({
 			url:'../comment/update',
 			data:{comment_idx:comment_idx,
                 content:content,
-                isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+                is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
             },
             type: 'post',
 			success:function(rdata){
@@ -582,7 +612,7 @@ $(function() {
 		}
 
         // 비밀댓글 체크박스 상태를 'Y' 또는 'N'으로 설정
-        const isSecret = $('#isSecret').prop('checked') ? 'Y' : 'N';
+        const is_secret = $('#is_secret').prop('checked') ? 'Y' : 'N';
 
     $.ajax({
       type: 'post',
@@ -592,7 +622,7 @@ $(function() {
         writer: $("#idx").val(),
         content: content,
         post_idx: $("#post_idx").val(),
-          isSecret: isSecret,  // 체크된 경우 'Y', 아닌 경우 'N'
+          is_secret: is_secret,  // 체크된 경우 'Y', 아닌 경우 'N'
         comment_ref_id: $(this).attr('data-ref') // 부모 댓글의 comment_idx를 comment_ref_id로 설정v @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       },
       success: function(rdata) {

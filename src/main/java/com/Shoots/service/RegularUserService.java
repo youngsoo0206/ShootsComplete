@@ -31,4 +31,5 @@ public interface RegularUserService {
     public int allUsers();
 
     Map<String, Object> getPlayerGenderCount(Integer business_idx);
+    public int deleteRegularUser(int idx);
 }

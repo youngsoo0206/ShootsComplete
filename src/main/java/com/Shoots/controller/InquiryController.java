@@ -221,7 +221,6 @@ public class InquiryController {
         response.setContentType("text/html; charset=utf-8");
         PrintWriter out = response.getWriter();
 
-        //비밀번호 일치하는 경우 삭제 처리합니다.
         int result = inquiryService.inquiryDelete(inquiry_idx);
 
         //삭제 처리 실패한 경우

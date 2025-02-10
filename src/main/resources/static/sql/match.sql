@@ -1,23 +1,26 @@
-CREATE TABLE MATCH_POST (
-    MATCH_IDX INT(10) AUTO_INCREMENT PRIMARY KEY,
-    WRITER INT(10),
-    MATCH_DATE DATE NOT NULL,
-    MATCH_TIME VARCHAR(10) NOT NULL,
-    PLAYER_MAX INT(2) NOT NULL,
-    PLAYER_MIN INT(2) NOT NULL,
-    PLAYER_GENDER CHAR(1) NOT NULL,
-    MATCH_LEVEL VARCHAR(10) NOT NULL,
-    TEAM_STYLE VARCHAR(15) NOT NULL,
-    PRICE INT(10) NOT NULL,
-    REGISTER_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE match_post (
+    match_idx INT(10) AUTO_INCREMENT PRIMARY KEY,
+    writer INT(10),
+    match_date DATE NOT NULL,
+    match_time VARCHAR(10) NOT NULL,
+    player_max INT(2) NOT NULL,
+    player_min INT(2) NOT NULL,
+    player_gender CHAR(1) NOT NULL,
+    match_level VARCHAR(10) NOT NULL,
+    team_style VARCHAR(15) NOT NULL,
+    price INT(10) NOT NULL,
+    register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- FOREIGN KEY (WRITER) REFERENCES BUSINESS_USER(BUSINESS_IDX) ON DELETE CASCADE
 
-select * from MATCH_POST;
-delete from MATCH_POST;
-drop table MATCH_POST;
+select * from match_post;
+delete from match_post;
+drop table match_post;
 
-update MATCH_POST set MATCH_TIME = '14:49:00' where MATCH_IDX = 36;
-update MATCH_POST set MATCH_TIME = '14:49:00' where MATCH_IDX = 37;
+update match_post set player_max = 6 where match_idx = 33;
+update match_post set match_time = '14:49:00' where match_idx = 37;
+
+
+
 

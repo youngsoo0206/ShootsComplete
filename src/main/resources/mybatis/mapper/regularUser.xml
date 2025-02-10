@@ -160,4 +160,10 @@
         WHERE p.seller_idx = #{business_idx}
         AND p.payment_status = 'paid'
     </select>
+
+    <delete id="deleteRegularUser">
+        delete from regular_user
+        where idx = #{idx}
+    </delete>
+
 </mapper>

@@ -1,12 +1,22 @@
 /* 공통 스타일 */
 
-.container { width: 60%;     margin-top: 50px;}
+.container { width: 60%;     margin-top: 100px;}
 label { font-weight: bold; }
 #upfile { display: none; }
 
 body {
     background-color: #f9f9f9;
     font-family: 'Arial', sans-serif;
+}
+
+nav.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 table{font-size : 15px;}
@@ -104,21 +114,35 @@ table{font-size : 15px;}
     height: 25px;
     padding: 0;
     border: none;
-    background-color: #115FFC;
+    background-color: #FDBA01;
 }
 
 .btnM:hover{
     background-color: white;
-    color: #115FFC;
-    border: 1.5px solid #115FFC;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
 }
 
-.btnD{
-    margin: auto;
-    display: inline-flex;
+/*.btnD{*/
+/*    margin: auto;*/
+/*    display: inline-flex;*/
+/*}*/
+
+.btnD {
+    justify-content: left;
+    margin-top: 50px;
+    display: flex
+;
+    gap: 10px;
 }
+
 
 .comment-container{
     width: 40%;
 }
 
+
+.btn {
+    width: 110px;
+    height: 35px;
+}

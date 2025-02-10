@@ -176,4 +176,11 @@
         where post_idx = #{id}
     </select>
 
+    <select id="getCategoryCount">
+        SELECT
+            SUM(CASE WHEN category = 'a' THEN 1 ELSE 0 END) AS a_count,
+            SUM(CASE WHEN category = 'b' THEN 1 ELSE 0 END) AS b_count
+        FROM post;
+    </select>
+
 </mapper>

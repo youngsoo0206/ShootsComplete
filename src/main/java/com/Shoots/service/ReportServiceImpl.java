@@ -1,6 +1,7 @@
-package com.Shoots.service.report;
+package com.Shoots.service;
 
 import com.Shoots.domain.Report;
+import com.Shoots.mybatis.mapper.ReportMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

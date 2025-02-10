@@ -11,6 +11,7 @@ var chatHeader = $('.chat-header');
 
 var stompClient = null;
 var username = null;
+//topicName이 chat_room_idx
 var topicName = null;
 
 var colors = [
@@ -20,12 +21,12 @@ var colors = [
 
 usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
 messageForm.addEventListener('submit', sendMessage, true)
+connect();
 
 function connect(event) {
-    username = $('#name').val().trim();
-    topicName = $('#chatRoomNumber').val();
-    //String(num); 이거 null도 처리
-    
+    username = $('#session_id').val().trim();
+    topicName = $('#chatRoomNumber').val().trim();
+
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
@@ -38,23 +39,12 @@ function connect(event) {
 }
 
 
-function loadChat() {
-}
-
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/' + topicName, onMessageReceived);
     chatHeader.text("채팅방 이름 : " + topicName);
     loadChat();
     // Tell your username to the server
-
-    // DB설계
-    //
-    // 채팅방 idx
-    // 채팅방 이름
-    // 채팅방 내용들
-    // 채팅방 가입자?
-    // 채팅방
 
     // 01/23 여기 만지세요
     stompClient.send("/app/"+topicName,
@@ -90,20 +80,21 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-    makeMessageElement(message);
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+        // messageElement.classList.add('event-message');
+        // message.content = message.sender + ' 님이 참여했습니다.';
+        return;
     }
     else if (message.type === 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+        // messageElement.classList.add('event-message');
+        // message.content = message.sender + ' 님이 떠났습니다.';
+        return;
     }
     else {
         var avatarElement = document.createElement('i');
-        avatarElement.appendChild(document.createTextNode(message.sender[0]));
+        avatarElement.appendChild(document.createTextNode(message.sender[0])); //sender의 맨 첫글자
         avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
         var usernameElement = document.createElement('span');
@@ -121,6 +112,7 @@ function onMessageReceived(payload) {
     messageElement.appendChild(textElement);
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
+    insert_chat_log({'sender' : message.sender, 'content' : message.content});
 }
 function makeMessageElement(message){
     var avatarElement = document.createElement('i');
@@ -131,7 +123,7 @@ function makeMessageElement(message){
     usernameElement.appendChild(document.createTextNode(message.sender));
 
     var textElement = document.createElement('p');
-    textElement.appendChild(document.createTextNode("asdsadad"));
+    textElement.appendChild(document.createTextNode(message.content));
 
     var messageElement = document.createElement('li');
     messageElement.classList.add('chat-message');
@@ -151,5 +143,84 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
+function insert_chat_log(paramData){
+    var reqData = {
+        chat_room_idx : topicName,
+        sender : paramData?.sender,
+        content : paramData?.content
+    };
+    fetchInsert(reqData);
+}
+
+function fetchInsert(reqData) {
+    //fetch start
+    //category in ('POST','COMMENT','USER')
+    fetch('/Shoots/livechat/makelog',{
+        method:'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(reqData)
+    })
+        .then(resp => resp.json())
+        .then(data => {
+        })
+        .catch(error => alert("에러 뜸 : " + error))
+    //fetch end
+};
+
+async function loadChat() {
+    let datas = await get_chat_log({chat_room_idx : topicName}); //datas = chat_log 도메인클래스의 리스트
+    console.log('datas : ' + datas);
+    datas.forEach(data =>{
+        makeMessageElement(data);
+    });
+}
+
+async function get_chat_log(paramData){
+    var reqData = {
+        chat_room_idx : paramData?.chat_room_idx
+    };
+    return await fetchGetChat(reqData);
+}
+
+async function fetchGetChat(reqData) {
+    // //fetch start
+    // //category in ('POST','COMMENT','USER')
+    // fetch('/Shoots/livechat/getlog',{
+    //     method:'POST',
+    //     headers: {
+    //         'Content-Type' : 'application/json'
+    //     },
+    //     body : JSON.stringify(reqData)
+    // })
+    //     .then(resp => resp.json())
+    //     .then(datas => {
+    //         return datas;
+    //     })
+    //     .catch(error => alert("에러 뜸 : " + error))
+    // //fetch end
+
+    try {
+        const response = await fetch('/Shoots/livechat/getlog', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqData)
+        });
+
+        if (!response.ok)
+            throw new Error('Network response was not ok');
+
+        const datas = await response.json();  // 비동기적으로 데이터 받아오기
+        console.log('Received datas from server:', datas);
+        return datas;  // 받아온 데이터를 반환
+    }
+    catch (error) {
+        alert("에러 뜸 : " + error);
+    }
+};
 
 

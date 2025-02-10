@@ -142,4 +142,7 @@ public interface PostService {
     //admin chart용 count, register_date
     public List<Map<String, Object>> getPostCount();
 
+    //admin chart용 category별 post 개수
+    List<Map<String, Object>> getCategoryCount();
+
 }

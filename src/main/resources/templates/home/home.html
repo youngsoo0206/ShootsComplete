@@ -6,6 +6,10 @@
     <title>Shoots</title>
     <link th:href="@{/css/home.css}" rel="stylesheet">
     <script th:src="@{/js/home.js}"></script>
+
+    <script th:if="${message != null}" th:inline="javascript">
+        alert(/*[[${message}]]*/);
+    </script>
 </head>
 <body>
 <div id="carouselWrapper">
@@ -201,10 +205,10 @@
                                     <b th:text="${match.playerCount}" style="color: #da0130"></b> / <span th:text="${match.player_max}"></span>인
                                 </td>
 
-                                <td th:if="${match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount < match.player_min && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-apply">신청가능</button></a>
                                 </td>
-                                <td th:if="${match.playerCount > match.player_min && match.playerCount < match.player_max}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
+                                <td th:if="${match.playerCount >= match.player_min && match.playerCount < match.player_max && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">
                                     <button type="button" class="custom-btnS btn-5 btn-limited">마감임박</button></a>
                                 </td>
                                 <td th:if="${match.playerCount == match.player_max && match.isMatchPast() == false}"><a th:href="@{'match/detail?match_idx=' + ${match.match_idx}}">

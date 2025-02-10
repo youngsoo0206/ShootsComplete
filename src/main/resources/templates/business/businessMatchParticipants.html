@@ -9,6 +9,8 @@
 <body>
     <div class="container">
         <th:block th:if="${list > 0}">
+        <p style="caption-side: top; font-size: 20px; margin-left: 5px; color: #6c757d">매치 별 고객리스트</p>
+        <div class="scroll">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <th:block th:each="match : ${matchList}">
@@ -58,7 +60,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="result : ${results}" th:if="${result['MATCH_IDX'] == match.match_idx}">
+                                    <tr th:each="result : ${results}" th:if="${result['match_idx'] == match.match_idx}">
                                         <td><span th:text="${result['user_id']}"></span></td>
                                         <td><span th:text="${result['name']}"></span></td>
                                         <td><span th:text="${result['jumin']}"></span></td>
@@ -67,17 +69,17 @@
                                               + #strings.substring(result['tel'], 7)}"></span>
                                         </td>
                                         <td><span th:text="${result['email']}"></span></td>
-                                        <td><span th:text="${result['PAYMENT_METHOD']}"></span></td>
-                                        <td><span th:text="${result['PAYMENT_AMOUNT']}"></span></td>
-                                        <td><span th:text="${result['PAYMENT_DATE']}"></span></td>
-                                        <td><span th:text="${result['ACTION_DATE']}"></span></td>
-                                        <td th:if="${result['ACTION_DATE'] == null}">
+                                        <td><span th:text="${result['payment_method']}"></span></td>
+                                        <td><span th:text="${result['payment_amount']}"></span></td>
+                                        <td><span th:text="${result['payment_date']}"></span></td>
+                                        <td><span th:text="${result['action_date']}"></span></td>
+                                        <td th:if="${result['action_date'] == null}">
                                             <button type="button" class="btn-refund"
-                                                th:data-payment_idx="${result['PAYMENT_IDX']}" th:data-imp_uid="${result['IMP_UID']}" th:data-name="${result['name']}"
-                                                th:data-merchant_uid="${result['MERCHANT_UID']}" th:data-amount="${result['PAYMENT_AMOUNT']}" onclick="BrequestRefund(this)">
+                                                th:data-payment_idx="${result['payment_idx']}" th:data-imp_uid="${result['imp_uid']}" th:data-name="${result['name']}"
+                                                th:data-merchant_uid="${result['merchant_uid']}" th:data-amount="${result['payment_amount']}" onclick="BrequestRefund(this)">
                                             환불</button>
                                         </td>
-                                        <td th:if="${result['ACTION_DATE'] != null}">
+                                        <td th:if="${result['action_date'] != null}">
                                             <button type="button" class="btn-refund-no">환불</button>
                                         </td>
                                     </tr>
@@ -89,7 +91,7 @@
                 </th:block>
             </div>
         </div>
-        </th:block>
+        </div>
         <th:block th:if="${list == 0}">
             <div style="text-align: center; margin: 100px 0 100px 0"><p> 매치리스트와 고객리스트가 존재하지 않습니다 </p></div>
         </th:block>

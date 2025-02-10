@@ -4,12 +4,10 @@ import java.io.File;
 
 import com.Shoots.domain.*;
 import com.Shoots.service.*;
-import com.Shoots.service.report.ReportService;
-import com.Shoots.task.SendMail;
+import com.Shoots.service.ReportService;
 import com.Shoots.task.SendMailText;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,6 +75,7 @@ public class AdminController {
         int allUsers = regularUserService.allUsers();
         List<Map<String, Object>> businessCount = businessUserService.getBusinessUsers(); //register_date에 따른 승인 기업 수
         List<Map<String, Object>> postCount = postService.getPostCount();   //reigser_date에 따른 게시글 수
+        List<Map<String, Object>> categoryCount = postService.getCategoryCount();
 
         mv.addObject("faqcount", faqcount);
         mv.addObject("noticecount", noticecount);
@@ -88,6 +87,7 @@ public class AdminController {
         mv.addObject("allUsers", allUsers);
         mv.addObject("businessCount", businessCount);
         mv.addObject("postCount", postCount);
+        mv.addObject("categoryCount", categoryCount);
         mv.setViewName("admin/admin");
         return mv;
     }

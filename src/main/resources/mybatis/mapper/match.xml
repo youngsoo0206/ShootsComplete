@@ -5,98 +5,98 @@
 <mapper namespace="com.Shoots.mybatis.mapper.MatchMapper">
 
     <select id="getListCount" resultType="int">
-        select count(*) from MATCH_POST
+        select count(*) from match_post
     </select>
 
     <select id="getListCountById" resultType="int">
-        select count(*) from MATCH_POST where writer = #{idx}
+        select count(*) from match_post where writer = #{idx}
     </select>
 
     <select id="getMatchList" parameterType="map" resultType="Match">
         SELECT mp.*, b.business_name
-        FROM MATCH_POST mp
-        LEFT JOIN BUSINESS_USER b ON mp.writer = b.business_idx
+        FROM match_post mp
+        LEFT JOIN business_user b ON mp.writer = b.business_idx
         <where>
             <if test="filter != null and filter == 'today'">
-                mp.MATCH_DATE = CURDATE()
+                mp.match_date = CURDATE()
             </if>
             <if test="gender != null">
                 AND mp.player_gender = #{gender}
             </if>
             <if test="level != null">
-                AND mp.MATCH_LEVEL = #{level}
+                AND mp.match_level = #{level}
             </if>
             <if test="business_idx != null">
-                AND mp.WRITER = #{business_idx}
+                AND mp.writer = #{business_idx}
             </if>
             <if test="filter == null">
-                AND mp.MATCH_DATE >= CURDATE()
+                AND mp.match_date >= CURDATE()
             </if>
         </where>
         ORDER BY
-        mp.MATCH_DATE DESC,
-        mp.MATCH_TIME DESC
+        mp.match_date DESC,
+        mp.match_time DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="getMatchListById" parameterType="map" resultType="Match">
         SELECT mp.*, b.business_name
-        FROM MATCH_POST mp
-            LEFT JOIN BUSINESS_USER b
+        FROM match_post mp
+            LEFT JOIN business_user b
             ON mp.writer = b.business_idx
         <where>
             mp.writer = #{idx}
             <if test="filter != null and filter == 'today'">
-                AND mp.MATCH_DATE = CURDATE()
+                AND mp.match_date = CURDATE()
             </if>
             <if test="gender != null">
                 AND mp.player_gender = #{gender}
             </if>
             <if test="level != null">
-                AND mp.MATCH_LEVEL = #{level}
+                AND mp.match_level = #{level}
             </if>
         </where>
         ORDER BY
-            mp.MATCH_DATE DESC,
-            mp.MATCH_TIME DESC
+            mp.match_date DESC,
+            mp.match_time DESC
             LIMIT
             #{limit} OFFSET #{offset};
     </select>
 
     <select id="getMatchListByIdForSales" parameterType="map" resultType="Match">
-        SELECT * FROM MATCH_POST
+        SELECT * FROM match_post
         <where>
-            WRITER = #{idx}
+            writer = #{idx}
             <if test="month != null">
-                AND MONTH(MATCH_DATE) = #{month}
+                AND MONTH(match_date) = #{month}
             </if>
             <if test="year != null">
-                AND YEAR(MATCH_DATE) = #{year}
+                AND YEAR(match_date) = #{year}
             </if>
             <if test="gender != null">
-                AND PLAYER_GENDER = #{gender}
+                AND player_gender = #{gender}
             </if>
             <if test="level != null">
-                AND MATCH_LEVEL = #{level}
+                AND match_level = #{level}
             </if>
         </where>
         ORDER BY
-        MATCH_DATE DESC,
-        MATCH_TIME DESC
+        match_date DESC,
+        match_time DESC
     </select>
 
     <insert id="insertMatch">
-        INSERT INTO MATCH_POST (
-            WRITER,
-            MATCH_DATE,
-            MATCH_TIME,
-            PLAYER_MAX,
-            PLAYER_MIN,
-            PLAYER_GENDER,
-            MATCH_LEVEL,
-            TEAM_STYLE,
-            PRICE,
-            REGISTER_DATE
+        INSERT INTO match_post (
+            writer,
+            match_date,
+            match_time,
+            player_max,
+            player_min,
+            player_gender,
+            match_level,
+            team_style,
+            price,
+            register_date
         ) VALUES (
                      #{writer},
                      #{match_date},
@@ -113,34 +113,34 @@
 
     <select id="getDetail" resultType="match">
         SELECT mp.*, b.business_name, b.address
-        FROM MATCH_POST mp
-            LEFT JOIN BUSINESS_USER b
+        FROM match_post mp
+            LEFT JOIN business_user b
             ON mp.writer = b.business_idx
         WHERE
-            mp.MATCH_IDX = #{match_idx};
+            mp.match_idx = #{match_idx};
     </select>
 
     <select id="getMatchListByMatchTime" resultType="Match">
-        select * from MATCH_POST where match_date = #{matchDate} and match_time = #{matchTime}
+        select * from match_post where match_date = #{matchDate} and match_time = #{matchTime}
     </select>
 
     <select id="getMatchListByDeadline" resultType="Match">
         SELECT mp.*, b.business_name
-        FROM MATCH_POST mp
-                 LEFT JOIN BUSINESS_USER b ON mp.writer = b.business_idx
-        WHERE TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) >= #{deadline}
-        ORDER BY ABS(TIMESTAMP(mp.MATCH_DATE, mp.MATCH_TIME) - #{deadline}) LIMIT 3
+        FROM match_post mp
+                 LEFT JOIN business_user b ON mp.writer = b.business_idx
+        WHERE TIMESTAMP(mp.match_date, mp.match_time) >= #{deadline}
+        ORDER BY ABS(TIMESTAMP(mp.match_date, mp.match_time) - #{deadline}) LIMIT 3
     </select>
 
     <select id="getTotalMatchById" resultType="int">
-        SELECT COUNT(*) FROM MATCH_POST WHERE writer = #{business_idx};
+        SELECT COUNT(*) FROM match_post WHERE writer = #{business_idx};
     </select>
 
     <select id="getTotalMatchByMonth" resultType="map">
         SELECT
             MONTH(match_date) AS month,
             COUNT(*) AS match_count
-        FROM MATCH_POST
+        FROM match_post
         WHERE writer = #{business_idx}
           AND YEAR(match_date) = YEAR(CURDATE())
         GROUP BY MONTH(match_date)
@@ -148,20 +148,20 @@
     </select>
 
     <select id="getAvgPrice" resultType="double">
-        SELECT AVG(PRICE) AS avg_price FROM MATCH_POST;
+        SELECT AVG(price) AS avg_price FROM match_post;
     </select>
 
     <select id="getAvgPriceByIdx" resultType="double">
-        SELECT AVG(PRICE) AS avg_price FROM MATCH_POST WHERE writer = #{business_idx};
+        SELECT AVG(price) AS avg_price FROM match_post WHERE writer = #{business_idx};
     </select>
 
     <update id="updateMatch">
-        update MATCH_POST set MATCH_DATE = #{match_date}, MATCH_TIME = #{match_time}, MATCH_LEVEL = #{match_level}, TEAM_STYLE = #{team_style},
-                              PLAYER_MIN = #{player_min},  PLAYER_MAX = #{player_max},  PLAYER_GENDER = #{player_gender}, PRICE = #{price}
-        where MATCH_IDX = #{match_idx}
+        update match_post set match_date = #{match_date}, match_time = #{match_time}, match_level = #{match_level}, team_style = #{team_style},
+                              player_min = #{player_min},  player_max = #{player_max},  player_gender = #{player_gender}, price = #{price}
+        where match_idx = #{match_idx}
     </update>
 
     <delete id="deleteMatch">
-        delete from MATCH_POST where MATCH_IDX = #{match_idx}
+        delete from match_post where match_idx = #{match_idx}
     </delete>
 </mapper>
