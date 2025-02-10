@@ -36,7 +36,7 @@ function connect() {
         stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
     }
-    event.preventDefault();
+    // event.preventDefault();
 }
 
 
