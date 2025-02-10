@@ -291,7 +291,7 @@ $(document).on('click', '#titleReport', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'POST', 'reportedUser' : '${reported}'})">
+                                                onclick="ReportSubmitButton({'category': 'POST', 'reported_user' : '${reported}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -376,7 +376,7 @@ function ReportSubmitButton(paramData){
         return false;
     }
     var reqData = {
-        reportedUser : paramData?.reportedUser,
+        reported_user : paramData?.reported_user,
         category : category,
         content : selectedOption,
         detail : $('#modalEtcContent').val(),
