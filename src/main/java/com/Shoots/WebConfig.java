@@ -15,12 +15,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///c:/upload/");  // 절대 경로
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("https://www.goshoots.site") // 허용할 도메인
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowCredentials(true)
-                .allowedHeaders("*");
-    }
 }
