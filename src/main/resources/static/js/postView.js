@@ -277,11 +277,11 @@ $(document).on('click', '#titleReport', function() {
                                             <div class="modal-body">
                                                 <select name="title" class="form-control" required>
                                                     <option disabled selected hidden>신고 사유를 선택해 주세요</option>
-                                                    <option value="욕설, 혐오 표현 등이 포함된 댓글">욕설, 혐오 표현 등이 포함된 글</option>
-                                                    <option value="갈등 조장하는 댓글">갈등 조장하는 글</option>
+                                                    <option value="욕설, 혐오 표현 등이 포함된 글">욕설, 혐오 표현 등이 포함된 글</option>
+                                                    <option value="갈등 조장하는 글">갈등 조장하는 글</option>
                                                     <option value="게시글과 관계 없는 내용">게시글과 관계 없는 내용</option>
-                                                    <option value="도배 목적의 댓글">도배 목적의 글</option>
-                                                    <option value="성적 컨텐츠가 포함된 댓글">성적 컨텐츠가 포함된 글</option>
+                                                    <option value="도배 목적의 글">도배 목적의 글</option>
+                                                    <option value="성적 컨텐츠가 포함된 글">성적 컨텐츠가 포함된 글</option>
                                                 </select><br><br>
                                                 <span style="margin-left: 10px"> 추가 내용(100자 이내)</span><br>
                                                 <textarea maxlength="100" id="modalEtcContent" style="margin: 10px; width: 450px; height: 100px; border-radius: 5px; border: 1px solid lightgray"> </textarea>
@@ -291,7 +291,7 @@ $(document).on('click', '#titleReport', function() {
                                                 
                                                 
                                                 <button type="button" class="btn-report" 
-                                                onclick="ReportSubmitButton({'category': 'POST', 'reportedUser' : '${reported}'})">
+                                                onclick="ReportSubmitButton({'category': 'POST', 'reported_content' : '${reported}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -339,7 +339,7 @@ $(document).on('click', '.commentReportButton', function() {
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 
                                                 <button type="button" class="btn btn-primary" 
-                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'comment_idx': ${dataCommentIdx}, 'reported_user' : '${dataCommentContent}'})">
+                                                onclick="ReportSubmitButton({'category': 'COMMENT', 'comment_idx': ${dataCommentIdx}, 'reported_content' : '${dataCommentContent}'})">
                                                     신고하기
                                                 </button>                                            
                                             </div>
@@ -376,7 +376,7 @@ function ReportSubmitButton(paramData){
         return false;
     }
     var reqData = {
-        reported_user : paramData?.reported_user,
+        reported_content : paramData?.reported_content,
         category : category,
         content : selectedOption,
         detail : $('#modalEtcContent').val(),
