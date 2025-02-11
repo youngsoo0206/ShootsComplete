@@ -380,8 +380,8 @@ function ReportSubmitButton(paramData){
         category : category,
         content : selectedOption,
         detail : $('#modalEtcContent').val(),
-        post_idx : $('#post_idx')?.val() ?? 0,
-        comment_idx : paramData?.comment_idx ?? 0
+        post_idx : $('#post_idx')?.val() ?? '0',
+        comment_idx : paramData?.comment_idx ?? '0'
     };
     fetchReport(reqData);
 }
