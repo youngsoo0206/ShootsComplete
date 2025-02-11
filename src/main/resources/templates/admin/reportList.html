@@ -125,8 +125,8 @@
           <tbody>
           <tr th:block th:each="r, interStat : ${list}">
             <td th:text="${r.reporter}"></td>
-            <td th:if="${r.category == 'POST'}"><a th:href="@{/post/detail(num=${r.post_idx})}" th:text="${r.reported_user}" class="reportContent" ></a></td>
-            <td th:if="${r.category == 'COMMENT'}" th:text="${r.reported_user}" class="reportContent"></td>
+            <td th:if="${r.category == 'POST'}"><a th:href="@{/post/detail(num=${r.post_idx})}" th:text="${r.reported_content}" class="reportContent" ></a></td>
+            <td th:if="${r.category == 'COMMENT'}" th:text="${r.reported_content}" class="reportContent"></td>
             <td th:text="${r.category}"></td>
             <td><a href = "#" class="report-link" th:data-detail="${r.detail}" th:text="${r.content}"></a></td>
             <td th:text="${#strings.substring(r.registry_date, 0, 10)}"></td>

@@ -27,7 +27,7 @@
 
                     //category in ('POST','COMMENT','USER')
                     const reqData = {
-                        reported_user : tr.find('.boardWriter').text(),
+                        reported_content : tr.find('.boardWriter').text(),
                         category : 'USER',
                     };
                     fetch('/Shoots/insertReport',{
