@@ -11,7 +11,7 @@ CREATE TABLE payment_history (
 DELIMITER $$
 
 CREATE TRIGGER update_payment_idx_in_history
-    AFTER INSERT ON PAYMENT
+    AFTER INSERT ON payment
     FOR EACH ROW
 BEGIN
     UPDATE payment_history
@@ -23,5 +23,10 @@ DELIMITER ;
 
 SHOW TRIGGERS;
 
-select * from payment_history;
+ALTER TABLE payment_history
+    ADD CONSTRAINT fk_payment_history_payment
+        FOREIGN KEY (payment_idx) REFERENCES payment(payment_idx);
 
+ALTER TABLE payment_history
+    ADD CONSTRAINT fk_payment_history_merchant_uid
+        FOREIGN KEY (merchant_uid) REFERENCES payment(merchant_uid);

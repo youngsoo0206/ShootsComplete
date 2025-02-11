@@ -8,15 +8,12 @@ CREATE TABLE bc_blacklist (
         unblocked_at DATETIME DEFAULT NULL
 );
 
-SELECT status
-FROM bc_blacklist
-WHERE target_idx = ? AND business_idx = ?
-ORDER BY blocked_at DESC
-    LIMIT 1;
+ALTER TABLE bc_blacklist
+    ADD CONSTRAINT fk_bc_blacklist_target
+        FOREIGN KEY (target_idx) REFERENCES regular_user(idx)
+            ON DELETE CASCADE ON UPDATE CASCADE;
 
-select * from bc_blacklist;
-
-drop table bc_blacklist;
-
-select * from bc_blacklist where unblocked_at is  null;
-
+ALTER TABLE bc_blacklist
+    ADD CONSTRAINT fk_bc_blacklist_business
+        FOREIGN KEY (business_idx) REFERENCES business_user(business_idx)
+            ON DELETE CASCADE ON UPDATE CASCADE;

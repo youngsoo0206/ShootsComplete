@@ -18,3 +18,21 @@ SHOW FULL COLUMNS FROM report;
 CREATE USER 'shoots'@'localhost' IDENTIFIED BY '1234';
 GRANT ALL PRIVILEGES ON *.* TO 'shoots'@'localhost' WITH GRANT OPTION;
 CREATE DATABASE shoots;
+
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE report
+    ADD CONSTRAINT fk_report_post
+        FOREIGN KEY (post_idx) REFERENCES post(post_idx);
+
+ALTER TABLE report
+    ADD CONSTRAINT fk_report_comment
+        FOREIGN KEY (comment_idx) REFERENCES post_comment(post_idx);
