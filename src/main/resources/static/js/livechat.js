@@ -7,6 +7,8 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+var is_match_concluded = document.querySelector('#is_match_concluded');
+var state_before_connect = document.querySelector('#state_before_connect');
 var chatHeader = $('.chat-header');
 
 var stompClient = null;
@@ -19,9 +21,15 @@ var colors = [
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
-messageForm.addEventListener('submit', sendMessage, true)
-connect();
+//start here
+document.addEventListener("DOMContentLoaded", function () {
+    usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
+    messageForm.addEventListener('submit', sendMessage, true)
+    if(is_match_concluded)
+        connect();
+    else
+        state_before_connect.text('아직 성사되지 않은 매치입니다...');
+});
 
 function connect() {
     username = $('#session_id').val().trim();
