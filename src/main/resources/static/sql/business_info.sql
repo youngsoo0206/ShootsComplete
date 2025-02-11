@@ -12,8 +12,7 @@ create table business_info(
       rental  VARCHAR(255)
 );
 
-
-
-select * from business_info;
-delete from business_info;
-drop table business_info;
+ALTER TABLE business_info
+    ADD CONSTRAINT fk_business_info_business
+        FOREIGN KEY (business_idx) REFERENCES business_user(business_idx)
+            ON DELETE CASCADE ON UPDATE CASCADE;

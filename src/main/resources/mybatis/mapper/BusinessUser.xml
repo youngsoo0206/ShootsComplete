@@ -134,7 +134,7 @@
     </sql>
 
     <select id="getListForLocation">
-        select * from business_user
+        select * from business_user where login_status = 'access'
         <include refid="searchForLocation" />
         order by business_idx desc
         LIMIT #{offset}, #{pageSize}
