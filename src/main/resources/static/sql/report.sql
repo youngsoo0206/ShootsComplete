@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS report;
 CREATE TABLE report (
 report_idx INT AUTO_INCREMENT PRIMARY KEY,
 reporter varchar(30) NOT NULL ,
-reported_user varchar(30) NOT NULL ,
+reported_content varchar(30) NOT NULL ,
 category varchar(10) NOT NULL CHECK (category in ('POST','COMMENT')),
 content text,
 detail text,

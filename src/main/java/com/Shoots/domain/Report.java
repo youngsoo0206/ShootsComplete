@@ -11,7 +11,7 @@ import lombok.ToString;
 public class Report {
     private int report_idx;
     private String reporter;
-    private String reported_user;
+    private String reported_content;
     private String category;
     private String content;
     private String detail;
