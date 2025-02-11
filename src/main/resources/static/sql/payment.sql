@@ -15,18 +15,16 @@ CREATE TABLE payment (
 #                          FOREIGN KEY (buyer_idx) REFERENCES regular_user(idx),  -- 외래 키 제약
 #                          FOREIGN KEY (seller_idx) REFERENCES business_user(business_idx)  -- 외래 키 제약
 
-select * from payment where match_idx = 24;
+ALTER TABLE payment ADD UNIQUE (merchant_uid);
 
-insert into payment (
-    match_idx, seller_idx, buyer_idx, payment_method, payment_amount,
-    payment_date, payment_status, merchant_uid, imp_uid
-)
-values (33, 1, 4, 'card', 1000,
-                   CURRENT_TIMESTAMP, 'paid', 'merchant_27_1', 'imp_111'
-       );
+ALTER TABLE payment
+    ADD CONSTRAINT fk_payment_match
+        FOREIGN KEY (match_idx) REFERENCES match_post(match_idx);
 
-select * from payment where payment_status='paid' and seller_idx = 1;
+ALTER TABLE payment
+    ADD CONSTRAINT fk_payment_business
+        FOREIGN KEY (seller_idx) REFERENCES business_user(business_idx);
 
-
-
-
+ALTER TABLE payment
+    ADD CONSTRAINT fk_payment_regular
+        FOREIGN KEY (buyer_idx) REFERENCES regular_user(idx);
