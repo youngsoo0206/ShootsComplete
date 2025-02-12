@@ -145,3 +145,31 @@ table{font-size : 15px;}
     width: 110px;
     height: 35px;
 }
+
+.input-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid rgba(85, 107, 47, 0.5);
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+textarea {
+    border: 1px solid rgba(85, 107, 47, 0.5);
+}
+
+textarea:focus {
+    outline: none;
+    border: 2px solid rgba(85, 107, 47, 0.5);
+}
+
+.input-field input:focus {
+    outline: none;
+    border: 2px solid rgba(85, 107, 47, 0.5);
+}
