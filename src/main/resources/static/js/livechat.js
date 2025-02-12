@@ -23,10 +23,13 @@ var colors = [
 
 //start here
 document.addEventListener("DOMContentLoaded", function () {
-    usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
-    messageForm.addEventListener('submit', sendMessage, true)
-    if(is_match_concluded)
+
+    if(is_match_concluded){
+        usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
+        messageForm.addEventListener('submit', sendMessage, true)
         connect();
+    }
+
     else
         state_before_connect.text('아직 성사되지 않은 매치입니다...');
 });
