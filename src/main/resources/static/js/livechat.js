@@ -23,9 +23,8 @@ var colors = [
 
 //start here
 document.addEventListener("DOMContentLoaded", function () {
-
+//usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
     if(is_match_concluded){
-        usernameForm.addEventListener('submit', connect, true) //true는 캡처링. false는 버블링
         messageForm.addEventListener('submit', sendMessage, true)
         connect();
     }
