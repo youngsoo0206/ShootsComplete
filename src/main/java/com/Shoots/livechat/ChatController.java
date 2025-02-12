@@ -48,11 +48,12 @@ public class ChatController {
             chat_room_idx = chatService.create_chat_room();
             chatService.join_chat_room(user_idx_list, chat_room_idx, match_idx);
             model.addAttribute("chatRoomNumber", chat_room_idx);
-            model.addAttribute("match", match);
+
         }
         //있으면 match_idx로 개설된 chat room number
         else
             model.addAttribute("chatRoomNumber", chatService.get_match_chat_room_idx(match_idx));
+        model.addAttribute("match", match);
         return "livechat/livechat";
     }
 
