@@ -9,14 +9,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${my.savefolder}")
+    @Value("${my.savefolder2}")
     private String SAVE_FOLDER;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // /upload/** 요청을 C 드라이브의 c:/upload/ 디렉토리로 매핑
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:///"+SAVE_FOLDER+"/");  // 절대 경로
+                .addResourceLocations("file:"+SAVE_FOLDER+"/");  // 절대 경로
     }
 
 //    @Override
