@@ -103,6 +103,6 @@
     </select>
 
     <select id="getPaymentCount">
-        select count(*) from payment where payment_status = 'paid';
+        select count(*) from payment where buyer_idx = #{id} and payment_status = 'paid';
     </select>
 </mapper>
