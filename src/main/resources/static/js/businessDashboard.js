@@ -175,8 +175,8 @@ window.addEventListener('DOMContentLoaded', event => {
             datasets: [{
                 label: "신청 인원",
                 data: window.monthlyData,
-                borderColor: "red", // "rgba(75, 192, 192, 1)",
-                backgroundColor: "rgba(255, 0, 0, 0.2)",
+                borderColor: "rgba(101, 163, 13, 1)",
+                backgroundColor: "rgba(101, 163, 13, 0.2)",
                 borderWidth: 2,
                 fill: true
             }]

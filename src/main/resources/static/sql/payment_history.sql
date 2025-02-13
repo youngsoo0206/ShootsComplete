@@ -23,10 +23,3 @@ DELIMITER ;
 
 SHOW TRIGGERS;
 
-ALTER TABLE payment_history
-    ADD CONSTRAINT fk_payment_history_payment
-        FOREIGN KEY (payment_idx) REFERENCES payment(payment_idx);
-
-ALTER TABLE payment_history
-    ADD CONSTRAINT fk_payment_history_merchant_uid
-        FOREIGN KEY (merchant_uid) REFERENCES payment(merchant_uid);
