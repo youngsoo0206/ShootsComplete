@@ -65,7 +65,7 @@ h1{
     width: 80px;
     height: 25px;
     padding: 0;
-    border: none;
+    border: 1.5px solid #65A30D;
     background-color: #65A30D;
 }
 
@@ -78,13 +78,13 @@ h1{
 .update1{
     text-decoration: none;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 20px;
     transition: background-color 0.3s ease, color 0.3s ease;
     width: 60px;
     height: 25px;
     padding: 0;
-    border: none;
+    border: 1.5px solid #1d4ed8;
     background-color: #1d4ed8;
     text-align: center;
 }
@@ -120,13 +120,13 @@ h1{
 .delete{
     text-decoration: none;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 20px;
     transition: background-color 0.3s ease, color 0.3s ease;
     width: 60px;
     height: 25px;
     padding: 0;
-    border: none;
+    border: 1.5px solid #DA0130;
     background-color: #DA0130;
     text-align: center;
 }
@@ -262,9 +262,10 @@ h1{
     width: 60px;
     height: 25px;
     padding: 0;
-    border: none;
     background-color: #65A30D;
     text-align: center;
+    border: 1.5px solid #65A30D;
+
 }
 
 .common:hover{
