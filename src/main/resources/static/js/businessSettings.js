@@ -20,30 +20,41 @@ $(function () {
                 const minuteFormatted = minute.toString().padStart(2, '0');
                 const time = `${hourFormatted}:${minuteFormatted}`;
 
-                const openingOption = document.createElement('option');
-                openingOption.value = time;
-                openingOption.textContent = time;
-                openingSelect.appendChild(openingOption);
-                updateOpeningSelect.appendChild(openingOption);
+                // 각 select 요소마다 새로운 option 객체를 생성
+                const openingOption1 = document.createElement('option');
+                openingOption1.value = time;
+                openingOption1.textContent = time;
+                openingSelect.appendChild(openingOption1);
 
-                const closingOption = document.createElement('option');
-                closingOption.value = time;
-                closingOption.textContent = time;
-                closingSelect.appendChild(closingOption);
-                updateClosingSelect.appendChild(closingOption);
+                const openingOption2 = document.createElement('option');
+                openingOption2.value = time;
+                openingOption2.textContent = time;
+                updateOpeningSelect.appendChild(openingOption2);
 
+                const closingOption1 = document.createElement('option');
+                closingOption1.value = time;
+                closingOption1.textContent = time;
+                closingSelect.appendChild(closingOption1);
+
+                const closingOption2 = document.createElement('option');
+                closingOption2.value = time;
+                closingOption2.textContent = time;
+                updateClosingSelect.appendChild(closingOption2);
+
+                // 저장된 시간이 있다면 선택
                 if (time === openSavedTime) {
-                    openingOption.selected = true;
-                    updateOpeningSelect.value = time;
+                    openingOption1.selected = true;
+                    openingOption2.selected = true;
                 }
 
                 if (time === closeSavedTime) {
-                    closingOption.selected = true;
-                    updateClosingSelect.value = time;
+                    closingOption1.selected = true;
+                    closingOption2.selected = true;
                 }
             }
         }
     }
+
 
     $('form[id=insertBusinessInfoForm]').submit(function (event) {
         const checkboxes = $('input[name="field_type"]');

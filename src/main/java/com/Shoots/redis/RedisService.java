@@ -59,7 +59,7 @@ public class RedisService {
                     address = businessUserMapper.getAddressByBusinessIdx(businessIdxList.get(i));
 
                     if (address != null) {
-                        redisTemplate.opsForValue().set(keys.get(i), address, 7, TimeUnit.DAYS);
+                        redisTemplate.opsForValue().set(keys.get(i), address, 120, TimeUnit.SECONDS);
                     }
                 }
                 addressMap.put(businessIdxList.get(i), address);
