@@ -37,7 +37,7 @@ public class RedisService {
 
     public void saveAddressData(int businessIdx, String address) {
         String key = "business:" + businessIdx + ":address";
-        redisTemplate.opsForValue().set(key, address, 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(key, address, 120, TimeUnit.SECONDS);
     }
 
     public Map<Integer, String> getAddressData(List<Integer> businessIdxList) {
