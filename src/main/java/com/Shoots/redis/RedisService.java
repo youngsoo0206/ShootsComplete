@@ -46,22 +46,43 @@ public class RedisService {
                 .map(idx -> "business:" + idx + ":address")
                 .collect(Collectors.toList());
 
-        // Redis Pipeline 사용
-        List<Object> values = redisTemplate.opsForValue().multiGet(keys);
+        // Redis Pipeline을 사용하여 여러 키 조회
+        List<Object> values = redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+            keys.forEach(key -> connection.get(key.getBytes()));
+            return null;
+        });
+
+        // Redis에 없는 값들을 저장하기 위한 별도 리스트 생성
+        List<String> missingKeys = new ArrayList<>();
+        List<String> missingValues = new ArrayList<>();
 
         for (int i = 0; i < keys.size(); i++) {
-            String address = (values != null && values.get(i) != null) ? (String) values.get(i) : null;
+            String address = (values.get(i) != null) ? (String) values.get(i) : null;
 
-            if (address == null) { // Redis에 없으면 DB에서 조회 후 캐싱
+            if (address == null) {
                 address = businessUserMapper.getAddressByBusinessIdx(businessIdxList.get(i));
+
                 if (address != null) {
-                    redisTemplate.opsForValue().set(keys.get(i), address, 14, TimeUnit.DAYS);
+                    missingKeys.add(keys.get(i));
+                    missingValues.add(address);
                 }
             }
             addressMap.put(businessIdxList.get(i), address);
         }
+
+        // 조회 후 Redis에 없었던 데이터만 한 번의 Pipeline으로 저장
+        if (!missingKeys.isEmpty()) {
+            redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+                for (int i = 0; i < missingKeys.size(); i++) {
+                    connection.setEx(missingKeys.get(i).getBytes(), TimeUnit.DAYS.toSeconds(7), missingValues.get(i).getBytes());
+                }
+                return null;
+            });
+        }
+
         return addressMap;
     }
+
 
 
     public void importLocationsToRedis() throws IOException {
