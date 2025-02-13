@@ -67,7 +67,9 @@
               th:replace="~{fragments/paging :: paging('list',|&search_word=${search_word}|)}"/>
     </div>
 
-    <h1 th:if="${listcount == 0 && search_word == ''}">등록된 공지가 없습니다.</h1>
+    <span th:if="${listcount == 0 && search_word == ''}">
+      <div style="text-align: center; margin: 100px 0 100px 0"><p>등록된 공지가 없습니다.</p></div>
+    </span>
 
     <div th:if="${listcount == 0 && search_word != ''}">
       <form th:action="@{list}">
@@ -76,7 +78,7 @@
           <button class="btn btn-primary search" type="submit">검색</button>
         </div>
       </form>
-      <h1 style="text-align: center; margin-top:30px;">검색 결과가 없습니다.</h1>
+      <div style="text-align: center; margin: 100px 0 100px 0"><p> 검색 결과가 없습니다. </p></div>
     </div>
 
   </div>
