@@ -81,13 +81,14 @@
                         <div class="buttonfront">
                             <p><strong>작성자 :</strong> [[${ic.user_id}]] <strong>등록일 :</strong>
                                 [[${ic.register_date.substring(0,16)}]]
+
+                                <button type="button" class="btn-primary ic_modify btnM2" style="display:none"
+                                        th:value="${ic.i_comment_idx}">수정
+                                </button>
+                                <button type="button" class="btn-danger ic_delete btnC2" style="display:none"
+                                        th:value="${ic.i_comment_idx}">삭제
+                                </button>
                         </div>
-                        <button type="button" class="btn btn-primary ic_modify btnM" style="display:none"
-                                th:value="${ic.i_comment_idx}">수정
-                        </button>
-                        <button type="button" class="btn btn-danger ic_delete btnC" style="display:none"
-                                th:value="${ic.i_comment_idx}">삭제
-                        </button>
                         </p>
                         <span class="ic_content">[[${ic.content}]]</span>
                     </div>
@@ -120,7 +121,8 @@
                             <span class="nickname">&nbsp;&nbsp;[[${session.id}]]</span>  <!-- 댓글 작성자의 닉네임 : 로그인 한 유저 닉네임 -->
                         </div>
 
-                        <textarea placeholder="문의글에 대한 답변을 남겨보세요" class="ic_content form-control" name="content" maxlength="300"
+                        <textarea placeholder="문의글에 대한 답변을 남겨보세요" class="ic_content form-control " name="content" maxlength="300"
+                                  style="width: 100%; border-radius: 5px; padding: 10px"
                                   required></textarea>
 
                         <div class="register-box">
