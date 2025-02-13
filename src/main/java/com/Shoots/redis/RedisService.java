@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class RedisService {
 
         // Redis Pipeline을 사용하여 여러 키 조회
         List<Object> values = redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
-            keys.forEach(key -> connection.get(key.getBytes()));
+            keys.forEach(key -> connection.get(key.getBytes(StandardCharsets.UTF_8)));
             return null;
         });
 
@@ -74,7 +75,7 @@ public class RedisService {
         if (!missingKeys.isEmpty()) {
             redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
                 for (int i = 0; i < missingKeys.size(); i++) {
-                    connection.setEx(missingKeys.get(i).getBytes(), TimeUnit.DAYS.toSeconds(7), missingValues.get(i).getBytes());
+                    connection.setEx(missingKeys.get(i).getBytes(), TimeUnit.DAYS.toSeconds(7), missingValues.get(i).getBytes(StandardCharsets.UTF_8));
                 }
                 return null;
             });
@@ -202,3 +203,4 @@ public class RedisService {
         return locationMap;
     }
 }
+
