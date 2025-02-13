@@ -37,7 +37,7 @@ public class RedisService {
 
     public void saveAddressData(int businessIdx, String address) {
         String key = "business:" + businessIdx + ":address";
-        redisTemplate.opsForValue().set(key, address, 120, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, address, 14, TimeUnit.DAYS);
     }
 
     public Map<Integer, String> getAddressData(List<Integer> businessIdxList) {
@@ -47,23 +47,18 @@ public class RedisService {
                 .collect(Collectors.toList());
 
         // Redis Pipeline 사용
-        List<Object> results = redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
-            keys.forEach(key -> connection.keyCommands().exists(key.getBytes()));
-            return null;
-        });
+        List<Object> values = redisTemplate.opsForValue().multiGet(keys);
 
         for (int i = 0; i < keys.size(); i++) {
-            if (Boolean.TRUE.equals(results.get(i))) {
-                String address = (String) redisTemplate.opsForValue().get(keys.get(i));
-                if (address == null) {
-                    address = businessUserMapper.getAddressByBusinessIdx(businessIdxList.get(i));
+            String address = (values != null && values.get(i) != null) ? (String) values.get(i) : null;
 
-                    if (address != null) {
-                        redisTemplate.opsForValue().set(keys.get(i), address, 120, TimeUnit.SECONDS);
-                    }
+            if (address == null) { // Redis에 없으면 DB에서 조회 후 캐싱
+                address = businessUserMapper.getAddressByBusinessIdx(businessIdxList.get(i));
+                if (address != null) {
+                    redisTemplate.opsForValue().set(keys.get(i), address, 14, TimeUnit.DAYS);
                 }
-                addressMap.put(businessIdxList.get(i), address);
             }
+            addressMap.put(businessIdxList.get(i), address);
         }
         return addressMap;
     }
