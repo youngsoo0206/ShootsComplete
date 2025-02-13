@@ -32,15 +32,6 @@ table{font-size : 15px;}
     color: #333;
 }
 
-/* 입력 필드 스타일 */
-.form-control {
-    border-radius: 20px;
-    border: 2px solid #65A30D;
-    padding: 10px;
-    font-size: 0.9rem;
-    color: #333;
-}
-
 /* 파일 첨부 및 삭제 */
 .file-group {
     margin-top: 20px;
@@ -104,6 +95,24 @@ table{font-size : 15px;}
     border: 1.5px solid #DA0130;
 }
 
+.btnC2{
+    color: white;
+    font-size: 13px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background-color: #DA0130;
+}
+
+.btnC2:hover{
+    background-color: white;
+    color: #DA0130;
+    border: 1.5px solid #DA0130;
+}
+
 .btnM{
     color: white;
     font-size: 15px;
@@ -117,6 +126,24 @@ table{font-size : 15px;}
 }
 
 .btnM:hover{
+    background-color: white;
+    color: #FDBA01;
+    border: 1.5px solid #FDBA01;
+}
+
+.btnM2{
+    color: white;
+    font-size: 13px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 50px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background-color: #FDBA01;
+}
+
+.btnM2:hover{
     background-color: white;
     color: #FDBA01;
     border: 1.5px solid #FDBA01;
@@ -161,12 +188,12 @@ table{font-size : 15px;}
 }
 
 textarea {
-    border: 1px solid rgba(85, 107, 47, 0.5);
+    border: 1px solid rgba(85, 107, 47, 0.5)!important;
 }
 
 textarea:focus {
     outline: none;
-    border: 2px solid rgba(85, 107, 47, 0.5);
+    border: 2px solid rgba(85, 107, 47, 0.5)!important;
 }
 
 .input-field input:focus {
