@@ -16,12 +16,14 @@ CREATE TABLE business_user(
     login_status    VARCHAR(9) DEFAULT 'pending',
     role          VARCHAR(10) DEFAULT 'business' NOT NULL
 );
-
+ALTER TABLE business_user CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 -- DROP SEQUENCE과 관련된 코드
 -- MySQL에서는 AUTO_INCREMENT를 사용하여 Sequence 대체
 
 -- SELECT 문
 SELECT * FROM business_user;
+
+
 
 -- UPDATE 문
 UPDATE business_user

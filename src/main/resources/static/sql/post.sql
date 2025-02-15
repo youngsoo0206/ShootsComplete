@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS post_comment;
 DROP TABLE IF EXISTS post;
 CREATE TABLE post (
       post_idx INT AUTO_INCREMENT PRIMARY KEY, -- 게시글 식별 번호 (글번호)
