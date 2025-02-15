@@ -15,6 +15,7 @@ var stompClient = null;
 var username = null;
 //topicName이 chat_room_idx
 var topicName = null;
+let reconnectAttempts = 0;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -40,11 +41,28 @@ function connect() {
     if(username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
+
         // var socket = new SockJS('https://www.www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         var socket = new SockJS('https://www.goshoots.site/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
         // var socket = new SockJS('http://localhost:1000/Shoots/livechat/livechat/ws'); // 포트에 맞게 수정
+
+        // heartbeat
+        // stompClient.heartbeat.outgoing = 10000; // 10초마다 서버에 신호
+        // stompClient.heartbeat.incoming = 10000; // 10초마다 서버에서 신호
+
         stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected, onError);//1헤더 2성공 3실패
+
+        // backoff
+        // stompClient.connect({}, onConnected, function (error) {
+        //     console.error('WebSocket 연결 실패:', error);
+        //     connectingElement.textContent = 'Could not connect. Retrying...';
+        //     connectingElement.style.color = 'red';
+        //
+        //     let delay = Math.min(5000, Math.pow(2, reconnectAttempts) * 1000); // 백오프 최대 5초
+        //     reconnectAttempts++;
+        //     setTimeout(connect, delay);
+        // });
     }
     // event.preventDefault();
 }

@@ -93,7 +93,7 @@
                             <td th:if="${match.playerCount >= match.player_min && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-confirm">매치확정</button></a>
                             </td>
-                            <td th:if="${match.playerCount != match.player_max && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
+                            <td th:if="${match.playerCount < match.player_min && match.isMatchPast() == true}"><a th:href="@{'postDetail?match_idx=' + ${match.match_idx}}">
                                 <button type="button" class="custom-btnS btn-5 btn-closed2">마감</button></a>
                             </td>
                             <td style="display: flex; gap: 10px">
