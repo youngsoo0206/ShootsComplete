@@ -26,6 +26,7 @@ Docker , AWS EC2 , Nginx , Reverse-Proxy
 
 ## 프로젝트 배포
 AWS EC2 + Docker + Jenkins (+ GitWebHook) 사용.
+
 AWS에서 고정 IP 등록 후 가비아 에서 도메인 구매 후 주소 등록 (Nginx, Reverse Proxy 사용)
 ##### ↓ 아래는 젠킨스 파이프라인 코드
 ![Shoots](https://private-user-images.githubusercontent.com/184598098/413653886-9338b281-27ec-4a30-aad6-df908c1aab19.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzk3NDYxNTEsIm5iZiI6MTczOTc0NTg1MSwicGF0aCI6Ii8xODQ1OTgwOTgvNDEzNjUzODg2LTkzMzhiMjgxLTI3ZWMtNGEzMC1hYWQ2LWRmOTA4YzFhYWIxOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjE2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIxNlQyMjQ0MTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZmEzN2ViZjZhNzA4ZmQwYzA4ZWU1ZjI1YzdjMTQ0MDE5M2U1MGU0MWRmYjIzZTY1YzY5ZTdiZWE2OWZlNzA0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.vRnkbovCyBh38-McPOqiXVbF-qB711z55NBQtakqY2w)
