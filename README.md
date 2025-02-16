@@ -1,6 +1,6 @@
 # 팀 프로젝트 'Shoots'용 READ ME
 
-홈페이지 URL : goshoots.site/Shoots/main
+[URL](https://goshoots.site/Shoots/main)
 
 ## 사용한 언어 / 툴 + 협업도구 / 환경설정 등.
 
