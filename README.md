@@ -1,4 +1,4 @@
-<div style="color:red"> 팀 프로젝트 'Shoots'용 READ ME </div>
+# 팀 프로젝트 'Shoots'용 READ ME
 
 
 사용한 언어 및 툴
