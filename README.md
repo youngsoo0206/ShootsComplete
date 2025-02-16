@@ -2,8 +2,9 @@
 
 ##사용한 언어 / 툴 + 협업도구 / 환경설정 등.
 
-Spring Boot 3.4.1  , Java17 , JavaScript , MySQL , Redis , Mybatis , Html , API {로그인: 카카오·네이버·구글 , 지도 , 날씨, 채팅 (WebSocket), 주소(=우편번호) } ,
-└Spring Security , Thymeleaf ,
+Spring Boot 3.4.1 (+ Spring Security , Thymeleaf) , Java17 , JavaScript , MySQL , Redis , Mybatis , Html , 
+
+API {로그인: 카카오·네이버·구글 , 지도 , 날씨, 채팅 (WebSocket), 주소(=우편번호) } ,
 Docker , AWS EC2 , Nginx , Reverse-Proxy
 
 ![used](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
