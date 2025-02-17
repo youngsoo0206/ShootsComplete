@@ -29,7 +29,7 @@ AWS EC2 + Docker + Jenkins (+ GitWebHook) 사용.
 
 AWS에서 고정 IP 등록 후 가비아 에서 도메인 구매 후 주소 등록 (Nginx, Reverse Proxy 사용)
 ##### ↓ 아래는 젠킨스 파이프라인 코드
-![Shoots](https://github.com/youngsoo0206/ShootsComplete/edit/main/readmeImage/0.png)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/main/readmeImage/0.png)
 
 
 ## 간략한 프로젝트 소개
