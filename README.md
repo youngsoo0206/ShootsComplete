@@ -50,24 +50,22 @@ AWS에서 고정 IP 등록 후 가비아 에서 도메인 구매 후 주소 등�
 
 ### 기업회원이 사용 가능한 기능들 (기업회원 로그인 필요 + 기업 회원가입 이후 관리자의 승인 필요) : 대시보드, 등록해둔 매칭 정보 (본인이 등록한 경기들만), 매치고객 리스트 , 전체 고객 리스트 , 차단 유저 리스트 + 관리 , 1:1 문의 (본 기업것만) , 매치 확정 그래프
 
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/9.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/10.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/11.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/12.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/13.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/14.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/15.png?raw=true)
 
 ### 관리자 페이지 (관리자 권한 지닌 개인회원 로그인 필요) : 대시보드, 전체 유저 리스트 + 관리 , 전체 기업 리스트 + 관리 , 전체 게시글 리스트 + 관리 , 전체 문의 리스트 + 관리 , 전체 신고 리스트 + 관리
 
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
-![Shoots]()
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/16.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/17.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/18.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/19.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/20.png?raw=true)
+![Shoots](https://github.com/youngsoo0206/ShootsComplete/blob/main/readmeImage/21.png?raw=true)
 
 
 
