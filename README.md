@@ -8,7 +8,7 @@
 Spring Boot 3.4.1 (+ Spring Security , Thymeleaf) , Java (jdk17) , JavaScript , MySQL 8.0.4 , Redis 3.0.504 , Mybatis , Html , 
 
 API {로그인: 카카오·네이버·구글 , 지도 , 날씨, 채팅 (WebSocket), 주소(=우편번호) } ,
-Docker , AWS EC2 , Nginx , Reverse-Proxy
+Docker , AWS EC2 , Nginx (Reverse-Proxy 사용)
 
 ![used](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
 ![used](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
