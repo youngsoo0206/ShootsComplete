@@ -25,6 +25,8 @@ spec:
           env:
             - name: TZ
               value: Asia/Seoul
+            - name: SPRING_PROFILES_ACTIVE
+              value: deploy
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
