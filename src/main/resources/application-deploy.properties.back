@@ -13,9 +13,9 @@ spring.thymeleaf.suffix=.html
 spring.messages.basename=test
 
 
-spring.datasource.url=jdbc:mysql://${DB_URL}/${DB_NAME}
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}
+spring.datasource.url=jdbc:mysql://3.36.152.102:1000/shoots
+spring.datasource.username=shoots
+spring.datasource.password=1234
 
 mybatis.type-aliases-package=com.Shoots.domain
 mybatis.config-location=classpath:/mybatis/config/mybatis-config.xml
@@ -53,8 +53,8 @@ iamport.api.imp_key=4374671001417615
 iamport.api.imp_secret=ukuBMPxlLnuayHqeO6MTTUy82qMDLGHAzpQUsoLJyPsK8xUkqw5JzIewNqgI7BlCJ8NFNcRckg9YPpFE
 
 # redis
-spring.data.redis.host=${REDIS_URL}
-spring.data.redis.port=${REDIS_PORT}
+spring.data.redis.host=3.36.152.102
+spring.data.redis.port=6379
 
 # Weather api
 weather.api.key=LiwpqUDoIqzCrg5IUVxki%2BlNXpcsHG4rP742bT6XmQYiCEA9KYFs8e5p0lDN1tMNrNNTFhfpQtFPJpG5Uvoh9A%3D%3D

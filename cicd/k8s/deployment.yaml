@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shoots-deploy
+  namespace: shoots
+  labels:
+    app: shoots
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shoots
+  template:
+    metadata:
+      labels:
+        app: shoots
+    spec:
+      imagePullSecrets:
+      - name: shoots-docker-pull-secret
+      containers:
+      - name: shoots
+        image: ejqldocker/shoots:latest
+        ports:
+        - containerPort: 1000
+        env:
+			  - name: TZ
+			    value: Asia/Seoul
+			  - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: DB_URL
+			  - name: DB_NAME
+			    valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: DB_NAME
+			  - name: DB_USERNAME
+			    valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+			    valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: DB_PASSWORD		
+        - name: REDIS_URL
+			    valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: REDIS_URL
+        - name: REDIS_PORT
+			    valueFrom:
+            secretKeyRef:
+              name: shoots-secret
+              key: REDIS_PORT		    
+        volumeMounts:
+        - name: shoots-pvc
+          mountPath: /upload
+      volumes:
+      - name: shoots-volume
+        persistentVolumeClaim:
+          claimName: shoots-pvc
