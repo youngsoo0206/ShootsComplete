@@ -1,7 +1,7 @@
 # 팀 프로젝트 'Shoots'용 READ ME
 
 ##### 홈페이지 링크
-[shoots.stdtrinfra.com](https://shoots.stdtrinfra.com/) 
+[shoots.stdtrinfra.com/Shoots/main](https://shoots.stdtrinfra.com/Shoots/main) 
 
 ## 사용한 언어 / 툴 + 협업도구 / 환경설정 등.
 
